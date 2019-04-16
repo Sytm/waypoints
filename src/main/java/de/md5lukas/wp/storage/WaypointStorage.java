@@ -7,7 +7,9 @@ import org.bukkit.Location;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class WaypointStorage {
 
@@ -30,9 +32,9 @@ public class WaypointStorage {
 				for (Waypoint wp : entry.getValue()) {
 					dos.writeLong(wp.getID().getMostSignificantBits());
 					dos.writeLong(wp.getID().getLeastSignificantBits());
-					dos.writeInt(wp.getName().length());
+					dos.writeInt(wp.getName().getBytes(cs).length);
 					dos.write(wp.getName().getBytes(cs));
-					dos.writeInt(wp.getLocation().getWorld().getName().length());
+					dos.writeInt(wp.getLocation().getWorld().getName().getBytes(cs).length);
 					dos.write(wp.getLocation().getWorld().getName().getBytes(cs));
 					dos.writeDouble(wp.getLocation().getX());
 					dos.writeDouble(wp.getLocation().getY());
@@ -79,6 +81,7 @@ public class WaypointStorage {
 	/**
 	 * Using this method you can add, remove and clear the waypoints associated with a player and the changes will be
 	 * saved when @{{@link #save(File)}} is used
+	 *
 	 * @param uuid The uuid of the player
 	 * @return A modifiable list of waypoints associated with that uuid
 	 */
