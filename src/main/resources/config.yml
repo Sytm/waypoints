@@ -1,0 +1,39 @@
+# The language file that should be used. Prepared are "en" and "de". But feel free to change them or add new ones
+language: en
+
+general:
+  # Define the maximum amount of waypoints a player can have. Set to 0 to disable the limit
+  maxWaypoints: 100
+
+# Settings for the direction indicator in the action bar
+actionBar:
+  # The indicator color is used to show where the waypoint is by changing the color of one of the sections
+  indicatorColor: '&4&l'
+  # The background color for the sections
+  normalColor: '&7&l'
+  # Character (or longer texts, but not recommended) to use as the colored direction indicators
+  section: '⬛'
+  # If you turn to much to either side these arrows are highlighted to indicator you need tp turn more
+  arrow:
+    left: '<-'
+    right: '->'
+  # The amount of sections used to show if you are walking in the correct direction. Must be an odd number or the plugin will correct it by adding one
+  amountOfSections: 35
+  # The range of between the center saction and most outer section in degrees. So the field of view of the action bar indicator is range x 2
+  range: 70
+
+# To find the exact spot easier when near enough the position where the waypoint was placed changing blocks will appear, but only visible to the player
+flashingBlock:
+  # Enable or disable it here
+  enabled: true
+  # The min distance to show up to prevent wiered stuff happening
+  minDistance: 10
+  # The blocks that will appear in a 1 second interval and when the end of the list is reached it will loop to the start
+  blocks: [GLASS, GLOWSTONE]
+
+# When further away a beacon will show where the waypoint was placed.
+beacon:
+  # Enable or disable it here
+  enabled: true
+  # The min distance before swapping to the flashing block
+  minDistance: 50

@@ -1,15 +1,18 @@
 package de.md5lukas.wp.command;
 
+import de.md5lukas.wp.config.Config;
 import de.md5lukas.wp.inventory.WaypointProvider;
 import de.md5lukas.wp.storage.Waypoint;
 import de.md5lukas.wp.storage.WaypointStorage;
-import de.md5lukas.wp.config.Messages;
 import fr.minuskube.inv.SmartInventory;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static de.md5lukas.wp.config.Message.*;
+import static de.md5lukas.wp.config.Messages.get;
 
 public class WaypointCommand implements CommandExecutor {
 
@@ -19,31 +22,33 @@ public class WaypointCommand implements CommandExecutor {
 			if (commandSender.hasPermission("waypoints.command")) {
 				Player player = (Player) commandSender;
 				if (args.length == 0) {
-					SmartInventory.builder().id("waypoints").provider(new WaypointProvider()).size(4, 9).build().open(player);
+					SmartInventory.builder().id("waypoints").provider(new WaypointProvider()).title(get(INV_TITLE)).size(4, 9).build().open(player);
 				} else {
 					switch (args[0].toLowerCase()) {
 						case "set":
 						case "add":
+							if (Config.maxWaypoints > 0 && WaypointStorage.getWaypoints(player.getUniqueId()).size() >= Config.maxWaypoints) {
+								player.sendMessage(get(CMD_WP_MAXWAYPOINTS));
+								break;
+							}
 							if (args.length < 2) {
-								player.sendMessage(Messages.PREFIX + "§cDu musst einen Namen für den Waypoint nennen! Beispiel: §7/waypoints add Mein' Zuhause");
+								player.sendMessage(get(CMD_WP_WRONGUSAGEADD));
 								break;
 							}
 							WaypointStorage.getWaypoints(player.getUniqueId()).add(
 									new Waypoint(StringUtils.join(args, ' ', 1, args.length), player.getLocation()));
-							player.sendMessage(Messages.PREFIX + "§7Waypoint erfolgreich hinzugefügt!");
+							player.sendMessage(get(CMD_WP_ADDSUCCESS));
 							break;
 						default:
-							player.sendMessage(Messages.PREFIX + "§7Folgende Befehle sind verfügbar:");
-							player.sendMessage("§7 - §e/waypoints§7 Öffnet das Inventar");
-							player.sendMessage("§7 - §e/waypoints add <Name> §7Fügt einen neuen Waypoint hinzu");
+							player.sendMessage(get(CMD_WP_HELP));
 							break;
 					}
 				}
 			} else {
-				commandSender.sendMessage(Messages.NOPERMISSION);
+				commandSender.sendMessage(get(NOPERMISSION));
 			}
 		} else {
-			commandSender.sendMessage(Messages.NOTAPLAYER);
+			commandSender.sendMessage(get(NOTAPLAYER));
 		}
 		return true;
 	}

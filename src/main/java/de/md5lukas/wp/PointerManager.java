@@ -1,15 +1,14 @@
 package de.md5lukas.wp;
 
+import de.md5lukas.wp.config.Config;
 import de.md5lukas.wp.storage.Waypoint;
 import de.md5lukas.wp.util.MathHelper;
 import de.md5lukas.wp.util.StringHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ public class PointerManager {
 	private static Map<UUID, Waypoint> activePointers;
 	private static Map<UUID, Integer> markerTimer;
 	private static Map<UUID, Location> beaconPosition;
-	private static List<Material> hightlighterBlocks = Arrays.asList(Material.GLASS, Material.GLOWSTONE);
 	private static List<BlockData> blockDatas;
 
 
@@ -28,10 +26,13 @@ public class PointerManager {
 		activePointers = new HashMap<>();
 		markerTimer = new HashMap<>();
 		beaconPosition = new HashMap<>();
+	}
+
+	public static void setupBlockData(List<Material> materials) {
 		blockDatas = new ArrayList<>();
 		blockDatas.add(Bukkit.createBlockData(Material.BEACON));
 		blockDatas.add(Bukkit.createBlockData(Material.IRON_BLOCK));
-		blockDatas.addAll(hightlighterBlocks.stream().map(Bukkit::createBlockData).collect(Collectors.toCollection(ArrayList::new)));
+		blockDatas.addAll(materials.stream().map(Bukkit::createBlockData).collect(Collectors.toCollection(ArrayList::new)));
 	}
 
 	public static void activate(UUID uuid, Waypoint waypoint) {
@@ -83,10 +84,12 @@ public class PointerManager {
 					return;
 				}
 				double angle = MathHelper.deltaAngleToTarget(p, value.getLocation());
-				p.sendActionBar(StringHelper.generateDirectionIndicator("§2§l", "§7§l", "⬛", angle, 35, 70));
+				p.sendActionBar(StringHelper.generateDirectionIndicator(Config.actionBarIndicator, Config.actionBarNormal,
+						Config.actionBarArrowLeft, Config.actionBarArrowRight, Config.actionBarSection, angle, Config.actionBarAmountOfSections, Config.actionBarRange));
+				// To compensate for not using Math.sqrt here while loading the config from file distances are squared
 				double distance = p.getLocation().distanceSquared(value.getLocation());
-				if (distance > 100 /* Squared 10 */ && distance < Math.pow(16 * p.getClientViewDistance(), 2)) {
-					if (distance > 2500 /* Squared 50 */) {
+				if (distance > Config.minFlashingBlockDistance && distance < Math.pow(16 * p.getClientViewDistance(), 2)) {
+					if (distance > Config.minBeaconDistance && Config.enableBeacon) {
 						Location target = value.getLocation().getWorld().getHighestBlockAt(value.getLocation()).getLocation();
 						Location oldTarget = beaconPosition.get(key);
 						if (sameXZ(target, oldTarget)) {
@@ -130,8 +133,10 @@ public class PointerManager {
 						clearBeacon(p, beaconPosition.get(key));
 						beaconPosition.remove(key);
 					}
+					if (!Config.enableFlashingBlock)
+						return;
 					int timer = markerTimer.get(key);
-					if (timer >= hightlighterBlocks.size())
+					if (timer >= blockDatas.size() - 2)
 						timer = 0;
 					p.sendBlockChange(value.getLocation(), blockDatas.get(timer + 2));
 					markerTimer.put(key, ++timer);
