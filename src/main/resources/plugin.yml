@@ -1,0 +1,10 @@
+name: Waypoints
+author: Md5Lukas
+main: de.md5lukas.wp.Main
+version: 1
+api-version: 1.13
+depend: [SmartInvs]
+
+commands:
+  waypoints:
+    aliases: [wp, waypoint]
