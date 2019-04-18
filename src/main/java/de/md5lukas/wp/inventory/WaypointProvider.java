@@ -1,6 +1,7 @@
 package de.md5lukas.wp.inventory;
 
 import de.md5lukas.wp.PointerManager;
+import de.md5lukas.wp.config.Config;
 import de.md5lukas.wp.storage.Waypoint;
 import de.md5lukas.wp.storage.WaypointStorage;
 import de.md5lukas.wp.util.ItemBuilder;
@@ -40,19 +41,19 @@ public class WaypointProvider implements InventoryProvider {
 
 	private void setupOverview(Player player, InventoryContents contents) {
 		contents.fill(ClickableItem.empty(new ItemStack(Material.AIR)));
-		contents.fillRow(3, ClickableItem.of(new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(get(INV_EMPTYBACKGROUND)).make(), event -> event.setCancelled(true)));
-		contents.set(3, 3, ClickableItem.of(new ItemBuilder(Material.ARROW).name(get(INV_PREV_PAGE)).make(), event -> {
+		contents.fillRow(3, ClickableItem.of(new ItemBuilder(Config.inventoryEmptyItem).name(get(INV_EMPTYBACKGROUND)).make(), event -> event.setCancelled(true)));
+		contents.set(3, 3, ClickableItem.of(new ItemBuilder(Config.inventoryArrowItem).name(get(INV_PREV_PAGE)).make(), event -> {
 			if (page > 0) {
 				--page;
 				updateOverviewPage(player, contents);
 			}
 			event.setCancelled(true);
 		}));
-		contents.set(3, 4, ClickableItem.of(new ItemBuilder(Material.MILK_BUCKET).name(get(INV_DISABLE_WAYPOINTS)).make(), event -> {
+		contents.set(3, 4, ClickableItem.of(new ItemBuilder(Config.inventoryDeselectItem).name(get(INV_DISABLE_WAYPOINTS)).make(), event -> {
 			event.setCancelled(true);
 			PointerManager.deactivate(player.getUniqueId());
 		}));
-		contents.set(3, 5, ClickableItem.of(new ItemBuilder(Material.ARROW).name(get(INV_NEXT_PAGE)).make(), event -> {
+		contents.set(3, 5, ClickableItem.of(new ItemBuilder(Config.inventoryArrowItem).name(get(INV_NEXT_PAGE)).make(), event -> {
 			if (page < (waypoints.pages() - 1)) {
 				++page;
 				updateOverviewPage(player, contents);
@@ -72,7 +73,7 @@ public class WaypointProvider implements InventoryProvider {
 		for (Waypoint wp : currPageContent) {
 			int column = counter % 9, row = (counter - column) / 9;
 			++counter;
-			ItemStack stack = new ItemStack(Material.SIGN);
+			ItemStack stack = new ItemStack(Config.inventoryWaypointItem);
 			ItemMeta meta = stack.getItemMeta();
 			meta.setDisplayName(get(INV_WAYPOINT_NAME).replace("%name%", wp.getName()));
 			meta.setLore(Arrays.asList(get(INV_WAYPOINT_LORE)
@@ -94,12 +95,12 @@ public class WaypointProvider implements InventoryProvider {
 
 	private void changeToSingleWaypoint(Player player, InventoryContents contents) {
 		contents.fill(ClickableItem.empty(new ItemStack(Material.AIR)));
-		contents.fillRect(1, 1, 2, 2, ClickableItem.of(new ItemBuilder(Material.BEACON).name(get(INV_WAYPOINT_SELECT)).make(), event -> {
+		contents.fillRect(1, 1, 2, 2, ClickableItem.of(new ItemBuilder(Config.inventorySelectWaypointItem).name(get(INV_WAYPOINT_SELECT)).make(), event -> {
 			event.setCancelled(true);
 			PointerManager.activate(player.getUniqueId(), selectedWaypoint);
 			player.closeInventory();
 		}));
-		ItemStack stack = new ItemStack(Material.SIGN);
+		ItemStack stack = new ItemStack(Config.inventoryWaypointItem);
 		ItemMeta meta = stack.getItemMeta();
 		meta.setDisplayName(get(INV_WAYPOINT_NAME).replace("%name%", selectedWaypoint.getName()));
 		meta.setLore(Arrays.asList(get(INV_WAYPOINT_LORE)
@@ -111,7 +112,7 @@ public class WaypointProvider implements InventoryProvider {
 				.split("\\r?\\n")));
 		stack.setItemMeta(meta);
 		contents.set(1, 4, ClickableItem.of(stack, event -> event.setCancelled(true)));
-		contents.fillRect(1, 6, 2, 7, ClickableItem.of(new ItemBuilder(Material.RED_WOOL).name(get(INV_WAYPOINT_DELETE)).make(), event -> {
+		contents.fillRect(1, 6, 2, 7, ClickableItem.of(new ItemBuilder(Config.inventoryDeleteWaypointItem).name(get(INV_WAYPOINT_DELETE)).make(), event -> {
 			event.setCancelled(true);
 			Waypoint active = PointerManager.activeWaypoint(player.getUniqueId());
 			if (active != null && selectedWaypoint.getID().equals(active.getID())) {
@@ -123,7 +124,7 @@ public class WaypointProvider implements InventoryProvider {
 			updateOverviewPage(player, contents);
 			page = 0;
 		}));
-		contents.set(3, 8, ClickableItem.of(new ItemBuilder(Material.BARRIER).name(get(INV_BACK)).make(), event -> {
+		contents.set(3, 8, ClickableItem.of(new ItemBuilder(Config.inventoryBackItem).name(get(INV_BACK)).make(), event -> {
 			event.setCancelled(true);
 			selectedWaypoint = null;
 			setupOverview(player, contents);

@@ -1,11 +1,13 @@
 package de.md5lukas.wp.config;
 
+import de.md5lukas.wp.Main;
 import org.bukkit.ChatColor;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class Messages {
 
@@ -27,24 +29,24 @@ public class Messages {
 						ChatColor.translateAlternateColorCodes('&', line.substring(index + 1).replace("\\n", "\n")));
 			}
 			if (!messages.containsKey("prefix")) {
-				System.err.println("The message file does not contain every translation!");
+				Main.logger().log(Level.SEVERE,"The message file does not contain every translation!");
 				return false;
 			}
 			String prefix = messages.get("prefix");
 			messages.keySet().forEach(key -> messages.put(key, messages.get(key).replace("%prefix%", prefix)));
 			for (Message m : Message.values()) {
 				if (!messages.containsKey(m.getInFilePath())) {
-					System.err.println("The message file does not contain every translation!");
+					Main.logger().log(Level.SEVERE,"The message file does not contain every translation!");
 					return false;
 				}
 			}
 			return true;
 		} catch (FileNotFoundException e) {
-			System.err.println("A message file with the specified language does not exist! Maybe it has been renamed or moved. It should be found under plugins/Waypoints/translations/messages_[lang].cfg");
+			Main.logger().log(Level.SEVERE,"A message file with the specified language does not exist! Maybe it has been renamed or moved. It should be found under plugins/Waypoints/translations/messages_[lang].cfg");
 		} catch (IndexOutOfBoundsException e) {
-			System.err.println("The contents of the message file " + file.getAbsolutePath() + " is malformed and cannot be read!");
+			Main.logger().log(Level.SEVERE,"The contents of the message file " + file.getAbsolutePath() + " is malformed and cannot be read!");
 		} catch (IOException e) {
-			e.printStackTrace();
+			Main.logger().log(Level.SEVERE,"An error occurred while reading the file " + file.getAbsolutePath(), e);
 		}
 		return false;
 	}

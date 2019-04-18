@@ -1,5 +1,6 @@
 package de.md5lukas.wp.storage;
 
+import de.md5lukas.wp.Main;
 import de.md5lukas.wp.util.PaginationList;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class WaypointStorage {
 
@@ -41,7 +43,7 @@ public class WaypointStorage {
 					dos.writeDouble(wp.getLocation().getZ());
 				}
 			} catch (IOException ioe) {
-				System.err.println("Unable to save waypoint data for player with UUID " + entry.getKey());
+				Main.logger().log(Level.SEVERE,"Unable to save waypoint data for player with UUID " + entry.getKey());
 				ioe.printStackTrace();
 			}
 		}
@@ -69,10 +71,9 @@ public class WaypointStorage {
 					}
 					waypoints.put(uuid, playerWaypoints);
 				} catch (IOException ioe) {
-					System.err.println("Unable to open file " + file.getAbsolutePath());
-					ioe.printStackTrace();
+					Main.logger().log(Level.SEVERE,"Unable to open file " + file.getAbsolutePath(), ioe);
 				} catch (IndexOutOfBoundsException | IllegalArgumentException uuidex) {
-					System.err.println("Can't read file " + file.getName() + " because it has an malformed name");
+					Main.logger().log(Level.SEVERE,"Can't read file " + file.getName() + " because it has an malformed name");
 				}
 			}
 		}
