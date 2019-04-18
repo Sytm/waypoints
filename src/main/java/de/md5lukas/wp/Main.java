@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.Channels;
+import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
 
@@ -19,15 +20,21 @@ public class Main extends JavaPlugin {
 			config = new File(getDataFolder(), "config.yml"),
 			translationFolder = new File(getDataFolder(), "translations/");
 
+	private static Logger logger;
+
+	public static Logger logger() {
+		return logger;
+	}
+
 	@Override
 	public void onEnable() {
 		getDataFolder().mkdirs();
+		logger = getLogger();
 		if (!config.exists()) {
 			try (FileOutputStream fos = new FileOutputStream(config)) {
 				fos.getChannel().transferFrom(Channels.newChannel(getResource("config.yml")), 0, Long.MAX_VALUE);
 			} catch (IOException e) {
-				System.err.println("Can't copy config file!");
-				e.printStackTrace();
+				getSLF4JLogger().error("Can't copy config file!", e);
 			}
 		}
 		if (!Config.load(config)) {
@@ -40,14 +47,12 @@ public class Main extends JavaPlugin {
 			try (FileOutputStream fos = new FileOutputStream(new File(translationFolder, "messages_de.cfg"))) {
 				fos.getChannel().transferFrom(Channels.newChannel(getResource("messages_de.cfg")), 0, Long.MAX_VALUE);
 			} catch (IOException e) {
-				System.err.println("Can't copy german message file!");
-				e.printStackTrace();
+				getSLF4JLogger().error("Can't copy german message file!", e);
 			}
 			try (FileOutputStream fos = new FileOutputStream(new File(translationFolder, "messages_en.cfg"))) {
 				fos.getChannel().transferFrom(Channels.newChannel(getResource("messages_en.cfg")), 0, Long.MAX_VALUE);
 			} catch (IOException e) {
-				System.err.println("Can't copy english message file!");
-				e.printStackTrace();
+				getSLF4JLogger().error("Can't copy english message file!", e);
 			}
 		}
 		if (!Messages.parse(new File(translationFolder, "messages_" + Config.language.toLowerCase() + ".cfg"))) {

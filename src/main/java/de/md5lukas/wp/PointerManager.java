@@ -1,6 +1,8 @@
 package de.md5lukas.wp;
 
 import de.md5lukas.wp.config.Config;
+import de.md5lukas.wp.config.Message;
+import de.md5lukas.wp.config.Messages;
 import de.md5lukas.wp.storage.Waypoint;
 import de.md5lukas.wp.util.MathHelper;
 import de.md5lukas.wp.util.StringHelper;
@@ -15,6 +17,15 @@ import java.util.stream.Collectors;
 
 public class PointerManager {
 
+	static {
+		try {
+			Class.forName("com.destroystokyo.paper.PaperConfig");
+			isPaper = true;
+		} catch (ClassNotFoundException e) {
+		}
+	}
+
+	private static boolean isPaper = false;
 
 	private static Map<UUID, Waypoint> activePointers;
 	private static Map<UUID, Integer> markerTimer;
@@ -80,16 +91,23 @@ public class PointerManager {
 					return;
 				}
 				if (p.getWorld() != value.getLocation().getWorld()) {
-					p.sendActionBar("§cDu bist in der falschen Welt! (Korrekte Welt: §a" + value.getLocation().getWorld().getName() + "§c)");
+					p.sendActionBar(Messages.get(Message.AB_WRONGWORLD)
+							.replace("%currentworld%", p.getWorld().getName())
+							.replace("%correctworld%", value.getLocation().getWorld().getName()));
 					return;
 				}
-				double angle = MathHelper.deltaAngleToTarget(p, value.getLocation());
-				p.sendActionBar(StringHelper.generateDirectionIndicator(Config.actionBarIndicator, Config.actionBarNormal,
-						Config.actionBarArrowLeft, Config.actionBarArrowRight, Config.actionBarSection, angle, Config.actionBarAmountOfSections, Config.actionBarRange));
+				if (isPaper && Config.flashingBlockEnabled) {
+					double angle = MathHelper.deltaAngleToTarget(p, value.getLocation());
+					p.sendActionBar(StringHelper.generateDirectionIndicator(Config.actionBarIndicator, Config.actionBarNormal,
+							Config.actionBarArrowLeft, Config.actionBarArrowRight, Config.actionBarSection, angle, Config.actionBarAmountOfSections, Config.actionBarRange));
+				}
+				if (Config.compassEnabled) {
+					p.setCompassTarget(value.getLocation());
+				}
 				// To compensate for not using Math.sqrt here while loading the config from file distances are squared
 				double distance = p.getLocation().distanceSquared(value.getLocation());
-				if (distance > Config.minFlashingBlockDistance && distance < Math.pow(16 * p.getClientViewDistance(), 2)) {
-					if (distance > Config.minBeaconDistance && Config.enableBeacon) {
+				if (distance > Config.flashingBlockMinDistance && distance < Math.pow(16 * p.getClientViewDistance(), 2)) {
+					if (distance > Config.beaconMinDistance && Config.beaconEnabled) {
 						Location target = value.getLocation().getWorld().getHighestBlockAt(value.getLocation()).getLocation();
 						Location oldTarget = beaconPosition.get(key);
 						if (sameXZ(target, oldTarget)) {
@@ -133,7 +151,7 @@ public class PointerManager {
 						clearBeacon(p, beaconPosition.get(key));
 						beaconPosition.remove(key);
 					}
-					if (!Config.enableFlashingBlock)
+					if (!Config.flashingBlockEnabled)
 						return;
 					int timer = markerTimer.get(key);
 					if (timer >= blockDatas.size() - 2)
@@ -144,6 +162,8 @@ public class PointerManager {
 					p.sendBlockChange(value.getLocation(), value.getLocation().getBlock().getBlockData());
 				}
 			});
+			if (Config.compassEnabled)
+				Bukkit.getOnlinePlayers().stream().filter(o -> !activePointers.containsKey(o.getUniqueId())).forEach(o -> o.setCompassTarget(defaultLocation(o)));
 			remove.forEach(uuid -> activePointers.remove(uuid));
 		}, 20, 20);
 	}
@@ -181,5 +201,12 @@ public class PointerManager {
 		if (loc1 == null || loc2 == null)
 			return false;
 		return loc1.getBlockX() == loc2.getBlockX() && loc1.getBlockZ() == loc2.getBlockZ();
+	}
+
+	private static Location defaultLocation(Player player) {
+		if (Config.compassDefaultIsSpawn) {
+			return player.getWorld().getSpawnLocation();
+		}
+		return Config.compassDefaultLocation;
 	}
 }

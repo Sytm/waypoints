@@ -39,6 +39,15 @@ public class WaypointCommand implements CommandExecutor {
 									new Waypoint(StringUtils.join(args, ' ', 1, args.length), player.getLocation()));
 							player.sendMessage(get(CMD_WP_ADDSUCCESS));
 							break;
+						case "defcompass":
+							if (player.hasPermission("waypoints.admin")) {
+								if (Config.saveCompassLocation(player.getLocation())) {
+									player.sendMessage(get(CMD_WP_COMPASS_SUCCESS));
+								} else {
+									player.sendMessage(get(CMD_WP_COMPASS_ERROR));
+								}
+								break;
+							}
 						default:
 							player.sendMessage(get(CMD_WP_HELP));
 							break;
