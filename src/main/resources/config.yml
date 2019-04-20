@@ -9,7 +9,7 @@ general:
 inventory:
   # This is used to fill the bottom row in the overview
   emptyItem: GRAY_STAINED_GLASS_PANE
-  # This is used as the item for previous / next page in the overview
+  # This is used as the item for previous/next page in the overview
   arrowItem: ARROW
   # This is used as the item to deselect the active waypoint
   deselectItem: MILK_BUCKET
@@ -28,7 +28,7 @@ inventory:
 # wont display anything
 # ============================
 # Settings for the direction indicator in the action bar.
-# I dont recommend to enable this feature if your server gets larger as it performs
+# I dont recommend to enable this feature if your server gets larger as it may have a performance impact
 actionBar:
   # Enable or disable it here
   enabled: true
@@ -48,7 +48,7 @@ actionBar:
   range: 70
 
 # Compass will point towards the selected waypoint
-# REMEBER: For this feature to work, the player needs to craft his own compass, I dont want to provide a feature to give away free compasses as it could get
+# REMEMBER: For this feature to work, the player needs to craft his own compass, I don't want to provide a feature to give away free compasses as it could get
 # easily exploited to farm them
 compass:
   # Enable or disable it here
@@ -57,7 +57,7 @@ compass:
   # You can use 'spawn', 'config' or 'ingame'
   # Further information in regards to 'ingame':
   # To make ingame useable you first need to set it with /waypoints defcompass and have the permission waypoints.admin
-  # This command wont show in the ingame help and when you dont have permission for it you will just get the default help
+  # This command won't show in the ingame help and when you don't have permission for it you will just get the default help
   # Then reload - or preferably restart the server. To see the change
   defaultLocationType: spawn
   # When you choose 'config' in the previous line, set the location here
@@ -71,9 +71,9 @@ compass:
 flashingBlock:
   # Enable or disable it here
   enabled: true
-  # The min distance to show up to prevent weired stuff happening
+  # The min distance to show up to prevent weird stuff happening
   minDistance: 10
-  # The blocks that will appear in a 1 second interval and when the end of the list is reached it will loop to the start
+  # The blocks that will appear in a 1-second interval and when the end of the list is reached it will loop to the start
   blocks: [GLASS, GLOWSTONE]
 
 # When further away a beacon will show where the waypoint was placed.
