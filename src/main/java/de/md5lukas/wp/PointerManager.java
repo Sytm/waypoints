@@ -17,14 +17,6 @@ import java.util.stream.Collectors;
 
 public class PointerManager {
 
-	static {
-		try {
-			Class.forName("com.destroystokyo.paper.PaperConfig");
-			isPaper = true;
-		} catch (ClassNotFoundException e) {
-		}
-	}
-
 	private static boolean isPaper = false;
 
 	private static Map<UUID, Waypoint> activePointers;
@@ -82,6 +74,11 @@ public class PointerManager {
 	}
 
 	public static void activateTimer(Main main) {
+		try {
+			Class.forName("com.destroystokyo.paper.PaperConfig");
+			isPaper = true;
+		} catch (ClassNotFoundException e) {
+		}
 		Bukkit.getScheduler().runTaskTimer(main, () -> {
 			List<UUID> remove = new ArrayList<>();
 			activePointers.forEach((key, value) -> {
@@ -96,7 +93,7 @@ public class PointerManager {
 							.replace("%correctworld%", value.getLocation().getWorld().getName()));
 					return;
 				}
-				if (isPaper && Config.flashingBlockEnabled) {
+				if (isPaper && Config.actionBarEnabled) {
 					double angle = MathHelper.deltaAngleToTarget(p, value.getLocation());
 					p.sendActionBar(StringHelper.generateDirectionIndicator(Config.actionBarIndicator, Config.actionBarNormal,
 							Config.actionBarArrowLeft, Config.actionBarArrowRight, Config.actionBarSection, angle, Config.actionBarAmountOfSections, Config.actionBarRange));
