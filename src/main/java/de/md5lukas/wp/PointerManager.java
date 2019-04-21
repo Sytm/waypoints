@@ -19,11 +19,10 @@ public class PointerManager {
 
 	private static boolean isPaper = false;
 
-	private static Map<UUID, Waypoint> activePointers;
-	private static Map<UUID, Integer> markerTimer;
-	private static Map<UUID, Location> beaconPosition;
+	private static final Map<UUID, Waypoint> activePointers;
+	private static final Map<UUID, Integer> markerTimer;
+	private static final Map<UUID, Location> beaconPosition;
 	private static List<BlockData> blockDatas;
-
 
 	static {
 		activePointers = new HashMap<>();
@@ -89,8 +88,8 @@ public class PointerManager {
 				}
 				if (p.getWorld() != value.getLocation().getWorld()) {
 					p.sendActionBar(Messages.get(Message.AB_WRONGWORLD)
-							.replace("%currentworld%", p.getWorld().getName())
-							.replace("%correctworld%", value.getLocation().getWorld().getName()));
+							.replace("%currentworld%", StringHelper.correctWorldName(p.getWorld()))
+							.replace("%correctworld%", StringHelper.correctWorldName(value.getLocation().getWorld())));
 					return;
 				}
 				if (isPaper && Config.actionBarEnabled) {

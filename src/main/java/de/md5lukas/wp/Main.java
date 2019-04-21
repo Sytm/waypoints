@@ -10,15 +10,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.Channels;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
 
 	private boolean earlyDisable = false;
 
-	private File waypointFolder = new File(getDataFolder(), "data/"),
-			config = new File(getDataFolder(), "config.yml"),
-			translationFolder = new File(getDataFolder(), "translations/");
+	private final File waypointFolder = new File(getDataFolder(), "data/");
+	private final File config = new File(getDataFolder(), "config.yml");
+	private final File translationFolder = new File(getDataFolder(), "translations/");
 
 	private static Logger logger;
 
@@ -34,7 +35,7 @@ public class Main extends JavaPlugin {
 			try (FileOutputStream fos = new FileOutputStream(config)) {
 				fos.getChannel().transferFrom(Channels.newChannel(getResource("config.yml")), 0, Long.MAX_VALUE);
 			} catch (IOException e) {
-				getSLF4JLogger().error("Can't copy config file!", e);
+				getLogger().log(Level.SEVERE, "Can't copy config file!", e);
 			}
 		}
 		if (!Config.load(config)) {
@@ -42,33 +43,55 @@ public class Main extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		if (!translationFolder.exists()) {
+		if (!translationFolder.exists())
 			translationFolder.mkdirs();
-			try (FileOutputStream fos = new FileOutputStream(new File(translationFolder, "messages_de.cfg"))) {
+		File germanMessages = new File(translationFolder, "messages_de.cfg");
+		File englishMessages = new File(translationFolder, "messages_en.cfg");
+		File messageFileInfo = new File(translationFolder, "Message File Info.cfg");
+
+		if (!germanMessages.exists()) {
+			try (FileOutputStream fos = new FileOutputStream(germanMessages)) {
 				fos.getChannel().transferFrom(Channels.newChannel(getResource("messages_de.cfg")), 0, Long.MAX_VALUE);
 			} catch (IOException e) {
-				getSLF4JLogger().error("Can't copy german message file!", e);
-			}
-			try (FileOutputStream fos = new FileOutputStream(new File(translationFolder, "messages_en.cfg"))) {
-				fos.getChannel().transferFrom(Channels.newChannel(getResource("messages_en.cfg")), 0, Long.MAX_VALUE);
-			} catch (IOException e) {
-				getSLF4JLogger().error("Can't copy english message file!", e);
+				getLogger().log(Level.SEVERE, "Can't copy german message file!", e);
 			}
 		}
+		if (!englishMessages.exists()) {
+			try (FileOutputStream fos = new FileOutputStream(englishMessages)) {
+				fos.getChannel().transferFrom(Channels.newChannel(getResource("messages_en.cfg")), 0, Long.MAX_VALUE);
+			} catch (IOException e) {
+				getLogger().log(Level.SEVERE, "Can't copy english message file!", e);
+			}
+		}
+		if (!messageFileInfo.exists()) {
+			try (FileOutputStream fos = new FileOutputStream(messageFileInfo)) {
+				fos.getChannel().transferFrom(Channels.newChannel(getResource("Message File Info.cfg")), 0, Long.MAX_VALUE);
+			} catch (IOException e) {
+				getLogger().log(Level.SEVERE, "Can't copy message file info!", e);
+			}
+		}
+
 		if (!Messages.parse(new File(translationFolder, "messages_" + Config.language.toLowerCase() + ".cfg"))) {
 			earlyDisable = true;
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 
+		WaypointStorage.setupFiles(waypointFolder, new File(waypointFolder, "global.wp"), new File(waypointFolder, "permission.wp"));
+		if (!WaypointStorage.load()) {
+			earlyDisable = true;
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		WaypointStorage.initWaypointChecker(this);
+
 		getCommand("waypoints").setExecutor(new WaypointCommand());
-		WaypointStorage.load(waypointFolder);
 		PointerManager.activateTimer(this);
 	}
 
 	@Override
 	public void onDisable() {
 		if (earlyDisable) return;
-		WaypointStorage.save(waypointFolder);
+		WaypointStorage.save();
 	}
 }

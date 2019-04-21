@@ -3,6 +3,7 @@ package de.md5lukas.wp.util;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class PaginationList<T> extends ArrayList<T> {
 
 	private final int itemsPerPage;
