@@ -30,6 +30,7 @@ import java.util.Map;
  * @version 1.0
  */
 
+@SuppressWarnings("ALL")
 public class ItemBuilder {
 
 	private final ItemStack item;

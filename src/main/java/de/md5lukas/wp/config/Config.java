@@ -10,8 +10,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -19,12 +19,19 @@ public class Config {
 
 	private static final File compassDefaultLocationFile = new File("plugins/Waypoints/compass.loc");
 
+	// General settings
 	public static String language;
 	public static int maxWaypoints;
+	public static Map<String, String> worldNameAliases;
+
+	// Cache settings
+	public static int uuidCacheMaxSize;
+	public static long uuidCacheInvalidAfter;
+	public static TimeUnit uuidCacheInvalidTimeUnit;
 
 	// Inventory materials
 	public static Material inventoryEmptyItem, inventoryArrowItem, inventoryDeselectItem, inventoryWaypointItem,
-			inventorySelectWaypointItem, inventoryDeleteWaypointItem, inventoryBackItem;
+			inventorySelectWaypointItem, inventoryDeleteWaypointItem, inventoryBackItem, teleportToWaypointItem;
 
 	// Actionbar parameters
 	public static boolean actionBarEnabled;
@@ -38,7 +45,7 @@ public class Config {
 
 	// Flashing Block parameters
 	public static boolean flashingBlockEnabled;
-	public static List<Material> flashingBlockMaterials;
+	private static List<Material> flashingBlockMaterials;
 	public static int flashingBlockMinDistance;
 
 	// Beacon parameters
@@ -54,7 +61,28 @@ public class Config {
 			YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 			language = cfg.getString("language").toLowerCase();
 			maxWaypoints = cfg.getInt("general.maxWaypoints");
+			Map<String, String> temp = new HashMap<>();
+			String sectionPath = "general.worldNameAliases";
+			for (String key : cfg.getConfigurationSection(sectionPath).getKeys(false)) {
+				temp.put(key, cfg.getString(sectionPath + "." + key));
+			}
+			worldNameAliases = Collections.unmodifiableMap(temp);
 
+			if (cfg.isInt("general.playerInfoCache.size")) {
+				uuidCacheMaxSize = cfg.getInt("general.playerInfoCache.size");
+			} else if ("auto".equalsIgnoreCase(cfg.getString("general.playerInfoCache.size"))) {
+				uuidCacheMaxSize = (int) Math.round(Bukkit.getMaxPlayers() * 0.75);
+			} else {
+				Main.logger().log(Level.SEVERE, "The provided maximum cache size is neither a number or auto!");
+				return false;
+			}
+			uuidCacheInvalidAfter = cfg.getLong("general.playerInfoCache.invalidAfter");
+			try {
+				uuidCacheInvalidTimeUnit = TimeUnit.valueOf(cfg.getString("general.playerInfoCache.timeUnit"));
+			} catch (IllegalArgumentException iae) {
+				Main.logger().log(Level.SEVERE, "The timeunit used in the cache section is not one of the valid options!");
+				return false;
+			}
 			inventoryEmptyItem = Material.matchMaterial(cfg.getString("inventory.emptyItem"));
 			inventoryArrowItem = Material.matchMaterial(cfg.getString("inventory.arrowItem"));
 			inventoryDeselectItem = Material.matchMaterial(cfg.getString("inventory.deselectItem"));
@@ -62,10 +90,11 @@ public class Config {
 			inventorySelectWaypointItem = Material.matchMaterial(cfg.getString("inventory.selectWaypointItem"));
 			inventoryDeleteWaypointItem = Material.matchMaterial(cfg.getString("inventory.deleteWaypointItem"));
 			inventoryBackItem = Material.matchMaterial(cfg.getString("inventory.backItem"));
+			teleportToWaypointItem = Material.matchMaterial(cfg.getString("inventory.teleportToWaypointItem"));
 
 			if (!(inventoryEmptyItem.isItem() && inventoryArrowItem.isItem() && inventoryDeselectItem.isItem() && inventoryDeselectItem.isItem()
 					&& inventoryWaypointItem.isItem() && inventorySelectWaypointItem.isItem() && inventoryDeleteWaypointItem.isItem()
-					&& inventoryBackItem.isItem())) {
+					&& inventoryBackItem.isItem() && teleportToWaypointItem.isItem())) {
 				Main.logger().log(Level.SEVERE, "An item type from the inventory section in the config.yml cannot be used in the inventory gui as it is not an item and therefore cannot be displayed in a inventory");
 				return false;
 			}
@@ -106,7 +135,7 @@ public class Config {
 					}
 					break;
 				default:
-					Main.logger().log(Level.SEVERE, "The setting 'compass.defaultLocationType' in the config.yml is either missing or a invalid option is choosen");
+					Main.logger().log(Level.SEVERE, "The setting 'compass.defaultLocationType' in the config.yml is either missing or a invalid option is chosen");
 					return false;
 			}
 

@@ -5,6 +5,21 @@ general:
   # Define the maximum amount of waypoints a player can have. Set to 0 to disable the limit
   maxWaypoints: 100
 
+  playerInfoCache:
+    # Size of the cache. Auto is 75% of max players (this is the amount set in the server.properties file), but you may change it to your liking
+    size: auto
+    # Time after the retrieved data about a player is no longer valid and should be updated
+    invalidAfter: 24
+    # Unit of time of the previous value. Valid options are: NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS
+    timeUnit: HOURS
+
+  # These aliases will be used to display the worlds name in a more fancy style.
+  # Can also be used to hide the real world structure
+  worldNameAliases:
+    world: 'World'
+    world_nether: 'Nether'
+    world_the_end: 'The End'
+
 # You can change the items used in the inventory here
 inventory:
   # This is used to fill the bottom row in the overview
@@ -19,6 +34,8 @@ inventory:
   selectWaypointItem: GREEN_WOOL
   # This is used to delete a waypoint
   deleteWaypointItem: RED_WOOL
+  # If the player has admin permissions he can instantly teleport to the position of the waypoint
+  teleportToWaypointItem: ENDER_PEARL
   # This is used as the back button
   backItem: BARRIER
 
@@ -52,12 +69,11 @@ actionBar:
 # easily exploited to farm them
 compass:
   # Enable or disable it here
-  enabled: false
+  enabled: true
   # When deselecting a waypoint define where the compass should point
   # You can use 'spawn', 'config' or 'ingame'
   # Further information in regards to 'ingame':
   # To make ingame useable you first need to set it with /waypoints defcompass and have the permission waypoints.admin
-  # This command won't show in the ingame help and when you don't have permission for it you will just get the default help
   # Then reload - or preferably restart the server. To see the change
   defaultLocationType: spawn
   # When you choose 'config' in the previous line, set the location here

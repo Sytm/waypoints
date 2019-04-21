@@ -1,6 +1,14 @@
 package de.md5lukas.wp.util;
 
+import de.md5lukas.wp.config.Config;
+import org.bukkit.Location;
+import org.bukkit.World;
+
+import java.util.regex.Pattern;
+
 public class StringHelper {
+
+	public static final Pattern MCUSERNAMEPATTERN = Pattern.compile("^\\w{3,16}$");
 
 	public static String generateDirectionIndicator(String indicator, String normal, String arrowLeft, String arrowRight,
 	                                                String section, double angle, int amountOfSections, double range) {
@@ -23,5 +31,17 @@ public class StringHelper {
 		for (int i = 0; i < amount; ++i)
 			sb.append(s);
 		return sb.toString();
+	}
+
+	public static String correctWorldName(World world) {
+		if (Config.worldNameAliases.containsKey(world.getName()))
+			return Config.worldNameAliases.get(world.getName());
+		return world.getName();
+	}
+
+	public static String fixDistance(Location loc1, Location loc2) {
+		if (loc1.getWorld() != loc2.getWorld())
+			return "?";
+		return MathHelper.DF.format(loc1.distance(loc2));
 	}
 }
