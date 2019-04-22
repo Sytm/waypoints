@@ -1,6 +1,7 @@
 package de.md5lukas.wp;
 
 import de.md5lukas.wp.command.WaypointCommand;
+import de.md5lukas.wp.command.WaypointTabcompleter;
 import de.md5lukas.wp.config.Config;
 import de.md5lukas.wp.config.Messages;
 import de.md5lukas.wp.storage.WaypointStorage;
@@ -86,6 +87,7 @@ public class Main extends JavaPlugin {
 		WaypointStorage.initWaypointChecker(this);
 
 		getCommand("waypoints").setExecutor(new WaypointCommand());
+		getCommand("waypoints").setTabCompleter(new WaypointTabcompleter());
 		PointerManager.activateTimer(this);
 	}
 
