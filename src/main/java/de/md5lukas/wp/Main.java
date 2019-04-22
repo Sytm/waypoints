@@ -5,6 +5,8 @@ import de.md5lukas.wp.command.WaypointTabcompleter;
 import de.md5lukas.wp.config.Config;
 import de.md5lukas.wp.config.Messages;
 import de.md5lukas.wp.storage.WaypointStorage;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -85,6 +87,9 @@ public class Main extends JavaPlugin {
 			return;
 		}
 		WaypointStorage.initWaypointChecker(this);
+
+		getServer().getPluginManager().addPermission(new Permission("waypoints.command", "Allows you to access the basic functionality of this plugin", PermissionDefault.FALSE));
+		getServer().getPluginManager().addPermission(new Permission("waypoints.admin", "Allows you to administrate the plugin and its configuration", PermissionDefault.OP));
 
 		getCommand("waypoints").setExecutor(new WaypointCommand());
 		getCommand("waypoints").setTabCompleter(new WaypointTabcompleter());
