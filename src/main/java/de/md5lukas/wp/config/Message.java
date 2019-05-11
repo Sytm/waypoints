@@ -49,7 +49,13 @@ public enum Message {
 	INV_BACK("inventory.back"),
 
 	// de.md5lukas.wp.PointerManager
-	AB_WRONGWORLD("actionbar.incorrectworld"); // %currentworld%, %correctworld%
+	AB_WRONGWORLD("actionbar.incorrectworld"), // %currentworld%, %correctworld%
+	AB_CROUCH_TOHIGH("actionbar.crouch.tohigh"), // %amount%
+	AB_CROUCH_TOHIGH_SINGLE("actionbar.crouch.tohigh.single"),
+	AB_CROUCH_TOLOW("actionbar.crouch.tolow"), // %amount%
+	AB_CROUCH_TOLOW_SINGLE("actionbar.crouch.tolow.single"),
+	AB_CROUCH_DIFFUNDERONE("actionbar.crouch.near"),
+	AB_CROUCH_TEMPLATE("actionbar.crouch.template"); // %distance3d%, %distance2d%, %yoffset%,
 
 	private String inFilePath;
 

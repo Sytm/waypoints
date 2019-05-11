@@ -1,8 +1,6 @@
 package de.md5lukas.wp;
 
 import de.md5lukas.wp.config.Config;
-import de.md5lukas.wp.config.Message;
-import de.md5lukas.wp.config.Messages;
 import de.md5lukas.wp.storage.Waypoint;
 import de.md5lukas.wp.util.MathHelper;
 import de.md5lukas.wp.util.StringHelper;
@@ -14,6 +12,9 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static de.md5lukas.wp.config.Message.*;
+import static de.md5lukas.wp.config.Messages.get;
 
 public class PointerManager {
 
@@ -87,15 +88,40 @@ public class PointerManager {
 					return;
 				}
 				if (p.getWorld() != value.getLocation().getWorld()) {
-					p.sendActionBar(Messages.get(Message.AB_WRONGWORLD)
+					p.sendActionBar(get(AB_WRONGWORLD)
 							.replace("%currentworld%", StringHelper.correctWorldName(p.getWorld()))
 							.replace("%correctworld%", StringHelper.correctWorldName(value.getLocation().getWorld())));
 					return;
 				}
 				if (isPaper && Config.actionBarEnabled) {
-					double angle = MathHelper.deltaAngleToTarget(p, value.getLocation());
-					p.sendActionBar(StringHelper.generateDirectionIndicator(Config.actionBarIndicator, Config.actionBarNormal,
-							Config.actionBarArrowLeft, Config.actionBarArrowRight, Config.actionBarSection, angle, Config.actionBarAmountOfSections, Config.actionBarRange));
+					if (p.isSneaking() && Config.actionBarCrouchEnabled) {
+						String text = get(AB_CROUCH_TEMPLATE);
+						if (text.contains("%distance3d%")) {
+							text = text.replace("%distance3d%", MathHelper.DF.format(p.getLocation().distance(value.getLocation())));
+						}
+						if (text.contains("%distance2d%")) {
+							text = text.replace("%distance2d%", MathHelper.DF.format(p.getLocation().toVector().setY(0).distance(value.getLocation().toVector().setY(0))));
+						}
+						if (text.contains("%yoffset%")) {
+							double diff = p.getLocation().getY() - value.getLocation().getY();
+							if (diff > 1) {
+								text = text.replace("%yoffset%", get(AB_CROUCH_TOHIGH).replace("%amount%", MathHelper.DF.format(diff)));
+							} if (diff == 1) {
+								text = text.replace("%yoffset%", get(AB_CROUCH_TOHIGH_SINGLE));
+							} else if (diff < 1 && diff > -1) {
+								text = text.replace("%yoffset%", get(AB_CROUCH_DIFFUNDERONE));
+							} if (diff == -1) {
+								text = text.replace("%yoffset%", get(AB_CROUCH_TOLOW_SINGLE));
+							}  else {
+								text = text.replace("%yoffset%", get(AB_CROUCH_TOLOW).replace("%amount%", MathHelper.DF.format(-diff)));
+							}
+						}
+						p.sendActionBar(text);
+					} else {
+						double angle = MathHelper.deltaAngleToTarget(p, value.getLocation());
+						p.sendActionBar(StringHelper.generateDirectionIndicator(Config.actionBarIndicator, Config.actionBarNormal,
+								Config.actionBarArrowLeft, Config.actionBarArrowRight, Config.actionBarSection, angle, Config.actionBarAmountOfSections, Config.actionBarRange));
+					}
 				}
 				if (Config.compassEnabled) {
 					p.setCompassTarget(value.getLocation());
