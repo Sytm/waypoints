@@ -64,6 +64,12 @@ actionBar:
   # The range of between the center section and most outer section in degrees. So the field of view of the action bar indicator is range x 2
   range: 70
 
+  # When this and the actionbar are enabled the player sees the distance in 3 dimensions and the y axis offset
+  crouch:
+    # Enable or disable it here
+    enabled: true
+
+
 # Compass will point towards the selected waypoint
 # REMEMBER: For this feature to work, the player needs to craft his own compass, I don't want to provide a feature to give away free compasses as it could get
 # easily exploited to farm them

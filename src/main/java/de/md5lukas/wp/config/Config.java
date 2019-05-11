@@ -38,6 +38,7 @@ public class Config {
 	public static String actionBarIndicator, actionBarNormal, actionBarSection, actionBarArrowLeft, actionBarArrowRight;
 	public static int actionBarAmountOfSections;
 	public static double actionBarRange;
+	public static boolean actionBarCrouchEnabled;
 
 	// Compass parameters
 	public static boolean compassEnabled, compassDefaultIsSpawn = false;
@@ -107,6 +108,8 @@ public class Config {
 			actionBarArrowRight = cfg.getString("actionBar.arrow.right");
 			actionBarAmountOfSections = cfg.getInt("actionBar.amountOfSections");
 			actionBarRange = cfg.getDouble("actionBar.range");
+
+			actionBarCrouchEnabled = cfg.getBoolean("actionBar.crouch.enabled");
 
 			compassEnabled = cfg.getBoolean("compass.enabled");
 			switch (cfg.getString("compass.defaultLocationType").toLowerCase()) {
