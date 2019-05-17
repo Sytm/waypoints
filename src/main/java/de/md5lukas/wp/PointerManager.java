@@ -88,9 +88,12 @@ public class PointerManager {
 					return;
 				}
 				if (p.getWorld() != value.getLocation().getWorld()) {
-					p.sendActionBar(get(AB_WRONGWORLD)
-							.replace("%currentworld%", StringHelper.correctWorldName(p.getWorld()))
-							.replace("%correctworld%", StringHelper.correctWorldName(value.getLocation().getWorld())));
+					if (isPaper)
+						p.sendActionBar(get(AB_WRONGWORLD)
+								.replace("%currentworld%", StringHelper.correctWorldName(p.getWorld()))
+								.replace("%correctworld%", StringHelper.correctWorldName(value.getLocation().getWorld())));
+					else
+						p.sendTitle("", get(AB_WRONGWORLD_SHORT), 0, 60, 20);
 					return;
 				}
 				if (isPaper && Config.actionBarEnabled) {
@@ -106,13 +109,15 @@ public class PointerManager {
 							double diff = p.getLocation().getY() - value.getLocation().getY();
 							if (diff > 1) {
 								text = text.replace("%yoffset%", get(AB_CROUCH_TOHIGH).replace("%amount%", MathHelper.DF.format(diff)));
-							} if (diff == 1) {
+							}
+							if (diff == 1) {
 								text = text.replace("%yoffset%", get(AB_CROUCH_TOHIGH_SINGLE));
 							} else if (diff < 1 && diff > -1) {
 								text = text.replace("%yoffset%", get(AB_CROUCH_DIFFUNDERONE));
-							} if (diff == -1) {
+							}
+							if (diff == -1) {
 								text = text.replace("%yoffset%", get(AB_CROUCH_TOLOW_SINGLE));
-							}  else {
+							} else {
 								text = text.replace("%yoffset%", get(AB_CROUCH_TOLOW).replace("%amount%", MathHelper.DF.format(-diff)));
 							}
 						}

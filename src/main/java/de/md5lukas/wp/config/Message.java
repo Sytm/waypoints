@@ -50,6 +50,7 @@ public enum Message {
 
 	// de.md5lukas.wp.PointerManager
 	AB_WRONGWORLD("actionbar.incorrectworld"), // %currentworld%, %correctworld%
+	AB_WRONGWORLD_SHORT("actionbar.incorrectworld.short"),
 	AB_CROUCH_TOHIGH("actionbar.crouch.tohigh"), // %amount%
 	AB_CROUCH_TOHIGH_SINGLE("actionbar.crouch.tohigh.single"),
 	AB_CROUCH_TOLOW("actionbar.crouch.tolow"), // %amount%
