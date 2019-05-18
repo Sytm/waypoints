@@ -10,3 +10,11 @@ commands:
   waypoints:
     aliases: [wp, waypoint]
     description: The main command to use this plugin
+
+permissions:
+  waypoints.command:
+    default: true
+    description: This permission is required to use the basics of the plugin
+  waypoints.admin:
+    default: op
+    description: This permission is required to manage the plugin and other stuff
