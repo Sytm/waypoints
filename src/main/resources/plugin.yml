@@ -1,7 +1,7 @@
 name: Waypoints
 author: Md5Lukas
 main: de.md5lukas.wp.Main
-version: 1.5
+version: 1.6
 description: A simple plugin to create and manage waypoints
 api-version: 1.13
 depend: [SmartInvs]
