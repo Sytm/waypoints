@@ -7,7 +7,7 @@ import de.md5lukas.wp.storage.WaypointStorage;
 import de.md5lukas.wp.util.StringHelper;
 import de.md5lukas.wp.util.UUIDUtils;
 import fr.minuskube.inv.SmartInventory;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
