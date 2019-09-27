@@ -1,0 +1,110 @@
+name: Waypoints
+version: 2.0.0-SNAPSHOT
+author: Md5Lukas (Sytm)
+main: de.md5lukas.waypoints.Waypoints
+
+commands:
+  waypoints:
+    aliases: [wp]
+
+permissions:
+  waypoints.*:
+    description: Permission to get full control over the waypoints plugin
+    default: op
+    children:
+      - waypoints.gui
+      - waypoints.gui.*
+      - waypoints.set.*
+      - waypoints.delete.*
+      - waypoints.other
+      - waypoints.compass
+      - waypoints.teleport
+      - waypoints.command
+      - waypoints.help
+
+# --- Setting ---
+  waypoints.set.*:
+    description: Permission to set a waypoint of every type
+    children:
+      - waypoints.set.private
+      - waypoints.set.public
+      - waypoints.set.permission
+  waypoints.set.private:
+    description: Permission to set private waypoints
+    default: true
+  waypoints.set.public:
+    description: Permission to set public waypoints
+  waypoints.set.permission:
+    description: Permission to set permission waypoints
+
+# --- Deleting ---
+  waypoints.delete.*:
+    description: Permission to remove waypoints of every type
+    children:
+      - waypoints.delete.public
+      - waypoints.delete.permission
+      - waypoints.delete.other
+  waypoints.delete.public:
+    description: Permission to remove public waypoints
+  waypoints.delete.permission:
+    description: Permission to remove permission waypoints
+  waypoints.delete.other:
+    description: Permission to remove others waypoints
+
+# --- Renaming ---
+  waypoints.rename.*:
+    description: Permission to rename global waypoints
+    children:
+      - waypoints.rename.public
+      - waypoints.rename.permission
+  waypoints.rename.public:
+    description: Permission to rename public waypoints
+  waypoints.rename.permission:
+    description: Permission to rename permission waypoints
+
+  # --- GUI ---
+  waypoints.gui.*:
+    description: Permission to do everything in the gui
+    children:
+      - waypoints.gui.open
+      - waypoints.gui.public
+      - waypoints.gui.permission
+      - waypoints.gui.permission.*
+  waypoints.gui.open:
+    description: Permission to open the gui
+    default: true
+  waypoints.gui.public:
+    description: Permission to see the public waypoints
+    default: true
+  waypoints.gui.permission:
+    description: Permission to see the permission waypoints
+    default: true
+  waypoints.gui.permission.*:
+    description: Permission to see all permission waypoints
+
+# --- Misc ---
+  waypoints.compass:
+    description: Permission to set the default compass location
+  waypoints.other:
+    description: Permission to modify other players waypoints
+  waypoints.teleport.*:
+    description: Permission to teleport to waypoints
+    children:
+      - waypoints.teleport.private
+      - waypoints.teleport.public
+      - waypoints.teleport.permission
+      - waypoints.teleport.death
+  waypoints.teleport.private:
+    description: Permission to teleport to private waypoints
+  waypoints.teleport.public:
+    description: Permission to teleport to public waypoints
+  waypoints.teleport.permission:
+    description: Permission to teleport to permission waypoints
+  waypoints.teleport.death:
+    description: Permission to teleport to death waypoints
+  waypoints.command:
+    description: Permission to use the /waypoints command
+    default: true
+  waypoints.help:
+    description: Permission to show the help menu
+    default: true

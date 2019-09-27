@@ -1,0 +1,171 @@
+# --------- Notes ---------
+# If you need to set a block / item, see here for valid values: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+# Important: Do not use Materials with the 'LEGACY_' prefix
+# Intervals are always in game ticks, which means 1 second = 20 game ticks
+# When you need to set a distance, it is always in blocks
+
+general:
+  waypointLimit: 100
+  deathWaypoint:
+    enabled: true
+  allowDuplicateWaypointNames:
+    private: true
+    public: false
+    permission: false
+  allowDuplicatePrivateFolderNames: true
+  allowRenamingWaypoints:
+    private: true
+    public: true
+    permission: true
+  allowRenamingPrivateFolders: true
+  worldNameAliases:
+    en:
+      world: 'Overworld'
+      world_nether: 'Nether'
+      world_the_end: 'The End'
+
+inventory:
+  confirmMenu:
+    descriptionItem: CHEST
+    yesItem: GREEN_WOOL
+    noItem: RED_WOOL
+    backgroundItem: GRAY_STAINED_GLASS_PANE
+  customItem:
+    enabled: true
+    filter:
+      useAs: blacklist
+      list:
+        - AIR
+        - BARRIER
+        - BEDROCK
+  generalItems:
+    previousItem: ARROW
+    nextItem: ARROW
+    backItem: ARROW
+  overview:
+    backgroundItem: GRAY_STAINED_GLASS_PANE
+    cycleSortItem: HOPPER
+    deselectItem: MILK_BUCKET
+    toggleGlobalsItem: CHEST
+  folder:
+
+  selectFolder:
+    backgroundItem: GRAY_STAINED_GLASS_PANE
+    noFolderItem: MAP
+
+  waypoints:
+    death:
+      item: SKELETON_SKULL
+      backgroundItem: GRAY_STAINED_GLASS_PANE
+      selectItem: REDSTONE
+      teleportItem: ENDER_PEARL
+    private:
+      defaultItem: BEACON
+      backgroundItem: GRAY_STAINED_GLASS_PANE
+      selectItem: REDSTONE
+      deleteItem: LAVA_BUCKET
+      renameItem: NAME_TAG
+      moveToFolderItem: CHEST_MINECART
+      teleportItem: ENDER_PEARL
+    public:
+      item: BEACON
+      backgroundItem: GREEN_STAINED_GLASS_PANE
+      selectItem: REDSTONE
+      deleteItem: LAVA_BUCKET
+      renameItem: NAME_TAG
+      teleportItem: ENDER_PEARL
+    permission:
+      item: BEACON
+      backgroundItem: RED_STAINED_GLASS_PANE
+      selectItem: REDSTONE
+      deleteItem: LAVA_BUCKET
+      renameItem: NAME_TAG
+      teleportItem: ENDER_PEARL
+  folders:
+    private:
+      defaultItem: BOOK
+      backgroundItem: GRAY_STAINED_GLASS_PANE
+      deleteItem: LAVA_BUCKET
+      renameItem: NAME_TAG
+    public:
+      item: BOOK
+      backgroundItem: GREEN_STAINED_GLASS_PANE
+    permission:
+      item: BOOK
+      backgroundItem: RED_STAINED_GLASS_PANE
+
+display:
+  wrongWorld:
+    # When enabled sends the player a message that he is in the wrong world
+    enabled: true
+    # When set to true, the message will appear in the action bar, otherwise it is a normal chat message
+    actionBar: true
+    # The interval in game ticks, in which the message should be sent. If it is set to 0 or lower it will send it only once
+    interval: 0
+
+  compass:
+    enabled: true
+
+    # When deselecting a waypoint where the compass should point to can be set here
+    # Valid values are: 'spawn', 'config', 'previous', 'ingame', 'ingame-lock'
+    # If it is set to 'spawn', it will point to the original spawn in the world 'world'
+    # If it is set to 'config', it will use the coordinates provided below
+    # If it is set to 'previous', the plugin will store the previous compass target and will set it back to that
+    # If it is set to 'ingame', you can choose the compass target with /waypoints setcompass
+    # If it is set to 'ingame-lock', the location from the command will be used, but it can't be modified
+    defaultLocationType: spawn
+
+    defaultLocation:
+      world: 'world'
+      x: 0
+      z: 0
+
+  blinkingBlock:
+    enabled: true
+
+    minDistance: 10
+    maxDistance: 50
+
+    # The interval in game ticks in which the block should be changed
+    interval: 20
+
+    blocks: [GLASS, GLOWSTONE]
+
+  beacon:
+    enabled: true
+
+    minDistance: 50
+
+    # If set to auto it will use the render distance of the server
+    maxDistance: auto
+
+    # The base block for the beacon. Use one of these for it to work: IRON_BLOCK, GOLD_BLOCK, DIAMOND_BLOCK or EMERALD_BLOCK
+    baseBlock: IRON_BLOCK
+
+    # The interval in game ticks when the ghost block changes should be sent
+    interval: 100
+
+  actionBar:
+    # Enable or disable it here
+    enabled: true
+
+    interval: 50
+    # The indicator color is used to show where the waypoint is by changing the color of one of the sections
+    indicatorColor: '&4&l'
+    # The background color for the sections
+    normalColor: '&7&l'
+    # Character (or longer texts, but not recommended) to use as the colored direction indicators
+    section: '⬛'
+    # If you turn to much to either side these arrows are highlighted to indicator you need tp turn more
+    arrow:
+      left: '<-'
+      right: '->'
+    # The amount of sections used to show if you are walking in the correct direction. Must be an odd number or the plugin will correct it by adding one
+    amountOfSections: 35
+    # The range of between the center section and most outer section in degrees. So the field of view of the action bar indicator is range x 2
+    range: 70
+
+    # When this and the actionbar are enabled the player sees the distance in 3 dimensions and the y axis offset
+    crouch:
+      # Enable or disable it here
+      enabled: true
