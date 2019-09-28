@@ -44,7 +44,7 @@ public class PrivateWaypoint extends Waypoint {
 			"%blockX%", Integer.toString(location.getBlockX()),
 			"%blockY%", Integer.toString(location.getBlockY()),
 			"%blockZ%", Integer.toString(location.getBlockZ()),
-			"%distance%", MathHelper.format(MathHelper.distance2D(player.getLocation(), location)));
+			"%distance%", getDistance2D(player));
 	}
 
 	public static PrivateWaypoint fromCompoundTag(CompoundTag tag) {

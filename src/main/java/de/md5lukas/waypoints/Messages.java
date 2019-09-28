@@ -112,6 +112,8 @@ public enum Messages {
 	INVENTORY_OVERVIEW_TOGGLE_GLOBALS_HIDDEN_DISPLAY_NAME("inventory.overview.toggleGlobals.hidden.displayName"),
 	INVENTORY_OVERVIEW_TOGGLE_GLOBALS_HIDDEN_DESCRIPTION("inventory.overview.toggleGlobals.hidden.description"),
 
+	INVENTORY_WAYPOINT_DISTANCE_OTHER_WORLD("inventory.waypoint.distance.otherWorld"),
+
 	INVENTORY_WAYPOINT_DEATH_DISPLAY_NAME("inventory.waypoint.death.displayName"),
 	INVENTORY_WAYPOINT_DEATH_DESCRIPTION("inventory.waypoint.death.description"), // %world%, %x%, %y%, %z%, %blockX%, %blockY%, %blockZ%, %distance%
 	INVENTORY_WAYPOINT_DEATH_BACKGROUND_DISPLAY_NAME("inventory.waypoint.death.background.displayName"),
