@@ -46,11 +46,11 @@ public enum Messages {
 
 	COMMAND_SET_PUBLIC_WRONG_USAGE("command.set.public.wrongUsage"),
 	COMMAND_SET_PUBLIC_NAME_DUPLICATE("command.set.public.nameDuplicate"),
-	COMMAND_SET_PUBLIC_SUCCESS("command.set.public.nameDuplicate"),
+	COMMAND_SET_PUBLIC_SUCCESS("command.set.public.success"),
 
 	COMMAND_SET_PERMISSION_WRONG_USAGE("command.set.permission.wrongUsage"),
 	COMMAND_SET_PERMISSION_NAME_DUPLICATE("command.set.permission.nameDuplicate"),
-	COMMAND_SET_PERMISSION_SUCCESS("command.set.permission.nameDuplicate"),
+	COMMAND_SET_PERMISSION_SUCCESS("command.set.permission.success"),
 
 	COMMAND_CREATE_FOLDER_WRONG_USAGE("command.createFolder.wrongUsage"),
 	COMMAND_CREATE_FOLDER_NAME_DUPLICATE("command.createFolder.nameDuplicate"),
@@ -67,11 +67,11 @@ public enum Messages {
 	COMMAND_UPDATE_ITEM_WAYPOINT_SUCCESS("command.updateItem.waypoint.success"),
 	COMMAND_UPDATE_ITEM_FOLDER_SUCCESS("command.updateItem.folder.success"),
 
-	COMMAND_RENAME_DISABLED("command.rename.waypoint.disabled"),
+	COMMAND_RENAME_DISABLED("command.rename.disabled"),
 	COMMAND_RENAME_WAYPOINT_PRIVATE_DISABLED("command.rename.waypoint.private.disabled"),
 	COMMAND_RENAME_WAYPOINT_PUBLIC_DISABLED("command.rename.waypoint.public.disabled"),
 	COMMAND_RENAME_WAYPOINT_PERMISSION_DISABLED("command.rename.waypoint.permission.disabled"),
-	COMMAND_RENAME_FOLDER_DISABLED("command.rename.waypoint.disabled"),
+	COMMAND_RENAME_FOLDER_DISABLED("command.rename.folder.disabled"),
 	COMMAND_RENAME_WRONG_USAGE("command.rename.wrongUsage"),
 	COMMAND_RENAME_WAYPOINT_PRIVATE_NAME_DUPLICATE("command.rename.waypoint.private.nameDuplicate"),
 	COMMAND_RENAME_WAYPOINT_PUBLIC_NAME_DUPLICATE("command.rename.waypoint.public.nameDuplicate"),
@@ -81,7 +81,6 @@ public enum Messages {
 	COMMAND_RENAME_FOLDER_SUCCESS("command.rename.folder.success"),
 
 	COMMAND_NOT_FOUND("command.notFound"),
-	COMMAND_WRONG_USAGE("command.wrongUsage"),
 	//endregion
 
 
