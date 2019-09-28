@@ -1,14 +1,12 @@
 package de.md5lukas.waypoints.display;
 
+import de.md5lukas.commons.MathHelper;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -16,14 +14,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import static de.md5lukas.waypoints.store.WPConfig.displays;
+
 public final class BeaconDisplay extends WaypointDisplay {
 
 	private static final BlockData BLOCK_DATA_BEACON = Bukkit.createBlockData(Material.BEACON);
 
 	private Map<UUID, Location> activeBeacons;
 
-	protected BeaconDisplay(Plugin plugin) {
-		super(plugin, WPConfig.displays().getBeaconInterval());
+	BeaconDisplay(Plugin plugin) {
+		super(plugin, displays().getBeaconInterval());
 		activeBeacons = new HashMap<>();
 	}
 
@@ -36,7 +36,14 @@ public final class BeaconDisplay extends WaypointDisplay {
 	public void update(Player player, Waypoint waypoint) {
 		if (player.getWorld().equals(waypoint.getLocation().getWorld())) {
 			UUID uuid = player.getUniqueId();
+			double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
 			Location loc = waypoint.getLocation().getWorld().getHighestBlockAt(waypoint.getLocation()).getLocation();
+			if (distance < displays().getBeaconMinDistance() || distance > displays().getBeaconMaxDistance()) {
+				if (activeBeacons.containsKey(uuid)) {
+					sendBeacon(player, loc, false);
+				}
+				return;
+			}
 			if (activeBeacons.containsKey(uuid)) {
 				if (!blockEquals(activeBeacons.get(uuid), loc)) {
 					sendBeacon(player, activeBeacons.get(uuid), false);
@@ -61,7 +68,7 @@ public final class BeaconDisplay extends WaypointDisplay {
 			for (int z = -1; z <= 1; z++) {
 				location.add(x, 0, z);
 				if (create) {
-					player.sendBlockChange(location, WPConfig.displays().getBeaconBaseBlock());
+					player.sendBlockChange(location, displays().getBeaconBaseBlock());
 				} else {
 					player.sendBlockChange(location, location.getBlock().getBlockData());
 				}
