@@ -1,12 +1,16 @@
 package de.md5lukas.waypoints.data.waypoint;
 
+import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.extended.UUIDTag;
 import de.md5lukas.nbt.tags.CompoundTag;
+import de.md5lukas.waypoints.Messages;
+import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.data.GUISortable;
 import de.md5lukas.waypoints.gui.GUIType;
 import de.md5lukas.waypoints.store.LocationTag;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
@@ -74,5 +78,12 @@ public abstract class Waypoint implements GUISortable {
 		if (material != null)
 			tag.putString("material", material.name());
 		return tag;
+	}
+
+	protected String getDistance2D(Player player) {
+		if (player.getWorld().equals(location.getWorld())) {
+			return MathHelper.format(MathHelper.distance2D(player.getLocation(), location));
+		}
+		return Waypoints.message(Messages.INVENTORY_WAYPOINT_DISTANCE_OTHER_WORLD, player);
 	}
 }
