@@ -85,6 +85,9 @@ public enum Messages {
 
 
 	//region Inventory
+	INVENTORY_TITLE_OWN("inventory.title.own"),
+	INVENTORY_TITLE_OTHER("inventory.title.other"),
+
 	INVENTORY_GENERAL_PREVIOUS_DISPLAY_NAME("inventory.general.previous.displayName"),
 	INVENTORY_GENERAL_PREVIOUS_DESCRIPTION("inventory.general.previous.description"),
 	INVENTORY_GENERAL_NEXT_DISPLAY_NAME("inventory.general.next.displayName"),
