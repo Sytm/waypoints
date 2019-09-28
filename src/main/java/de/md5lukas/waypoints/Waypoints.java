@@ -9,7 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.Channels;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,7 +59,15 @@ public class Waypoints extends JavaPlugin {
 		Tags.registerExtendedTags();
 		SmartInvsPlugin.setPlugin(this);
 		fileManager = new FileManager(this);
-		messageStore = new MessageStore(fileManager.getMessageFolder(), "messages_%s.cfg", Messages.class);
+		try {
+			extractFile(new File(fileManager.getMessageFolder(), "messages_en.msg"), "messages_en.msg");
+		} catch (IOException e) {
+			getLogger().log(Level.SEVERE, "Couldn't extract message files", e);
+			inOnEnableDisable = true;
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
+		messageStore = new MessageStore(fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
 		try {
 			globalStore = new GlobalStore(this);
 		} catch (IOException e) {
@@ -73,5 +84,14 @@ public class Waypoints extends JavaPlugin {
 		SmartInvsPlugin.deleteStaticReferences();
 		if (inOnEnableDisable)
 			return;
+	}
+
+	@SuppressWarnings("ConstantConditions")
+	private void extractFile(File destination, String resource) throws IOException {
+		if (destination.exists()) {
+			try (FileOutputStream fos = new FileOutputStream(destination)) {
+				fos.getChannel().transferFrom(Channels.newChannel(getResource(resource)), 0, Long.MAX_VALUE);
+			}
+		}
 	}
 }
