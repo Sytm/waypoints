@@ -8,8 +8,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -34,7 +32,10 @@ public final class ActionBarDisplay extends WaypointDisplay {
 				});
 				notFound.forEach(bars::remove);
 				players.forEach((player, location) -> {
-					bars.put(player, generateDirectionIndicator(deltaAngleToTarget(player.getLocation(), location)));
+					if (player.getWorld().equals(location.getWorld()))
+						bars.put(player, generateDirectionIndicator(deltaAngleToTarget(player.getLocation(), location)));
+					else
+						bars.remove(player);
 				});
 			}
 		});
@@ -57,8 +58,8 @@ public final class ActionBarDisplay extends WaypointDisplay {
 		players.remove(player);
 	}
 
-	// Original code: https://bitbucket.org/Md5Lukas/waypoints/src/763ee8314b396fb5441c8eb5e0e7e281375ed989/src/main/java/de/md5lukas/wp/util/MathHelper.java?at=master
-	public static String generateDirectionIndicator(double angle) {
+	// Original code: https://bitbucket.org/Md5Lukas/waypoints/src/763ee8314b396fb5441c8eb5e0e7e281375ed989/src/main/java/de/md5lukas/wp/util/StringHelper.java?at=master
+	private static String generateDirectionIndicator(double angle) {
 		if (angle > displays().getActionBarRange()) {
 			return displays().getActionBarIndicatorColor() + displays().getActionBarLeftArrow() + displays().getActionBarNormalColor() + StringHelper.repeatString(displays().getActionBarSection(), displays().getActionBarAmountOfSections()) + displays().getActionBarRightArrow();
 		}
@@ -73,12 +74,13 @@ public final class ActionBarDisplay extends WaypointDisplay {
 			displays().getActionBarAmountOfSections() - nthSection) + displays().getActionBarRightArrow();
 	}
 
+	// Original code: https://bitbucket.org/Md5Lukas/waypoints/src/763ee8314b396fb5441c8eb5e0e7e281375ed989/src/main/java/de/md5lukas/wp/util/MathHelper.java?at=master
 	/**
 	 * The returned values range from -180 to 180 degrees, where as negative numbers mean you look to much left and
 	 * positive numbers you look too much right
 	 *
 	 * @param location The location to calculate the angle from
-	 * @param target The target when looked at the angle is 0
+	 * @param target   The target when looked at the angle is 0
 	 *
 	 * @return The delta angle
 	 */
