@@ -5,7 +5,7 @@ main: de.md5lukas.waypoints.Waypoints
 
 commands:
   waypoints:
-    aliases: [wp]
+    aliases: [wp, waypoint]
 
 permissions:
   waypoints.*:
