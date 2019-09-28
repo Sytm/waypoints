@@ -170,3 +170,13 @@ display:
     crouch:
       # Enable or disable it here
       enabled: true
+
+  particles:
+    enabled: true
+    interval: 60
+    heightOffset: 1
+    verticalDirection: true
+    amount: 10
+    distance: 0.05
+    # See here for different particles https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+    particle: FLAME

@@ -5,6 +5,7 @@ import de.md5lukas.commons.messages.Languages;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -152,6 +153,14 @@ public class WPConfig {
 		}
 		displays.beaconBaseBlock = Bukkit.createBlockData(matchMaterial(cfg.getString("displays.beacon.baseBlock")));
 		displays.beaconInterval = cfg.getInt("displays.beacon.interval");
+
+		displays.particlesEnabled = cfg.getBoolean("displays.particles.enabled");
+		displays.particlesInterval = cfg.getInt("displays.particles.interval");
+		displays.particlesHeightOffset = cfg.getDouble("displays.particles.heightOffset");
+		displays.particlesVerticalDirection = cfg.getBoolean("displays.particles.verticalDirection");
+		displays.particlesAmount = cfg.getInt("displays.particles.amount");
+		displays.particlesDistance = cfg.getDouble("displays.particles.distance");
+		displays.particlesParticle = Particle.valueOf(cfg.getString("displays.particles.particle").toUpperCase());
 		//endregion
 		//region Inventory
 		inventory = new WPConfigInventory();
@@ -254,6 +263,14 @@ public class WPConfig {
 		private long beaconMaxDistance;
 		private BlockData beaconBaseBlock;
 		private int beaconInterval;
+
+		private boolean particlesEnabled;
+		private int particlesInterval;
+		private double particlesHeightOffset;
+		private boolean particlesVerticalDirection;
+		private int particlesAmount;
+		private double particlesDistance;
+		private Particle particlesParticle;
 
 		public boolean isWrongWorldEnabled() {
 			return wrongWorldEnabled;
@@ -361,6 +378,34 @@ public class WPConfig {
 
 		public BlockData getBeaconBaseBlock() {
 			return beaconBaseBlock;
+		}
+
+		public boolean isParticlesEnabled() {
+			return particlesEnabled;
+		}
+
+		public int getParticlesInterval() {
+			return particlesInterval;
+		}
+
+		public double getParticlesHeightOffset() {
+			return particlesHeightOffset;
+		}
+
+		public boolean isParticlesVerticalDirection() {
+			return particlesVerticalDirection;
+		}
+
+		public int getParticlesAmount() {
+			return particlesAmount;
+		}
+
+		public double getParticlesDistance() {
+			return particlesDistance;
+		}
+
+		public Particle getParticlesParticle() {
+			return particlesParticle;
 		}
 	}
 
