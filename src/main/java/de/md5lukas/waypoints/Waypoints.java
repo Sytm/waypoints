@@ -2,6 +2,7 @@ package de.md5lukas.waypoints;
 
 import de.md5lukas.commons.messages.MessageStore;
 import de.md5lukas.nbt.Tags;
+import de.md5lukas.waypoints.display.WaypointDisplay;
 import de.md5lukas.waypoints.store.FileManager;
 import de.md5lukas.waypoints.store.GlobalStore;
 import fr.minuskube.inv.SmartInvsPlugin;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.Channels;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,6 +78,7 @@ public class Waypoints extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+		WaypointDisplay.activateDisplays();
 	}
 
 	@Override

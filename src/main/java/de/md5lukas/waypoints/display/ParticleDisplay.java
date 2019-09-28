@@ -28,8 +28,8 @@ import static de.md5lukas.waypoints.store.WPConfig.displays;
 
 public final class ParticleDisplay extends WaypointDisplay {
 
-	protected ParticleDisplay(Plugin plugin, long updateInterval) {
-		super(plugin, updateInterval);
+	protected ParticleDisplay(Plugin plugin) {
+		super(plugin, displays().getParticlesInterval());
 	}
 
 	@Override
