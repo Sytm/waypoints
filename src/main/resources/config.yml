@@ -25,6 +25,7 @@ general:
       world_the_end: 'The End'
 
 inventory:
+  maxDescriptionLineLength: 30
   confirmMenu:
     descriptionItem: CHEST
     yesItem: GREEN_WOOL
