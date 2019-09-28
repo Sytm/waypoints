@@ -19,9 +19,13 @@
 package de.md5lukas.waypoints.display;
 
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-@Deprecated
+import org.bukkit.util.Vector;
+
+import static de.md5lukas.waypoints.store.WPConfig.displays;
+
 public final class ParticleDisplay extends WaypointDisplay {
 
 	protected ParticleDisplay(Plugin plugin, long updateInterval) {
@@ -30,16 +34,25 @@ public final class ParticleDisplay extends WaypointDisplay {
 
 	@Override
 	public void show(Player player, Waypoint waypoint) {
-		// TODO
+		update(player, waypoint);
 	}
 
 	@Override
 	public void update(Player player, Waypoint waypoint) {
-
+		if (player.getWorld().equals(waypoint.getLocation().getWorld())) {
+			Location pLoc = player.getLocation();
+			Vector dir = waypoint.getLocation().toVector().subtract(pLoc.toVector()).normalize().multiply(displays().getParticlesDistance());
+			for (int i = 0; i < displays().getParticlesAmount(); i++) {
+				player.spawnParticle(displays().getParticlesParticle(),
+					pLoc.getX() + dir.getX() * i,
+					pLoc.getY() + displays().getParticlesHeightOffset() + (displays().isParticlesVerticalDirection() ? dir.getY() * i : 0),
+					pLoc.getZ() + dir.getZ(),
+					1, 0, 0, 0, 0);
+			}
+		}
 	}
 
 	@Override
 	public void disable(Player player) {
-
 	}
 }
