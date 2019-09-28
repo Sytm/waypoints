@@ -156,6 +156,8 @@ public class WPConfig {
 		//region Inventory
 		inventory = new WPConfigInventory();
 
+		inventory.maxDescriptionLineLength = cfg.getInt("inventory.maxDescriptionLineLength");
+
 		inventory.confirmMenuDescriptionItem = matchMaterial(cfg.getString("inventory.confirmMenu.descriptionItem"));
 		inventory.confirmMenuYesItem = matchMaterial(cfg.getString("inventory.confirmMenu.yesItem"));
 		inventory.confirmMenuNoItem = matchMaterial(cfg.getString("inventory.confirmMenu.noItem"));
@@ -364,6 +366,8 @@ public class WPConfig {
 
 	public final static class WPConfigInventory {
 
+		private int maxDescriptionLineLength;
+
 		private WPConfigInventory() {}
 
 		private Material confirmMenuDescriptionItem;
@@ -424,6 +428,10 @@ public class WPConfig {
 
 		private Material folderPermissionItem;
 		private Material folderPermissionBackgroundItem;
+
+		public int getMaxDescriptionLineLength() {
+			return maxDescriptionLineLength;
+		}
 
 		public Material getConfirmMenuDescriptionItem() {
 			return confirmMenuDescriptionItem;
