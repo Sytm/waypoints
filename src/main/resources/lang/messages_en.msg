@@ -42,26 +42,26 @@ command.compass.locked=$prefix$ &cThis command has been disabled in the config.
 command.compass.setSuccess=$prefix$ &7The new default compass target has been set.
 
 command.set.private.wrongUsage|
-|$prefix$ You need to provide a name to create a new waypoint. Example:
+|$prefix$ &cYou need to provide a name to create a new waypoint. Example:
 |&a/waypoints set My Home
 command.set.private.nameDuplicate=$prefix$ &cWaypoints with duplicate names have been disabled.
 command.set.private.limitReached=$prefix$ &cYou have reached your personal limit of waypoints you can set.
 command.set.private.success=$prefix$ &7The waypoint has been set successfully.
 
 command.set.public.wrongUsage|
-|$prefix$ You need to provide a name to create a new public waypoint. Example:
+|$prefix$ &cYou need to provide a name to create a new public waypoint. Example:
 |&a/waypoints setPublic Spawn
 command.set.public.nameDuplicate=$prefix$ &cPublic waypoints with duplicate names have been disabled.
 command.set.public.success=$prefix$ &7The public waypoint has been set successfully.
 
 command.set.permission.wrongUsage|
-|$prefix$ You need to provide a permission and name to create a new permission waypoint. Example:
+|$prefix$ &cYou need to provide a permission and name to create a new permission waypoint. Example:
 |&a/waypoints setPermission ranks.vip.secretHideout Secret Hideout
 command.set.permission.nameDuplicate=$prefix$ &cPermission waypoints with duplicate names have been disabled.
 command.set.permission.success=$prefix$ &7Permission waypoint has been set successfully.
 
 command.createFolder.wrongUsage|
-|$prefix$ You need to provide a name to create a new folder. Example:
+|$prefix$ &cYou need to provide a name to create a new folder. Example:
 |&a/waypoints createFolder Nether portals
 command.createFolder.nameDuplicate=$prefix$ &cFolders with duplicate names have been disabled.
 command.createFolder.success=$prefix$ &7Folder created successfully.
