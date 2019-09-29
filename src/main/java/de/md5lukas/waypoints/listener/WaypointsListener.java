@@ -16,26 +16,21 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package de.md5lukas.waypoints.gui;
+package de.md5lukas.waypoints.listener;
 
-import de.md5lukas.commons.UUIDUtils;
-import fr.minuskube.inv.SmartInventory;
-import org.bukkit.entity.Player;
+import de.md5lukas.waypoints.data.WPPlayerData;
+import de.md5lukas.waypoints.store.WPConfig;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
-import java.util.UUID;
+import static org.bukkit.event.EventPriority.LOWEST;
 
-import static de.md5lukas.waypoints.Waypoints.message;
-import static de.md5lukas.waypoints.Messages.*;
+public class WaypointsListener implements Listener {
 
-public class GUIManager {
-
-	public static void openGUI(Player player) {
-		SmartInventory.builder().id(player.getUniqueId().toString()).size(5, 9)
-			.provider(new WaypointProvider(player.getUniqueId())).title(message(INVENTORY_TITLE_OWN, player)).build().open(player);
-	}
-
-	public static void openGUI(Player player, UUID target) {
-		SmartInventory.builder().id(player.getUniqueId() + "|" + target).size(5, 9)
-			.provider(new WaypointProvider(target)).title(message(INVENTORY_TITLE_OTHER, player).replace("%name%", UUIDUtils.getName(target))).build().open(player);
+	@EventHandler(priority = LOWEST)
+	public void onDeath(PlayerDeathEvent e) {
+		if (WPConfig.isDeathWaypointEnabled())
+			WPPlayerData.getPlayerData(e.getEntity().getUniqueId()).setDeath(e.getEntity().getLocation());
 	}
 }

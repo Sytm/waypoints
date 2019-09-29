@@ -1,9 +1,28 @@
+/*
+ *     Waypoints2, A plugin for spigot to add waypoints functionality
+ *     Copyright (C) 2019  Lukas Planz
+ *
+ *     This program is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Affero General Public License as published
+ *     by the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Affero General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Affero General Public License
+ *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package de.md5lukas.waypoints;
 
 import de.md5lukas.commons.messages.MessageStore;
 import de.md5lukas.nbt.Tags;
 import de.md5lukas.waypoints.command.WaypointsCommand;
 import de.md5lukas.waypoints.display.WaypointDisplay;
+import de.md5lukas.waypoints.listener.WaypointsListener;
 import de.md5lukas.waypoints.store.FileManager;
 import de.md5lukas.waypoints.store.GlobalStore;
 import de.md5lukas.waypoints.store.LocationTag;
@@ -17,7 +36,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.Channels;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,41 +79,66 @@ public class Waypoints extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		Tags.registerTag(LocationTag::new);
 		instance = this;
+
+		setupExternalDependencies();
+		loadConfig();
+
+		fileManager = new FileManager(this);
+
+		if (!extractMessages())
+			return;
+		if (!loadMessages())
+			return;
+		if (!loadGlobalStore())
+			return;
+
+		WaypointDisplay.activateDisplays();
+
+		getServer().getPluginManager().registerEvents(new WaypointsListener(), this);
+		getCommand("waypoints").setExecutor(new WaypointsCommand());
+	}
+
+	//<editor-fold defaultstate="collapsed" desc="onEnabled helpers">
+	private void setupExternalDependencies() {
+		Tags.registerTag(LocationTag::new);
+		SmartInvsPlugin.setPlugin(this);
+	}
+
+	private void loadConfig() {
 		saveDefaultConfig();
 		WPConfig.loadConfig(getConfig());
-		SmartInvsPlugin.setPlugin(this);
-		fileManager = new FileManager(this);
-		try {
-			getDataFolder().mkdirs();
-			fileManager.getMessageFolder().mkdir();
-			extractFile(new File(fileManager.getMessageFolder(), "messages_en.msg"), "messages_en.msg");
-		} catch (IOException e) {
-			getLogger().log(Level.SEVERE, "Couldn't extract message files", e);
-			inOnEnableDisable = true;
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
+	}
+
+	private boolean extractMessages() {
+		saveResource("lang/messages_en.msg", false);
+		return true;
+	}
+
+	private boolean loadMessages() {
 		try {
 			messageStore = new MessageStore(fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
 		} catch (IOException e) {
 			getLogger().log(Level.SEVERE, "Couldn't load message files", e);
 			inOnEnableDisable = true;
 			getServer().getPluginManager().disablePlugin(this);
-			return;
+			return false;
 		}
+		return true;
+	}
+
+	private boolean loadGlobalStore() {
 		try {
 			globalStore = new GlobalStore(this);
 		} catch (IOException e) {
 			getLogger().log(Level.SEVERE, "Couldn't load global store, shutting down plugin", e);
 			inOnEnableDisable = true;
 			getServer().getPluginManager().disablePlugin(this);
-			return;
+			return false;
 		}
-		WaypointDisplay.activateDisplays();
-		getCommand("waypoints").setExecutor(new WaypointsCommand());
+		return true;
 	}
+	//</editor-fold>
 
 	@Override
 	public void onDisable() {
@@ -103,14 +146,6 @@ public class Waypoints extends JavaPlugin {
 		SmartInvsPlugin.deleteStaticReferences();
 		if (inOnEnableDisable)
 			return;
-	}
-
-	@SuppressWarnings("ConstantConditions")
-	private void extractFile(File destination, String resource) throws IOException {
-		if (!destination.exists()) {
-			try (FileOutputStream fos = new FileOutputStream(destination)) {
-				fos.getChannel().transferFrom(Channels.newChannel(getResource(resource)), 0, Long.MAX_VALUE);
-			}
-		}
+		globalStore.save(false);
 	}
 }
