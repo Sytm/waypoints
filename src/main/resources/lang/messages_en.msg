@@ -254,7 +254,7 @@ inventory.folder.private.rename.description=&7Click here to receive a message, w
 
 inventory.folder.public.displayName=&bGlobal waypoints
 # %amount% = Amount of waypoints in folder
-inventory.folder.public.description=|
+inventory.folder.public.description|
 |&7Waypoints in here are available to everyone
 |
 |&7Currently &6%amount% &7waypoints are available

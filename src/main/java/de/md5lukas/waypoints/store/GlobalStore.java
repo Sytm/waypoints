@@ -82,6 +82,9 @@ public class GlobalStore {
 				tag.put("compassTarget", new LocationTag(null, compassTarget));
 			}
 
+			tag.putCompound("publicWaypoints", publicFolder.toCompoundTag());
+			tag.putCompound("permissionWaypoints", permissionFolder.toCompoundTag());
+
 			try {
 				NbtIo.writeCompressed(tag, Waypoints.getFileManager().getGlobalStore());
 			} catch (IOException e) {
