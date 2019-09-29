@@ -1,6 +1,8 @@
 package de.md5lukas.waypoints.data.folder;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.extended.UUIDTag;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
@@ -57,7 +59,7 @@ public abstract class Folder implements GUISortable {
 
 	@Override
 	public int getAmount(Player player) {
-		return Math.min(64, waypoints.size());
+		return MathHelper.clamp(1, 64, waypoints.size());
 	}
 
 	public final void setMaterial(Material material) {
@@ -78,10 +80,11 @@ public abstract class Folder implements GUISortable {
 	}
 
 	public List<Waypoint> getWaypoints(Player player) {
-		return Collections.unmodifiableList(waypoints);
+		return waypoints;
 	}
 
 	protected abstract List<Waypoint> loadWaypoints(ListTag waypoints);
+
 	protected abstract boolean isCorrectWaypointType(Waypoint waypoint);
 
 	public CompoundTag toCompoundTag() {

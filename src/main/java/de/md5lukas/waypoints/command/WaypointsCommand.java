@@ -56,6 +56,7 @@ public class WaypointsCommand implements CommandExecutor {
 						p.sendMessage(message(GENERAL_NO_PERMISSION, p));
 						return true;
 					}
+					p.sendMessage(message(COMMAND_HELP_TITLE, p));
 					p.sendMessage(message(COMMAND_HELP_HELP, p));
 					if (p.hasPermission("waypoints.set.private"))
 						p.sendMessage(message(COMMAND_HELP_SET_PRIVATE, p));
@@ -67,6 +68,15 @@ public class WaypointsCommand implements CommandExecutor {
 						p.sendMessage(message(COMMAND_HELP_COMPASS, p));
 					if (p.hasPermission("waypoints.other"))
 						p.sendMessage(message(COMMAND_HELP_OTHER, p));
+					if (WPConfig.inventory().isCustomItemEnabled())
+						p.sendMessage(message(COMMAND_HELP_UPDATE_ITEM, p));
+					if ((WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic()
+						|| WPConfig.allowRenamingWaypointsPermission()) && WPConfig.allowRenamingFoldersPrivate())
+						p.sendMessage(message(COMMAND_HELP_RENAME_NORMAL, p));
+					else if (WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic() || WPConfig.allowRenamingWaypointsPermission())
+						p.sendMessage(message(COMMAND_HELP_RENAME_WAYPOINT_ONLY, p));
+					else if (WPConfig.allowRenamingFoldersPrivate())
+						p.sendMessage(message(COMMAND_HELP_RENAME_FOLDER_ONLY, p));
 					break;
 				}
 				case "compass": {
@@ -209,7 +219,7 @@ public class WaypointsCommand implements CommandExecutor {
 					}
 					break;
 				}
-				case "updateItem": {
+				case "updateitem": {
 					if (!WPConfig.inventory().isCustomItemEnabled()) {
 						p.sendMessage(message(COMMAND_UPDATE_ITEM_DISABLED, p));
 						return true;
@@ -218,12 +228,12 @@ public class WaypointsCommand implements CommandExecutor {
 						p.sendMessage(message(COMMAND_UPDATE_ITEM_WRONG_USAGE, p));
 						return true;
 					}
-					if (!UUIDUtils.isUUID(args[1])) {
+					if (!UUIDUtils.isUUID(args[2])) {
 						p.sendMessage(message(GENERAL_NOT_A_VALID_UUID, p));
 						return true;
 					}
 					Material mat = p.getInventory().getItemInMainHand().getType();
-					UUID uuid = UUID.fromString(args[1]);
+					UUID uuid = UUID.fromString(args[2]);
 					if (!WPConfig.inventory().isValidCustomItem(mat)) {
 						p.sendMessage(message(COMMAND_UPDATE_ITEM_NOT_A_VALID_ITEM, p));
 						return true;
@@ -350,6 +360,7 @@ public class WaypointsCommand implements CommandExecutor {
 							p.sendMessage(message(COMMAND_RENAME_WRONG_USAGE, p));
 							break;
 					}
+					break;
 				}
 				default:
 					p.sendMessage(message(COMMAND_NOT_FOUND, p));

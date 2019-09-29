@@ -39,6 +39,11 @@ public class PublicFolder extends Folder {
 	}
 
 	@Override
+	public long createdAt() {
+		return 0;
+	}
+
+	@Override
 	public String getDisplayName(Player player) {
 		return message(INVENTORY_FOLDER_PUBLIC_DISPLAY_NAME, player);
 	}

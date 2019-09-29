@@ -2,6 +2,9 @@ name: Waypoints
 version: 2.0.0-SNAPSHOT
 author: Md5Lukas (Sytm)
 main: de.md5lukas.waypoints.Waypoints
+api-version: 1.13
+depend:
+  - Md5Lukas-Commons
 
 commands:
   waypoints:

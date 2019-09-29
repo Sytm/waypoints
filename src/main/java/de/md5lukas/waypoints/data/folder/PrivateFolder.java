@@ -39,7 +39,7 @@ public class PrivateFolder extends Folder {
 
 	@Override
 	public String getDisplayName(Player player) {
-		return message(INVENTORY_FOLDER_PRIVATE_DISPLAY_NAME, player);
+		return message(INVENTORY_FOLDER_PRIVATE_DISPLAY_NAME, player).replace("%name%", getName());
 	}
 
 	@Override

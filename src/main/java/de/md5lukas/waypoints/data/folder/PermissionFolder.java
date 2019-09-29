@@ -39,6 +39,11 @@ public class PermissionFolder extends Folder {
 	}
 
 	@Override
+	public long createdAt() {
+		return 0;
+	}
+
+	@Override
 	public int getAmount(Player player) {
 		return (int) Math.min(64, waypoints.stream().filter(wp -> player.hasPermission(((PermissionWaypoint) wp).getPermission())).count());
 	}

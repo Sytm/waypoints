@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.store;
 
 import de.md5lukas.commons.UUIDUtils;
 import de.md5lukas.commons.messages.Languages;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -87,7 +88,7 @@ public class WPConfig {
 
 	@SuppressWarnings("ConstantConditions")
 	public static void loadConfig(FileConfiguration cfg) {
-		//region General
+		//<editor-fold defaultstate="collapsed" desc="General">
 		waypointLimit = cfg.getInt("general.waypointLimit");
 
 		deathWaypointEnabled = cfg.getBoolean("general.deathWaypointsEnabled");
@@ -110,8 +111,8 @@ public class WPConfig {
 				aliases.put(world, cfg.getString("general.worldNameAliases." + lang + "." + world));
 			}
 		}
-		//endregion
-		//region Displays
+		//</editor-fold>
+		//<editor-fold defaultstate="collapsed" desc="Displays">
 		displays = new WPConfigDisplays();
 
 		displays.wrongWorldEnabled = cfg.getBoolean("displays.wrongWorld.enabled");
@@ -120,8 +121,8 @@ public class WPConfig {
 
 		displays.actionBarEnabled = cfg.getBoolean("displays.actionBar.enabled");
 		displays.actionBarInterval = cfg.getInt("displays.actionBar.interval");
-		displays.actionBarIndicatorColor = cfg.getString("displays.actionBar.indicatorColor");
-		displays.actionBarNormalColor = cfg.getString("displays.actionBar.normalColor");
+		displays.actionBarIndicatorColor = ChatColor.translateAlternateColorCodes('&', cfg.getString("displays.actionBar.indicatorColor"));
+		displays.actionBarNormalColor = ChatColor.translateAlternateColorCodes('&', cfg.getString("displays.actionBar.normalColor"));
 		displays.actionBarSection = cfg.getString("displays.actionBar.section");
 		displays.actionBarLeftArrow = cfg.getString("displays.actionBar.arrow.left");
 		displays.actionBarRightArrow = cfg.getString("displays.actionBar.arrow.right");
@@ -161,8 +162,8 @@ public class WPConfig {
 		displays.particlesAmount = cfg.getInt("displays.particles.amount");
 		displays.particlesDistance = cfg.getDouble("displays.particles.distance");
 		displays.particlesParticle = Particle.valueOf(cfg.getString("displays.particles.particle").toUpperCase());
-		//endregion
-		//region Inventory
+		//</editor-fold>
+		//<editor-fold defaultstate="collapsed" desc="Inventory">
 		inventory = new WPConfigInventory();
 
 		inventory.maxDescriptionLineLength = cfg.getInt("inventory.maxDescriptionLineLength");
@@ -186,10 +187,10 @@ public class WPConfig {
 		inventory.overviewDeselectItem = matchMaterial(cfg.getString("inventory.overview.deselectItem"));
 		inventory.overviewToggleGlobalsItem = matchMaterial(cfg.getString("inventory.overview.toggleGlobalsItem"));
 
-		inventory.waypointDeathItem = matchMaterial(cfg.getString("inventory.waypoints.private.item"));
-		inventory.waypointDeathBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.private.backgroundItem"));
-		inventory.waypointDeathSelectItem = matchMaterial(cfg.getString("inventory.waypoints.private.selectItem"));
-		inventory.waypointDeathTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.private.teleportItem"));
+		inventory.waypointDeathItem = matchMaterial(cfg.getString("inventory.waypoints.death.item"));
+		inventory.waypointDeathBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.death.backgroundItem"));
+		inventory.waypointDeathSelectItem = matchMaterial(cfg.getString("inventory.waypoints.death.selectItem"));
+		inventory.waypointDeathTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.death.teleportItem"));
 
 		inventory.waypointPrivateDefaultItem = matchMaterial(cfg.getString("inventory.waypoints.private.defaultItem"));
 		inventory.waypointPrivateBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.private.backgroundItem"));
@@ -226,8 +227,7 @@ public class WPConfig {
 
 		inventory.folderPermissionItem = matchMaterial(cfg.getString("inventory.folders.permission.item"));
 		inventory.folderPermissionBackgroundItem = matchMaterial(cfg.getString("inventory.folders.permission.backgroundItem"));
-
-		//endregion
+		//</editor-fold>
 	}
 
 	public final static class WPConfigDisplays {

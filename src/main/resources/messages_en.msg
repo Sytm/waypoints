@@ -21,9 +21,9 @@ chatAction.rename.waypoint.permission=$prefix$ &7Click here to get the command t
 chatAction.rename.folder.private=$prefix$ &7Click here to get the command to rename your folder.
 
 # Commands
-variables.help.commandColor=&6
-variables.help.dashColor=&7
-variables.help.descriptionColor=&6
+variable.help.commandColor=&6
+variable.help.dashColor=&7
+variable.help.descriptionColor=&6
 
 command.help.title=$prefix$ &7&nHelp
 command.help.help=&7 - &e/waypoints &7&l|&r&7 Show this help
@@ -33,9 +33,9 @@ command.help.set.permission=&7 - &e/waypoints setPermission <Permission> <Name> 
 command.help.compass=&7 - &e/waypoints compass &7&l|&r&7 Sets the new default compass target, when set to "ingame"
 command.help.other=&7 - &e/waypoints other <Name|UUID> &7&l|&r&7 View the waypoints of another player
 command.help.updateItem=&7 - &e/waypoints updateItem <Waypoint|Folder> <ID> &7&l|&r&7 This command is used to update the icons of waypoints and folders
-command.help.rename.normal=&7 - &e/waypoints rename <PrivateWaypoint|PublicWaypoint|PermissionWaypoint|Folder> <ID> &7&l|&r& This command is used to rename waypoints or folders
-command.help.rename.waypointOnly=&7 - &e/waypoints rename <PrivateWaypoint|PublicWaypoint|PermissionWaypoint> <ID> &7&l|&r& This command is used to rename waypoints
-command.help.rename.folderOnly=&7 - &e/waypoints rename <Folder> <ID> &7&l|&r& This command is used to rename folders
+command.help.rename.normal=&7 - &e/waypoints rename <PrivateWaypoint|PublicWaypoint|PermissionWaypoint|Folder> <ID> &7&l|&r&7 This command is used to rename waypoints or folders
+command.help.rename.waypointOnly=&7 - &e/waypoints rename <PrivateWaypoint|PublicWaypoint|PermissionWaypoint> <ID> &7&l|&r&7 This command is used to rename waypoints
+command.help.rename.folderOnly=&7 - &e/waypoints rename <Folder> <ID> &7&l|&r&7 This command is used to rename folders
 
 command.compass.disabled=$prefix$ &cThis method to set the default compass target has not been enabled in the config.
 command.compass.locked=$prefix$ &cThis command has been disabled in the config.
@@ -93,7 +93,7 @@ command.rename.wrongUsage|
 |&a/waypoints rename privateWaypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35 Nether Portal No. 2
 |&a/waypoints updateItem folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870 Mines
 command.rename.waypoint.private.nameDuplicate=$prefix$ &cDuplicate names for waypoints have been disabled.
-command.rename.waypoint.public.nameDuplicate$prefix$ &cDuplicate names for public waypoints have been disabled.
+command.rename.waypoint.public.nameDuplicate=$prefix$ &cDuplicate names for public waypoints have been disabled.
 command.rename.waypoint.permission.nameDuplicate=$prefix$ &cDuplicate names for permission waypoints have been disabled.
 command.rename.waypoint.success=$prefix$ &7The waypoint has been renamed successfully.
 command.rename.folder.nameDuplicate=$prefix$ &cDuplicate names for folders have been disabled.
@@ -103,19 +103,19 @@ command.notFound=$prefix$ &cThe command you entered was not found
 
 
 # Inventory
-variables.empty=&0-
-variables.waypoints.select.displayName=&eSelect waypoint
-variables.waypoints.select.description=&7Click here to make this waypoint your active one
-variables.waypoints.delete.displayName=&cDelete the waypoint
-variables.waypoints.delete.description=&0-
-variables.waypoints.rename.displayName=&eRename waypoint
-variables.waypoints.rename.description=&7Click here to receive a message, which you can click to receive the rename command
-variables.waypoints.teleport.displayName=&eTeleport to waypoint
-variables.waypoints.teleport.description=&0-
+variable.empty=&0-
+variable.waypoints.select.displayName=&eSelect waypoint
+variable.waypoints.select.description=&7Click here to make this waypoint your active one
+variable.waypoints.delete.displayName=&cDelete the waypoint
+variable.waypoints.delete.description=&0-
+variable.waypoints.rename.displayName=&eRename waypoint
+variable.waypoints.rename.description=&7Click here to receive a message, which you can click to receive the rename command
+variable.waypoints.teleport.displayName=&eTeleport to waypoint
+variable.waypoints.teleport.description=&0-
 
 inventory.title.own=&eWaypoints
 # %name% = Other players name
-inventory.title.other&6%name%'s &ewaypoints
+inventory.title.other=&6%name%'s &ewaypoints
 
 inventory.general.previous.displayName=&ePrevious page
 inventory.general.previous.description=$empty$
@@ -151,7 +151,7 @@ inventory.waypoint.death.displayName=&cDeath-Waypoint
 # %world% = Name of the world
 # %x%, %y%, %z% = Coordinates of the waypoint as floating point number
 # %blockX%, %blockY%, %blockZ% = The coordinates, but rounded to the block
-# %distance% = The distance to the waypoint, height excluded
+# %distance% = The distance to the waypoint
 inventory.waypoint.death.description|
 |&7World: &6%world%
 |&7X: &6%blockX%
@@ -170,8 +170,13 @@ inventory.waypoint.private.displayName=&5%name%
 # %world% = Name of the world
 # %x%, %y%, %z% = Coordinates of the waypoint as floating point number
 # %blockX%, %blockY%, %blockZ% = The coordinates, but rounded to the block
-# %distance% = The distance to the waypoint, height excluded
-inventory.waypoint.private.description // %world%, %x%, %y%, %z%, %blockX%, %blockY%, %blockZ%, %distance%
+# %distance% = The distance to the waypoint
+inventory.waypoint.private.description|
+|&7World: &6%world%
+|&7X: &6%blockX%
+|&7Y: &6%blockY%
+|&7Z: &6%blockZ%
+|&7Distance: &6%distance%
 inventory.waypoint.private.background.displayName=$empty$
 inventory.waypoint.private.background.description=$empty$
 inventory.waypoint.private.select.displayName=$waypoints.select.displayName$
@@ -190,7 +195,7 @@ inventory.waypoint.public.displayName=&b%name%
 # %world% = Name of the world
 # %x%, %y%, %z% = Coordinates of the waypoint as floating point number
 # %blockX%, %blockY%, %blockZ% = The coordinates, but rounded to the block
-# %distance% = The distance to the waypoint, height excluded
+# %distance% = The distance to the waypoint
 inventory.waypoint.public.description|
 |&7World: &6%world%
 |&7X: &6%blockX%
@@ -213,7 +218,7 @@ inventory.waypoint.permission.displayName=&d%name%
 # %world% = Name of the world
 # %x%, %y%, %z% = Coordinates of the waypoint as floating point number
 # %blockX%, %blockY%, %blockZ% = The coordinates, but rounded to the block
-# %distance% = The distance to the waypoint, height excluded
+# %distance% = The distance to the waypoint
 inventory.waypoint.permission.description|
 |&7World: &6%world%
 |&7X: &6%blockX%
@@ -233,8 +238,8 @@ inventory.waypoint.permission.teleport.description=$waypoints.teleport.descripti
 
 inventory.selectFolder.background.displayName=$empty$
 inventory.selectFolder.background.description=$empty$
-inventory.selectFolder.noFolder.displayName
-inventory.selectFolder.noFolder.description
+inventory.selectFolder.noFolder.displayName=&eNo folder
+inventory.selectFolder.noFolder.description=&7Move this waypoint back to the main overview
 
 # %name% = Folder name
 inventory.folder.private.displayName=&b%name%

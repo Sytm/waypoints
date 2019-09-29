@@ -46,7 +46,7 @@ public final class ParticleDisplay extends WaypointDisplay {
 				player.spawnParticle(displays().getParticlesParticle(),
 					pLoc.getX() + dir.getX() * i,
 					pLoc.getY() + displays().getParticlesHeightOffset() + (displays().isParticlesVerticalDirection() ? dir.getY() * i : 0),
-					pLoc.getZ() + dir.getZ(),
+					pLoc.getZ() + dir.getZ() * i,
 					1, 0, 0, 0, 0);
 			}
 		}

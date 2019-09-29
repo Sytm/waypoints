@@ -40,7 +40,7 @@
         <dependency>
             <groupId>com.github.MinusKube</groupId>
             <artifactId>SmartInvs</artifactId>
-            <version>9cad502b9f5607317f7964b732f8efcb4bfb5f78</version>
+            <version>e90199bc399f98c341f22defb38e96d964162dfe</version>
             <scope>compile</scope>
         </dependency>
 
@@ -58,7 +58,7 @@
         </dependency>
         <dependency>
             <groupId>de.md5lukas</groupId>
-            <artifactId>commons</artifactId>
+            <artifactId>md5-commons</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
