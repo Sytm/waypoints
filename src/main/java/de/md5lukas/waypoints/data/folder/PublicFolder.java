@@ -18,6 +18,7 @@
 
 package de.md5lukas.waypoints.data.folder;
 
+import de.md5lukas.commons.StringHelper;
 import de.md5lukas.commons.collections.ReplaceableList;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
@@ -68,7 +69,7 @@ public class PublicFolder extends Folder {
 
 	@Override
 	public List<String> getDescription(Player player) {
-		return ReplaceableList.ofStrings(message(INVENTORY_FOLDER_PUBLIC_DESCRIPTION, player).split("\\n")).replace(
+		return new ReplaceableList(StringHelper.split(message(INVENTORY_FOLDER_PUBLIC_DESCRIPTION, player), '\n')).replace(
 			"%amount%", Integer.toString(waypoints.size()));
 	}
 
