@@ -26,13 +26,16 @@ public class BlinkingBlockDisplay extends WaypointDisplay {
 
 	@Override
 	public void update(Player player, Waypoint waypoint) {
+		UUID pUUID = player.getUniqueId();
 		double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
 		if (distance < displays().getBlinkingBlockMinDistance() || distance > displays().getBlinkingBlockMaxDistance()) {
-			player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
-			counters.remove(player.getUniqueId());
+			if (counters.containsKey(pUUID)) {
+				player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
+				counters.remove(pUUID);
+			}
 			return;
 		}
-		counters.compute(player.getUniqueId(), (uuid, count) -> count == null ? 0 : (count + 1) % displays().getBlinkingBlockBlocks().size());
+		counters.compute(pUUID, (uuid, count) -> count == null ? 0 : (count + 1) % displays().getBlinkingBlockBlocks().size());
 		player.sendBlockChange(waypoint.getLocation(), displays().getBlinkingBlockBlocks().get(counters.get(player.getUniqueId())));
 	}
 

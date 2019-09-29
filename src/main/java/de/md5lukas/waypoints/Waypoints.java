@@ -2,9 +2,12 @@ package de.md5lukas.waypoints;
 
 import de.md5lukas.commons.messages.MessageStore;
 import de.md5lukas.nbt.Tags;
+import de.md5lukas.waypoints.command.WaypointsCommand;
 import de.md5lukas.waypoints.display.WaypointDisplay;
 import de.md5lukas.waypoints.store.FileManager;
 import de.md5lukas.waypoints.store.GlobalStore;
+import de.md5lukas.waypoints.store.LocationTag;
+import de.md5lukas.waypoints.store.WPConfig;
 import fr.minuskube.inv.SmartInvsPlugin;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -58,10 +61,15 @@ public class Waypoints extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		Tags.registerExtendedTags();
+		Tags.registerTag(LocationTag::new);
+		instance = this;
+		saveDefaultConfig();
+		WPConfig.loadConfig(getConfig());
 		SmartInvsPlugin.setPlugin(this);
 		fileManager = new FileManager(this);
 		try {
+			getDataFolder().mkdirs();
+			fileManager.getMessageFolder().mkdir();
 			extractFile(new File(fileManager.getMessageFolder(), "messages_en.msg"), "messages_en.msg");
 		} catch (IOException e) {
 			getLogger().log(Level.SEVERE, "Couldn't extract message files", e);
@@ -69,7 +77,14 @@ public class Waypoints extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
-		messageStore = new MessageStore(fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
+		try {
+			messageStore = new MessageStore(fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
+		} catch (IOException e) {
+			getLogger().log(Level.SEVERE, "Couldn't load message files", e);
+			inOnEnableDisable = true;
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
 		try {
 			globalStore = new GlobalStore(this);
 		} catch (IOException e) {
@@ -79,6 +94,7 @@ public class Waypoints extends JavaPlugin {
 			return;
 		}
 		WaypointDisplay.activateDisplays();
+		getCommand("waypoints").setExecutor(new WaypointsCommand());
 	}
 
 	@Override
@@ -91,7 +107,7 @@ public class Waypoints extends JavaPlugin {
 
 	@SuppressWarnings("ConstantConditions")
 	private void extractFile(File destination, String resource) throws IOException {
-		if (destination.exists()) {
+		if (!destination.exists()) {
 			try (FileOutputStream fos = new FileOutputStream(destination)) {
 				fos.getChannel().transferFrom(Channels.newChannel(getResource(resource)), 0, Long.MAX_VALUE);
 			}

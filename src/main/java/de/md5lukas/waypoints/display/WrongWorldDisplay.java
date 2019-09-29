@@ -26,10 +26,12 @@ public final class WrongWorldDisplay extends WaypointDisplay {
 	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void update(Player player, Waypoint waypoint) {
-		TextComponent component = new TextComponent(StringHelper.multiReplace(message(DISPLAY_WRONG_WORLD, player),
-			"%currentworld%", WPConfig.translateWorldName(player.getWorld().getName(), player),
-			"%correctworld%", WPConfig.translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
-		player.spigot().sendMessage(WPConfig.displays().isWrongWorldActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT, component);
+		if (!player.getWorld().equals(waypoint.getLocation().getWorld())) {
+			TextComponent component = new TextComponent(StringHelper.multiReplace(message(DISPLAY_WRONG_WORLD, player),
+				"%currentworld%", WPConfig.translateWorldName(player.getWorld().getName(), player),
+				"%correctworld%", WPConfig.translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
+			player.spigot().sendMessage(WPConfig.displays().isWrongWorldActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT, component);
+		}
 	}
 
 	@Override

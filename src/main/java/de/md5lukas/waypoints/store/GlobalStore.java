@@ -21,19 +21,20 @@ public class GlobalStore {
 
 	public GlobalStore(Plugin plugin) throws IOException {
 		this.plugin = plugin;
-		CompoundTag tag = NbtIo.readCompressed(Waypoints.getFileManager().getGlobalStore());
-		if (tag.contains("compassTarget"))
-			compassTarget = ((LocationTag) tag.get("compassTarget")).value();
+		if (Waypoints.getFileManager().getGlobalStore().exists()) {
+			CompoundTag tag = NbtIo.readCompressed(Waypoints.getFileManager().getGlobalStore());
+			if (tag.contains("compassTarget"))
+				compassTarget = ((LocationTag) tag.get("compassTarget")).value();
 
-		if (tag.contains("publicWaypoints"))
-			publicFolder = new PublicFolder(tag.getCompound("publicWaypoints"));
-		else
-			publicFolder = new PublicFolder();
+			if (tag.contains("publicWaypoints"))
+				publicFolder = new PublicFolder(tag.getCompound("publicWaypoints"));
 
-		if (tag.contains("permissionWaypoints"))
-			permissionFolder = new PermissionFolder(tag.getCompound("permissionWaypoints"));
-		else
-			permissionFolder = new PermissionFolder();
+			if (tag.contains("permissionWaypoints"))
+				permissionFolder = new PermissionFolder(tag.getCompound("permissionWaypoints"));
+		}
+		if (publicFolder == null) publicFolder = new PublicFolder();
+		if (permissionFolder == null) permissionFolder = new PermissionFolder();
+
 
 		// Save global store async every 5 minutes
 		Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> save(false), 20 * 60 * 5, 20 * 60 * 5);

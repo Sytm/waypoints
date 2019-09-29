@@ -20,6 +20,7 @@ import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.SlotPos;
 import fr.minuskube.inv.util.Pattern;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
@@ -27,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Consumer;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -48,7 +50,7 @@ public class WaypointProvider implements InventoryProvider {
 		WPPlayerData.SortMode.CREATED_ASC, INVENTORY_CYCLE_SORT_MODE_CREATED_ASC,
 		WPPlayerData.SortMode.CREATED_DESC, INVENTORY_CYCLE_SORT_MODE_CREATED_DESC);
 
-	//region Patterns
+	//<editor-fold defaultstate="collapsed" desc="Patterns">
 	private static final Pattern<ClickableItem> overviewPattern = new Pattern<>(
 		"#########",
 		"#########",
@@ -118,7 +120,7 @@ public class WaypointProvider implements InventoryProvider {
 	n = no
 	y = yes
 	 */
-	//endregion
+	//</editor-fold>
 
 	private UUID target;
 	private WPPlayerData targetData, viewerData;
@@ -140,8 +142,10 @@ public class WaypointProvider implements InventoryProvider {
 		this.viewerData = WPPlayerData.getPlayerData(player.getUniqueId());
 		this.isOwner = player.getUniqueId().equals(target);
 		this.contents = contents;
+		showOverview();
 	}
 
+	//<editor-fold defaultstate="collapsed" desc="Show pages">
 	private void showLast() {
 		if (lastFolder == null) {
 			showOverview();
@@ -183,40 +187,17 @@ public class WaypointProvider implements InventoryProvider {
 		final AtomicReference<Runnable> cycleUpdate = new AtomicReference<>();
 		cycleUpdate.set(() -> contents.set(sortCyclePos, ClickableItem.from(getSortCycleItem(inventory().getOverviewCycleSortItem()), click -> {
 			cycleSortMode();
+			updateOverview();
 			cycleUpdate.get().run();
 		})));
 		overviewPattern.attach('s', ClickableItem.from(getSortCycleItem(inventory().getOverviewCycleSortItem()), click -> {
 			cycleSortMode();
+			updateOverview();
 			cycleUpdate.get().run();
 		}));
 		contents.fillPattern(overviewPattern);
 
 		updateOverview();
-	}
-
-	private ItemStack getSortCycleItem(Material material) {
-		ItemBuilder builder = new ItemBuilder(material).name(message(INVENTORY_CYCLE_SORT_DISPLAY_NAME, viewer))
-			.lore(message(INVENTORY_CYCLE_SORT_DESCRIPTION, viewer));
-
-		builder.appendLore("");
-
-		String active = message(INVENTORY_CYCLE_SORT_ACTIVE, viewer), inactive = message(INVENTORY_CYCLE_SORT_INACTIVE, viewer);
-		sortModeMap.forEach((sortMode, message) -> {
-			if (viewerData.settings().sortMode().equals(sortMode)) {
-				builder.appendLore(active.replace("%name%", message(message, viewer)));
-			} else {
-				builder.appendLore(inactive.replace("%name%", message(message, viewer)));
-			}
-		});
-
-		return builder.make();
-	}
-
-	private void cycleSortMode() {
-		int current = viewerData.settings().sortMode().ordinal();
-		current += 1;
-		current %= WPPlayerData.SortMode.values().length;
-		viewerData.settings().sortMode(WPPlayerData.SortMode.values()[current]);
 	}
 
 	private void showFolder(Folder folder) {
@@ -247,63 +228,36 @@ public class WaypointProvider implements InventoryProvider {
 		if (isOwner && folder instanceof PrivateFolder) {
 			folderPattern.attach('d', ClickableItem.from(ItemStacks.getFolderPrivateDeleteItem(viewer),
 				click -> showConfirm(INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_DESCRIPTION_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_DESCRIPTION_DESCRIPTION,
-				INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_YES_DESCRIPTION,
-				INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DESCRIPTION,
-				result -> {
-					if (result) {
-						targetData.removeFolder(folder.getID());
-					}
-					showOverview();
-				})));
+					INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_YES_DESCRIPTION,
+					INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DESCRIPTION,
+					result -> {
+						if (result) {
+							targetData.removeFolder(folder.getID());
+						}
+						showOverview();
+					})));
 			folderPattern.attach('f', ClickableItem.from(folder.getStack(viewer), click -> {
-				TextComponent component = new TextComponent(message(CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE, viewer));
-				component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem folder " + folder.getID()));
-				viewer.spigot().sendMessage(component);
+				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE, viewer));
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints updateItem folder " + folder.getID());
+				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+				viewer.spigot().sendMessage(components);
+				viewer.closeInventory();
 			}));
 			folderPattern.attach('r', ClickableItem.from(ItemStacks.getFolderPrivateRenameItem(viewer), click -> {
-				TextComponent component = new TextComponent(message(CHAT_ACTION_RENAME_FOLDER_PRIVATE, viewer));
-				component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename folder " + folder.getID()));
-				viewer.spigot().sendMessage(component);
+				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_FOLDER_PRIVATE, viewer));
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints updateItem folder " + folder.getID());
+				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+				viewer.spigot().sendMessage(components);
+				viewer.closeInventory();
 			}));
 		} else {
 			folderPattern.attach('d', bg);
 			folderPattern.attach('f', ClickableItem.empty(folder.getStack(viewer)));
 			folderPattern.attach('r', bg);
 		}
+		contents.fillPattern(folderPattern);
+
 		updateFolder(folder);
-	}
-
-	private void updateOverview() {
-		List<ClickableItem> items = getOverviewPageItems();
-		for (int i = 0; i < pageSize; i++) {
-			if (i < items.size()) {
-				contents.set(i, items.get(i));
-			} else {
-				contents.set(i, ClickableItem.NONE);
-			}
-		}
-	}
-
-	private void updateFolder(Folder folder) {
-		List<ClickableItem> items = getFolderPageItems(folder);
-		for (int i = 0; i < pageSize; i++) {
-			if (i < items.size()) {
-				contents.set(i, items.get(i));
-			} else {
-				contents.set(i, ClickableItem.NONE);
-			}
-		}
-	}
-
-	private void updateFolderList(Consumer<Folder> onClick) {
-		List<ClickableItem> items = getPrivateFolderItems(onClick);
-		for (int i = 0; i < pageSize; i++) {
-			if (i < items.size()) {
-				contents.set(i, items.get(i));
-			} else {
-				contents.set(i, ClickableItem.NONE);
-			}
-		}
 	}
 
 	private void showWaypoint(Waypoint waypoint) {
@@ -313,9 +267,10 @@ public class WaypointProvider implements InventoryProvider {
 			waypointPattern.setDefault(bg);
 			if (isOwner) {
 				waypointPattern.attach('w', ClickableItem.from(waypoint.getStack(viewer), click -> {
-					TextComponent component = new TextComponent(message(CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE, viewer));
-					component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypoint " + waypoint.getID()));
-					viewer.spigot().sendMessage(component);
+					BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE, viewer));
+					ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypoint " + waypoint.getID());
+					Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+					viewer.spigot().sendMessage(components);
 					viewer.closeInventory();
 				}));
 			} else {
@@ -326,22 +281,25 @@ public class WaypointProvider implements InventoryProvider {
 				viewer.closeInventory();
 			}));
 			if (isOwner || viewer.hasPermission("waypoints.delete.other")) {
-				waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPrivateDeleteItem(viewer), click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DESCRIPTION,
-					INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DESCRIPTION,
-					INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DESCRIPTION, result -> {
-						if (result) {
-							targetData.removeWaypoint(waypoint.getID());
-						}
-						showLast();
-					})));
+				waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPrivateDeleteItem(viewer),
+					click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DISPLAY_NAME,
+						INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DESCRIPTION,
+						INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DESCRIPTION,
+						INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DESCRIPTION, result -> {
+							if (result) {
+								targetData.removeWaypoint(waypoint.getID());
+							}
+							showLast();
+						})));
 			} else {
 				waypointPattern.attach('d', bg);
 			}
 			if (isOwner && WPConfig.allowRenamingWaypointsPrivate()) {
 				waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPrivateRenameItem(viewer), click -> {
-					TextComponent component = new TextComponent(message(CHAT_ACTION_RENAME_WAYPOINT_PRIVATE, viewer));
-					component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename privatewaypoint " + waypoint.getID()));
-					viewer.spigot().sendMessage(component);
+					BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PRIVATE, viewer));
+					ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename privateWaypoint " + waypoint.getID());
+					Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+					viewer.spigot().sendMessage(components);
 					viewer.closeInventory();
 				}));
 			} else {
@@ -370,22 +328,25 @@ public class WaypointProvider implements InventoryProvider {
 				viewer.closeInventory();
 			}));
 			if (viewer.hasPermission("waypoints.delete.public")) {
-				waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPublicDeleteItem(viewer), click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DESCRIPTION,
-					INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DESCRIPTION,
-					INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DESCRIPTION, result -> {
-						if (result) {
-							Waypoints.getGlobalStore().getPublicFolder().removeWaypoint(waypoint.getID());
-						}
-						showLast();
-					})));
+				waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPublicDeleteItem(viewer),
+					click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DISPLAY_NAME,
+						INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DESCRIPTION,
+						INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DESCRIPTION,
+						INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DESCRIPTION, result -> {
+							if (result) {
+								Waypoints.getGlobalStore().getPublicFolder().removeWaypoint(waypoint.getID());
+							}
+							showLast();
+						})));
 			} else {
 				waypointPattern.attach('d', bg);
 			}
 			if (viewer.hasPermission("waypoints.rename.public") && WPConfig.allowRenamingWaypointsPublic()) {
 				waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPublicRenameItem(viewer), click -> {
-					TextComponent component = new TextComponent(message(CHAT_ACTION_RENAME_WAYPOINT_PUBLIC, viewer));
-					component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename publicwaypoint " + waypoint.getID()));
-					viewer.spigot().sendMessage(component);
+					BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PUBLIC, viewer));
+					ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename publicWaypoint " + waypoint.getID());
+					Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+					viewer.spigot().sendMessage(components);
 					viewer.closeInventory();
 				}));
 			} else {
@@ -427,9 +388,10 @@ public class WaypointProvider implements InventoryProvider {
 			}
 			if (viewer.hasPermission("waypoints.rename.permission") && WPConfig.allowRenamingWaypointsPermission()) {
 				waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPermissionRenameItem(viewer), click -> {
-					TextComponent component = new TextComponent(message(CHAT_ACTION_RENAME_WAYPOINT_PUBLIC, viewer));
-					component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename permissionwaypoint " + waypoint.getID()));
-					viewer.spigot().sendMessage(component);
+					BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PERMISSION, viewer));
+					ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename permissionWaypoint " + waypoint.getID());
+					Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+					viewer.spigot().sendMessage(components);
 					viewer.closeInventory();
 				}));
 			} else {
@@ -478,7 +440,11 @@ public class WaypointProvider implements InventoryProvider {
 		selectFolderPattern.setDefault(bg);
 
 		final Consumer<Folder> onClick = (folder) -> {
-			targetData.moveWaypointToFolder(waypoint.getID(), folder.getID());
+			if (folder == null) {
+				targetData.moveWaypointToFolder(waypoint.getID(), null);
+			} else {
+				targetData.moveWaypointToFolder(waypoint.getID(), folder.getID());
+			}
 			showWaypoint(waypoint);
 		};
 
@@ -488,23 +454,100 @@ public class WaypointProvider implements InventoryProvider {
 
 		selectFolderPattern.attach('p', ClickableItem.from(ItemStacks.getPreviousItem(viewer), click -> {
 			folderListPage = Math.max(0, folderListPage - 1);
-			updateFolderList(onClick);
+			updateSelectFolder(onClick);
 		}));
 		selectFolderPattern.attach('n', ClickableItem.from(ItemStacks.getNextItem(viewer), click -> {
-			folderListPage = Math.min(getPrivateFolderPages(), folderListPage + 1);
-			updateFolderList(onClick);
+			folderListPage = Math.min(getSelectFolderPages(), folderListPage + 1);
+			updateSelectFolder(onClick);
 		}));
 
 		contents.fillPattern(selectFolderPattern);
 
-		updateFolderList(onClick);
+		updateSelectFolder(onClick);
 	}
 
-	//region Get page items
+	private void showConfirm(Messages descriptionDisplayName, Messages descriptionDescription, Messages yesDisplayName, Messages yesDescription,
+	                         Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
+		confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuBackgroundItem())
+			.name(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME, viewer)).lore(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION, viewer)).make()));
+		confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).name(message(descriptionDisplayName, viewer))
+			.lore(message(descriptionDescription, viewer)).make()));
+		confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).name(message(noDisplayName, viewer))
+			.lore(message(noDescription, viewer)).make(), click -> result.accept(false)));
+		confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).name(message(yesDisplayName, viewer))
+			.lore(message(yesDescription, viewer)).make(), click -> result.accept(true)));
+		contents.fillPattern(confirmPattern);
+	}
+	//</editor-fold>
+
+	//<editor-fold defaultstate="collapsed" desc="Cycle Sort mode helpers">
+	private ItemStack getSortCycleItem(Material material) {
+		ItemBuilder builder = new ItemBuilder(material).name(message(INVENTORY_CYCLE_SORT_DISPLAY_NAME, viewer))
+			.lore(message(INVENTORY_CYCLE_SORT_DESCRIPTION, viewer));
+
+		builder.appendLore("");
+
+		String active = message(INVENTORY_CYCLE_SORT_ACTIVE, viewer), inactive = message(INVENTORY_CYCLE_SORT_INACTIVE, viewer);
+		sortModeMap.forEach((sortMode, message) -> {
+			if (viewerData.settings().sortMode().equals(sortMode)) {
+				builder.appendLore(active.replace("%name%", message(message, viewer)));
+			} else {
+				builder.appendLore(inactive.replace("%name%", message(message, viewer)));
+			}
+		});
+
+		return builder.make();
+	}
+
+	private void cycleSortMode() {
+		int current = viewerData.settings().sortMode().ordinal();
+		current += 1;
+		current %= WPPlayerData.SortMode.values().length;
+		viewerData.settings().sortMode(WPPlayerData.SortMode.values()[current]);
+	}
+	//</editor-fold>
+
+	//<editor-fold defaultstate="collapsed" desc="Update items">
+	private void updateOverview() {
+		List<ClickableItem> items = getOverviewPageItems();
+		for (int i = 0; i < pageSize; i++) {
+			if (i < items.size()) {
+				contents.set(i, items.get(i));
+			} else {
+				contents.set(i, ClickableItem.NONE);
+			}
+		}
+	}
+
+	private void updateFolder(Folder folder) {
+		List<ClickableItem> items = getFolderPageItems(folder);
+		for (int i = 0; i < pageSize; i++) {
+			if (i < items.size()) {
+				contents.set(i, items.get(i));
+			} else {
+				contents.set(i, ClickableItem.NONE);
+			}
+		}
+	}
+
+	private void updateSelectFolder(Consumer<Folder> onClick) {
+		List<ClickableItem> items = getSelectFolderPageItems(onClick);
+		for (int i = 0; i < pageSize; i++) {
+			if (i < items.size()) {
+				contents.set(i, items.get(i));
+			} else {
+				contents.set(i, ClickableItem.NONE);
+			}
+		}
+	}
+	//</editor-fold>
+
+	//<editor-fold defaultstate="collapsed" desc="Pagination helpers">
 	private int getOverviewPages() {
 		int items = 0;
 		if (targetData.settings().showGlobals() && isOwner) {
-			items++;
+			if (!Waypoints.getGlobalStore().getPublicFolder().getWaypoints(viewer).isEmpty())
+				items++;
 			if (!Waypoints.getGlobalStore().getPermissionFolder().getWaypoints(viewer).isEmpty())
 				items++;
 		}
@@ -512,24 +555,27 @@ public class WaypointProvider implements InventoryProvider {
 		return PaginationList.pages(items, pageSize);
 	}
 
-	private int getPrivateFolderPages() {
-		return PaginationList.pages(targetData.getWaypoints().size(), pageSize);
-	}
-
 	private int getFolderPages(Folder folder) {
 		return PaginationList.pages(folder.getWaypoints(viewer).size(), pageSize);
+	}
+
+	private int getSelectFolderPages() {
+		return PaginationList.pages(targetData.getFolders().size(), pageSize);
 	}
 
 	private List<ClickableItem> getOverviewPageItems() {
 		PaginationList<GUISortable> items = new PaginationList<>(pageSize);
 		if (isOwner) {
 			if (targetData.settings().showGlobals()) {
-				PermissionFolder pf = Waypoints.getGlobalStore().getPermissionFolder();
-				if (!pf.getWaypoints(viewer).isEmpty())
-					items.add(pf);
-				items.add(Waypoints.getGlobalStore().getPublicFolder());
+				PermissionFolder permFolder = Waypoints.getGlobalStore().getPermissionFolder();
+				if (!permFolder.getWaypoints(viewer).isEmpty())
+					items.add(permFolder);
+
+				PublicFolder pubFolder = Waypoints.getGlobalStore().getPublicFolder();
+				if (!pubFolder.getWaypoints(viewer).isEmpty())
+					items.add(Waypoints.getGlobalStore().getPublicFolder());
 			}
-			if (WPConfig.isDeathWaypointEnabled()) {
+			if (WPConfig.isDeathWaypointEnabled() && targetData.getDeathWaypoint() != null) {
 				items.add(targetData.getDeathWaypoint());
 			}
 		}
@@ -551,35 +597,23 @@ public class WaypointProvider implements InventoryProvider {
 		})).collect(Collectors.toList());
 	}
 
-	private List<ClickableItem> getPrivateFolderItems(Consumer<Folder> onClick) {
-		PaginationList<GUISortable> items = new PaginationList<>(pageSize);
-		items.addAll(targetData.getWaypoints());
-		items.sort(viewerData.settings().sortMode().getComparator());
-		return items.page(folderListPage).stream().map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> onClick.accept((Folder) guiSortable))).collect(Collectors.toList());
-	}
-
 	private List<ClickableItem> getFolderPageItems(Folder folder) {
 		PaginationList<GUISortable> items = new PaginationList<>(pageSize);
 		items.addAll(folder.getWaypoints(viewer));
 		items.sort(viewerData.settings().sortMode().getComparator());
-		return items.page(folderPage).stream().map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> showWaypoint((Waypoint) guiSortable))).collect(Collectors.toList());
+		return items.page(folderPage).stream().map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> showWaypoint((Waypoint) guiSortable)))
+			.collect(Collectors.toList());
 	}
-	//endregion
+
+	private List<ClickableItem> getSelectFolderPageItems(Consumer<Folder> onClick) {
+		PaginationList<GUISortable> items = new PaginationList<>(pageSize);
+		items.addAll(targetData.getFolders());
+		items.sort(viewerData.settings().sortMode().getComparator());
+		return items.page(folderListPage).stream().map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> onClick.accept((Folder) guiSortable))).collect(Collectors.toList());
+	}
+	//</editor-fold>
 
 	// TODO External update view
-
-	private void showConfirm(Messages descriptionDisplayName, Messages descriptionDescription, Messages yesDisplayName, Messages yesDescription,
-	                         Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
-		confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuBackgroundItem())
-			.name(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME, viewer)).lore(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION, viewer)).make()));
-		confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).name(message(descriptionDisplayName, viewer))
-			.lore(message(descriptionDescription, viewer)).make()));
-		confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).name(message(noDisplayName, viewer))
-			.lore(message(noDescription, viewer)).make(), click -> result.accept(false)));
-		confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).name(message(yesDisplayName, viewer))
-			.lore(message(yesDescription, viewer)).make(), click -> result.accept(true)));
-		contents.fillPattern(confirmPattern);
-	}
 
 	@Override
 	public void update(Player player, InventoryContents contents) {

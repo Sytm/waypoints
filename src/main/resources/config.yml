@@ -42,7 +42,7 @@ inventory:
   generalItems:
     previousItem: ARROW
     nextItem: ARROW
-    backItem: ARROW
+    backItem: BARRIER
   overview:
     backgroundItem: GRAY_STAINED_GLASS_PANE
     cycleSortItem: HOPPER
@@ -95,14 +95,14 @@ inventory:
       item: BOOK
       backgroundItem: RED_STAINED_GLASS_PANE
 
-display:
+displays:
   wrongWorld:
     # When enabled sends the player a message that he is in the wrong world
     enabled: true
     # When set to true, the message will appear in the action bar, otherwise it is a normal chat message
     actionBar: true
     # The interval in game ticks, in which the message should be sent. If it is set to 0 or lower it will send it only once
-    interval: 0
+    interval: 20
 
   compass:
     enabled: true
@@ -144,13 +144,13 @@ display:
     baseBlock: IRON_BLOCK
 
     # The interval in game ticks when the ghost block changes should be sent
-    interval: 100
+    interval: 30
 
   actionBar:
     # Enable or disable it here
     enabled: true
 
-    interval: 50
+    interval: 20
     # The indicator color is used to show where the waypoint is by changing the color of one of the sections
     indicatorColor: '&4&l'
     # The background color for the sections
@@ -175,8 +175,8 @@ display:
     enabled: true
     interval: 60
     heightOffset: 1
-    verticalDirection: true
+    verticalDirection: false
     amount: 10
-    distance: 0.05
+    distance: 0.1
     # See here for different particles https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
     particle: FLAME
