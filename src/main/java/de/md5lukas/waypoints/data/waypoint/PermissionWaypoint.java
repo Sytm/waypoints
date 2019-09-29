@@ -19,6 +19,7 @@
 package de.md5lukas.waypoints.data.waypoint;
 
 import de.md5lukas.commons.MathHelper;
+import de.md5lukas.commons.StringHelper;
 import de.md5lukas.commons.collections.ReplaceableList;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.store.WPConfig;
@@ -58,7 +59,7 @@ public class PermissionWaypoint extends Waypoint {
 
 	@Override
 	public List<String> getDescription(Player player) {
-		return ReplaceableList.ofStrings(message(INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION, player).split("\\n")).replace(
+		return new ReplaceableList(StringHelper.split(message(INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION, player), '\n')).replace(
 			"%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
 			"%x%", MathHelper.format(location.getX()),
 			"%y%", MathHelper.format(location.getY()),
