@@ -49,7 +49,7 @@ public class PublicFolder extends Folder {
 
 	@Override
 	protected List<Waypoint> loadWaypoints(ListTag waypoints) {
-		return waypoints.values().stream().map(tag -> new PrivateWaypoint((CompoundTag) tag)).collect(Collectors.toList());
+		return waypoints.values().stream().map(tag -> new PublicWaypoint((CompoundTag) tag)).collect(Collectors.toList());
 	}
 
 	@Override
