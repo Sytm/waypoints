@@ -49,7 +49,7 @@ public class PermissionFolder extends Folder {
 
 	@Override
 	protected List<Waypoint> loadWaypoints(ListTag waypoints) {
-		return waypoints.values().stream().map(tag -> new PrivateWaypoint((CompoundTag) tag)).collect(Collectors.toList());
+		return waypoints.values().stream().map(tag -> new PermissionWaypoint((CompoundTag) tag)).collect(Collectors.toList());
 	}
 
 	@Override
