@@ -190,12 +190,13 @@ public class WaypointProvider implements InventoryProvider {
 		ClickableItem globalsShown = ClickableItem.from(ItemStacks.getOverviewToggleGlobalsShownItem(viewer), click -> globalToggle.get().run());
 		ClickableItem globalsHidden = ClickableItem.from(ItemStacks.getOverviewToggleGlobalsHiddenItem(viewer), click -> globalToggle.get().run());
 		globalToggle.set(() -> {
+			viewerData.settings().showGlobals(!viewerData.settings().showGlobals());
 			if (viewerData.settings().showGlobals()) {
-				contents.set(globalTogglePos, globalsHidden);
+				contents.set(globalTogglePos, globalsShown);
 			} else {
 				contents.set(globalTogglePos, globalsHidden);
 			}
-			viewerData.settings().showGlobals(!viewerData.settings().showGlobals());
+			updateOverview();
 		});
 		overviewPattern.attach('t', viewerData.settings().showGlobals() ? globalsShown : globalsHidden);
 
@@ -278,175 +279,137 @@ public class WaypointProvider implements InventoryProvider {
 		updateFolder(folder);
 	}
 
+	private void showConfirm(Messages descriptionDisplayName, Messages descriptionDescription, Messages yesDisplayName, Messages yesDescription,
+	                         Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
+		confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuBackgroundItem())
+			.name(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME, viewer)).lore(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION, viewer)).make()));
+		confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).name(message(descriptionDisplayName, viewer))
+			.lore(message(descriptionDescription, viewer)).make()));
+		confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).name(message(noDisplayName, viewer))
+			.lore(message(noDescription, viewer)).make(), click -> result.accept(false)));
+		confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).name(message(yesDisplayName, viewer))
+			.lore(message(yesDescription, viewer)).make(), click -> result.accept(true)));
+		contents.fillPattern(confirmPattern);
+	}
+	//</editor-fold>
+
+	//<editor-fold defaultstate="collapsed" desc="Show waypoints">
 	private void showWaypoint(Waypoint waypoint) {
 		contents.fill(ClickableItem.NONE);
 		if (waypoint instanceof PrivateWaypoint) {
-			ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointPrivateBackgroundItem(viewer));
-			waypointPattern.setDefault(bg);
-			if (isOwner) {
-				waypointPattern.attach('w', ClickableItem.from(waypoint.getStack(viewer), click -> {
-					BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE, viewer));
-					ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypoint " + waypoint.getID());
-					Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
-					viewer.spigot().sendMessage(components);
-					viewer.closeInventory();
-				}));
-			} else {
-				waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
-			}
-			waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointPrivateSelectItem(viewer), click -> {
-				WaypointDisplay.getAll().show(viewer, waypoint);
-				viewer.closeInventory();
-			}));
-			if (isOwner || viewer.hasPermission("waypoints.delete.other")) {
-				waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPrivateDeleteItem(viewer),
-					click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DISPLAY_NAME,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DESCRIPTION,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DESCRIPTION,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DESCRIPTION, result -> {
-							if (result) {
-								targetData.removeWaypoint(waypoint.getID());
-							}
-							showLast();
-						})));
-			} else {
-				waypointPattern.attach('d', bg);
-			}
-			if (isOwner && WPConfig.allowRenamingWaypointsPrivate()) {
-				waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPrivateRenameItem(viewer), click -> {
-					BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PRIVATE, viewer));
-					ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename privateWaypoint " + waypoint.getID());
-					Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
-					viewer.spigot().sendMessage(components);
-					viewer.closeInventory();
-				}));
-			} else {
-				waypointPattern.attach('r', bg);
-			}
-			if (viewer.hasPermission("waypoints.teleport.private")) {
-				waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPrivateTeleportItem(viewer), click -> {
-					viewer.closeInventory();
-					viewer.teleport(waypoint.getLocation());
-				}));
-			} else {
-				waypointPattern.attach('t', bg);
-			}
-			waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
-			if (isOwner) {
-				waypointPattern.attach('f', ClickableItem.from(ItemStacks.getWaypointPrivateMoveToFolderItem(viewer), click -> showSelectFolder(waypoint)));
-			} else {
-				waypointPattern.attach('f', bg);
-			}
+			showPrivateWaypoint(waypoint);
 		} else if (waypoint instanceof PublicWaypoint) {
-			ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointPublicBackgroundItem(viewer));
-			waypointPattern.setDefault(bg);
-			waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
-			waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointPublicSelectItem(viewer), click -> {
-				WaypointDisplay.getAll().show(viewer, waypoint);
-				viewer.closeInventory();
-			}));
-			if (viewer.hasPermission("waypoints.delete.public")) {
-				waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPublicDeleteItem(viewer),
-					click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DISPLAY_NAME,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DESCRIPTION,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DESCRIPTION,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DESCRIPTION, result -> {
-							if (result) {
-								Waypoints.getGlobalStore().getPublicFolder().removeWaypoint(waypoint.getID());
-							}
-							showLast();
-						})));
-			} else {
-				waypointPattern.attach('d', bg);
-			}
-			if (viewer.hasPermission("waypoints.rename.public") && WPConfig.allowRenamingWaypointsPublic()) {
-				waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPublicRenameItem(viewer), click -> {
-					BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PUBLIC, viewer));
-					ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename publicWaypoint " + waypoint.getID());
-					Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
-					viewer.spigot().sendMessage(components);
-					viewer.closeInventory();
-				}));
-			} else {
-				waypointPattern.attach('r', bg);
-			}
-			if (viewer.hasPermission("waypoints.teleport.public")) {
-				waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPublicTeleportItem(viewer), click -> {
-					viewer.closeInventory();
-					viewer.teleport(waypoint.getLocation());
-				}));
-			} else {
-				waypointPattern.attach('t', bg);
-			}
-			waypointPattern.attach('f', bg);
-			waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
+			showPublicWaypoint(waypoint);
 		} else if (waypoint instanceof PermissionWaypoint) {
-			ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointPermissionBackgroundItem(viewer));
-			waypointPattern.setDefault(bg);
-			waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
-			waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointPermissionSelectItem(viewer), click -> {
-				WaypointDisplay.getAll().show(viewer, waypoint);
-				viewer.closeInventory();
-			}));
-			if (viewer.hasPermission("waypoints.delete.permission")) {
-				waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPermissionDeleteItem(viewer), click -> {
-					Waypoints.getGlobalStore().getPermissionFolder().removeWaypoint(waypoint.getID());
-					showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_DESCRIPTION_DISPLAY_NAME,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_DESCRIPTION_DESCRIPTION,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_YES_DESCRIPTION,
-						INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_NO_DESCRIPTION, result -> {
-							if (result) {
-								Waypoints.getGlobalStore().getPermissionFolder().removeWaypoint(waypoint.getID());
-							}
-							showLast();
-						});
-				}));
-			} else {
-				waypointPattern.attach('d', bg);
-			}
-			if (viewer.hasPermission("waypoints.rename.permission") && WPConfig.allowRenamingWaypointsPermission()) {
-				waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPermissionRenameItem(viewer), click -> {
-					BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PERMISSION, viewer));
-					ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename permissionWaypoint " + waypoint.getID());
-					Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
-					viewer.spigot().sendMessage(components);
-					viewer.closeInventory();
-				}));
-			} else {
-				waypointPattern.attach('r', bg);
-			}
-			if (viewer.hasPermission("waypoints.teleport.permission")) {
-				waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPermissionTeleportItem(viewer), click -> {
-					viewer.closeInventory();
-					viewer.teleport(waypoint.getLocation());
-				}));
-			} else {
-				waypointPattern.attach('t', bg);
-			}
-			waypointPattern.attach('f', bg);
-			waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
+			showPermissionWaypoint(waypoint);
 		} else if (waypoint instanceof DeathWaypoint) {
-			ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointDeathBackgroundItem(viewer));
-			waypointPattern.setDefault(bg);
-			waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
-
-			waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointDeathSelectItem(viewer), click -> {
-				WaypointDisplay.getAll().show(viewer, waypoint);
-				viewer.closeInventory();
-			}));
-
-			if (viewer.hasPermission("waypoints.teleport.death")) {
-				viewer.closeInventory();
-				viewer.teleport(waypoint.getLocation());
-			} else {
-				waypointPattern.attach('t', bg);
-			}
-
-			waypointPattern.attach('d', bg);
-			waypointPattern.attach('f', bg);
-			waypointPattern.attach('r', bg);
+			showDeathWaypoint(waypoint);
 		}
 		contents.fillPattern(waypointPattern);
+	}
+
+	private void showPrivateWaypoint(Waypoint waypoint) {
+		ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointPrivateBackgroundItem(viewer));
+		waypointPattern.setDefault(bg);
+		if (isOwner) {
+			waypointPattern.attach('w', ClickableItem.from(waypoint.getStack(viewer), click -> {
+				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE, viewer));
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypoint " + waypoint.getID());
+				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+				viewer.spigot().sendMessage(components);
+				viewer.closeInventory();
+			}));
+		} else {
+			waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
+		}
+		waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointPrivateSelectItem(viewer), click -> {
+			WaypointDisplay.getAll().show(viewer, waypoint);
+			viewer.closeInventory();
+		}));
+		if (isOwner || viewer.hasPermission("waypoints.delete.other")) {
+			waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPrivateDeleteItem(viewer),
+				click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DISPLAY_NAME,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DESCRIPTION,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DESCRIPTION,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DESCRIPTION, result -> {
+						if (result) {
+							targetData.removeWaypoint(waypoint.getID());
+						}
+						showLast();
+					})));
+		} else {
+			waypointPattern.attach('d', bg);
+		}
+		if (isOwner && WPConfig.allowRenamingWaypointsPrivate()) {
+			waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPrivateRenameItem(viewer), click -> {
+				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PRIVATE, viewer));
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename privateWaypoint " + waypoint.getID());
+				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+				viewer.spigot().sendMessage(components);
+				viewer.closeInventory();
+			}));
+		} else {
+			waypointPattern.attach('r', bg);
+		}
+		if (viewer.hasPermission("waypoints.teleport.private")) {
+			waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPrivateTeleportItem(viewer), click -> {
+				viewer.closeInventory();
+				viewer.teleport(waypoint.getLocation());
+			}));
+		} else {
+			waypointPattern.attach('t', bg);
+		}
+		waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
+		if (isOwner) {
+			waypointPattern.attach('f', ClickableItem.from(ItemStacks.getWaypointPrivateMoveToFolderItem(viewer), click -> showSelectFolder(waypoint)));
+		} else {
+			waypointPattern.attach('f', bg);
+		}
+	}
+
+	private void showPublicWaypoint(Waypoint waypoint) {
+		ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointPublicBackgroundItem(viewer));
+		waypointPattern.setDefault(bg);
+		waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
+		waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointPublicSelectItem(viewer), click -> {
+			WaypointDisplay.getAll().show(viewer, waypoint);
+			viewer.closeInventory();
+		}));
+		if (viewer.hasPermission("waypoints.delete.public")) {
+			waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPublicDeleteItem(viewer),
+				click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DISPLAY_NAME,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DESCRIPTION,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DESCRIPTION,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DESCRIPTION, result -> {
+						if (result) {
+							Waypoints.getGlobalStore().getPublicFolder().removeWaypoint(waypoint.getID());
+						}
+						showLast();
+					})));
+		} else {
+			waypointPattern.attach('d', bg);
+		}
+		if (viewer.hasPermission("waypoints.rename.public") && WPConfig.allowRenamingWaypointsPublic()) {
+			waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPublicRenameItem(viewer), click -> {
+				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PUBLIC, viewer));
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename publicWaypoint " + waypoint.getID());
+				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+				viewer.spigot().sendMessage(components);
+				viewer.closeInventory();
+			}));
+		} else {
+			waypointPattern.attach('r', bg);
+		}
+		if (viewer.hasPermission("waypoints.teleport.public")) {
+			waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPublicTeleportItem(viewer), click -> {
+				viewer.closeInventory();
+				viewer.teleport(waypoint.getLocation());
+			}));
+		} else {
+			waypointPattern.attach('t', bg);
+		}
+		waypointPattern.attach('f', bg);
+		waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
 	}
 
 	private void showSelectFolder(Waypoint waypoint) {
@@ -484,17 +447,73 @@ public class WaypointProvider implements InventoryProvider {
 		updateSelectFolder(onClick);
 	}
 
-	private void showConfirm(Messages descriptionDisplayName, Messages descriptionDescription, Messages yesDisplayName, Messages yesDescription,
-	                         Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
-		confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuBackgroundItem())
-			.name(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME, viewer)).lore(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION, viewer)).make()));
-		confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).name(message(descriptionDisplayName, viewer))
-			.lore(message(descriptionDescription, viewer)).make()));
-		confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).name(message(noDisplayName, viewer))
-			.lore(message(noDescription, viewer)).make(), click -> result.accept(false)));
-		confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).name(message(yesDisplayName, viewer))
-			.lore(message(yesDescription, viewer)).make(), click -> result.accept(true)));
-		contents.fillPattern(confirmPattern);
+	private void showPermissionWaypoint(Waypoint waypoint) {
+		ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointPermissionBackgroundItem(viewer));
+		waypointPattern.setDefault(bg);
+		waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
+		waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointPermissionSelectItem(viewer), click -> {
+			WaypointDisplay.getAll().show(viewer, waypoint);
+			viewer.closeInventory();
+		}));
+		if (viewer.hasPermission("waypoints.delete.permission")) {
+			waypointPattern.attach('d', ClickableItem.from(ItemStacks.getWaypointPermissionDeleteItem(viewer), click -> {
+				Waypoints.getGlobalStore().getPermissionFolder().removeWaypoint(waypoint.getID());
+				showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_DESCRIPTION_DISPLAY_NAME,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_DESCRIPTION_DESCRIPTION,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_YES_DESCRIPTION,
+					INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_NO_DESCRIPTION, result -> {
+						if (result) {
+							Waypoints.getGlobalStore().getPermissionFolder().removeWaypoint(waypoint.getID());
+						}
+						showLast();
+					});
+			}));
+		} else {
+			waypointPattern.attach('d', bg);
+		}
+		if (viewer.hasPermission("waypoints.rename.permission") && WPConfig.allowRenamingWaypointsPermission()) {
+			waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPermissionRenameItem(viewer), click -> {
+				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PERMISSION, viewer));
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename permissionWaypoint " + waypoint.getID());
+				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+				viewer.spigot().sendMessage(components);
+				viewer.closeInventory();
+			}));
+		} else {
+			waypointPattern.attach('r', bg);
+		}
+		if (viewer.hasPermission("waypoints.teleport.permission")) {
+			waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPermissionTeleportItem(viewer), click -> {
+				viewer.closeInventory();
+				viewer.teleport(waypoint.getLocation());
+			}));
+		} else {
+			waypointPattern.attach('t', bg);
+		}
+		waypointPattern.attach('f', bg);
+		waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
+	}
+
+	private void showDeathWaypoint(Waypoint waypoint) {
+		ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointDeathBackgroundItem(viewer));
+		waypointPattern.setDefault(bg);
+		waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
+
+		waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointDeathSelectItem(viewer), click -> {
+			WaypointDisplay.getAll().show(viewer, waypoint);
+			viewer.closeInventory();
+		}));
+
+		if (viewer.hasPermission("waypoints.teleport.death")) {
+			viewer.closeInventory();
+			viewer.teleport(waypoint.getLocation());
+		} else {
+			waypointPattern.attach('t', bg);
+		}
+
+		waypointPattern.attach('d', bg);
+		waypointPattern.attach('f', bg);
+		waypointPattern.attach('r', bg);
 	}
 	//</editor-fold>
 
