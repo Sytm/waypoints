@@ -19,8 +19,6 @@
 package de.md5lukas.waypoints.data.waypoint;
 
 import de.md5lukas.commons.MathHelper;
-import de.md5lukas.commons.StringHelper;
-import de.md5lukas.commons.collections.ReplaceableList;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Location;
@@ -31,7 +29,6 @@ import java.util.List;
 
 import static de.md5lukas.waypoints.Messages.INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION;
 import static de.md5lukas.waypoints.Messages.INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME;
-import static de.md5lukas.waypoints.Waypoints.message;
 
 public class PermissionWaypoint extends Waypoint {
 
@@ -54,12 +51,12 @@ public class PermissionWaypoint extends Waypoint {
 
 	@Override
 	public String getDisplayName(Player player) {
-		return message(INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME, player).replace("%name%", name);
+		return INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME.getRaw(player).replace("%name%", name);
 	}
 
 	@Override
 	public List<String> getDescription(Player player) {
-		return new ReplaceableList(StringHelper.split(message(INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION, player), '\n')).replace(
+		return INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION.asList(player).replace(
 			"%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
 			"%x%", MathHelper.format(location.getX()),
 			"%y%", MathHelper.format(location.getY()),

@@ -40,7 +40,6 @@ import fr.minuskube.inv.content.SlotPos;
 import fr.minuskube.inv.util.Pattern;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -53,7 +52,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static de.md5lukas.waypoints.Messages.*;
-import static de.md5lukas.waypoints.Waypoints.message;
 import static de.md5lukas.waypoints.store.WPConfig.inventory;
 
 public class WaypointProvider implements InventoryProvider {
@@ -256,14 +254,14 @@ public class WaypointProvider implements InventoryProvider {
 						showOverview();
 					})));
 			folderPattern.attach('f', ClickableItem.from(folder.getStack(viewer), click -> {
-				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE, viewer));
+				BaseComponent[] components = CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE.get(viewer).getComponentsModifiable();
 				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints updateItem folder " + folder.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
 				viewer.closeInventory();
 			}));
 			folderPattern.attach('r', ClickableItem.from(ItemStacks.getFolderPrivateRenameItem(viewer), click -> {
-				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_FOLDER_PRIVATE, viewer));
+				BaseComponent[] components = CHAT_ACTION_RENAME_FOLDER_PRIVATE.get(viewer).getComponentsModifiable();
 				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints updateItem folder " + folder.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
@@ -282,13 +280,13 @@ public class WaypointProvider implements InventoryProvider {
 	private void showConfirm(Messages descriptionDisplayName, Messages descriptionDescription, Messages yesDisplayName, Messages yesDescription,
 	                         Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
 		confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuBackgroundItem())
-			.name(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME, viewer)).lore(message(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION, viewer)).make()));
-		confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).name(message(descriptionDisplayName, viewer))
-			.lore(message(descriptionDescription, viewer)).make()));
-		confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).name(message(noDisplayName, viewer))
-			.lore(message(noDescription, viewer)).make(), click -> result.accept(false)));
-		confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).name(message(yesDisplayName, viewer))
-			.lore(message(yesDescription, viewer)).make(), click -> result.accept(true)));
+			.name(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME.getRaw(viewer)).lore(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION.asList(viewer)).make()));
+		confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).lore(descriptionDisplayName.getRaw(viewer))
+			.lore(descriptionDescription.asList(viewer)).make()));
+		confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).lore(noDisplayName.getRaw(viewer))
+			.lore(noDescription.asList(viewer)).make(), click -> result.accept(false)));
+		confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).lore(yesDisplayName.getRaw(viewer))
+			.lore(yesDescription.asList(viewer)).make(), click -> result.accept(true)));
 		contents.fillPattern(confirmPattern);
 	}
 	//</editor-fold>
@@ -313,7 +311,7 @@ public class WaypointProvider implements InventoryProvider {
 		waypointPattern.setDefault(bg);
 		if (isOwner) {
 			waypointPattern.attach('w', ClickableItem.from(waypoint.getStack(viewer), click -> {
-				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE, viewer));
+				BaseComponent[] components = CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE.get(viewer).getComponentsModifiable();
 				ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypoint " + waypoint.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
@@ -342,7 +340,7 @@ public class WaypointProvider implements InventoryProvider {
 		}
 		if (isOwner && WPConfig.allowRenamingWaypointsPrivate()) {
 			waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPrivateRenameItem(viewer), click -> {
-				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PRIVATE, viewer));
+				BaseComponent[] components = CHAT_ACTION_RENAME_WAYPOINT_PRIVATE.get(viewer).getComponentsModifiable();
 				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename privateWaypoint " + waypoint.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
@@ -391,7 +389,7 @@ public class WaypointProvider implements InventoryProvider {
 		}
 		if (viewer.hasPermission("waypoints.rename.public") && WPConfig.allowRenamingWaypointsPublic()) {
 			waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPublicRenameItem(viewer), click -> {
-				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PUBLIC, viewer));
+				BaseComponent[] components = CHAT_ACTION_RENAME_WAYPOINT_PUBLIC.get(viewer).getComponentsModifiable();
 				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename publicWaypoint " + waypoint.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
@@ -473,7 +471,7 @@ public class WaypointProvider implements InventoryProvider {
 		}
 		if (viewer.hasPermission("waypoints.rename.permission") && WPConfig.allowRenamingWaypointsPermission()) {
 			waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPermissionRenameItem(viewer), click -> {
-				BaseComponent[] components = TextComponent.fromLegacyText(message(CHAT_ACTION_RENAME_WAYPOINT_PERMISSION, viewer));
+				BaseComponent[] components = CHAT_ACTION_RENAME_WAYPOINT_PERMISSION.get(viewer).getComponentsModifiable();
 				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename permissionWaypoint " + waypoint.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
@@ -519,17 +517,17 @@ public class WaypointProvider implements InventoryProvider {
 
 	//<editor-fold defaultstate="collapsed" desc="Cycle Sort mode helpers">
 	private ItemStack getSortCycleItem(Material material) {
-		ItemBuilder builder = new ItemBuilder(material).name(message(INVENTORY_CYCLE_SORT_DISPLAY_NAME, viewer))
-			.lore(message(INVENTORY_CYCLE_SORT_DESCRIPTION, viewer));
+		ItemBuilder builder = new ItemBuilder(material).name(INVENTORY_CYCLE_SORT_DISPLAY_NAME.getRaw(viewer))
+			.lore(INVENTORY_CYCLE_SORT_DESCRIPTION.asList(viewer));
 
 		builder.appendLore("");
 
-		String active = message(INVENTORY_CYCLE_SORT_ACTIVE, viewer), inactive = message(INVENTORY_CYCLE_SORT_INACTIVE, viewer);
+		String active = INVENTORY_CYCLE_SORT_ACTIVE.getRaw(viewer), inactive = INVENTORY_CYCLE_SORT_INACTIVE.getRaw(viewer);
 		sortModeMap.forEach((sortMode, message) -> {
 			if (viewerData.settings().sortMode().equals(sortMode)) {
-				builder.appendLore(active.replace("%name%", message(message, viewer)));
+				builder.appendLore(active.replace("%name%", message.getRaw(viewer)));
 			} else {
-				builder.appendLore(inactive.replace("%name%", message(message, viewer)));
+				builder.appendLore(inactive.replace("%name%", message.getRaw(viewer)));
 			}
 		});
 

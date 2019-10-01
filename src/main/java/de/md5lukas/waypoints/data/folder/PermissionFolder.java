@@ -18,12 +18,9 @@
 
 package de.md5lukas.waypoints.data.folder;
 
-import de.md5lukas.commons.StringHelper;
-import de.md5lukas.commons.collections.ReplaceableList;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
 import de.md5lukas.waypoints.data.waypoint.PermissionWaypoint;
-import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.gui.GUIType;
 import de.md5lukas.waypoints.store.WPConfig;
@@ -35,7 +32,6 @@ import java.util.stream.Collectors;
 
 import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PERMISSION_DESCRIPTION;
 import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PERMISSION_DISPLAY_NAME;
-import static de.md5lukas.waypoints.Waypoints.message;
 
 public class PermissionFolder extends Folder {
 
@@ -69,12 +65,12 @@ public class PermissionFolder extends Folder {
 
 	@Override
 	public String getDisplayName(Player player) {
-		return message(INVENTORY_FOLDER_PERMISSION_DISPLAY_NAME, player);
+		return INVENTORY_FOLDER_PERMISSION_DISPLAY_NAME.getRaw(player);
 	}
 
 	@Override
 	public List<String> getDescription(Player player) {
-		return new ReplaceableList(StringHelper.split(message(INVENTORY_FOLDER_PERMISSION_DESCRIPTION, player), '\n')).replace(
+		return INVENTORY_FOLDER_PERMISSION_DESCRIPTION.asList(player).replace(
 			"%amount%", Integer.toString(waypoints.stream().filter(wp -> player.hasPermission(((PermissionWaypoint) wp).getPermission())).mapToInt(wp -> 1).sum()));
 	}
 

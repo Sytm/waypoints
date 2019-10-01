@@ -59,10 +59,6 @@ public class Waypoints extends JavaPlugin {
 		return instance.messageStore;
 	}
 
-	public static String message(Enum<?> message, CommandSender sender) {
-		return instance.messageStore.getMessage(message, sender);
-	}
-
 	public static FileManager getFileManager() {
 		return instance.fileManager;
 	}
