@@ -18,11 +18,8 @@
 
 package de.md5lukas.waypoints.data.folder;
 
-import de.md5lukas.commons.StringHelper;
-import de.md5lukas.commons.collections.ReplaceableList;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
-import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PublicWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.gui.GUIType;
@@ -35,7 +32,6 @@ import java.util.stream.Collectors;
 
 import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PUBLIC_DESCRIPTION;
 import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PUBLIC_DISPLAY_NAME;
-import static de.md5lukas.waypoints.Waypoints.message;
 
 public class PublicFolder extends Folder {
 
@@ -64,12 +60,12 @@ public class PublicFolder extends Folder {
 
 	@Override
 	public String getDisplayName(Player player) {
-		return message(INVENTORY_FOLDER_PUBLIC_DISPLAY_NAME, player);
+		return INVENTORY_FOLDER_PUBLIC_DISPLAY_NAME.getRaw(player);
 	}
 
 	@Override
 	public List<String> getDescription(Player player) {
-		return new ReplaceableList(StringHelper.split(message(INVENTORY_FOLDER_PUBLIC_DESCRIPTION, player), '\n')).replace(
+		return INVENTORY_FOLDER_PUBLIC_DESCRIPTION.asList(player).replace(
 			"%amount%", Integer.toString(waypoints.size()));
 	}
 

@@ -18,6 +18,10 @@
 
 package de.md5lukas.waypoints;
 
+import de.md5lukas.commons.collections.ReplaceableList;
+import de.md5lukas.commons.messages.Message;
+import org.bukkit.command.CommandSender;
+
 public enum Messages {
 
 	// ---------------------- General ----------------------
@@ -250,5 +254,21 @@ public enum Messages {
 	@Override
 	public String toString() {
 		return path;
+	}
+
+	public void send(CommandSender sender) {
+		Waypoints.messageStore().getMessage(this, sender).send(sender);
+	}
+
+	public Message get(CommandSender sender) {
+		return Waypoints.messageStore().getMessage(this, sender);
+	}
+
+	public String getRaw(CommandSender sender) {
+		return get(sender).getRaw();
+	}
+
+	public ReplaceableList asList(CommandSender sender) {
+		return get(sender).asList();
 	}
 }

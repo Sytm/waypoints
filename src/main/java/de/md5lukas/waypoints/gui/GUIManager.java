@@ -24,18 +24,18 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import static de.md5lukas.waypoints.Waypoints.message;
-import static de.md5lukas.waypoints.Messages.*;
+import static de.md5lukas.waypoints.Messages.INVENTORY_TITLE_OTHER;
+import static de.md5lukas.waypoints.Messages.INVENTORY_TITLE_OWN;
 
 public class GUIManager {
 
 	public static void openGUI(Player player) {
 		SmartInventory.builder().id(player.getUniqueId().toString()).size(5, 9)
-			.provider(new WaypointProvider(player.getUniqueId())).title(message(INVENTORY_TITLE_OWN, player)).build().open(player);
+			.provider(new WaypointProvider(player.getUniqueId())).title(INVENTORY_TITLE_OWN.getRaw(player)).build().open(player);
 	}
 
 	public static void openGUI(Player player, UUID target) {
 		SmartInventory.builder().id(player.getUniqueId() + "|" + target).size(5, 9)
-			.provider(new WaypointProvider(target)).title(message(INVENTORY_TITLE_OTHER, player).replace("%name%", UUIDUtils.getName(target))).build().open(player);
+			.provider(new WaypointProvider(target)).title(INVENTORY_TITLE_OTHER.getRaw(player).replace("%name%", UUIDUtils.getName(target))).build().open(player);
 	}
 }

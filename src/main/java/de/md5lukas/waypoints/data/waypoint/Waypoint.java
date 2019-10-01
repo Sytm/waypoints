@@ -22,7 +22,6 @@ import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.extended.UUIDTag;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Messages;
-import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.data.GUISortable;
 import de.md5lukas.waypoints.gui.GUIType;
 import de.md5lukas.waypoints.store.LocationTag;
@@ -102,6 +101,6 @@ public abstract class Waypoint implements GUISortable {
 		if (player.getWorld().equals(location.getWorld())) {
 			return MathHelper.format(MathHelper.distance2D(player.getLocation(), location));
 		}
-		return Waypoints.message(Messages.INVENTORY_WAYPOINT_DISTANCE_OTHER_WORLD, player);
+		return Messages.INVENTORY_WAYPOINT_DISTANCE_OTHER_WORLD.getRaw(player);
 	}
 }
