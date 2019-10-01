@@ -24,7 +24,9 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.MinusKube:SmartInvs:e90199bc399f98c341f22defb38e96d964162dfe'
+    compile ('com.github.MinusKube:SmartInvs:e90199bc399f98c341f22defb38e96d964162dfe') {
+        transitive = false
+    }
 
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
     compileOnly 'de.md5lukas:nbt:1.2.2'
