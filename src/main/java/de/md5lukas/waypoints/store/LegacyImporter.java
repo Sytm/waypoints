@@ -24,7 +24,6 @@ import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.waypoint.PermissionWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PublicWaypoint;
-import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
