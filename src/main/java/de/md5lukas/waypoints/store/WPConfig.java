@@ -107,7 +107,7 @@ public class WPConfig {
 		//<editor-fold defaultstate="collapsed" desc="General">
 		waypointLimit = cfg.getInt("general.waypointLimit");
 
-		deathWaypointEnabled = cfg.getBoolean("general.deathWaypointsEnabled");
+		deathWaypointEnabled = cfg.getBoolean("general.deathWaypointEnabled");
 
 		allowDuplicateFolderPrivateNames = cfg.getBoolean("general.allowDuplicatePrivateFolderNames");
 		allowDuplicateWaypointNamesPrivate = cfg.getBoolean("general.allowDuplicateWaypointNames.private");

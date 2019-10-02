@@ -5,9 +5,9 @@
 # When you need to set a distance, it is always in blocks
 
 general:
+  # The maximum amount of waypoints a player can have saved
   waypointLimit: 100
-  deathWaypoint:
-    enabled: true
+  deathWaypointEnabled: true
   allowDuplicateWaypointNames:
     private: true
     public: false
