@@ -19,7 +19,6 @@
 package de.md5lukas.waypoints.data.folder;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.extended.UUIDTag;
 import de.md5lukas.nbt.tags.CompoundTag;
@@ -29,7 +28,10 @@ import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 

@@ -18,8 +18,7 @@
 
 package de.md5lukas.waypoints.store;
 
-import de.md5lukas.commons.UUIDUtils;
-import de.md5lukas.commons.messages.Languages;
+import de.md5lukas.commons.language.Languages;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,7 +27,6 @@ import org.bukkit.Particle;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -61,7 +59,7 @@ public class WPConfig {
 	}
 
 	public static String translateWorldName(String world, CommandSender sender) {
-		return translateWorldName(world, Languages.getLanguage(sender instanceof Player ? ((Player) sender).getUniqueId() : UUIDUtils.ZERO_UUID));
+		return translateWorldName(world, Languages.getLanguage(sender));
 	}
 
 	public static int getWaypointLimit() {

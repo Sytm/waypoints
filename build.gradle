@@ -4,6 +4,10 @@ plugins {
     id 'java'
 }
 
+group = 'de.md5lukas'
+version = '2.0'
+sourceCompatibility = '1.8'
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -32,12 +36,8 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
     compileOnly 'de.md5lukas:nbt:1.2.2'
     compileOnly 'de.md5lukas:particle-helper:1.0-SNAPSHOT'
-    compileOnly 'de.md5lukas:md5-commons:1.0-SNAPSHOT'
+    compileOnly 'de.md5lukas:md5-commons:1.0'
 }
-
-group = 'de.md5lukas'
-version = '2.0.0-SNAPSHOT'
-sourceCompatibility = '1.8'
 
 shadowJar {
     archiveClassifier.set(null)

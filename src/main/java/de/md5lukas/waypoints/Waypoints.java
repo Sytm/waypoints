@@ -25,14 +25,11 @@ import de.md5lukas.waypoints.display.WaypointDisplay;
 import de.md5lukas.waypoints.listener.WaypointsListener;
 import de.md5lukas.waypoints.store.*;
 import fr.minuskube.inv.SmartInvsPlugin;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -136,7 +133,7 @@ public class Waypoints extends JavaPlugin {
 
 	private boolean loadMessages() {
 		try {
-			messageStore = new MessageStore(fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
+			messageStore = new MessageStore(this, fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
 		} catch (IOException e) {
 			getLogger().log(Level.SEVERE, "Couldn't load message files", e);
 			inOnEnableDisable = true;
