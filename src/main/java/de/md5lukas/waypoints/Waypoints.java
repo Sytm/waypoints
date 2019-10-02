@@ -165,6 +165,7 @@ public class Waypoints extends JavaPlugin {
 		SmartInvsPlugin.deleteStaticReferences();
 		if (inOnEnableDisable)
 			return;
-		globalStore.save(false);
+		if (globalStore != null)
+			globalStore.save(false);
 	}
 }

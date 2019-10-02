@@ -35,6 +35,10 @@ public class GUIManager {
 	}
 
 	public static void openGUI(Player player, UUID target) {
+		if (player.getUniqueId().equals(target)) {
+			openGUI(player);
+			return;
+		}
 		SmartInventory.builder().id(player.getUniqueId() + "|" + target).size(5, 9)
 			.provider(new WaypointProvider(target)).title(INVENTORY_TITLE_OTHER.getRaw(player).replace("%name%", UUIDUtils.getName(target))).build().open(player);
 	}

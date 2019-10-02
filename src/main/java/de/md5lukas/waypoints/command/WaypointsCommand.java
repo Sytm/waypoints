@@ -213,16 +213,16 @@ public class WaypointsCommand implements CommandExecutor {
 						p.sendMessage(COMMAND_OTHER_WRONG_USAGE.getRaw(p));
 						return true;
 					}
-					if (StringHelper.MC_USERNAME_PATTERN.matcher(args[2]).matches()) {
-						UUIDUtils.getUUID(args[2], uuid -> {
+					if (StringHelper.MC_USERNAME_PATTERN.matcher(args[1]).matches()) {
+						UUIDUtils.getUUID(args[1], uuid -> {
 							if (uuid == null) {
 								p.sendMessage(COMMAND_OTHER_PLAYER_NAME_NOT_FOUND.getRaw(p));
 								return;
 							}
 							GUIManager.openGUI(p, uuid);
 						});
-					} else if (UUIDUtils.isUUID(args[2])) {
-						UUID uuid = UUID.fromString(args[2]);
+					} else if (UUIDUtils.isUUID(args[1])) {
+						UUID uuid = UUID.fromString(args[1]);
 						UUIDUtils.getName(uuid, name -> {
 							if (name == null) {
 								p.sendMessage(COMMAND_OTHER_UUID_NOT_FOUND.getRaw(p));
