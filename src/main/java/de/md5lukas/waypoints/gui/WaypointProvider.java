@@ -161,7 +161,7 @@ public class WaypointProvider implements InventoryProvider {
 		showOverview();
 	}
 
-	//<editor-fold defaultstate="collapsed" desc="Show pages">
+	//<editor-fold defaultstate="collapsed" desc="Show overview/folder">
 	private void showLast() {
 		if (lastFolder == null) {
 			showOverview();
@@ -175,28 +175,34 @@ public class WaypointProvider implements InventoryProvider {
 		overviewPage = Math.min(overviewPage, getOverviewPages());
 		lastFolder = null;
 
+		ClickableItem bg = ClickableItem.empty(ItemStacks.getOverviewBackgroundItem(viewer));
+
 		overviewPattern.setDefault(ClickableItem.NONE);
-		overviewPattern.attach('_', ClickableItem.empty(ItemStacks.getOverviewBackgroundItem(viewer)));
+		overviewPattern.attach('_', bg);
 		overviewPattern.attach('p', ClickableItem.from(ItemStacks.getPreviousItem(viewer), click -> overviewPage = Math.max(0, overviewPage - 1)));
 		overviewPattern.attach('n', ClickableItem.from(ItemStacks.getNextItem(viewer), click -> overviewPage = Math.min(getOverviewPages(), overviewPage + 1)));
 		overviewPattern.attach('d', ClickableItem.from(ItemStacks.getOverviewDeselectItem(viewer), click -> WaypointDisplay.getAll().disable(viewer)));
 
 
-		overviewPattern.attach('t', UNIQUE);
-		SlotPos globalTogglePos = GeneralHelper.find(overviewPattern, ci -> ci == UNIQUE);
-		final AtomicReference<Runnable> globalToggle = new AtomicReference<>();
-		ClickableItem globalsShown = ClickableItem.from(ItemStacks.getOverviewToggleGlobalsShownItem(viewer), click -> globalToggle.get().run());
-		ClickableItem globalsHidden = ClickableItem.from(ItemStacks.getOverviewToggleGlobalsHiddenItem(viewer), click -> globalToggle.get().run());
-		globalToggle.set(() -> {
-			viewerData.settings().showGlobals(!viewerData.settings().showGlobals());
-			if (viewerData.settings().showGlobals()) {
-				contents.set(globalTogglePos, globalsShown);
-			} else {
-				contents.set(globalTogglePos, globalsHidden);
-			}
-			updateOverview();
-		});
-		overviewPattern.attach('t', viewerData.settings().showGlobals() ? globalsShown : globalsHidden);
+		if (isOwner) {
+			overviewPattern.attach('t', UNIQUE);
+			SlotPos globalTogglePos = GeneralHelper.find(overviewPattern, ci -> ci == UNIQUE);
+			final AtomicReference<Runnable> globalToggle = new AtomicReference<>();
+			ClickableItem globalsShown = ClickableItem.from(ItemStacks.getOverviewToggleGlobalsShownItem(viewer), click -> globalToggle.get().run());
+			ClickableItem globalsHidden = ClickableItem.from(ItemStacks.getOverviewToggleGlobalsHiddenItem(viewer), click -> globalToggle.get().run());
+			globalToggle.set(() -> {
+				viewerData.settings().showGlobals(!viewerData.settings().showGlobals());
+				if (viewerData.settings().showGlobals()) {
+					contents.set(globalTogglePos, globalsShown);
+				} else {
+					contents.set(globalTogglePos, globalsHidden);
+				}
+				updateOverview();
+			});
+			overviewPattern.attach('t', viewerData.settings().showGlobals() ? globalsShown : globalsHidden);
+		} else {
+			overviewPattern.attach('t', bg);
+		}
 
 
 		overviewPattern.attach('s', UNIQUE);
@@ -281,11 +287,11 @@ public class WaypointProvider implements InventoryProvider {
 	                         Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
 		confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuBackgroundItem())
 			.name(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME.getRaw(viewer)).lore(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION.asList(viewer)).make()));
-		confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).lore(descriptionDisplayName.getRaw(viewer))
+		confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).name(descriptionDisplayName.getRaw(viewer))
 			.lore(descriptionDescription.asList(viewer)).make()));
-		confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).lore(noDisplayName.getRaw(viewer))
+		confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).name(noDisplayName.getRaw(viewer))
 			.lore(noDescription.asList(viewer)).make(), click -> result.accept(false)));
-		confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).lore(yesDisplayName.getRaw(viewer))
+		confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).name(yesDisplayName.getRaw(viewer))
 			.lore(yesDescription.asList(viewer)).make(), click -> result.accept(true)));
 		contents.fillPattern(confirmPattern);
 	}
@@ -332,8 +338,10 @@ public class WaypointProvider implements InventoryProvider {
 					INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DESCRIPTION, result -> {
 						if (result) {
 							targetData.removeWaypoint(waypoint.getID());
+							showLast();
+						} else {
+							showWaypoint(waypoint);
 						}
-						showLast();
 					})));
 		} else {
 			waypointPattern.attach('d', bg);
@@ -617,7 +625,13 @@ public class WaypointProvider implements InventoryProvider {
 		items.addAll(targetData.getFolders());
 		items.addAll(targetData.getWaypoints());
 		items.sort(viewerData.settings().sortMode().getComparator());
-		return items.page(overviewPage).stream().map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> {
+		return items
+			.page(overviewPage)
+			.stream()
+			.map(guiSortable ->
+				ClickableItem.from(
+					guiSortable.getStack(viewer)
+					, click -> {
 			switch (guiSortable.getType()) {
 				case PERMISSION_FOLDER:
 				case PUBLIC_FOLDER:

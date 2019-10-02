@@ -59,6 +59,8 @@ public class LegacyImporter {
 	}
 
 	public static void registerLoadedLegacyData() {
+		if (publicWaypoints == null)
+			return;
 		publicWaypoints.forEach(Waypoints.getGlobalStore().getPublicFolder()::addWaypoint);
 		permissionWaypoints.forEach(Waypoints.getGlobalStore().getPermissionFolder()::addWaypoint);
 		playerWaypoints.forEach((uuid, privateWaypoints) -> {

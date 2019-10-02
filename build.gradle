@@ -1,5 +1,6 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id 'idea'
     id 'java'
 }
 
@@ -39,6 +40,7 @@ version = '2.0.0-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 shadowJar {
+    archiveClassifier.set(null)
     relocate 'fr.minuskube.inv', 'de.md5lukas.waypoints.shadow.sinv'
     dependencies {
         include(dependency('com.github.MinusKube:SmartInvs'))
