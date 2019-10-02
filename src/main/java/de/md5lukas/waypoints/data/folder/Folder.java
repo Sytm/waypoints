@@ -47,8 +47,8 @@ public abstract class Folder implements GUISortable {
 		id = ((UUIDTag) tag.get("id")).value();
 		name = tag.getString("name");
 		createdAt = tag.getLong("createdAt");
-		if (tag.contains("materials"))
-			material = Material.valueOf(tag.getString("material"));
+		if (tag.contains("material"))
+			material = Material.getMaterial(tag.getString("material"));
 		waypoints = loadWaypoints(tag.getList("waypoints"));
 	}
 
