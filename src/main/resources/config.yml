@@ -7,53 +7,80 @@
 general:
   # The maximum amount of waypoints a player can have saved
   waypointLimit: 100
+  # Whether a waypoint should be set, where the player died the last time
   deathWaypointEnabled: true
+  # Enable or disable duplicate waypoint names here
   allowDuplicateWaypointNames:
     private: true
     public: false
     permission: false
+  # Allow duplicate names for private folders
   allowDuplicatePrivateFolderNames: true
+  # Allow renaming waypoints
   allowRenamingWaypoints:
     private: true
     public: true
     permission: true
+  # Allow renaming private folders
   allowRenamingPrivateFolders: true
+  # Translate world names into something more readable
   worldNameAliases:
+    # Specify the language here. Examples for other languages: de, at etc.
     en:
+      # Here the internal world name is mapped to a readable version
       world: 'Overworld'
       world_nether: 'Nether'
       world_the_end: 'The End'
 
 inventory:
+  # Maximum line length of descriptions after a linebreak is inserted automatically
   maxDescriptionLineLength: 30
+  # Select the items for the yes / no menu
   confirmMenu:
+    # The item in the top middle
     descriptionItem: CHEST
     yesItem: GREEN_WOOL
     noItem: RED_WOOL
     backgroundItem: GRAY_STAINED_GLASS_PANE
   customItem:
+    # If true players can set custom items for their waypoints and folders
     enabled: true
     filter:
+      # How to treat the following list
+      # Valid are "blacklist" and "whitelist"
       useAs: blacklist
+      # The filter list
+      # If set to "blacklist", items in here cannot be used
+      # If set to "whitelist", only items in here can be used
       list:
         - AIR
         - BARRIER
         - BEDROCK
   generalItems:
+    # Item to go to the previous page
     previousItem: ARROW
+    # Item to go to the next page
     nextItem: ARROW
+    # Item to go to the previous "window", for example going back from a waypoint to the overview
     backItem: BARRIER
   overview:
     backgroundItem: GRAY_STAINED_GLASS_PANE
+    # The item that is used to cycle through all the different sort modes
     cycleSortItem: HOPPER
+    # The item to deselect the selected waypoints
     deselectItem: MILK_BUCKET
+    # The item to toggle the global folders on and off
     toggleGlobalsItem: CHEST
-  folder:
 
+  # This is for the window when selecting a folder to move the waypoint into
   selectFolder:
     backgroundItem: GRAY_STAINED_GLASS_PANE
+    # The item, when clicked the waypoint is moved back to the overview
     noFolderItem: MAP
 
+  # The "item" is the item used as an icon for the waypoint
+  # The "selectItem" is the item used to select a waypoint
+  # The "teleportItem" is the item used to teleport to a waypoint
   waypoints:
     death:
       item: SKELETON_SKULL
@@ -61,11 +88,13 @@ inventory:
       selectItem: REDSTONE
       teleportItem: ENDER_PEARL
     private:
+      # Same as "item", but with the default prefix, because the item can be changed
       defaultItem: BEACON
       backgroundItem: GRAY_STAINED_GLASS_PANE
       selectItem: REDSTONE
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
+      # Item to represent the button used to move a waypoint into a folder
       moveToFolderItem: CHEST_MINECART
       teleportItem: ENDER_PEARL
     public:
@@ -130,6 +159,7 @@ displays:
     # The interval in game ticks in which the block should be changed
     interval: 20
 
+    # The blocks that are cycled through
     blocks: [GLASS, GLOWSTONE]
 
   beacon:
@@ -166,17 +196,18 @@ displays:
     # The range of between the center section and most outer section in degrees. So the field of view of the action bar indicator is range x 2
     range: 70
 
-    # When this and the actionbar are enabled the player sees the distance in 3 dimensions and the y axis offset
-    crouch:
-      # Enable or disable it here
-      enabled: true
-
   particles:
     enabled: true
-    interval: 60
-    heightOffset: 1
+
+    interval: 30
+
+    # The height offset from the ground where the particles should spawn
+    heightOffset: 0
+    # If set to true, the particles will also point into the direction of the waypoint vertically
     verticalDirection: false
+    # The amount of particles
     amount: 10
+    # The distance between the particles
     distance: 0.1
     # See here for different particles https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
     particle: FLAME
