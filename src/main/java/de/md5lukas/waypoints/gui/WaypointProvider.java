@@ -179,8 +179,14 @@ public class WaypointProvider implements InventoryProvider {
 
 		overviewPattern.setDefault(ClickableItem.NONE);
 		overviewPattern.attach('_', bg);
-		overviewPattern.attach('p', ClickableItem.from(ItemStacks.getPreviousItem(viewer), click -> overviewPage = Math.max(0, overviewPage - 1)));
-		overviewPattern.attach('n', ClickableItem.from(ItemStacks.getNextItem(viewer), click -> overviewPage = Math.min(getOverviewPages(), overviewPage + 1)));
+		overviewPattern.attach('p', ClickableItem.from(ItemStacks.getPreviousItem(viewer), click -> {
+			overviewPage = Math.max(0, overviewPage - 1);
+			updateOverview();
+		}));
+		overviewPattern.attach('n', ClickableItem.from(ItemStacks.getNextItem(viewer), click -> {
+			overviewPage = Math.min(getOverviewPages() - 1, overviewPage + 1);
+			updateOverview();
+		}));
 		overviewPattern.attach('d', ClickableItem.from(ItemStacks.getOverviewDeselectItem(viewer), click -> WaypointDisplay.getAll().disable(viewer)));
 
 
@@ -197,6 +203,7 @@ public class WaypointProvider implements InventoryProvider {
 				} else {
 					contents.set(globalTogglePos, globalsHidden);
 				}
+				overviewPage = Math.min(getOverviewPages() - 1, overviewPage);
 				updateOverview();
 			});
 			overviewPattern.attach('t', viewerData.settings().showGlobals() ? globalsShown : globalsHidden);
@@ -244,7 +251,7 @@ public class WaypointProvider implements InventoryProvider {
 			updateFolder(folder);
 		}));
 		folderPattern.attach('n', ClickableItem.from(ItemStacks.getNextItem(viewer), click -> {
-			folderPage = Math.min(getFolderPages(folder), folderPage + 1);
+			folderPage = Math.min(getFolderPages(folder) - 1, folderPage + 1);
 			updateFolder(folder);
 		}));
 
@@ -261,14 +268,14 @@ public class WaypointProvider implements InventoryProvider {
 					})));
 			folderPattern.attach('f', ClickableItem.from(folder.getStack(viewer), click -> {
 				BaseComponent[] components = CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE.get(viewer).getComponentsModifiable();
-				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints updateItem folder " + folder.getID());
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem folder " + folder.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
 				viewer.closeInventory();
 			}));
 			folderPattern.attach('r', ClickableItem.from(ItemStacks.getFolderPrivateRenameItem(viewer), click -> {
 				BaseComponent[] components = CHAT_ACTION_RENAME_FOLDER_PRIVATE.get(viewer).getComponentsModifiable();
-				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints updateItem folder " + folder.getID());
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename folder " + folder.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
 				viewer.closeInventory();
@@ -511,11 +518,15 @@ public class WaypointProvider implements InventoryProvider {
 		}));
 
 		if (viewer.hasPermission("waypoints.teleport.death")) {
-			viewer.closeInventory();
-			viewer.teleport(waypoint.getLocation());
+			waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointDeathTeleportItem(viewer), click -> {
+				viewer.closeInventory();
+				viewer.teleport(waypoint.getLocation());
+			}));
 		} else {
 			waypointPattern.attach('t', bg);
 		}
+
+		waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
 
 		waypointPattern.attach('d', bg);
 		waypointPattern.attach('f', bg);
@@ -588,10 +599,14 @@ public class WaypointProvider implements InventoryProvider {
 	//<editor-fold defaultstate="collapsed" desc="Pagination helpers">
 	private int getOverviewPages() {
 		int items = 0;
-		if (targetData.settings().showGlobals() && isOwner) {
-			if (!Waypoints.getGlobalStore().getPublicFolder().getWaypoints(viewer).isEmpty())
-				items++;
-			if (!Waypoints.getGlobalStore().getPermissionFolder().getWaypoints(viewer).isEmpty())
+		if (isOwner) {
+			if (targetData.settings().showGlobals()) {
+				if (!Waypoints.getGlobalStore().getPublicFolder().getWaypoints(viewer).isEmpty())
+					items++;
+				if (!Waypoints.getGlobalStore().getPermissionFolder().getWaypoints(viewer).isEmpty())
+					items++;
+			}
+			if (WPConfig.isDeathWaypointEnabled() && targetData.getDeathWaypoint() != null)
 				items++;
 		}
 		items += targetData.getWaypoints().size() + targetData.getFolders().size();
@@ -632,18 +647,19 @@ public class WaypointProvider implements InventoryProvider {
 				ClickableItem.from(
 					guiSortable.getStack(viewer)
 					, click -> {
-			switch (guiSortable.getType()) {
-				case PERMISSION_FOLDER:
-				case PUBLIC_FOLDER:
-				case PRIVATE_FOLDER:
-					folderPage = 0;
-					showFolder((Folder) guiSortable);
-					break;
-				case WAYPOINT:
-					showWaypoint((Waypoint) guiSortable);
-					break;
-			}
-		})).collect(Collectors.toList());
+						switch (guiSortable.getType()) {
+							case PERMISSION_FOLDER:
+							case PUBLIC_FOLDER:
+							case PRIVATE_FOLDER:
+								folderPage = 0;
+								showFolder((Folder) guiSortable);
+								break;
+							case DEATH_WAYPOINT:
+							case WAYPOINT:
+								showWaypoint((Waypoint) guiSortable);
+								break;
+						}
+					})).collect(Collectors.toList());
 	}
 
 	private List<ClickableItem> getFolderPageItems(Folder folder) {
