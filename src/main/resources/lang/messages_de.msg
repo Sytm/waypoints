@@ -109,7 +109,7 @@ variable.waypoints.rename.description=&7Drücke hier drauf, um einen Nachricht z
 variable.waypoints.teleport.displayName=&eZum Wegpunkt teleportieren
 variable.waypoints.teleport.description=&0-
 
-inventory.title.own=&eWaypoints
+inventory.title.own=&eWegpunkte
 # %name% = Other players name
 inventory.title.other=&eWegpunkte von &6%name%
 
