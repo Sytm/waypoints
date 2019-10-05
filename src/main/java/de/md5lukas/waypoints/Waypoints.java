@@ -127,7 +127,10 @@ public class Waypoints extends JavaPlugin {
 	}
 
 	private boolean extractMessages() {
-		saveResource("lang/messages_en.msg", false);
+		if (!new File(getDataFolder(), "lang/messages_en.msg").exists())
+			saveResource("lang/messages_en.msg", false);
+		if (!new File(getDataFolder(), "lang/messages_de.msg").exists())
+			saveResource("lang/messages_de.msg", false);
 		return true;
 	}
 
