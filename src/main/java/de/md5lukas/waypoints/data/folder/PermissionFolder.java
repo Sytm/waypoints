@@ -60,7 +60,7 @@ public class PermissionFolder extends Folder {
 
 	@Override
 	public int getAmount(Player player) {
-		return (int) Math.min(64, waypoints.stream().filter(wp -> player.hasPermission(((PermissionWaypoint) wp).getPermission())).count());
+		return (int) Math.min(64, count(player));
 	}
 
 	@Override
@@ -71,12 +71,12 @@ public class PermissionFolder extends Folder {
 	@Override
 	public List<String> getDescription(Player player) {
 		return INVENTORY_FOLDER_PERMISSION_DESCRIPTION.asList(player).replace(
-			"%amount%", Integer.toString(waypoints.stream().filter(wp -> player.hasPermission(((PermissionWaypoint) wp).getPermission())).mapToInt(wp -> 1).sum()));
+			"%amount%", Long.toString(count(player)));
 	}
 
 	@Override
 	public List<Waypoint> getWaypoints(Player player) {
-		return waypoints.stream().filter(wp -> player.hasPermission(((PermissionWaypoint) wp).getPermission())).collect(Collectors.toList());
+		return waypoints.stream().filter(wp -> player.hasPermission("waypoints.gui.permission.*") || player.hasPermission(((PermissionWaypoint) wp).getPermission())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -87,5 +87,9 @@ public class PermissionFolder extends Folder {
 	@Override
 	public GUIType getType() {
 		return GUIType.PERMISSION_FOLDER;
+	}
+
+	private long count(Player player) {
+		return waypoints.stream().filter(wp -> player.hasPermission(((PermissionWaypoint) wp).getPermission())).count();
 	}
 }
