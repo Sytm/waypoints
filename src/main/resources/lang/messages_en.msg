@@ -10,7 +10,7 @@ general.notAValidUuid=$prefix$ &cThe id provided is not in a valid format.
 
 # %currentworld% = Name of the world, the player is in
 # %correctworld% = Name of the world, where the waypoint is
-display.wrongWorld=&cYou are currently in the world &a%currentworld%&c, but the waypoint is in &a%correctworld%&c.
+display.wrongWorld=&cYou are currently in the world &a%currentworld%&c, but the waypoint is in &a%correctworld%
 
 chatAction.updateItem.waypoint.private=$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon.
 chatAction.updateItem.folder.private=$prefix$ &7Click here when you are holding the item you want to use as the new folder icon.
@@ -21,10 +21,6 @@ chatAction.rename.waypoint.permission=$prefix$ &7Click here to get the command t
 chatAction.rename.folder.private=$prefix$ &7Click here to get the command to rename your folder.
 
 # Commands
-variable.help.commandColor=&6
-variable.help.dashColor=&7
-variable.help.descriptionColor=&6
-
 command.help.title=$prefix$ &7&nHelp
 command.help.help=&7 - &e/waypoints &7&l|&r&7 Show this help
 command.help.set.private=&7 - &e/waypoints set <Name> &7&l|&r&7 Create a new waypoint
