@@ -5,8 +5,10 @@
 # When you need to set a distance, it is always in blocks
 
 general:
-  # The maximum amount of waypoints a player can have saved
-  waypointLimit: 100
+  # The maximum amount of waypoints a player can have saved, set to 0 or negative for no limit
+  waypointLimit: 200
+  # The maximum amount of folders a player can have saved, set to 0 or negative for no limit
+  folderLimit: 50
   # Whether a waypoint should be set, where the player died the last time
   deathWaypointEnabled: true
   # Enable or disable duplicate waypoint names here
@@ -23,6 +25,9 @@ general:
     permission: true
   # Allow renaming private folders
   allowRenamingPrivateFolders: true
+  anvilGUI:
+    creation: true
+    renaming: true
   # Translate world names into something more readable
   worldNameAliases:
     # Specify the language here. Examples for other languages: de, at etc.
@@ -31,6 +36,10 @@ general:
       world: 'Overworld'
       world_nether: 'Nether'
       world_the_end: 'The End'
+    de:
+      world: 'Welt'
+      world_nether: 'Nether'
+      world_the_end: 'Das Ende'
 
 inventory:
   # Maximum line length of descriptions after a linebreak is inserted automatically
@@ -71,6 +80,17 @@ inventory:
     deselectItem: MILK_BUCKET
     # The item to toggle the global folders on and off
     toggleGlobalsItem: CHEST
+    # The item to click to set a new waypoint
+    setWaypointItem: SIGN
+    # The item to click to create a new folder TODO
+    createFolderItem: WRITABLE_BOOK
+
+  selectWaypointType:
+    backgroundItem: GRAY_STAINED_GLASS_PANE
+    titleItem: SIGN
+    privateItem: BEACON
+    publicItem: BEACON
+    permissionItem: BEACON
 
   # This is for the window when selecting a folder to move the waypoint into
   selectFolder:
