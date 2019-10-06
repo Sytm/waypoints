@@ -39,10 +39,13 @@ public class WPConfig {
 	private static Map<String, Map<String, String>> worldNameAliases;
 	private static WPConfigDisplays displays;
 	private static WPConfigInventory inventory;
-	private static int waypointLimit;
+	private static int waypointLimit, folderLimit;
 	private static boolean deathWaypointEnabled;
+
 	private static boolean allowDuplicateFolderPrivateNames, allowDuplicateWaypointNamesPrivate, allowDuplicateWaypointNamesPublic, allowDuplicateWaypointNamesPermission;
 	private static boolean allowRenamingWaypointsPrivate, allowRenamingWaypointsPublic, allowRenamingWaypointsPermission, allowRenamingFoldersPrivate;
+
+	private static boolean anvilGUICreationEnabled, anvilGUIRenamingEnabled;
 
 	public static WPConfigDisplays displays() {
 		return displays;
@@ -64,6 +67,10 @@ public class WPConfig {
 
 	public static int getWaypointLimit() {
 		return waypointLimit;
+	}
+
+	public static int getFolderLimit() {
+		return folderLimit;
 	}
 
 	public static boolean isDeathWaypointEnabled() {
@@ -102,10 +109,19 @@ public class WPConfig {
 		return allowRenamingFoldersPrivate;
 	}
 
+	public static boolean isAnvilGUICreationEnabled() {
+		return anvilGUICreationEnabled;
+	}
+
+	public static boolean isAnvilGUIRenamingEnabled() {
+		return anvilGUIRenamingEnabled;
+	}
+
 	@SuppressWarnings("ConstantConditions")
 	public static void loadConfig(FileConfiguration cfg) {
 		//<editor-fold defaultstate="collapsed" desc="General">
 		waypointLimit = cfg.getInt("general.waypointLimit");
+		folderLimit = cfg.getInt("general.folderLimit");
 
 		deathWaypointEnabled = cfg.getBoolean("general.deathWaypointEnabled");
 
@@ -118,6 +134,9 @@ public class WPConfig {
 		allowRenamingWaypointsPrivate = cfg.getBoolean("general.allowRenamingWaypoints.private");
 		allowRenamingWaypointsPublic = cfg.getBoolean("general.allowRenamingWaypoints.public");
 		allowRenamingWaypointsPermission = cfg.getBoolean("general.allowRenamingWaypoints.permission");
+
+		anvilGUICreationEnabled = cfg.getBoolean("general.anvilGUI.creation");
+		anvilGUIRenamingEnabled = cfg.getBoolean("general.anvilGUI.renaming");
 
 		worldNameAliases = new HashMap<>();
 		for (String lang : cfg.getConfigurationSection("general.worldNameAliases").getKeys(false)) {
@@ -202,6 +221,8 @@ public class WPConfig {
 		inventory.overviewCycleSortItem = matchMaterial(cfg.getString("inventory.overview.cycleSortItem"));
 		inventory.overviewDeselectItem = matchMaterial(cfg.getString("inventory.overview.deselectItem"));
 		inventory.overviewToggleGlobalsItem = matchMaterial(cfg.getString("inventory.overview.toggleGlobalsItem"));
+		inventory.overviewSetWaypointItem = matchMaterial(cfg.getString("inventory.overview.setWaypointItem"));
+		inventory.overviewCreateFolderItem = matchMaterial(cfg.getString("inventory.overview.createFolderItem"));
 
 		inventory.waypointDeathItem = matchMaterial(cfg.getString("inventory.waypoints.death.item"));
 		inventory.waypointDeathBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.death.backgroundItem"));
@@ -229,6 +250,13 @@ public class WPConfig {
 		inventory.waypointPermissionDeleteItem = matchMaterial(cfg.getString("inventory.waypoints.permission.deleteItem"));
 		inventory.waypointPermissionRenameItem = matchMaterial(cfg.getString("inventory.waypoints.permission.renameItem"));
 		inventory.waypointPermissionTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.permission.teleportItem"));
+
+
+		inventory.selectWaypointTypeBackgroundItem = matchMaterial(cfg.getString("inventory.selectWaypointType.backgroundItem"));
+		inventory.selectWaypointTypeTitleItem = matchMaterial(cfg.getString("inventory.selectWaypointType.titleItem"));
+		inventory.selectWaypointTypePrivateItem = matchMaterial(cfg.getString("inventory.selectWaypointType.privateItem"));
+		inventory.selectWaypointTypePublicItem = matchMaterial(cfg.getString("inventory.selectWaypointType.publicItem"));
+		inventory.selectWaypointTypePermissionItem = matchMaterial(cfg.getString("inventory.selectWaypointType.permissionItem"));
 
 		inventory.selectFolderBackgroundItem = matchMaterial(cfg.getString("inventory.selectFolder.backgroundItem"));
 		inventory.selectFolderNoFolderItem = matchMaterial(cfg.getString("inventory.selectFolder.noFolderItem"));
@@ -448,6 +476,8 @@ public class WPConfig {
 		private Material overviewCycleSortItem;
 		private Material overviewDeselectItem;
 		private Material overviewToggleGlobalsItem;
+		private Material overviewSetWaypointItem;
+		private Material overviewCreateFolderItem;
 
 		private Material waypointDeathItem;
 		private Material waypointDeathBackgroundItem;
@@ -475,6 +505,12 @@ public class WPConfig {
 		private Material waypointPermissionDeleteItem;
 		private Material waypointPermissionRenameItem;
 		private Material waypointPermissionTeleportItem;
+
+		private Material selectWaypointTypeBackgroundItem;
+		private Material selectWaypointTypeTitleItem;
+		private Material selectWaypointTypePrivateItem;
+		private Material selectWaypointTypePublicItem;
+		private Material selectWaypointTypePermissionItem;
 
 		private Material selectFolderBackgroundItem;
 		private Material selectFolderNoFolderItem;
@@ -544,6 +580,14 @@ public class WPConfig {
 
 		public Material getOverviewToggleGlobalsItem() {
 			return overviewToggleGlobalsItem;
+		}
+
+		public Material getOverviewSetWaypointItem() {
+			return overviewSetWaypointItem;
+		}
+
+		public Material getOverviewCreateFolderItem() {
+			return overviewCreateFolderItem;
 		}
 
 		public Material getWaypointDeathItem() {
@@ -638,6 +682,26 @@ public class WPConfig {
 			return waypointPermissionTeleportItem;
 		}
 
+		public Material getSelectWaypointTypeBackgroundItem() {
+			return selectWaypointTypeBackgroundItem;
+		}
+
+		public Material getSelectWaypointTypeTitleItem() {
+			return selectWaypointTypeTitleItem;
+		}
+
+		public Material getSelectWaypointTypePrivateItem() {
+			return selectWaypointTypePrivateItem;
+		}
+
+		public Material getSelectWaypointTypePublicItem() {
+			return selectWaypointTypePublicItem;
+		}
+
+		public Material getSelectWaypointTypePermissionItem() {
+			return selectWaypointTypePermissionItem;
+		}
+
 		public Material getSelectFolderBackgroundItem() {
 			return selectFolderBackgroundItem;
 		}
@@ -689,11 +753,7 @@ public class WPConfig {
 		}
 
 		public static DefaultCompassLocationType getFromConfig(String inConfig) {
-			List<DefaultCompassLocationType> result =
-				Arrays.stream(DefaultCompassLocationType.values()).filter(type -> type.inConfig.equalsIgnoreCase(inConfig)).collect(Collectors.toList());
-			if (result.isEmpty())
-				return SPAWN;
-			return result.get(0);
+			return Arrays.stream(DefaultCompassLocationType.values()).filter(type -> type.inConfig.equalsIgnoreCase(inConfig)).findFirst().orElse(SPAWN);
 		}
 	}
 }
