@@ -60,6 +60,7 @@ command.createFolder.wrongUsage|
 |$prefix$ &cUm einen Ordner zu erstellen musst du einen Namen angeben. Beispiel:
 |&a/waypoints createFolder Nether Portale
 command.createFolder.nameDuplicate=$prefix$ &cOrdner mit doppeltem Namen wurden deaktiviert.
+command.createFolder.nameDuplicate=$prefix$ &cDu hast das Limit an persönlichen Ordern erreicht.
 command.createFolder.success=$prefix$ &7Order wurde erfolgreich erstellt.
 
 command.other.wrongUsage|
@@ -80,6 +81,7 @@ command.updateItem.waypoint.success=$prefix$ &7Das Icon vom Wegpunkt wurde erfol
 command.updateItem.folder.success=$prefix$ &7Das Icon vom Ordner wurde erfolgreich aktualisiert.
 
 command.rename.disabled=$prefix$ &cUmbenennen wurde deaktiviert.
+command.rename.viaCmdDisabled=$prefix$ &cDas umbenennen von Wegpunkten mit diesem Befehl ist deaktiviert, bitte benutze die GUI.
 command.rename.waypoint.private.disabled=$prefix$ &cDas Umbenennen von privaten Wegpunkten wurde deaktiviert.
 command.rename.waypoint.public.disabled=$prefix$ &cDas Umbenennen von öffentlichen Wegpunkten wurde deaktiviert.
 command.rename.waypoint.permission.disabled=$prefix$ &cDas Umbenennen von eingeschränkten Wegpunkten wurde deaktiviert.
@@ -140,6 +142,21 @@ inventory.overview.toggleGlobals.shown.displayName=&eGlobale Wegpunkte sind sich
 inventory.overview.toggleGlobals.shown.description=&7Drücke hier drauf um sie zu verstecken.
 inventory.overview.toggleGlobals.hidden.displayName=&eGlobale Wegpunkte sind versteckt
 inventory.overview.toggleGlobals.hidden.description=&7Drücke hier drauf um sie zu zeigen.
+inventory.overview.setWaypoint.displayName=&eNeuen Wegpunkt setzten
+inventory.overview.setWaypoint.description=$empty$
+inventory.overview.createFolder.displayName=&eNeuen Ordner erstellen
+inventory.overview.createFolder.description=$empty$
+
+inventory.selectWaypointType.background.displayName=$empty$
+inventory.selectWaypointType.background.description=$empty$
+inventory.selectWaypointType.title.displayName=&eWelche Art von Wegpunkt möchtest du erstellen?
+inventory.selectWaypointType.title.description=$empty$
+inventory.selectWaypointType.private.displayName=&eEinen persönlichen Wegpunkt
+inventory.selectWaypointType.private.description=$empty$
+inventory.selectWaypointType.public.displayName=&eEinen öffentlichen Wegpunkt
+inventory.selectWaypointType.public.description=$empty$
+inventory.selectWaypointType.permission.displayName=&eEinen eingeschränkten Wegpunkt
+inventory.selectWaypointType.permission.description=$empty$
 
 inventory.waypoint.distance.otherWorld=?
 
@@ -297,3 +314,6 @@ inventory.confirmMenu.folder.private.delete.yes.displayName=&7&lJa&7, Ordner lö
 inventory.confirmMenu.folder.private.delete.yes.description=$empty$
 inventory.confirmMenu.folder.private.delete.no.displayName=&7&lNein&7, Ordner nicht löschen
 inventory.confirmMenu.folder.private.delete.no.description=$empty$
+
+inventory.anvilGUI.enterNameHere=Gebe Name hier ein
+inventory.anvilGUI.enterPermissionHere=Gebe Berechtigung hier ein
