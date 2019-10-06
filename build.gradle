@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'de.md5lukas'
-version = '2.1'
+version = '2.2'
 sourceCompatibility = '1.8'
 
 repositories {
@@ -29,21 +29,28 @@ repositories {
 }
 
 dependencies {
-    compile ('com.github.MinusKube:SmartInvs:e90199bc399f98c341f22defb38e96d964162dfe') {
+    implementation ('com.github.MinusKube:SmartInvs:e90199bc399f98c341f22defb38e96d964162dfe') {
+        transitive = false
+    }
+
+    implementation ('net.wesjd:anvilgui:1.2.3-SNAPSHOT') {
         transitive = false
     }
 
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
     compileOnly 'de.md5lukas:nbt:1.2.2'
     compileOnly 'de.md5lukas:particle-helper:1.0-SNAPSHOT'
-    compileOnly 'de.md5lukas:md5-commons:1.0'
+    compileOnly 'de.md5lukas:md5-commons:1.1'
 }
 
 shadowJar {
     archiveClassifier.set(null)
+    exclude 'META-INF/**'
     relocate 'fr.minuskube.inv', 'de.md5lukas.waypoints.shadow.sinv'
+    relocate 'net.wesjd', 'de.md5lukas.waypoints.shadow.wesjd'
     dependencies {
         include(dependency('com.github.MinusKube:SmartInvs'))
+        include(dependency('net.wesjd:anvilgui'))
     }
 }
 
