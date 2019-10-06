@@ -394,7 +394,7 @@ public class WaypointProvider implements InventoryProvider {
 		}
 
 		if (viewer.hasPermission("waypoints.set.public")) {
-			selectWaypointTypePattern.attach('u', ClickableItem.from(ItemStacks.getSelectWaypointTypePrivateItem(viewer), click -> {
+			selectWaypointTypePattern.attach('u', ClickableItem.from(ItemStacks.getSelectWaypointTypePublicItem(viewer), click -> {
 				closeInventory();
 				new AnvilGUI.Builder().plugin(Waypoints.instance()).text(INVENTORY_ANVIL_GUI_ENTER_NAME_HERE.getRaw(viewer))
 					.onComplete((player, text) -> {
@@ -407,7 +407,7 @@ public class WaypointProvider implements InventoryProvider {
 		}
 
 		if (viewer.hasPermission("waypoints.set.permissions")) {
-			selectWaypointTypePattern.attach('e', ClickableItem.from(ItemStacks.getSelectWaypointTypePrivateItem(viewer), click -> {
+			selectWaypointTypePattern.attach('e', ClickableItem.from(ItemStacks.getSelectWaypointTypePermissionItem(viewer), click -> {
 				closeInventory();
 				final AtomicReference<String> permission = new AtomicReference<>();
 				new AnvilGUI.Builder().plugin(Waypoints.instance()).text(INVENTORY_ANVIL_GUI_ENTER_NAME_HERE.getRaw(viewer))

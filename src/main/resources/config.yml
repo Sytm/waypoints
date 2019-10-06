@@ -81,13 +81,13 @@ inventory:
     # The item to toggle the global folders on and off
     toggleGlobalsItem: CHEST
     # The item to click to set a new waypoint
-    setWaypointItem: SIGN
-    # The item to click to create a new folder TODO
+    setWaypointItem: TORCH
+    # The item to click to create a new folder
     createFolderItem: WRITABLE_BOOK
 
   selectWaypointType:
     backgroundItem: GRAY_STAINED_GLASS_PANE
-    titleItem: SIGN
+    titleItem: BOOK
     privateItem: BEACON
     publicItem: BEACON
     permissionItem: BEACON

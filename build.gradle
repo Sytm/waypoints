@@ -38,6 +38,7 @@ dependencies {
     }
 
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    //compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
     compileOnly 'de.md5lukas:nbt:1.2.2'
     compileOnly 'de.md5lukas:particle-helper:1.0-SNAPSHOT'
     compileOnly 'de.md5lukas:md5-commons:1.1'
