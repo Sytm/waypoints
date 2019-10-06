@@ -87,13 +87,15 @@ public class WaypointsCommand implements CommandExecutor {
 						COMMAND_HELP_OTHER.send(p);
 					if (WPConfig.inventory().isCustomItemEnabled())
 						COMMAND_HELP_UPDATE_ITEM.send(p);
-					if ((WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic()
-						|| WPConfig.allowRenamingWaypointsPermission()) && WPConfig.allowRenamingFoldersPrivate())
-						COMMAND_HELP_RENAME_NORMAL.send(p);
-					else if (WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic() || WPConfig.allowRenamingWaypointsPermission())
-						COMMAND_HELP_RENAME_WAYPOINT_ONLY.send(p);
-					else if (WPConfig.allowRenamingFoldersPrivate())
-						COMMAND_HELP_RENAME_FOLDER_ONLY.send(p);
+					if (!WPConfig.isAnvilGUIRenamingEnabled()) {
+						if ((WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic()
+							|| WPConfig.allowRenamingWaypointsPermission()) && WPConfig.allowRenamingFoldersPrivate())
+							COMMAND_HELP_RENAME_NORMAL.send(p);
+						else if (WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic() || WPConfig.allowRenamingWaypointsPermission())
+							COMMAND_HELP_RENAME_WAYPOINT_ONLY.send(p);
+						else if (WPConfig.allowRenamingFoldersPrivate())
+							COMMAND_HELP_RENAME_FOLDER_ONLY.send(p);
+					}
 					break;
 				}
 				case "compass": {
@@ -125,22 +127,8 @@ public class WaypointsCommand implements CommandExecutor {
 						COMMAND_SET_PRIVATE_WRONG_USAGE.send(p);
 						return true;
 					}
-					WPPlayerData data = WPPlayerData.getPlayerData(p.getUniqueId());
 					String name = StringHelper.buildStringFromArray(args, 1);
-					if (!WPConfig.allowDuplicateWaypointNamesPrivate()) {
-						if (data.findWaypoint(wp -> wp.getName().equalsIgnoreCase(name)).isPresent()) {
-							COMMAND_SET_PRIVATE_NAME_DUPLICATE.send(p);
-							return true;
-						}
-					}
-					if (WPConfig.getWaypointLimit() > 0) {
-						if (data.countWaypoints() >= WPConfig.getWaypointLimit()) {
-							COMMAND_SET_PRIVATE_LIMIT_REACHED.send(p);
-							return true;
-						}
-					}
-					data.addWaypoint(new PrivateWaypoint(name, p.getLocation()));
-					COMMAND_SET_PRIVATE_SUCCESS.send(p);
+					setPrivateWaypoint(p, name);
 					break;
 				}
 				case "setpub":
@@ -154,16 +142,7 @@ public class WaypointsCommand implements CommandExecutor {
 						return true;
 					}
 					String name = StringHelper.buildStringFromArray(args, 1);
-					if (!WPConfig.allowDuplicateWaypointNamesPublic()) {
-						for (Waypoint wp : Waypoints.getGlobalStore().getPublicFolder().getWaypoints(p)) {
-							if (wp.getName().equalsIgnoreCase(name)) {
-								COMMAND_SET_PUBLIC_NAME_DUPLICATE.send(p);
-								return true;
-							}
-						}
-					}
-					Waypoints.getGlobalStore().getPublicFolder().addWaypoint(new PublicWaypoint(name, p.getLocation()));
-					COMMAND_SET_PUBLIC_SUCCESS.send(p);
+					setPublicWaypoint(p, name);
 					break;
 				}
 				case "setperm":
@@ -178,16 +157,7 @@ public class WaypointsCommand implements CommandExecutor {
 					}
 					String permission = args[1];
 					String name = StringHelper.buildStringFromArray(args, 2);
-					if (!WPConfig.allowDuplicateWaypointNamesPermission()) {
-						for (Waypoint wp : Waypoints.getGlobalStore().getPermissionFolder().getWaypoints(p)) {
-							if (wp.getName().equalsIgnoreCase(name)) {
-								COMMAND_SET_PERMISSION_NAME_DUPLICATE.send(p);
-								return true;
-							}
-						}
-					}
-					Waypoints.getGlobalStore().getPermissionFolder().addWaypoint(new PermissionWaypoint(name, p.getLocation(), permission));
-					COMMAND_SET_PERMISSION_SUCCESS.send(p);
+					setPermissionWaypoint(p, permission, name);
 					break;
 				}
 				case "cf":
@@ -196,16 +166,8 @@ public class WaypointsCommand implements CommandExecutor {
 						COMMAND_CREATE_FOLDER_WRONG_USAGE.send(p);
 						return true;
 					}
-					WPPlayerData data = WPPlayerData.getPlayerData(p.getUniqueId());
 					String name = StringHelper.buildStringFromArray(args, 1);
-					if (!WPConfig.allowDuplicateFolderPrivateNames()) {
-						if (data.findFolder(f -> f.getName().equalsIgnoreCase(name)).isPresent()) {
-							COMMAND_CREATE_FOLDER_NAME_DUPLICATE.send(p);
-							return true;
-						}
-					}
-					data.addFolder(name);
-					COMMAND_CREATE_FOLDER_SUCCESS.send(p);
+					createFolder(p, name);
 					break;
 				}
 				case "other": {
@@ -282,6 +244,10 @@ public class WaypointsCommand implements CommandExecutor {
 					if (!WPConfig.allowRenamingWaypointsPrivate() && !WPConfig.allowRenamingWaypointsPublic()
 						&& !WPConfig.allowRenamingWaypointsPermission() && !WPConfig.allowRenamingFoldersPrivate()) {
 						COMMAND_RENAME_DISABLED.send(p);
+						return true;
+					}
+					if (!WPConfig.isAnvilGUIRenamingEnabled()) {
+						COMMAND_RENAME_VIA_CMD_DISABLED.send(p);
 						return true;
 					}
 					if (args.length <= 3) {
@@ -394,6 +360,72 @@ public class WaypointsCommand implements CommandExecutor {
 		} else {
 			GENERAL_NOT_A_PLAYER.send(sender);
 		}
+		return true;
+	}
+
+	public static boolean setPrivateWaypoint(Player p, String name) {
+		WPPlayerData data = WPPlayerData.getPlayerData(p.getUniqueId());
+		if (!WPConfig.allowDuplicateWaypointNamesPrivate()) {
+			if (data.findWaypoint(wp -> wp.getName().equalsIgnoreCase(name)).isPresent()) {
+				COMMAND_SET_PRIVATE_NAME_DUPLICATE.send(p);
+				return false;
+			}
+		}
+		if (WPConfig.getWaypointLimit() > 0) {
+			if (data.countWaypoints() >= WPConfig.getWaypointLimit()) {
+				COMMAND_SET_PRIVATE_LIMIT_REACHED.send(p);
+				return false;
+			}
+		}
+		data.addWaypoint(new PrivateWaypoint(name, p.getLocation()));
+		COMMAND_SET_PRIVATE_SUCCESS.send(p);
+		return true;
+	}
+
+	public static boolean setPublicWaypoint(Player p, String name) {
+		if (!WPConfig.allowDuplicateWaypointNamesPublic()) {
+			for (Waypoint wp : Waypoints.getGlobalStore().getPublicFolder().getWaypoints(p)) {
+				if (wp.getName().equalsIgnoreCase(name)) {
+					COMMAND_SET_PUBLIC_NAME_DUPLICATE.send(p);
+					return false;
+				}
+			}
+		}
+		Waypoints.getGlobalStore().getPublicFolder().addWaypoint(new PublicWaypoint(name, p.getLocation()));
+		COMMAND_SET_PUBLIC_SUCCESS.send(p);
+		return true;
+	}
+
+	public static boolean setPermissionWaypoint(Player p, String permission, String name) {
+		if (!WPConfig.allowDuplicateWaypointNamesPermission()) {
+			for (Waypoint wp : Waypoints.getGlobalStore().getPermissionFolder().getWaypoints(p)) {
+				if (wp.getName().equalsIgnoreCase(name)) {
+					COMMAND_SET_PERMISSION_NAME_DUPLICATE.send(p);
+					return false;
+				}
+			}
+		}
+		Waypoints.getGlobalStore().getPermissionFolder().addWaypoint(new PermissionWaypoint(name, p.getLocation(), permission));
+		COMMAND_SET_PERMISSION_SUCCESS.send(p);
+		return true;
+	}
+
+	public static boolean createFolder(Player p, String name) {
+		WPPlayerData data = WPPlayerData.getPlayerData(p.getUniqueId());
+		if (!WPConfig.allowDuplicateFolderPrivateNames()) {
+			if (data.findFolder(f -> f.getName().equalsIgnoreCase(name)).isPresent()) {
+				COMMAND_CREATE_FOLDER_NAME_DUPLICATE.send(p);
+				return false;
+			}
+		}
+		if (WPConfig.getFolderLimit() > 0) {
+			if (data.getFolders().size() >= WPConfig.getWaypointLimit()) {
+				COMMAND_CREATE_FOLDER_LIMIT_REACHED.send(p);
+				return false;
+			}
+		}
+		data.addFolder(name);
+		COMMAND_CREATE_FOLDER_SUCCESS.send(p);
 		return true;
 	}
 }
