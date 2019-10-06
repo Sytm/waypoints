@@ -60,6 +60,7 @@ command.createFolder.wrongUsage|
 |$prefix$ &cYou need to provide a name to create a new folder. Example:
 |&a/waypoints createFolder Nether portals
 command.createFolder.nameDuplicate=$prefix$ &cFolders with duplicate names have been disabled.
+command.createFolder.nameDuplicate=$prefix$ &cYou have reached your personal limit of folders you can create.
 command.createFolder.success=$prefix$ &7Folder created successfully.
 
 command.other.wrongUsage|
@@ -80,6 +81,7 @@ command.updateItem.waypoint.success=$prefix$ &7The item of the waypoint has been
 command.updateItem.folder.success=$prefix$ &7The item of the folder has been updated successfully.
 
 command.rename.disabled=$prefix$ &cRenaming has been disabled.
+command.rename.viaCmdDisabled=$prefix$ &cRenaming waypoints with the command is disabled, please use the gui.
 command.rename.waypoint.private.disabled=$prefix$ &cRenaming private waypoints has been disabled.
 command.rename.waypoint.public.disabled=$prefix$ &cRenaming public waypoints has been disabled.
 command.rename.waypoint.permission.disabled=$prefix$ &cRenaming permission waypoints has been disabled.
@@ -140,6 +142,21 @@ inventory.overview.toggleGlobals.shown.displayName=&eGlobal waypoints are visibl
 inventory.overview.toggleGlobals.shown.description=&7Click here to hide them
 inventory.overview.toggleGlobals.hidden.displayName=&eGlobal waypoints are hidden
 inventory.overview.toggleGlobals.hidden.description=&7Click here to show them
+inventory.overview.setWaypoint.displayName=&eSet new waypoints
+inventory.overview.setWaypoint.description=$empty$
+inventory.overview.createFolder.displayName=&eCreate new folder
+inventory.overview.createFolder.description=$empty$
+
+inventory.selectWaypointType.background.displayName=$empty$
+inventory.selectWaypointType.background.description=$empty$
+inventory.selectWaypointType.title.displayName=What kind of waypoint would you like to set?
+inventory.selectWaypointType.title.description=$empty$
+inventory.selectWaypointType.private.displayName=&eA private Waypoint
+inventory.selectWaypointType.private.description=$empty$
+inventory.selectWaypointType.public.displayName=&eA public Waypoint
+inventory.selectWaypointType.public.description=$empty$
+inventory.selectWaypointType.permission.displayName=&eA permission Waypoint
+inventory.selectWaypointType.permission.description=$empty$
 
 inventory.waypoint.distance.otherWorld=?
 
@@ -297,3 +314,6 @@ inventory.confirmMenu.folder.private.delete.yes.displayName=&7&lYes&7, delete fo
 inventory.confirmMenu.folder.private.delete.yes.description=$empty$
 inventory.confirmMenu.folder.private.delete.no.displayName=&7&lNo&7, don't delete waypoint
 inventory.confirmMenu.folder.private.delete.no.description=$empty$
+
+inventory.anvilGUI.enterNameHere=Enter name here
+inventory.anvilGUI.enterPermissionHere=Enter permission here

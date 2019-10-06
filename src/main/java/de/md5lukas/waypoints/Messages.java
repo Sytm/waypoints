@@ -76,6 +76,7 @@ public enum Messages {
 
 	COMMAND_CREATE_FOLDER_WRONG_USAGE("command.createFolder.wrongUsage"),
 	COMMAND_CREATE_FOLDER_NAME_DUPLICATE("command.createFolder.nameDuplicate"),
+	COMMAND_CREATE_FOLDER_LIMIT_REACHED("command.createFolder.limitReached"),
 	COMMAND_CREATE_FOLDER_SUCCESS("command.createFolder.success"),
 
 	COMMAND_OTHER_WRONG_USAGE("command.other.wrongUsage"),
@@ -90,6 +91,7 @@ public enum Messages {
 	COMMAND_UPDATE_ITEM_FOLDER_SUCCESS("command.updateItem.folder.success"),
 
 	COMMAND_RENAME_DISABLED("command.rename.disabled"),
+	COMMAND_RENAME_VIA_CMD_DISABLED("command.rename.viaCmdDisabled"),
 	COMMAND_RENAME_WAYPOINT_PRIVATE_DISABLED("command.rename.waypoint.private.disabled"),
 	COMMAND_RENAME_WAYPOINT_PUBLIC_DISABLED("command.rename.waypoint.public.disabled"),
 	COMMAND_RENAME_WAYPOINT_PERMISSION_DISABLED("command.rename.waypoint.permission.disabled"),
@@ -135,6 +137,21 @@ public enum Messages {
 	INVENTORY_OVERVIEW_TOGGLE_GLOBALS_SHOWN_DESCRIPTION("inventory.overview.toggleGlobals.shown.description"),
 	INVENTORY_OVERVIEW_TOGGLE_GLOBALS_HIDDEN_DISPLAY_NAME("inventory.overview.toggleGlobals.hidden.displayName"),
 	INVENTORY_OVERVIEW_TOGGLE_GLOBALS_HIDDEN_DESCRIPTION("inventory.overview.toggleGlobals.hidden.description"),
+	INVENTORY_OVERVIEW_SET_WAYPOINT_DISPLAY_NAME("inventory.overview.setWaypoint.displayName"),
+	INVENTORY_OVERVIEW_SET_WAYPOINT_DESCRIPTION("inventory.overview.setWaypoint.description"),
+	INVENTORY_OVERVIEW_CREATE_FOLDER_DISPLAY_NAME("inventory.overview.createFolder.displayName"),
+	INVENTORY_OVERVIEW_CREATE_FOLDER_DESCRIPTION("inventory.overview.createFolder.description"),
+
+	INVENTORY_SELECT_WAYPOINT_TYPE_BACKGROUND_DISPLAY_NAME("inventory.selectWaypointType.background.displayName"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_BACKGROUND_DESCRIPTION("inventory.selectWaypointType.background.description"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_TITLE_DISPLAY_NAME("inventory.selectWaypointType.title.displayName"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_TITLE_DESCRIPTION("inventory.selectWaypointType.title.description"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_PRIVATE_DISPLAY_NAME("inventory.selectWaypointType.private.displayName"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_PRIVATE_DESCRIPTION("inventory.selectWaypointType.private.description"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_PUBLIC_DISPLAY_NAME("inventory.selectWaypointType.public.displayName"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_PUBLIC_DESCRIPTION("inventory.selectWaypointType.public.description"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_PERMISSION_DISPLAY_NAME("inventory.selectWaypointType.permission.displayName"),
+	INVENTORY_SELECT_WAYPOINT_TYPE_PERMISSION_DESCRIPTION("inventory.selectWaypointType.permission.description"),
 
 	INVENTORY_WAYPOINT_DISTANCE_OTHER_WORLD("inventory.waypoint.distance.otherWorld"),
 
@@ -242,6 +259,9 @@ public enum Messages {
 	INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_YES_DESCRIPTION("inventory.confirmMenu.folder.private.delete.yes.description"),
 	INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DISPLAY_NAME("inventory.confirmMenu.folder.private.delete.no.displayName"),
 	INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DESCRIPTION("inventory.confirmMenu.folder.private.delete.no.description"),
+
+	INVENTORY_ANVIL_GUI_ENTER_NAME_HERE("inventory.anvilGUI.enterNameHere"),
+	INVENTORY_ANVIL_GUI_ENTER_PERMISSION_HERE("inventory.anvilGUI.enterPermissionHere"),
 	//endregion
 	;
 
