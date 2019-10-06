@@ -60,7 +60,7 @@ command.createFolder.wrongUsage|
 |$prefix$ &cUm einen Ordner zu erstellen musst du einen Namen angeben. Beispiel:
 |&a/waypoints createFolder Nether Portale
 command.createFolder.nameDuplicate=$prefix$ &cOrdner mit doppeltem Namen wurden deaktiviert.
-command.createFolder.nameDuplicate=$prefix$ &cDu hast das Limit an persönlichen Ordern erreicht.
+command.createFolder.limitReached=$prefix$ &cDu hast das Limit an persönlichen Ordern erreicht.
 command.createFolder.success=$prefix$ &7Order wurde erfolgreich erstellt.
 
 command.other.wrongUsage|

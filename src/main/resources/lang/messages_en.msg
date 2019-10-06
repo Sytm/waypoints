@@ -60,7 +60,7 @@ command.createFolder.wrongUsage|
 |$prefix$ &cYou need to provide a name to create a new folder. Example:
 |&a/waypoints createFolder Nether portals
 command.createFolder.nameDuplicate=$prefix$ &cFolders with duplicate names have been disabled.
-command.createFolder.nameDuplicate=$prefix$ &cYou have reached your personal limit of folders you can create.
+command.createFolder.limitReached=$prefix$ &cYou have reached your personal limit of folders you can create.
 command.createFolder.success=$prefix$ &7Folder created successfully.
 
 command.other.wrongUsage|
