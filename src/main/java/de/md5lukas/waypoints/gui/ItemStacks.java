@@ -62,6 +62,16 @@ class ItemStacks {
 			.lore(INVENTORY_OVERVIEW_TOGGLE_GLOBALS_HIDDEN_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
 	}
 
+	static ItemStack getOverviewSetWaypointItem(Player p) {
+		return new ItemBuilder(inventory().getOverviewSetWaypointItem()).name(INVENTORY_OVERVIEW_SET_WAYPOINT_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_OVERVIEW_SET_WAYPOINT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+	static ItemStack getOverviewCreateFolderItem(Player p) {
+		return new ItemBuilder(inventory().getOverviewCreateFolderItem()).name(INVENTORY_OVERVIEW_CREATE_FOLDER_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_OVERVIEW_CREATE_FOLDER_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
 	static ItemStack getWaypointDeathBackgroundItem(Player p) {
 		return new ItemBuilder(inventory().getWaypointDeathBackgroundItem()).name(INVENTORY_WAYPOINT_DEATH_BACKGROUND_DISPLAY_NAME.getRaw(p))
 			.lore(INVENTORY_WAYPOINT_DEATH_BACKGROUND_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
@@ -72,7 +82,7 @@ class ItemStacks {
 			.lore(INVENTORY_WAYPOINT_DEATH_SELECT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
 	}
 
-	public static ItemStack getWaypointDeathTeleportItem(Player p) {
+	static ItemStack getWaypointDeathTeleportItem(Player p) {
 		return new ItemBuilder(inventory().getWaypointDeathTeleportItem()).name(INVENTORY_WAYPOINT_DEATH_TELEPORT_DISPLAY_NAME.getRaw(p))
 			.lore(INVENTORY_WAYPOINT_DEATH_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
 	}
@@ -156,6 +166,31 @@ class ItemStacks {
 	static ItemStack getWaypointPermissionTeleportItem(Player p) {
 		return new ItemBuilder(inventory().getWaypointPermissionTeleportItem()).name(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME.getRaw(p))
 			.lore(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+	static ItemStack getSelectWaypointTypeBackgroundItem(Player p) {
+		return new ItemBuilder(inventory().getSelectWaypointTypeBackgroundItem()).name(INVENTORY_SELECT_WAYPOINT_TYPE_BACKGROUND_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_SELECT_WAYPOINT_TYPE_BACKGROUND_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+	static ItemStack getSelectWaypointTypeTitleItem(Player p) {
+		return new ItemBuilder(inventory().getSelectWaypointTypeTitleItem()).name(INVENTORY_SELECT_WAYPOINT_TYPE_TITLE_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_SELECT_WAYPOINT_TYPE_TITLE_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+	static ItemStack getSelectWaypointTypePrivateItem(Player p) {
+		return new ItemBuilder(inventory().getSelectWaypointTypePrivateItem()).name(INVENTORY_SELECT_WAYPOINT_TYPE_PRIVATE_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_SELECT_WAYPOINT_TYPE_PRIVATE_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+	static ItemStack getSelectWaypointTypePublicItem(Player p) {
+		return new ItemBuilder(inventory().getSelectWaypointTypePublicItem()).name(INVENTORY_SELECT_WAYPOINT_TYPE_PUBLIC_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_SELECT_WAYPOINT_TYPE_PUBLIC_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+	static ItemStack getSelectWaypointTypePermissionItem(Player p) {
+		return new ItemBuilder(inventory().getSelectWaypointTypePermissionItem()).name(INVENTORY_SELECT_WAYPOINT_TYPE_PERMISSION_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_SELECT_WAYPOINT_TYPE_PERMISSION_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
 	}
 
 	static ItemStack getSelectFolderBackgroundItem(Player p) {
