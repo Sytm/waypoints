@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'de.md5lukas'
-version = '2.2'
+version = '2.3'
 sourceCompatibility = '1.8'
 
 repositories {
