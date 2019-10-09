@@ -55,7 +55,7 @@ shadowJar {
     relocate 'fr.minuskube.inv', 'de.md5lukas.waypoints.shadow.sinv'
     relocate 'net.wesjd', 'de.md5lukas.waypoints.shadow.wesjd'
     dependencies {
-        include(dependency('com.github.MinusKube:SmartInvs'))
+        include(dependency('fr.minuskube.inv:smart-invs'))
         include(dependency('net.wesjd:anvilgui'))
     }
 }
