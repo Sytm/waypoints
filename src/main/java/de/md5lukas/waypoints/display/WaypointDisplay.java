@@ -31,10 +31,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -45,7 +42,7 @@ public abstract class WaypointDisplay implements Listener {
 	private static Map<String, Tuple2<Supplier<Boolean>, Supplier<WaypointDisplay>>> displays = new HashMap<>();
 	private static List<WaypointDisplay> activeDisplays = new ArrayList<>();
 	private static WaypointDisplay global = new GlobalWaypointDisplay();
-	private static Map<String, BukkitTask> updateTasks = new HashMap<>();
+	private static Map<Player, Map<String, BukkitTask>> updateTasks = new HashMap<>();
 
 	static {
 		Bukkit.getPluginManager().registerEvents(global, Waypoints.instance());
@@ -107,16 +104,24 @@ public abstract class WaypointDisplay implements Listener {
 			activeDisplays.forEach(wd -> {
 				wd.show(player, waypoint);
 				if (wd.updateInterval > 0) {
-					updateTasks.computeIfPresent(wd.type, (type, task) -> {
-						task.cancel();
-						return null;
+					updateTasks.computeIfPresent(player, (p, tasks) -> {
+						tasks.computeIfPresent(wd.type, (type, task) -> {
+							task.cancel();
+							return null;
+						});
+						return tasks;
 					});
 
 					BukkitTask task = Bukkit.getScheduler().runTaskTimer(Waypoints.instance(), () -> {
 						wd.update(player, waypoint);
 					}, wd.updateInterval, wd.updateInterval);
 
-					updateTasks.put(wd.type, task);
+					updateTasks.compute(player, (p, tasks) -> {
+						if (tasks == null)
+							tasks = new HashMap<>();
+						tasks.put(wd.type, task);
+						return tasks;
+					});
 				}
 			});
 		}
@@ -130,9 +135,12 @@ public abstract class WaypointDisplay implements Listener {
 		public void disable(Player player) {
 			activeDisplays.forEach(wd -> {
 				if (wd.updateInterval > 0) {
-					updateTasks.computeIfPresent(wd.type, (type, task) -> {
-						task.cancel();
-						return null;
+					updateTasks.computeIfPresent(player, (p, tasks) -> {
+						tasks.computeIfPresent(wd.type, (type, task) -> {
+							task.cancel();
+							return null;
+						});
+						return tasks;
 					});
 				}
 				wd.disable(player);
