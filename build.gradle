@@ -9,8 +9,6 @@ version = '2.3'
 sourceCompatibility = '1.8'
 
 repositories {
-    mavenLocal()
-    mavenCentral()
     maven {
         url = 'https://repo.sytm.de/repository/maven-hosted/'
     }
@@ -24,7 +22,7 @@ repositories {
     }
 
     maven {
-        url = 'http://repo.maven.apache.org/maven2'
+        url = 'https://repo.sytm.de/repository/maven-central/'
     }
 }
 
