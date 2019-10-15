@@ -41,22 +41,20 @@ public final class ActionBarDisplay extends WaypointDisplay {
 
 	protected ActionBarDisplay(Plugin plugin) {
 		super(plugin, displays().getActionBarInterval());
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-			while (!Waypoints.isDisabled()) {
-				List<Player> notFound = new ArrayList<>();
-				bars.forEach((player, str) -> {
-					if (!players.containsKey(player))
-						notFound.add(player);
-				});
-				notFound.forEach(bars::remove);
-				players.forEach((player, location) -> {
-					if (player.getWorld().equals(location.getWorld()))
-						bars.put(player, generateDirectionIndicator(deltaAngleToTarget(player.getLocation(), location)));
-					else
-						bars.remove(player);
-				});
-			}
-		});
+		Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+			List<Player> notFound = new ArrayList<>();
+			bars.forEach((player, str) -> {
+				if (!players.containsKey(player))
+					notFound.add(player);
+			});
+			notFound.forEach(bars::remove);
+			players.forEach((player, location) -> {
+				if (player.getWorld().equals(location.getWorld()))
+					bars.put(player, generateDirectionIndicator(deltaAngleToTarget(player.getLocation(), location)));
+				else
+					bars.remove(player);
+			});
+		}, displays().getActionBarInterval(), displays().getActionBarInterval());
 	}
 
 	@Override
@@ -93,6 +91,7 @@ public final class ActionBarDisplay extends WaypointDisplay {
 	}
 
 	// Original code: https://bitbucket.org/Md5Lukas/waypoints/src/763ee8314b396fb5441c8eb5e0e7e281375ed989/src/main/java/de/md5lukas/wp/util/MathHelper.java?at=master
+
 	/**
 	 * The returned values range from -180 to 180 degrees, where as negative numbers mean you look to much left and
 	 * positive numbers you look too much right
