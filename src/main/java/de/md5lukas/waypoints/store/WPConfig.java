@@ -58,7 +58,8 @@ public class WPConfig {
 	public static String translateWorldName(String world, String language) {
 		if (!worldNameAliases.containsKey(language))
 			language = Languages.getDefaultLanguage();
-		return worldNameAliases.get(language).get(world);
+		String translated = worldNameAliases.get(language).get(world);
+		return translated == null ? world : translated;
 	}
 
 	public static String translateWorldName(String world, CommandSender sender) {
