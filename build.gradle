@@ -43,7 +43,7 @@ dependencies {
     compileOnly 'de.md5lukas:particle-helper:1.0-SNAPSHOT'
     compileOnly 'de.md5lukas:md5-commons:1.1'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
     testImplementation 'de.md5lukas:md5-commons:1.1'
     testImplementation 'net.md-5:bungeecord-chat:1.13-SNAPSHOT'
 }
