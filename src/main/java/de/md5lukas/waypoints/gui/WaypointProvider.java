@@ -451,7 +451,7 @@ public class WaypointProvider implements InventoryProvider {
 		waypointPattern.setDefault(bg);
 		if (isOwner) {
 			waypointPattern.attach('w', ClickableItem.from(waypoint.getStack(viewer), click -> {
-				BaseComponent[] components = CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE.get(viewer).getComponentsModifiable();
+				BaseComponent[] components = CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PRIVATE.get(viewer).getComponentsModifiable();
 				ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypoint " + waypoint.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
