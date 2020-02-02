@@ -44,7 +44,8 @@ public enum Messages {
 	CHAT_ACTION_RENAME_WAYPOINT_PERMISSION("chatAction.rename.waypoint.permission"),
 	CHAT_ACTION_RENAME_FOLDER_PRIVATE("chatAction.rename.folder.private"),
 
-	//region Commands
+
+	//<editor-fold defaultstate="collapsed" desc="Commands">
 	COMMAND_HELP_TITLE("command.help.title"),
 	COMMAND_HELP_HELP("command.help.help"),
 	COMMAND_HELP_SET_PRIVATE("command.help.set.private"),
@@ -105,10 +106,9 @@ public enum Messages {
 	COMMAND_RENAME_FOLDER_SUCCESS("command.rename.folder.success"),
 
 	COMMAND_NOT_FOUND("command.notFound"),
-	//endregion
+	//</editor-fold>
 
-
-	//region Inventory
+	//<editor-fold defaultstate="collapsed" desc="Inventory">
 	INVENTORY_TITLE_OWN("inventory.title.own"),
 	INVENTORY_TITLE_OTHER("inventory.title.other"),
 
@@ -178,6 +178,8 @@ public enum Messages {
 	INVENTORY_WAYPOINT_PRIVATE_MOVE_TO_FOLDER_DESCRIPTION("inventory.waypoint.private.moveToFolder.description"),
 	INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DISPLAY_NAME("inventory.waypoint.private.teleport.displayName"),
 	INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DESCRIPTION("inventory.waypoint.private.teleport.description"),
+	INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.private.selectBeaconColor.displayName"), //  TODO add to .msg
+	INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.private.selectBeaconColor.description"),
 
 	INVENTORY_WAYPOINT_PUBLIC_DISPLAY_NAME("inventory.waypoint.public.displayName"), // %name%
 	INVENTORY_WAYPOINT_PUBLIC_DESCRIPTION("inventory.waypoint.public.description"), // %world%, %x%, %y%, %z%, %blockX%, %blockY%, %blockZ%, %distance%
@@ -260,9 +262,44 @@ public enum Messages {
 	INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DISPLAY_NAME("inventory.confirmMenu.folder.private.delete.no.displayName"),
 	INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DESCRIPTION("inventory.confirmMenu.folder.private.delete.no.description"),
 
+	INVENTORY_SELECT_BEACON_COLOR_CLEAR_DISPLAY_NAME("inventory.selectBeaconColor.clear.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_CLEAR_DESCRIPTION("inventory.selectBeaconColor.clear.description"),
+	INVENTORY_SELECT_BEACON_COLOR_LIGHT_GRAY_DISPLAY_NAME("inventory.selectBeaconColor.lightGray.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_LIGHT_GRAY_DESCRIPTION("inventory.selectBeaconColor.lightGray.description"),
+	INVENTORY_SELECT_BEACON_COLOR_GRAY_DISPLAY_NAME("inventory.selectBeaconColor.gray.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_GRAY_DESCRIPTION("inventory.selectBeaconColor.gray.description"),
+	INVENTORY_SELECT_BEACON_COLOR_PINK_DISPLAY_NAME("inventory.selectBeaconColor.pink.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_PINK_DESCRIPTION("inventory.selectBeaconColor.pink.description"),
+	INVENTORY_SELECT_BEACON_COLOR_LIME_DISPLAY_NAME("inventory.selectBeaconColor.lime.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_LIME_DESCRIPTION("inventory.selectBeaconColor.lime.description"),
+	INVENTORY_SELECT_BEACON_COLOR_YELLOW_DISPLAY_NAME("inventory.selectBeaconColor.yellow.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_YELLOW_DESCRIPTION("inventory.selectBeaconColor.yellow.description"),
+	INVENTORY_SELECT_BEACON_COLOR_LIGHT_BLUE_DISPLAY_NAME("inventory.selectBeaconColor.lightBlue.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_LIGHT_BLUE_DESCRIPTION("inventory.selectBeaconColor.lightBlue.description"),
+	INVENTORY_SELECT_BEACON_COLOR_MAGENTA_DISPLAY_NAME("inventory.selectBeaconColor.magenta.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_MAGENTA_DESCRIPTION("inventory.selectBeaconColor.magenta.description"),
+	INVENTORY_SELECT_BEACON_COLOR_ORANGE_DISPLAY_NAME("inventory.selectBeaconColor.orange.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_ORANGE_DESCRIPTION("inventory.selectBeaconColor.orange.description"),
+	INVENTORY_SELECT_BEACON_COLOR_WHITE_DISPLAY_NAME("inventory.selectBeaconColor.white.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_WHITE_DESCRIPTION("inventory.selectBeaconColor.white.description"),
+	INVENTORY_SELECT_BEACON_COLOR_BLACK_DISPLAY_NAME("inventory.selectBeaconColor.black.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_BLACK_DESCRIPTION("inventory.selectBeaconColor.black.description"),
+	INVENTORY_SELECT_BEACON_COLOR_RED_DISPLAY_NAME("inventory.selectBeaconColor.red.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_RED_DESCRIPTION("inventory.selectBeaconColor.red.description"),
+	INVENTORY_SELECT_BEACON_COLOR_GREEN_DISPLAY_NAME("inventory.selectBeaconColor.green.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_GREEN_DESCRIPTION("inventory.selectBeaconColor.green.description"),
+	INVENTORY_SELECT_BEACON_COLOR_BROWN_DISPLAY_NAME("inventory.selectBeaconColor.brown.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_BROWN_DESCRIPTION("inventory.selectBeaconColor.brown.description"),
+	INVENTORY_SELECT_BEACON_COLOR_BLUE_DISPLAY_NAME("inventory.selectBeaconColor.blue.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_BLUE_DESCRIPTION("inventory.selectBeaconColor.blue.description"),
+	INVENTORY_SELECT_BEACON_COLOR_CYAN_DISPLAY_NAME("inventory.selectBeaconColor.cyan.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_CYAN_DESCRIPTION("inventory.selectBeaconColor.cyan.description"),
+	INVENTORY_SELECT_BEACON_COLOR_PURPLE_DISPLAY_NAME("inventory.selectBeaconColor.purple.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_PURPLE_DESCRIPTION("inventory.selectBeaconColor.purple.description"),
+
 	INVENTORY_ANVIL_GUI_ENTER_NAME_HERE("inventory.anvilGUI.enterNameHere"),
 	INVENTORY_ANVIL_GUI_ENTER_PERMISSION_HERE("inventory.anvilGUI.enterPermissionHere"),
-	//endregion
+	//</editor-fold>
 	;
 
 	private String path;
