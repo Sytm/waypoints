@@ -6,7 +6,7 @@
 
     <groupId>de.md5lukas</groupId>
     <artifactId>waypoints2</artifactId>
-    <version>2.5</version>
+    <version>2.6</version>
 
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
