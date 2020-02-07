@@ -107,7 +107,7 @@ public class Waypoints extends JavaPlugin {
 
 	//<editor-fold defaultstate="collapsed" desc="onEnabled helpers">
 	private void setupExternalDependencies() {
-		Tags.registerTag(LocationTag::new);
+		Tags.registerTag(LocationTag::new); // TODO use commons one
 		SmartInvsPlugin.setPlugin(this);
 	}
 
