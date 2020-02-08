@@ -107,6 +107,11 @@ inventory:
     # The item, when clicked the waypoint is moved back to the overview
     noFolderItem: MAP
 
+  selectBeaconColor:
+    backgroundItem: GRAY_STAINED_GLASS_PANE
+    previousItem: ARROW
+    nextItem: ARROW
+
   # The "item" is the item used as an icon for the waypoint
   # The "selectItem" is the item used to select a waypoint
   # The "teleportItem" is the item used to teleport to a waypoint
