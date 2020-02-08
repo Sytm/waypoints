@@ -20,6 +20,8 @@ chatAction.rename.waypoint.public=$prefix$ &7Click here to get the command to re
 chatAction.rename.waypoint.permission=$prefix$ &7Click here to get the command to rename the permission waypoint.
 chatAction.rename.folder.private=$prefix$ &7Click here to get the command to rename your folder.
 
+chatWarning.worldTranslationsMissing=$prefix$ &cSome world name translations are missing.
+
 # Commands
 command.help.title=$prefix$ &7&nHelp
 command.help.help=&7 - &e/waypoints &7&l|&r&7 Show this help

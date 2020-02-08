@@ -24,6 +24,7 @@ permissions:
       - waypoints.teleport
       - waypoints.command
       - waypoints.help
+      - waypoints.admin
 
 # --- Setting ---
   waypoints.set.*:
@@ -111,3 +112,5 @@ permissions:
   waypoints.help:
     description: Permission to show the help menu
     default: true
+  waypoints.admin:
+    description: Players who have this permission may receive error messages from the plugin

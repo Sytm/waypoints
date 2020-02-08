@@ -20,6 +20,8 @@ chatAction.rename.waypoint.public=$prefix$ &7Drücke hier drauf, um den Befehl z
 chatAction.rename.waypoint.permission=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, den eingeschränkten Wegpunkt umzubenennen.
 chatAction.rename.folder.private=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, deinen Ordner umzubenennen.
 
+chatWarning.worldTranslationsMissing=$prefix$ &cEs fehlen Übersetzungen für Welt-Namen.
+
 # Commands
 command.help.title=$prefix$ &7&nHilfe
 command.help.help=&7 - &e/waypoints &7&l|&r&7 Diese Hilfe anzeigen
