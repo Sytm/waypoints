@@ -126,6 +126,7 @@ inventory:
       # Item to represent the button used to move a waypoint into a folder
       moveToFolderItem: CHEST_MINECART
       teleportItem: ENDER_PEARL
+      selectBeaconColorItem: LIME_STAINED_GLASS
     public:
       item: BEACON
       backgroundItem: GREEN_STAINED_GLASS_PANE
@@ -133,6 +134,7 @@ inventory:
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
       teleportItem: ENDER_PEARL
+      selectBeaconColorItem: LIME_STAINED_GLASS
     permission:
       item: BEACON
       backgroundItem: RED_STAINED_GLASS_PANE
@@ -140,6 +142,7 @@ inventory:
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
       teleportItem: ENDER_PEARL
+      selectBeaconColorItem: LIME_STAINED_GLASS
   folders:
     private:
       defaultItem: BOOK
