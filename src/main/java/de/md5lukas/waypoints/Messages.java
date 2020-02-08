@@ -193,6 +193,8 @@ public enum Messages {
 	INVENTORY_WAYPOINT_PUBLIC_RENAME_DESCRIPTION("inventory.waypoint.public.rename.description"),
 	INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DISPLAY_NAME("inventory.waypoint.public.teleport.displayName"),
 	INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DESCRIPTION("inventory.waypoint.public.teleport.description"),
+	INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.public.selectBeaconColor.displayName"), //  TODO add to .msg
+	INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.public.selectBeaconColor.description"),
 
 	INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME("inventory.waypoint.permission.displayName"), // %name%
 	INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION("inventory.waypoint.permission.description"), // %world%, %x%, %y%, %z%, %blockX%, %blockY%, %blockZ%, %distance%
@@ -206,6 +208,8 @@ public enum Messages {
 	INVENTORY_WAYPOINT_PERMISSION_RENAME_DESCRIPTION("inventory.waypoint.permission.rename.description"),
 	INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME("inventory.waypoint.permission.teleport.displayName"),
 	INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DESCRIPTION("inventory.waypoint.permission.teleport.description"),
+	INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.permission.selectBeaconColor.displayName"), //  TODO add to .msg
+	INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.permission.selectBeaconColor.description"),
 
 	INVENTORY_SELECT_FOLDER_BACKGROUND_DISPLAY_NAME("inventory.selectFolder.background.displayName"),
 	INVENTORY_SELECT_FOLDER_BACKGROUND_DESCRIPTION("inventory.selectFolder.background.description"),
