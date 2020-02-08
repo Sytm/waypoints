@@ -39,10 +39,10 @@ import static de.md5lukas.waypoints.store.WPConfig.displays;
 
 public abstract class WaypointDisplay implements Listener {
 
-	private static Map<String, Tuple2<Supplier<Boolean>, Supplier<WaypointDisplay>>> displays = new HashMap<>();
-	private static List<WaypointDisplay> activeDisplays = new ArrayList<>();
-	private static WaypointDisplay global = new GlobalWaypointDisplay();
-	private static Map<Player, Map<String, BukkitTask>> updateTasks = new HashMap<>();
+	private final static Map<String, Tuple2<Supplier<Boolean>, Supplier<WaypointDisplay>>> displays = new HashMap<>();
+	private final static List<WaypointDisplay> activeDisplays = new ArrayList<>();
+	private final static AllWaypointDisplays global = new AllWaypointDisplays();
+	private final static Map<Player, Map<String, BukkitTask>> updateTasks = new HashMap<>();
 
 	static {
 		Bukkit.getPluginManager().registerEvents(global, Waypoints.instance());
@@ -70,7 +70,7 @@ public abstract class WaypointDisplay implements Listener {
 			Tuple2.of(checkNotNull(isActiveCheck, "The is active check cannot be null"), checkNotNull(factory, "The display factory cannot be null")));
 	}
 
-	public static WaypointDisplay getAll() {
+	public static AllWaypointDisplays getAll() {
 		return global;
 	}
 
@@ -87,21 +87,26 @@ public abstract class WaypointDisplay implements Listener {
 
 	public abstract void update(Player player, Waypoint waypoint);
 
-	public abstract void disable(Player player);
+	public abstract void disable(Player player, Waypoint waypoint);
 
 	protected final CompoundTag getStore(Player player) {
 		return WPPlayerData.getPlayerData(player.getUniqueId()).getCustomTag("display").getCompound(type);
 	}
 
-	private static class GlobalWaypointDisplay extends WaypointDisplay {
+	private static class AllWaypointDisplays implements Listener {
 
-		protected GlobalWaypointDisplay() {
-			super(null, 0);
+		private Map<Player, Waypoint> lastActiveWaypoint;
+
+
+		private AllWaypointDisplays() {
+			lastActiveWaypoint = new HashMap<>();
 		}
 
-		@Override
 		public void show(Player player, Waypoint waypoint) {
+			Waypoint lastWaypoint = lastActiveWaypoint.get(player);
+			lastActiveWaypoint.put(player, waypoint);
 			activeDisplays.forEach(wd -> {
+				wd.disable(player, lastWaypoint);
 				wd.show(player, waypoint);
 				if (wd.updateInterval > 0) {
 					updateTasks.computeIfPresent(player, (p, tasks) -> {
@@ -126,14 +131,11 @@ public abstract class WaypointDisplay implements Listener {
 			});
 		}
 
-		@Override
-		public void update(Player player, Waypoint waypoint) {
-			activeDisplays.stream().filter(wd -> wd.updateInterval <= 0).forEach(wd -> update(player, waypoint));
-		}
-
-		@Override
 		public void disable(Player player) {
+			Waypoint lastWaypoint = lastActiveWaypoint.get(player);
+			lastActiveWaypoint.remove(player);
 			activeDisplays.forEach(wd -> {
+				wd.disable(player, lastWaypoint);
 				if (wd.updateInterval > 0) {
 					updateTasks.computeIfPresent(player, (p, tasks) -> {
 						tasks.computeIfPresent(wd.type, (type, task) -> {
@@ -143,7 +145,6 @@ public abstract class WaypointDisplay implements Listener {
 						return tasks;
 					});
 				}
-				wd.disable(player);
 			});
 		}
 

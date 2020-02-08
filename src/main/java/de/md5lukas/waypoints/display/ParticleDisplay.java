@@ -53,6 +53,6 @@ public final class ParticleDisplay extends WaypointDisplay {
 	}
 
 	@Override
-	public void disable(Player player) {
+	public void disable(Player player, Waypoint waypoint) {
 	}
 }
