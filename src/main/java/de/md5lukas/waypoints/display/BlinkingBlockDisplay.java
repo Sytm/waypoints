@@ -29,7 +29,7 @@ import java.util.UUID;
 
 import static de.md5lukas.waypoints.store.WPConfig.displays;
 
-public class BlinkingBlockDisplay extends WaypointDisplay {
+public final class BlinkingBlockDisplay extends WaypointDisplay {
 
 	protected BlinkingBlockDisplay(Plugin plugin) {
 		super(plugin, displays().getBlinkingBlockInterval());
@@ -58,7 +58,8 @@ public class BlinkingBlockDisplay extends WaypointDisplay {
 	}
 
 	@Override
-	public void disable(Player player) {
+	public void disable(Player player, Waypoint waypoint) {
 		counters.remove(player.getUniqueId());
+		player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
 	}
 }

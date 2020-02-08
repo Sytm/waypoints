@@ -70,7 +70,7 @@ public final class ActionBarDisplay extends WaypointDisplay {
 	}
 
 	@Override
-	public void disable(Player player) {
+	public void disable(Player player, Waypoint waypoint) {
 		players.remove(player);
 	}
 

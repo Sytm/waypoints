@@ -48,7 +48,7 @@ public final class CompassDisplay extends WaypointDisplay {
 	public void update(Player player, Waypoint waypoint) {}
 
 	@Override
-	public void disable(Player player) {
+	public void disable(Player player, Waypoint waypoint) {
 		switch (displays().getCompassDefaultLocationType()) {
 			case SPAWN:
 				player.setCompassTarget(Bukkit.getWorlds().get(0).getSpawnLocation());

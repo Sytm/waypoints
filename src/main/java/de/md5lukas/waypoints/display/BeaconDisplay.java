@@ -73,7 +73,7 @@ public final class BeaconDisplay extends WaypointDisplay {
 	}
 
 	@Override
-	public void disable(Player player) {
+	public void disable(Player player, Waypoint waypoint) {
 		UUID uuid = player.getUniqueId();
 		if (activeBeacons.containsKey(uuid) && Objects.equals(player.getLocation().getWorld(), activeBeacons.get(uuid).getWorld())) {
 			sendBeacon(player, activeBeacons.get(uuid), null, false);
