@@ -2,6 +2,7 @@ name: Waypoints
 version: 2.6
 author: Md5Lukas (Sytm)
 main: de.md5lukas.waypoints.Waypoints
+website: https://www.spigotmc.org/resources/waypoints.66647/
 api-version: 1.13
 depend:
   - Md5Lukas-Commons
