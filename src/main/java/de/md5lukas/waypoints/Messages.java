@@ -44,6 +44,7 @@ public enum Messages {
 	CHAT_ACTION_RENAME_WAYPOINT_PERMISSION("chatAction.rename.waypoint.permission"),
 	CHAT_ACTION_RENAME_FOLDER_PRIVATE("chatAction.rename.folder.private"),
 
+	CHAT_WARNING_WORLD_TRANSLATIONS_MISSING("chatWarning.worldTranslationsMissing"),
 
 	//<editor-fold defaultstate="collapsed" desc="Commands">
 	COMMAND_HELP_TITLE("command.help.title"),
