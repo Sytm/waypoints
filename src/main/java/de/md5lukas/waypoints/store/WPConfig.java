@@ -267,6 +267,7 @@ public class WPConfig {
 		inventory.waypointPrivateRenameItem = matchMaterial(cfg.getString("inventory.waypoints.private.renameItem"));
 		inventory.waypointPrivateMoveToFolderItem = matchMaterial(cfg.getString("inventory.waypoints.private.moveToFolderItem"));
 		inventory.waypointPrivateTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.private.teleportItem"));
+		inventory.waypointPrivateSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.private.selectBeaconColorItem"));
 
 		inventory.waypointPublicItem = matchMaterial(cfg.getString("inventory.waypoints.public.item"));
 		inventory.waypointPublicBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.public.backgroundItem"));
@@ -274,6 +275,7 @@ public class WPConfig {
 		inventory.waypointPublicDeleteItem = matchMaterial(cfg.getString("inventory.waypoints.public.deleteItem"));
 		inventory.waypointPublicRenameItem = matchMaterial(cfg.getString("inventory.waypoints.public.renameItem"));
 		inventory.waypointPublicTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.public.teleportItem"));
+		inventory.waypointPublicSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.public.selectBeaconColorItem"));
 
 		inventory.waypointPermissionItem = matchMaterial(cfg.getString("inventory.waypoints.permission.item"));
 		inventory.waypointPermissionBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.permission.backgroundItem"));
@@ -281,6 +283,7 @@ public class WPConfig {
 		inventory.waypointPermissionDeleteItem = matchMaterial(cfg.getString("inventory.waypoints.permission.deleteItem"));
 		inventory.waypointPermissionRenameItem = matchMaterial(cfg.getString("inventory.waypoints.permission.renameItem"));
 		inventory.waypointPermissionTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.permission.teleportItem"));
+		inventory.waypointPermissionSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.permission.selectBeaconColorItem"));
 
 
 		inventory.selectWaypointTypeBackgroundItem = matchMaterial(cfg.getString("inventory.selectWaypointType.backgroundItem"));
@@ -547,6 +550,7 @@ public class WPConfig {
 		private Material waypointPrivateRenameItem;
 		private Material waypointPrivateMoveToFolderItem;
 		private Material waypointPrivateTeleportItem;
+		private Material waypointPrivateSelectBeaconColorItem;
 
 		private Material waypointPublicItem;
 		private Material waypointPublicBackgroundItem;
@@ -554,6 +558,7 @@ public class WPConfig {
 		private Material waypointPublicDeleteItem;
 		private Material waypointPublicRenameItem;
 		private Material waypointPublicTeleportItem;
+		private Material waypointPublicSelectBeaconColorItem;
 
 		private Material waypointPermissionItem;
 		private Material waypointPermissionBackgroundItem;
@@ -561,6 +566,7 @@ public class WPConfig {
 		private Material waypointPermissionDeleteItem;
 		private Material waypointPermissionRenameItem;
 		private Material waypointPermissionTeleportItem;
+		private Material waypointPermissionSelectBeaconColorItem;
 
 		private Material selectWaypointTypeBackgroundItem;
 		private Material selectWaypointTypeTitleItem;
@@ -690,6 +696,10 @@ public class WPConfig {
 			return waypointPrivateTeleportItem;
 		}
 
+		public Material getWaypointPrivateSelectBeaconColorItem() {
+			return waypointPrivateSelectBeaconColorItem;
+		}
+
 		public Material getWaypointPublicItem() {
 			return waypointPublicItem;
 		}
@@ -714,6 +724,10 @@ public class WPConfig {
 			return waypointPublicTeleportItem;
 		}
 
+		public Material getWaypointPublicSelectBeaconColorItem() {
+			return waypointPublicSelectBeaconColorItem;
+		}
+
 		public Material getWaypointPermissionItem() {
 			return waypointPermissionItem;
 		}
@@ -736,6 +750,10 @@ public class WPConfig {
 
 		public Material getWaypointPermissionTeleportItem() {
 			return waypointPermissionTeleportItem;
+		}
+
+		public Material getWaypointPermissionSelectBeaconColorItem() {
+			return waypointPermissionSelectBeaconColorItem;
 		}
 
 		public Material getSelectWaypointTypeBackgroundItem() {
