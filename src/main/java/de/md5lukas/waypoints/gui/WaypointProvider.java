@@ -119,7 +119,7 @@ public class WaypointProvider implements InventoryProvider {
 	private static final Pattern<ClickableItem> waypointPattern = new Pattern<>(
 		"____w____",
 		"_________",
-		"____s____",
+		"____s___c",
 		"_f_____r_",
 		"d___t___b");
 	/*
@@ -130,6 +130,7 @@ public class WaypointProvider implements InventoryProvider {
 	r = rename
 	t = teleport
 	b = back
+	c = select beacon color
 	 */
 	private static final Pattern<ClickableItem> selectFolderPattern = new Pattern<>(
 		"#########",
@@ -500,6 +501,13 @@ public class WaypointProvider implements InventoryProvider {
 		} else {
 			waypointPattern.attach('r', bg);
 		}
+		if (isOwner && WPConfig.displays().isBeaconEnabled() && WPConfig.displays().isBeaconEnableSelectColor()) {
+			waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> {
+				// TODO
+			}));
+		} else {
+			waypointPattern.attach('c', bg);
+		}
 		if (viewer.hasPermission("waypoints.teleport.private")) {
 			waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPrivateTeleportItem(viewer), click -> {
 				viewer.closeInventory();
@@ -558,6 +566,13 @@ public class WaypointProvider implements InventoryProvider {
 		} else {
 			waypointPattern.attach('r', bg);
 		}
+		if (viewer.hasPermission("waypoints.changeBeaconColor.public") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays().isBeaconEnableSelectColor()) {
+			waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> {
+				// TODO
+			}));
+		} else {
+			waypointPattern.attach('c', bg);
+		}
 		if (viewer.hasPermission("waypoints.teleport.public")) {
 			waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPublicTeleportItem(viewer), click -> {
 				viewer.closeInventory();
@@ -613,6 +628,13 @@ public class WaypointProvider implements InventoryProvider {
 			}));
 		} else {
 			waypointPattern.attach('r', bg);
+		}
+		if (viewer.hasPermission("waypoints.changeBeaconColor.permission") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays().isBeaconEnableSelectColor()) {
+			waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> {
+				// TODO
+			}));
+		} else {
+			waypointPattern.attach('c', bg);
 		}
 		if (viewer.hasPermission("waypoints.teleport.permission")) {
 			waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPermissionTeleportItem(viewer), click -> {
