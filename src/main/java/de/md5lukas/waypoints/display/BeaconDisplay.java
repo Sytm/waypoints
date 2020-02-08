@@ -58,17 +58,17 @@ public final class BeaconDisplay extends WaypointDisplay {
 			Location loc = waypoint.getLocation().getWorld().getHighestBlockAt(waypoint.getLocation()).getLocation();
 			if (distance < displays().getBeaconMinDistance() || distance > displays().getBeaconMaxDistance()) {
 				if (activeBeacons.containsKey(uuid)) {
-					sendBeacon(player, loc, false);
+					sendBeacon(player, loc,null, false);
 				}
 				return;
 			}
 			if (activeBeacons.containsKey(uuid)) {
 				if (!blockEquals(activeBeacons.get(uuid), loc)) {
-					sendBeacon(player, activeBeacons.get(uuid), false);
+					sendBeacon(player, activeBeacons.get(uuid), null, false);
 				}
 			}
 			activeBeacons.put(uuid, loc);
-			sendBeacon(player, loc, true);
+			sendBeacon(player, loc, waypoint.getBeaconColor(),  true);
 		}
 	}
 
@@ -76,12 +76,12 @@ public final class BeaconDisplay extends WaypointDisplay {
 	public void disable(Player player) {
 		UUID uuid = player.getUniqueId();
 		if (activeBeacons.containsKey(uuid) && Objects.equals(player.getLocation().getWorld(), activeBeacons.get(uuid).getWorld())) {
-			sendBeacon(player, activeBeacons.get(uuid), false);
+			sendBeacon(player, activeBeacons.get(uuid), null, false);
 		}
 		activeBeacons.remove(uuid);
 	}
 
-	private static void sendBeacon(Player player, Location location, boolean create) {
+	private static void sendBeacon(Player player, Location location, BlockColor color, boolean create) {
 		for (int x = -1; x <= 1; x++) {
 			for (int z = -1; z <= 1; z++) {
 				location.add(x, 0, z);
@@ -96,10 +96,18 @@ public final class BeaconDisplay extends WaypointDisplay {
 		location.add(0, 1, 0);
 		if (create) {
 			player.sendBlockChange(location, BLOCK_DATA_BEACON);
+			location.add(0, 1, 0);
+			if (color == null || color.getMaterial() == null) {
+				player.sendBlockChange(location, location.getBlock().getBlockData());
+			} else {
+				player.sendBlockChange(location, color.getBlockData());
+			}
 		} else {
 			player.sendBlockChange(location, location.getBlock().getBlockData());
+			location.add(0, 1, 0);
+			player.sendBlockChange(location, location.getBlock().getBlockData());
 		}
-		location.subtract(0, 1, 0);
+		location.subtract(0, 2, 0);
 	}
 
 	private static boolean blockEquals(Location loc1, Location loc2) {
