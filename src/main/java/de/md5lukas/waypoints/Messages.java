@@ -212,6 +212,13 @@ public enum Messages {
 	INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.permission.selectBeaconColor.displayName"), //  TODO add to .msg
 	INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.permission.selectBeaconColor.description"),
 
+	INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DISPLAY_NAME("inventory.selectBeaconColor.background.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DESCRIPTION("inventory.selectBeaconColor.background.description"),
+	INVENTORY_SELECT_BEACON_COLOR_PREVIOUS_DISPLAY_NAME("inventory.selectBeaconColor.background.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_PREVIOUS_DESCRIPTION("inventory.selectBeaconColor.background.description"),
+	INVENTORY_SELECT_BEACON_COLOR_NEXT_DISPLAY_NAME("inventory.selectBeaconColor.background.displayName"),
+	INVENTORY_SELECT_BEACON_COLOR_NEXT_DESCRIPTION("inventory.selectBeaconColor.background.description"),
+
 	INVENTORY_SELECT_FOLDER_BACKGROUND_DISPLAY_NAME("inventory.selectFolder.background.displayName"),
 	INVENTORY_SELECT_FOLDER_BACKGROUND_DESCRIPTION("inventory.selectFolder.background.description"),
 	INVENTORY_SELECT_FOLDER_NO_FOLDER_DISPLAY_NAME("inventory.selectFolder.noFolder.displayName"),

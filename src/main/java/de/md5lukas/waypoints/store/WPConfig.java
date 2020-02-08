@@ -285,6 +285,9 @@ public class WPConfig {
 		inventory.waypointPermissionTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.permission.teleportItem"));
 		inventory.waypointPermissionSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.permission.selectBeaconColorItem"));
 
+		inventory.selectBeaconColorBackgroundItem = matchMaterial(cfg.getString("inventory.selectBeaconColor.backgroundItem"));
+		inventory.selectBeaconColorPreviousItem = matchMaterial(cfg.getString("inventory.selectBeaconColor.previousItem"));
+		inventory.selectBeaconColorNextItem = matchMaterial(cfg.getString("inventory.selectBeaconColor.nextItem"));
 
 		inventory.selectWaypointTypeBackgroundItem = matchMaterial(cfg.getString("inventory.selectWaypointType.backgroundItem"));
 		inventory.selectWaypointTypeTitleItem = matchMaterial(cfg.getString("inventory.selectWaypointType.titleItem"));
@@ -568,6 +571,10 @@ public class WPConfig {
 		private Material waypointPermissionTeleportItem;
 		private Material waypointPermissionSelectBeaconColorItem;
 
+		private Material selectBeaconColorBackgroundItem;
+		private Material selectBeaconColorPreviousItem;
+		private Material selectBeaconColorNextItem;
+
 		private Material selectWaypointTypeBackgroundItem;
 		private Material selectWaypointTypeTitleItem;
 		private Material selectWaypointTypePrivateItem;
@@ -754,6 +761,18 @@ public class WPConfig {
 
 		public Material getWaypointPermissionSelectBeaconColorItem() {
 			return waypointPermissionSelectBeaconColorItem;
+		}
+
+		public Material getSelectBeaconColorBackgroundItem() {
+			return selectBeaconColorBackgroundItem;
+		}
+
+		public Material getSelectBeaconColorNextItem() {
+			return selectBeaconColorNextItem;
+		}
+
+		public Material getSelectBeaconColorPreviousItem() {
+			return selectBeaconColorPreviousItem;
 		}
 
 		public Material getSelectWaypointTypeBackgroundItem() {
