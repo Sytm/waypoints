@@ -205,6 +205,14 @@ displays:
     # The interval in game ticks when the ghost block changes should be sent
     interval: 30
 
+    defaultColor:
+      private: CLEAR
+      public: GREEN
+      permission: PURPLE
+      death: RED
+
+    enableSelectColor: true
+
   actionBar:
     # Enable or disable it here
     enabled: true

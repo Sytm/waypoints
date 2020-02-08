@@ -19,11 +19,9 @@
 package de.md5lukas.waypoints.store;
 
 import de.md5lukas.commons.language.Languages;
+import de.md5lukas.waypoints.display.BlockColor;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -190,6 +188,11 @@ public class WPConfig {
 		}
 		displays.beaconBaseBlock = Bukkit.createBlockData(matchMaterial(cfg.getString("displays.beacon.baseBlock")));
 		displays.beaconInterval = cfg.getInt("displays.beacon.interval");
+		displays.beaconDefaultColorPrivate = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.private"));
+		displays.beaconDefaultColorPublic = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.public"));
+		displays.beaconDefaultColorPermission = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.permission"));
+		displays.beaconDefaultColorDeath = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.death"));
+		displays.beaconEnableSelectColor = cfg.getBoolean("displays.beacon.enableSelectColor");
 
 		displays.particlesEnabled = cfg.getBoolean("displays.particles.enabled");
 		displays.particlesInterval = cfg.getInt("displays.particles.interval");
@@ -308,6 +311,11 @@ public class WPConfig {
 		private long beaconMaxDistance;
 		private BlockData beaconBaseBlock;
 		private int beaconInterval;
+		private BlockColor beaconDefaultColorPrivate;
+		private BlockColor beaconDefaultColorPublic;
+		private BlockColor beaconDefaultColorPermission;
+		private BlockColor beaconDefaultColorDeath;
+		private boolean beaconEnableSelectColor;
 
 		private boolean particlesEnabled;
 		private int particlesInterval;
@@ -423,6 +431,26 @@ public class WPConfig {
 
 		public BlockData getBeaconBaseBlock() {
 			return beaconBaseBlock;
+		}
+
+		public BlockColor getBeaconDefaultColorPrivate() {
+			return beaconDefaultColorPrivate;
+		}
+
+		public BlockColor getBeaconDefaultColorPublic() {
+			return beaconDefaultColorPublic;
+		}
+
+		public BlockColor getBeaconDefaultColorPermission() {
+			return beaconDefaultColorPermission;
+		}
+
+		public BlockColor getBeaconDefaultColorDeath() {
+			return beaconDefaultColorDeath;
+		}
+
+		public boolean isBeaconEnableSelectColor() {
+			return beaconEnableSelectColor;
 		}
 
 		public boolean isParticlesEnabled() {
