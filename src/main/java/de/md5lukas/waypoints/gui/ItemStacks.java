@@ -117,6 +117,11 @@ class ItemStacks {
 			.lore(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
 	}
 
+	static ItemStack getWaypointPrivateSelectBeaconColor(Player p) {
+		return new ItemBuilder(inventory().getWaypointPrivateSelectBeaconColorItem()).name(INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
 
 	static ItemStack getWaypointPublicBackgroundItem(Player p) {
 		return new ItemBuilder(inventory().getWaypointPublicBackgroundItem()).name(INVENTORY_WAYPOINT_PUBLIC_BACKGROUND_DISPLAY_NAME.getRaw(p))
@@ -143,6 +148,12 @@ class ItemStacks {
 			.lore(INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
 	}
 
+	static ItemStack getWaypointPublicSelectBeaconColor(Player p) {
+		return new ItemBuilder(inventory().getWaypointPublicSelectBeaconColorItem()).name(INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+
 	static ItemStack getWaypointPermissionBackgroundItem(Player p) {
 		return new ItemBuilder(inventory().getWaypointPermissionBackgroundItem()).name(INVENTORY_WAYPOINT_PERMISSION_BACKGROUND_DISPLAY_NAME.getRaw(p))
 			.lore(INVENTORY_WAYPOINT_PERMISSION_BACKGROUND_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
@@ -167,6 +178,12 @@ class ItemStacks {
 		return new ItemBuilder(inventory().getWaypointPermissionTeleportItem()).name(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME.getRaw(p))
 			.lore(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
 	}
+
+	static ItemStack getWaypointPermissionSelectBeaconColor(Player p) {
+		return new ItemBuilder(inventory().getWaypointPermissionSelectBeaconColorItem()).name(INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
 
 	static ItemStack getSelectWaypointTypeBackgroundItem(Player p) {
 		return new ItemBuilder(inventory().getSelectWaypointTypeBackgroundItem()).name(INVENTORY_SELECT_WAYPOINT_TYPE_BACKGROUND_DISPLAY_NAME.getRaw(p))

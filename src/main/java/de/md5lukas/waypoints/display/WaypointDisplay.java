@@ -93,7 +93,7 @@ public abstract class WaypointDisplay implements Listener {
 		return WPPlayerData.getPlayerData(player.getUniqueId()).getCustomTag("display").getCompound(type);
 	}
 
-	private static class AllWaypointDisplays implements Listener {
+	public final static class AllWaypointDisplays implements Listener {
 
 		private Map<Player, Waypoint> lastActiveWaypoint;
 
