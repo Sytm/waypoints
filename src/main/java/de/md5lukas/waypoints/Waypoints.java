@@ -1,6 +1,6 @@
 /*
  *     Waypoints2, A plugin for spigot to add waypoints functionality
- *     Copyright (C) 2019  Lukas Planz
+ *     Copyright (C) 2020  Lukas Planz
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published
