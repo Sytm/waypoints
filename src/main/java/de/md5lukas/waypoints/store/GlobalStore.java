@@ -18,6 +18,7 @@
 
 package de.md5lukas.waypoints.store;
 
+import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.NbtIo;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Waypoints;

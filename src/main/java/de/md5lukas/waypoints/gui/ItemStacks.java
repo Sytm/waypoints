@@ -220,6 +220,21 @@ class ItemStacks {
 			.lore(INVENTORY_SELECT_FOLDER_NO_FOLDER_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
 	}
 
+	static ItemStack getSelectBeaconColorBackgroundItem(Player p) {
+		return new ItemBuilder(inventory().getSelectBeaconColorBackgroundItem()).name(INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+	static ItemStack getSelectBeaconColorPreviousItem(Player p) {
+		return new ItemBuilder(inventory().getSelectBeaconColorPreviousItem()).name(INVENTORY_SELECT_BEACON_COLOR_PREVIOUS_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_SELECT_BEACON_COLOR_PREVIOUS_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
+	static ItemStack getSelectBeaconColorNextItem(Player p) {
+		return new ItemBuilder(inventory().getSelectBeaconColorNextItem()).name(INVENTORY_SELECT_BEACON_COLOR_NEXT_DISPLAY_NAME.getRaw(p))
+			.lore(INVENTORY_SELECT_BEACON_COLOR_NEXT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+	}
+
 	static ItemStack getFolderPrivateBackgroundItem(Player p) {
 		return new ItemBuilder(inventory().getFolderPrivateBackgroundItem()).name(INVENTORY_FOLDER_PRIVATE_BACKGROUND_DISPLAY_NAME.getRaw(p))
 			.lore(INVENTORY_FOLDER_PRIVATE_BACKGROUND_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();

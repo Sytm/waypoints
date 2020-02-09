@@ -19,7 +19,6 @@
 package de.md5lukas.waypoints.display;
 
 import de.md5lukas.commons.StringHelper;
-import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
