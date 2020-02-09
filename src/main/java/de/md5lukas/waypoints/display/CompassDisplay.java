@@ -18,10 +18,10 @@
 
 package de.md5lukas.waypoints.display;
 
+import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.store.LocationTag;
 import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

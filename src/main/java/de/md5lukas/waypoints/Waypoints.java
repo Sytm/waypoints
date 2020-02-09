@@ -19,11 +19,15 @@
 package de.md5lukas.waypoints;
 
 import de.md5lukas.commons.messages.MessageStore;
+import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.Tags;
 import de.md5lukas.waypoints.command.WaypointsCommand;
 import de.md5lukas.waypoints.display.WaypointDisplay;
 import de.md5lukas.waypoints.listener.WaypointsListener;
-import de.md5lukas.waypoints.store.*;
+import de.md5lukas.waypoints.store.FileManager;
+import de.md5lukas.waypoints.store.GlobalStore;
+import de.md5lukas.waypoints.store.LegacyImporter;
+import de.md5lukas.waypoints.store.WPConfig;
 import fr.minuskube.inv.SmartInvsPlugin;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -107,7 +111,7 @@ public class Waypoints extends JavaPlugin {
 
 	//<editor-fold defaultstate="collapsed" desc="onEnabled helpers">
 	private void setupExternalDependencies() {
-		Tags.registerTag(LocationTag::new); // TODO use commons one
+		Tags.registerTag(LocationTag::new);
 		SmartInvsPlugin.setPlugin(this);
 	}
 
