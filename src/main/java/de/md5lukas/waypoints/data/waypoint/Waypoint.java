@@ -106,7 +106,7 @@ public abstract class Waypoint implements GUISortable {
 		tag.put("location", new LocationTag(null, location));
 		if (material != null)
 			tag.putString("material", material.name());
-		if (beaconColor != BlockColor.CLEAR)
+		if (beaconColor != null)
 			tag.putString("beaconColor", beaconColor.name());
 		return tag;
 	}

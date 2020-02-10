@@ -109,7 +109,8 @@ public abstract class WaypointDisplay implements Listener {
 			Waypoint lastWaypoint = lastActiveWaypoint.get(player);
 			lastActiveWaypoint.put(player, waypoint);
 			activeDisplays.forEach(wd -> {
-				wd.disable(player, lastWaypoint);
+				if (lastWaypoint != null)
+					wd.disable(player, lastWaypoint);
 				wd.show(player, waypoint);
 				if (wd.updateInterval > 0) {
 					updateTasks.computeIfPresent(player, (p, tasks) -> {

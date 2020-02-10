@@ -68,7 +68,11 @@ public enum BlockColor {
 	}
 
 	public ItemStack asInventoryItem(Player p) {
-		return new ItemBuilder(material).name(displayName.getRaw(p)).lore(description.getRaw(p), WPConfig.inventory().getMaxDescriptionLineLength()).make();
+		Material itemMat = material;
+		if (this == CLEAR) {
+			itemMat = Material.GLASS;
+		}
+		return new ItemBuilder(itemMat).name(displayName.getRaw(p)).lore(description.getRaw(p), WPConfig.inventory().getMaxDescriptionLineLength()).make();
 	}
 
 	public BlockData getBlockData() {
