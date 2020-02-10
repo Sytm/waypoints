@@ -213,13 +213,15 @@ displays:
     # The interval in game ticks when the ghost block changes should be sent
     interval: 30
 
+    # If set to true, users can select the color of beacon beams for each of their waypoints
+    enableSelectColor: true
+
     defaultColor:
       private: CLEAR
       public: GREEN
       permission: PURPLE
+      # The color of the death waypoint cannot be changed by the user
       death: RED
-
-    enableSelectColor: true
 
   actionBar:
     # Enable or disable it here

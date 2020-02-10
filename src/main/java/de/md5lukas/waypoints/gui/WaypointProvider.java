@@ -718,28 +718,25 @@ public class WaypointProvider implements InventoryProvider {
 	private void showSelectBeaconColor(Waypoint waypoint) {
 		if (beaconColorWheel != null)
 			beaconColorWheel.setIndex(0);
+		Consumer<BlockColor> bcConsumer = bc -> {
+			waypoint.setBeaconColor(bc);
+			WaypointDisplay.getAll().show(viewer, waypoint);
+			showWaypoint(waypoint);
+		};
 		contents.fill(ClickableItem.NONE);
 		selectBeaconColorPattern.setDefault(ClickableItem.empty(ItemStacks.getSelectBeaconColorBackgroundItem(viewer)));
+		selectBeaconColorPattern.attach('#', ClickableItem.NONE);
 		selectBeaconColorPattern.attach('p', ClickableItem.from(ItemStacks.getSelectBeaconColorPreviousItem(viewer), click -> {
-			beaconColorWheel.previous();
-			updateSelectBeaconColor(bc -> {
-				waypoint.setBeaconColor(bc);
-				WaypointDisplay.getAll().show(viewer, waypoint);
-			});
+			beaconColorWheel.next();
+			updateSelectBeaconColor(bcConsumer);
 		}));
 		selectBeaconColorPattern.attach('n', ClickableItem.from(ItemStacks.getSelectBeaconColorNextItem(viewer), click -> {
-			beaconColorWheel.next();
-			updateSelectBeaconColor(bc -> {
-				waypoint.setBeaconColor(bc);
-				WaypointDisplay.getAll().show(viewer, waypoint);
-			});
+			beaconColorWheel.previous();
+			updateSelectBeaconColor(bcConsumer);
 		}));
 		selectBeaconColorPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showWaypoint(waypoint)));
 		contents.fillPattern(selectBeaconColorPattern);
-		updateSelectBeaconColor(bc -> {
-			waypoint.setBeaconColor(bc);
-			WaypointDisplay.getAll().show(viewer, waypoint);
-		});
+		updateSelectBeaconColor(bcConsumer);
 	}
 	//</editor-fold>
 
@@ -806,7 +803,7 @@ public class WaypointProvider implements InventoryProvider {
 
 	private void updateSelectBeaconColor(Consumer<BlockColor> onClick) {
 		List<ClickableItem> items = getSelectBeaconColorItems(onClick);
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			contents.set(2, 2 + i, items.get(i));
 		}
 	}
