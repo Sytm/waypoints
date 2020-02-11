@@ -12,7 +12,11 @@ general.notAValidUuid=$prefix$ &cThe id provided is not in a valid format.
 # %correctworld% = Name of the world, where the waypoint is
 display.wrongWorld=&cYou are currently in the world &a%currentworld%&c, but the waypoint is in &a%correctworld%
 
-chatAction.updateItem.waypoint.private=$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon.
+variable.chatAction.updateItem.waypoint=$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon.
+
+chatAction.updateItem.waypoint.private=$chatAction.updateItem.waypoint$
+chatAction.updateItem.waypoint.public=$chatAction.updateItem.waypoint$
+chatAction.updateItem.waypoint.permission=$chatAction.updateItem.waypoint$
 chatAction.updateItem.folder.private=$prefix$ &7Click here when you are holding the item you want to use as the new folder icon.
 
 chatAction.rename.waypoint.private=$prefix$ &7Click here to get the command to rename your waypoint.

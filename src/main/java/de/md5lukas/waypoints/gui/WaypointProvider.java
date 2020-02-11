@@ -465,7 +465,7 @@ public class WaypointProvider implements InventoryProvider {
 		if (isOwner) {
 			waypointPattern.attach('w', ClickableItem.from(waypoint.getStack(viewer), click -> {
 				BaseComponent[] components = CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PRIVATE.get(viewer).getComponentsModifiable();
-				ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypoint " + waypoint.getID());
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypointPrivate " + waypoint.getID());
 				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
 				viewer.spigot().sendMessage(components);
 				viewer.closeInventory();
@@ -537,7 +537,17 @@ public class WaypointProvider implements InventoryProvider {
 	private void showPublicWaypoint(Waypoint waypoint) {
 		ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointPublicBackgroundItem(viewer));
 		waypointPattern.setDefault(bg);
-		waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
+		if (viewer.hasPermission("waypoints.updateDisplayItem.public")) {
+			waypointPattern.attach('w', ClickableItem.from(waypoint.getStack(viewer), click -> {
+				BaseComponent[] components = CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PUBLIC.get(viewer).getComponentsModifiable();
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypointPublic " + waypoint.getID());
+				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+				viewer.spigot().sendMessage(components);
+				viewer.closeInventory();
+			}));
+		} else {
+			waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
+		}
 		waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointPublicSelectItem(viewer), click -> {
 			WaypointDisplay.getAll().show(viewer, waypoint);
 			viewer.closeInventory();
@@ -596,7 +606,17 @@ public class WaypointProvider implements InventoryProvider {
 	private void showPermissionWaypoint(Waypoint waypoint) {
 		ClickableItem bg = ClickableItem.empty(ItemStacks.getWaypointPermissionBackgroundItem(viewer));
 		waypointPattern.setDefault(bg);
-		waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
+		if (viewer.hasPermission("waypoints.updateDisplayItem.permission")) {
+			waypointPattern.attach('w', ClickableItem.from(waypoint.getStack(viewer), click -> {
+				BaseComponent[] components = CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PERMISSION.get(viewer).getComponentsModifiable();
+				ClickEvent ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/waypoints updateItem waypointPermission " + waypoint.getID());
+				Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+				viewer.spigot().sendMessage(components);
+				viewer.closeInventory();
+			}));
+		} else {
+			waypointPattern.attach('w', ClickableItem.empty(waypoint.getStack(viewer)));
+		}
 		waypointPattern.attach('s', ClickableItem.from(ItemStacks.getWaypointPermissionSelectItem(viewer), click -> {
 			WaypointDisplay.getAll().show(viewer, waypoint);
 			viewer.closeInventory();

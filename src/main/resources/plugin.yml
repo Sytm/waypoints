@@ -20,6 +20,7 @@ permissions:
       - waypoints.gui.*
       - waypoints.set.*
       - waypoints.delete.*
+      - waypoints.updateDisplayItem.*
       - waypoints.changeBeaconColor.*
       - waypoints.other
       - waypoints.compass
@@ -68,7 +69,18 @@ permissions:
   waypoints.rename.permission:
     description: Permission to rename permission waypoints
 
-# --- Changing beacon color ---
+  # --- Updating dispaly items ---
+  waypoints.updateDisplayItem.*:
+    description: Permission to edit global waypoint display items
+    children:
+      - waypoints.updateDisplayItem.public
+      - waypoints.updateDisplayItem.permission
+  waypoints.updateDisplayItem.public:
+    description: Permission to edit public waypoint display items
+  waypoints.updateDisplayItem.permission:
+    description: Permission to edit permission waypoint display items
+
+  # --- Changing beacon color ---
   waypoints.changeBeaconColor.*:
     description: Permission to edit global waypoint beacon colors
     children:

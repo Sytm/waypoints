@@ -23,6 +23,8 @@ import de.md5lukas.commons.UUIDUtils;
 import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.folder.Folder;
+import de.md5lukas.waypoints.data.folder.PermissionFolder;
+import de.md5lukas.waypoints.data.folder.PublicFolder;
 import de.md5lukas.waypoints.data.waypoint.PermissionWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PublicWaypoint;
@@ -217,26 +219,55 @@ public class WaypointsCommand implements CommandExecutor {
 						COMMAND_UPDATE_ITEM_NOT_A_VALID_ITEM.send(p);
 						return true;
 					}
-					if ("waypoint".equalsIgnoreCase(args[1])) {
-						WPPlayerData playerData = WPPlayerData.getPlayerData(p.getUniqueId());
-						Optional<Waypoint> waypoint = playerData.findWaypoint(wp -> wp.getID().equals(uuid));
-						if (waypoint.isPresent()) {
-							waypoint.get().setMaterial(mat);
-							COMMAND_UPDATE_ITEM_WAYPOINT_SUCCESS.send(p);
-						} else {
-							GENERAL_WAYPOINT_NOT_FOUND.send(p);
+					switch (args[1].toLowerCase()) {
+						case "waypointprivate": {
+							WPPlayerData playerData = WPPlayerData.getPlayerData(p.getUniqueId());
+							Optional<Waypoint> waypoint = playerData.findWaypoint(wp -> wp.getID().equals(uuid));
+							if (waypoint.isPresent()) {
+								waypoint.get().setMaterial(mat);
+								COMMAND_UPDATE_ITEM_WAYPOINT_SUCCESS.send(p);
+							} else {
+								GENERAL_WAYPOINT_NOT_FOUND.send(p);
+							}
+							break;
 						}
-					} else if ("folder".equalsIgnoreCase(args[1])) {
-						WPPlayerData playerData = WPPlayerData.getPlayerData(p.getUniqueId());
-						Optional<Folder> folder = playerData.findFolder(f -> f.getID().equals(uuid));
-						if (folder.isPresent()) {
-							folder.get().setMaterial(mat);
-							COMMAND_UPDATE_ITEM_FOLDER_SUCCESS.send(p);
-						} else {
-							GENERAL_FOLDER_NOT_FOUND.send(p);
+						case "waypointpublic": {
+							PublicFolder pf = Waypoints.getGlobalStore().getPublicFolder();
+							Optional<Waypoint> waypoint = pf.findWaypoint(wp -> wp.getID().equals(uuid));
+							if (waypoint.isPresent()) {
+								waypoint.get().setMaterial(mat);
+								COMMAND_UPDATE_ITEM_WAYPOINT_SUCCESS.send(p);
+							} else {
+								GENERAL_WAYPOINT_NOT_FOUND.send(p);
+							}
+							break;
 						}
-					} else {
-						COMMAND_UPDATE_ITEM_WRONG_USAGE.send(p);
+						case "waypointpermission": {
+							PermissionFolder pf = Waypoints.getGlobalStore().getPermissionFolder();
+							Optional<Waypoint> waypoint = pf.findWaypoint(wp -> wp.getID().equals(uuid));
+							if (waypoint.isPresent()) {
+								waypoint.get().setMaterial(mat);
+								COMMAND_UPDATE_ITEM_WAYPOINT_SUCCESS.send(p);
+							} else {
+								GENERAL_WAYPOINT_NOT_FOUND.send(p);
+							}
+							break;
+						}
+						case "folder": {
+							WPPlayerData playerData = WPPlayerData.getPlayerData(p.getUniqueId());
+							Optional<Folder> folder = playerData.findFolder(f -> f.getID().equals(uuid));
+							if (folder.isPresent()) {
+								folder.get().setMaterial(mat);
+								COMMAND_UPDATE_ITEM_FOLDER_SUCCESS.send(p);
+							} else {
+								GENERAL_FOLDER_NOT_FOUND.send(p);
+							}
+							break;
+						}
+						default: {
+							COMMAND_UPDATE_ITEM_WRONG_USAGE.send(p);
+							break;
+						}
 					}
 					break;
 				}

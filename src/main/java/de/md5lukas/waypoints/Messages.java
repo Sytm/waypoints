@@ -37,6 +37,8 @@ public enum Messages {
 	DISPLAY_WRONG_WORLD("display.wrongWorld"), // %currentworld%, %correctworld%
 
 	CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PRIVATE("chatAction.updateItem.waypoint.private"),
+	CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PUBLIC("chatAction.updateItem.waypoint.public"),
+	CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PERMISSION("chatAction.updateItem.waypoint.permission"),
 	CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE("chatAction.updateItem.folder.private"),
 
 	CHAT_ACTION_RENAME_WAYPOINT_PRIVATE("chatAction.rename.waypoint.private"),
@@ -179,7 +181,7 @@ public enum Messages {
 	INVENTORY_WAYPOINT_PRIVATE_MOVE_TO_FOLDER_DESCRIPTION("inventory.waypoint.private.moveToFolder.description"),
 	INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DISPLAY_NAME("inventory.waypoint.private.teleport.displayName"),
 	INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DESCRIPTION("inventory.waypoint.private.teleport.description"),
-	INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.private.selectBeaconColor.displayName"), //  TODO add to .msg
+	INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.private.selectBeaconColor.displayName"),
 	INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.private.selectBeaconColor.description"),
 
 	INVENTORY_WAYPOINT_PUBLIC_DISPLAY_NAME("inventory.waypoint.public.displayName"), // %name%
@@ -194,7 +196,7 @@ public enum Messages {
 	INVENTORY_WAYPOINT_PUBLIC_RENAME_DESCRIPTION("inventory.waypoint.public.rename.description"),
 	INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DISPLAY_NAME("inventory.waypoint.public.teleport.displayName"),
 	INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DESCRIPTION("inventory.waypoint.public.teleport.description"),
-	INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.public.selectBeaconColor.displayName"), //  TODO add to .msg
+	INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.public.selectBeaconColor.displayName"),
 	INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.public.selectBeaconColor.description"),
 
 	INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME("inventory.waypoint.permission.displayName"), // %name%
@@ -209,7 +211,7 @@ public enum Messages {
 	INVENTORY_WAYPOINT_PERMISSION_RENAME_DESCRIPTION("inventory.waypoint.permission.rename.description"),
 	INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME("inventory.waypoint.permission.teleport.displayName"),
 	INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DESCRIPTION("inventory.waypoint.permission.teleport.description"),
-	INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.permission.selectBeaconColor.displayName"), //  TODO add to .msg
+	INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.permission.selectBeaconColor.displayName"),
 	INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.permission.selectBeaconColor.description"),
 
 	INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DISPLAY_NAME("inventory.selectBeaconColor.background.displayName"),
