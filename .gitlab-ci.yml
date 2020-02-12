@@ -1,0 +1,34 @@
+image: maven:latest
+
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode -U"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+
+clean_cache:
+  stage: .pre
+  script:
+    - mvn dependency:resolve -U
+
+build:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS compile
+
+test:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+
+archive:
+  only:
+    - tags
+  stage: deploy
+  script:
+    - mvn $MAVEN_CLI_OPTS verify
+  artifacts:
+    paths:
+      - target/waypoints2-*.jar
