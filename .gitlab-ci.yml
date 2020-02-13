@@ -1,22 +1,18 @@
 image: maven:latest
 
 variables:
-  MAVEN_CLI_OPTS: "--batch-mode -U"
+  MAVEN_CLI_OPTS: "--batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 cache:
   paths:
     - .m2/repository/
-
-clean_cache:
-  stage: .pre
-  script:
-    - mvn dependency:resolve -U
+    - target/
 
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS compile
+    - mvn $MAVEN_CLI_OPTS -U clean compile
 
 test:
   stage: test
