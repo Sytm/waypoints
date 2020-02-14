@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -32,9 +31,12 @@ public class CheckMessagesTest {
 	}
 
 	@Test
-	public void verifyMessageFiles() throws IOException {
-		for (File f : Objects.requireNonNull(new File("src/main/resources/lang/").listFiles())) {
-			verifyCompleteMessageFile(f);
-		}
+	public void verifyEnglish() throws IOException {
+		verifyCompleteMessageFile(new File("src/main/resources/lang/messages_en.msg"));
+	}
+
+	@Test
+	public void verifyGerman() throws IOException {
+		verifyCompleteMessageFile(new File("src/main/resources/lang/messages_de.msg"));
 	}
 }
