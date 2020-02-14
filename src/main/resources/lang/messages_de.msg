@@ -12,11 +12,11 @@ general.notAValidUuid=$prefix$ &cDie angegebene ID ist in einem nicht gültigen 
 # %correctworld% = Name of the world, where the waypoint is
 display.wrongWorld=&cDu bist momentan in der Welt &a%currentworld%&c, aber der Wegpunkt ist in &a%correctworld%
 
-variable.chatAction.updateItem.waypoint=$prefix$ &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest.
+variable.chatAction.updateItem.waypoint=&7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest.
 
-chatAction.updateItem.waypoint.private=$chatAction.updateItem.waypoint$
-chatAction.updateItem.waypoint.public=$chatAction.updateItem.waypoint$
-chatAction.updateItem.waypoint.permission=$chatAction.updateItem.waypoint$
+chatAction.updateItem.waypoint.private=$prefix$ $chatAction.updateItem.waypoint$
+chatAction.updateItem.waypoint.public=$prefix$ $chatAction.updateItem.waypoint$
+chatAction.updateItem.waypoint.permission=$prefix$ $chatAction.updateItem.waypoint$
 chatAction.updateItem.folder.private=$prefix$ &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Ordner verwenden möchtest.
 
 chatAction.rename.waypoint.private=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, deinen Wegpunkt umzubenennen.
