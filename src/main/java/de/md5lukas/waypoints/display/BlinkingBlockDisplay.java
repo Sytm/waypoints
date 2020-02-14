@@ -60,6 +60,7 @@ public final class BlinkingBlockDisplay extends WaypointDisplay {
 	@Override
 	public void disable(Player player, Waypoint waypoint) {
 		counters.remove(player.getUniqueId());
-		player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
+		if (waypoint != null)
+			player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
 	}
 }
