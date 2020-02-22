@@ -1,0 +1,37 @@
+kind: pipeline
+name: default
+type: docker
+
+steps:
+  - name: test
+    image: maven:3-jdk-8
+    commands:
+      - mvn test -B
+    when:
+      event:
+        - push
+  - name: build
+    image: maven:3-jdk-8
+    commands:
+      - mvn verify
+    when:
+      event:
+        include:
+          - push
+          - tag
+  - name: deploy
+    image: plugins/gitea-release
+    settings:
+      base_url: https://git.sytm.de
+      api_key:
+        from_secret: gitea_token
+      files:
+        - target/waypoints2*
+      checksum:
+        - md5
+        - sha256
+    when:
+      event:
+        include:
+          - push
+          - tag
