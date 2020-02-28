@@ -19,14 +19,12 @@ steps:
         include:
           - push
           - tag
-  - name: deploy
-    image: plugins/gitea-release
+  - name: publish
+    image: plugins/github-release
     settings:
-      base_url: https://git.sytm.de
       api_key:
-        from_secret: gitea_token
-      files:
-        - target/waypoints2*
+        from_secret: github_token
+      files: target/waypoints2*
       checksum:
         - md5
         - sha256
