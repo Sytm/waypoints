@@ -7,18 +7,13 @@ steps:
     image: maven:3-jdk-8
     commands:
       - mvn test -B
-    when:
-      event:
-        - push
   - name: build
     image: maven:3-jdk-8
     commands:
       - mvn verify
     when:
-      event:
-        include:
-          - push
-          - tag
+      branch:
+        - master
   - name: publish
     image: plugins/github-release
     settings:
@@ -29,7 +24,9 @@ steps:
         - md5
         - sha256
     when:
-      event:
-        include:
-          - push
-          - tag
+      branch:
+        - master
+
+trigger:
+  event:
+    - push
