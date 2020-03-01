@@ -1,5 +1,5 @@
 kind: pipeline
-name: default
+name: test
 type: docker
 
 steps:
@@ -7,13 +7,20 @@ steps:
     image: maven:3-jdk-8
     commands:
       - mvn test -B
+
+trigger:
+  event:
+    - push
+---
+kind: pipeline
+name: publish
+type: docker
+
+steps:
   - name: build
     image: maven:3-jdk-8
     commands:
-      - mvn verify
-    when:
-      branch:
-        - master
+      - mvn verify -DskipTests
   - name: publish
     image: plugins/github-release
     settings:
@@ -27,6 +34,9 @@ steps:
       branch:
         - master
 
+depends_on:
+  - test
+
 trigger:
   event:
-    - push
+    - tag
