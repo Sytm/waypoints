@@ -19,6 +19,7 @@
 package de.md5lukas.waypoints.gui;
 
 import de.md5lukas.commons.UUIDUtils;
+import de.md5lukas.waypoints.Messages;
 import fr.minuskube.inv.SmartInventory;
 import org.bukkit.entity.Player;
 
@@ -30,8 +31,12 @@ import static de.md5lukas.waypoints.Messages.INVENTORY_TITLE_OWN;
 public class GUIManager {
 
 	public static void openGUI(Player player) {
-		SmartInventory.builder().id(player.getUniqueId().toString()).size(5, 9)
-			.provider(new WaypointProvider(player.getUniqueId())).title(INVENTORY_TITLE_OWN.getRaw(player)).build().open(player);
+		if (player.hasPermission("waypoints.gui.open")) {
+			SmartInventory.builder().id(player.getUniqueId().toString()).size(5, 9)
+				.provider(new WaypointProvider(player.getUniqueId())).title(INVENTORY_TITLE_OWN.getRaw(player)).build().open(player);
+		} else {
+			Messages.GENERAL_NO_PERMISSION.send(player);
+		}
 	}
 
 	public static void openGUI(Player player, UUID target) {

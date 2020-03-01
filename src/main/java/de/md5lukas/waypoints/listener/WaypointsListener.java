@@ -20,9 +20,12 @@ package de.md5lukas.waypoints.listener;
 
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.store.WPConfig;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import static org.bukkit.event.EventPriority.LOWEST;
 
@@ -32,5 +35,12 @@ public class WaypointsListener implements Listener {
 	public void onDeath(PlayerDeathEvent e) {
 		if (WPConfig.isDeathWaypointEnabled())
 			WPPlayerData.getPlayerData(e.getEntity().getUniqueId()).setDeath(e.getEntity().getLocation());
+	}
+
+	@EventHandler
+	public void onInteract(PlayerInteractEvent e) {
+		if (Material.COMPASS.equals(e.getMaterial()) && WPConfig.getOpenUsingCompass().isValidAction(e.getAction())) {
+
+		}
 	}
 }
