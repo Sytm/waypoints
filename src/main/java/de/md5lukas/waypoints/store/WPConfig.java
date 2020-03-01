@@ -28,6 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,6 +43,8 @@ public class WPConfig {
 	private static WPConfigInventory inventory;
 	private static int waypointLimit, folderLimit;
 	private static boolean deathWaypointEnabled;
+
+	private static OpenUsingCompass openUsingCompass;
 
 	private static boolean allowDuplicateFolderPrivateNames, allowDuplicateWaypointNamesPrivate, allowDuplicateWaypointNamesPublic, allowDuplicateWaypointNamesPermission;
 	private static boolean allowRenamingWaypointsPrivate, allowRenamingWaypointsPublic, allowRenamingWaypointsPermission, allowRenamingFoldersPrivate;
@@ -103,6 +106,10 @@ public class WPConfig {
 		return deathWaypointEnabled;
 	}
 
+	public static OpenUsingCompass getOpenUsingCompass() {
+		return openUsingCompass;
+	}
+
 	public static boolean allowDuplicateFolderPrivateNames() {
 		return allowDuplicateFolderPrivateNames;
 	}
@@ -150,6 +157,8 @@ public class WPConfig {
 		folderLimit = cfg.getInt("general.folderLimit");
 
 		deathWaypointEnabled = cfg.getBoolean("general.deathWaypointEnabled");
+
+		openUsingCompass = OpenUsingCompass.getFromConfig(cfg.getString("general.openUsingCompass"));
 
 		allowDuplicateFolderPrivateNames = cfg.getBoolean("general.allowDuplicatePrivateFolderNames");
 		allowDuplicateWaypointNamesPrivate = cfg.getBoolean("general.allowDuplicateWaypointNames.private");
@@ -847,6 +856,34 @@ public class WPConfig {
 
 		public static DefaultCompassLocationType getFromConfig(String inConfig) {
 			return Arrays.stream(DefaultCompassLocationType.values()).filter(type -> type.inConfig.equalsIgnoreCase(inConfig)).findFirst().orElse(SPAWN);
+		}
+	}
+
+	public enum OpenUsingCompass {
+		LEFT("left"), RIGHT("right"), NONE("none");
+
+		private String inConfig;
+
+		OpenUsingCompass(String inConfig) {
+			this.inConfig = inConfig;
+		}
+
+		public boolean isValidAction(Action action) {
+			switch (action) {
+				case LEFT_CLICK_AIR:
+				case LEFT_CLICK_BLOCK:
+					return this == LEFT;
+				case RIGHT_CLICK_AIR:
+				case RIGHT_CLICK_BLOCK:
+					return this == RIGHT;
+				case PHYSICAL:
+				default:
+					return false;
+			}
+		}
+
+		public static OpenUsingCompass getFromConfig(String inConfig) {
+			return Arrays.stream(OpenUsingCompass.values()).filter(variant -> variant.inConfig.equalsIgnoreCase(inConfig)).findFirst().orElse(NONE);
 		}
 	}
 }
