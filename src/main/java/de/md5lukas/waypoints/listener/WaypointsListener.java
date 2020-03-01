@@ -19,6 +19,7 @@
 package de.md5lukas.waypoints.listener;
 
 import de.md5lukas.waypoints.data.WPPlayerData;
+import de.md5lukas.waypoints.gui.GUIManager;
 import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -40,7 +41,8 @@ public class WaypointsListener implements Listener {
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
 		if (Material.COMPASS.equals(e.getMaterial()) && WPConfig.getOpenUsingCompass().isValidAction(e.getAction())) {
-
+			GUIManager.openGUI(e.getPlayer());
+			e.setCancelled(true);
 		}
 	}
 }
