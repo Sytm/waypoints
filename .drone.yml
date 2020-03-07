@@ -30,13 +30,15 @@ steps:
       checksum:
         - md5
         - sha256
-    when:
-      branch:
-        - master
 
 depends_on:
   - test
 
 trigger:
   event:
-    - tag
+    include:
+      - push
+    exclude:
+      - pull_request
+  branch:
+    - master
