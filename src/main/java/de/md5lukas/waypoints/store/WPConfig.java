@@ -21,6 +21,7 @@ package de.md5lukas.waypoints.store;
 import de.md5lukas.commons.language.Languages;
 import de.md5lukas.waypoints.Messages;
 import de.md5lukas.waypoints.display.BlockColor;
+import de.md5lukas.waypoints.util.InventoryHelper;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
@@ -45,6 +46,9 @@ public class WPConfig {
 	private static boolean deathWaypointEnabled;
 
 	private static OpenUsingCompass openUsingCompass;
+
+	private static DisplaysActiveWhen displaysActiveWhen;
+	private static List<Material> displaysActiveWhenRequiredMaterials;
 
 	private static boolean allowDuplicateFolderPrivateNames, allowDuplicateWaypointNamesPrivate, allowDuplicateWaypointNamesPublic, allowDuplicateWaypointNamesPermission;
 	private static boolean allowRenamingWaypointsPrivate, allowRenamingWaypointsPublic, allowRenamingWaypointsPermission, allowRenamingFoldersPrivate;
@@ -860,7 +864,7 @@ public class WPConfig {
 	}
 
 	public enum OpenUsingCompass {
-		LEFT("left"), RIGHT("right"), NONE("none");
+		LEFT("left"), RIGHT("right"), FALSE("false");
 
 		private String inConfig;
 
@@ -883,7 +887,32 @@ public class WPConfig {
 		}
 
 		public static OpenUsingCompass getFromConfig(String inConfig) {
-			return Arrays.stream(OpenUsingCompass.values()).filter(variant -> variant.inConfig.equalsIgnoreCase(inConfig)).findFirst().orElse(NONE);
+			return Arrays.stream(values()).filter(variant -> variant.inConfig.equalsIgnoreCase(inConfig)).findFirst().orElse(FALSE);
+		}
+	}
+
+	public enum DisplaysActiveWhen {
+		ITEM_IN_INVENTORY("itemInInventory"), ITEM_IN_HOTBAR("itemInHotbar"), ITEM_IN_HAND("itemInHand"), FALSE("false");
+
+		private String inConfig;
+
+		DisplaysActiveWhen(String inConfig) {
+			this.inConfig = inConfig;
+		}
+
+		public boolean testPlayer(Player player) {
+			switch (this) {
+				case ITEM_IN_INVENTORY:
+					for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
+
+					}
+					return false;
+			}
+			return false;
+		}
+
+		public static DisplaysActiveWhen getFromConfig(String inConfig) {
+			return Arrays.stream(values()).filter(variant -> variant.inConfig.equalsIgnoreCase(inConfig)).findFirst().orElse(FALSE);
 		}
 	}
 }

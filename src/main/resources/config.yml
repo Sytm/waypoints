@@ -6,8 +6,20 @@
 
 general:
 
-  # Set how the gui can be opened by using the compass. Possible values are: right (right-click), left (left-click), false
+  # Set how the gui can be opened by using the compass. Possible values are: right (right-click), left (left-click), false (disabled)
   openUsingCompass: right
+
+  # Set how the displays should only be active when a certain condition is met.
+  displaysActiveWhen:
+    # Available options are: itemInInventory, itemInHotbar, itemInHand (main or off-hand), false (disabled)
+    enabled: false
+    # Only one of the items provided here needs to be present to work, NOT all at once
+    requiredItems:
+      - COMPASS
+      - MAP
+      - FILLED_MAP
+
+
 
   # The maximum amount of waypoints a player can have saved, set to 0 or negative for no limit
   waypointLimit: 200
