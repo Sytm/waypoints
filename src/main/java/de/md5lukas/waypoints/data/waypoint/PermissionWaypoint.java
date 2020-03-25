@@ -33,54 +33,54 @@ import static de.md5lukas.waypoints.Messages.INVENTORY_WAYPOINT_PERMISSION_DISPL
 
 public class PermissionWaypoint extends Waypoint {
 
-	private String permission;
+    private String permission;
 
-	public PermissionWaypoint(CompoundTag tag) {
-		super(tag);
-		permission = tag.getString("permission");
-	}
+    public PermissionWaypoint(CompoundTag tag) {
+        super(tag);
+        permission = tag.getString("permission");
+    }
 
-	public PermissionWaypoint(String name, Location location, String permission) {
-		super(name, location);
-		this.permission = permission;
-	}
+    public PermissionWaypoint(String name, Location location, String permission) {
+        super(name, location);
+        this.permission = permission;
+    }
 
-	@Override
-	public Material getMaterial() {
-		return material == null ? WPConfig.inventory().getWaypointPermissionItem() : material;
-	}
+    @Override
+    public Material getMaterial() {
+        return material == null ? WPConfig.inventory().getWaypointPermissionItem() : material;
+    }
 
-	@Override
-	public String getDisplayName(Player player) {
-		return INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME.getRaw(player).replace("%name%", name);
-	}
+    @Override
+    public String getDisplayName(Player player) {
+        return INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME.getRaw(player).replace("%name%", name);
+    }
 
-	@Override
-	public List<String> getDescription(Player player) {
-		return INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION.asList(player).replace(
-			"%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
-			"%x%", MathHelper.format(location.getX()),
-			"%y%", MathHelper.format(location.getY()),
-			"%z%", MathHelper.format(location.getZ()),
-			"%blockX%", Integer.toString(location.getBlockX()),
-			"%blockY%", Integer.toString(location.getBlockY()),
-			"%blockZ%", Integer.toString(location.getBlockZ()),
-			"%distance%", getDistance2D(player));
-	}
+    @Override
+    public List<String> getDescription(Player player) {
+        return INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION.asList(player).replace(
+                "%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
+                "%x%", MathHelper.format(location.getX()),
+                "%y%", MathHelper.format(location.getY()),
+                "%z%", MathHelper.format(location.getZ()),
+                "%blockX%", Integer.toString(location.getBlockX()),
+                "%blockY%", Integer.toString(location.getBlockY()),
+                "%blockZ%", Integer.toString(location.getBlockZ()),
+                "%distance%", getDistance2D(player));
+    }
 
-	@Override
-	public BlockColor getBeaconColor() {
-		return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorPermission() : beaconColor;
-	}
+    @Override
+    public BlockColor getBeaconColor() {
+        return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorPermission() : beaconColor;
+    }
 
-	public String getPermission() {
-		return permission;
-	}
+    public String getPermission() {
+        return permission;
+    }
 
-	@Override
-	public CompoundTag toCompoundTag() {
-		CompoundTag tag = super.toCompoundTag();
-		tag.putString("permission", permission);
-		return tag;
-	}
+    @Override
+    public CompoundTag toCompoundTag() {
+        CompoundTag tag = super.toCompoundTag();
+        tag.putString("permission", permission);
+        return tag;
+    }
 }

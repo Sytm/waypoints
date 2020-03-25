@@ -25,23 +25,23 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class InventoryHelper {
 
-	public static boolean hasPlayerItem(Player player, Material material) {
-		return player.getInventory().first(material) >= 0;
-	}
+    public static boolean hasPlayerItem(Player player, Material material) {
+        return player.getInventory().first(material) >= 0;
+    }
 
-	public static boolean hasPlayerItemInHotbar(Player player, Material material) {
-		PlayerInventory inv = player.getInventory();
-		for (int i = 0; i <= 8; i++) {
-			ItemStack stack = inv.getItem(i);
-			if (stack != null && stack.getType() == material) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public static boolean hasPlayerItemInHotbar(Player player, Material material) {
+        PlayerInventory inv = player.getInventory();
+        for (int i = 0; i <= 8; i++) {
+            ItemStack stack = inv.getItem(i);
+            if (stack != null && stack.getType() == material) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public static boolean hasPlayerItemInHand(Player player, Material material) {
-		return player.getInventory().getItemInMainHand().getType() == material ||
-			player.getInventory().getItemInOffHand().getType() == material;
-	}
+    public static boolean hasPlayerItemInHand(Player player, Material material) {
+        return player.getInventory().getItemInMainHand().getType() == material ||
+                player.getInventory().getItemInOffHand().getType() == material;
+    }
 }

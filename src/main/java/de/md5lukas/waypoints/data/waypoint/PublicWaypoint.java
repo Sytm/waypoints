@@ -33,39 +33,39 @@ import static de.md5lukas.waypoints.Messages.INVENTORY_WAYPOINT_PUBLIC_DISPLAY_N
 
 public class PublicWaypoint extends Waypoint {
 
-	public PublicWaypoint(CompoundTag tag) {
-		super(tag);
-	}
+    public PublicWaypoint(CompoundTag tag) {
+        super(tag);
+    }
 
-	public PublicWaypoint(String name, Location location) {
-		super(name, location);
-	}
+    public PublicWaypoint(String name, Location location) {
+        super(name, location);
+    }
 
-	@Override
-	public Material getMaterial() {
-		return material == null ? WPConfig.inventory().getWaypointPublicItem() : material;
-	}
+    @Override
+    public Material getMaterial() {
+        return material == null ? WPConfig.inventory().getWaypointPublicItem() : material;
+    }
 
-	@Override
-	public String getDisplayName(Player player) {
-		return INVENTORY_WAYPOINT_PUBLIC_DISPLAY_NAME.getRaw(player).replace("%name%", name);
-	}
+    @Override
+    public String getDisplayName(Player player) {
+        return INVENTORY_WAYPOINT_PUBLIC_DISPLAY_NAME.getRaw(player).replace("%name%", name);
+    }
 
-	@Override
-	public BlockColor getBeaconColor() {
-		return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorPublic() : beaconColor;
-	}
+    @Override
+    public BlockColor getBeaconColor() {
+        return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorPublic() : beaconColor;
+    }
 
-	@Override
-	public List<String> getDescription(Player player) {
-		return INVENTORY_WAYPOINT_PUBLIC_DESCRIPTION.asList(player).replace(
-			"%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
-			"%x%", MathHelper.format(location.getX()),
-			"%y%", MathHelper.format(location.getY()),
-			"%z%", MathHelper.format(location.getZ()),
-			"%blockX%", Integer.toString(location.getBlockX()),
-			"%blockY%", Integer.toString(location.getBlockY()),
-			"%blockZ%", Integer.toString(location.getBlockZ()),
-			"%distance%", getDistance2D(player));
-	}
+    @Override
+    public List<String> getDescription(Player player) {
+        return INVENTORY_WAYPOINT_PUBLIC_DESCRIPTION.asList(player).replace(
+                "%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
+                "%x%", MathHelper.format(location.getX()),
+                "%y%", MathHelper.format(location.getY()),
+                "%z%", MathHelper.format(location.getZ()),
+                "%blockX%", Integer.toString(location.getBlockX()),
+                "%blockY%", Integer.toString(location.getBlockY()),
+                "%blockZ%", Integer.toString(location.getBlockZ()),
+                "%distance%", getDistance2D(player));
+    }
 }

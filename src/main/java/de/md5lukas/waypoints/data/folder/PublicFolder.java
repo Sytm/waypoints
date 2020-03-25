@@ -35,47 +35,47 @@ import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PUBLIC_DISPLAY_NAM
 
 public class PublicFolder extends Folder {
 
-	public PublicFolder(CompoundTag tag) {
-		super(tag);
-	}
+    public PublicFolder(CompoundTag tag) {
+        super(tag);
+    }
 
-	public PublicFolder() {
-		super("");
-	}
+    public PublicFolder() {
+        super("");
+    }
 
-	@Override
-	protected List<Waypoint> loadWaypoints(ListTag waypoints) {
-		return waypoints.values().stream().map(tag -> new PublicWaypoint((CompoundTag) tag)).collect(Collectors.toList());
-	}
+    @Override
+    protected List<Waypoint> loadWaypoints(ListTag waypoints) {
+        return waypoints.values().stream().map(tag -> new PublicWaypoint((CompoundTag) tag)).collect(Collectors.toList());
+    }
 
-	@Override
-	public Material getMaterial() {
-		return WPConfig.inventory().getFolderPrivateDefaultItem();
-	}
+    @Override
+    public Material getMaterial() {
+        return WPConfig.inventory().getFolderPrivateDefaultItem();
+    }
 
-	@Override
-	public long createdAt() {
-		return 0;
-	}
+    @Override
+    public long createdAt() {
+        return 0;
+    }
 
-	@Override
-	public String getDisplayName(Player player) {
-		return INVENTORY_FOLDER_PUBLIC_DISPLAY_NAME.getRaw(player);
-	}
+    @Override
+    public String getDisplayName(Player player) {
+        return INVENTORY_FOLDER_PUBLIC_DISPLAY_NAME.getRaw(player);
+    }
 
-	@Override
-	public List<String> getDescription(Player player) {
-		return INVENTORY_FOLDER_PUBLIC_DESCRIPTION.asList(player).replace(
-			"%amount%", Integer.toString(waypoints.size()));
-	}
+    @Override
+    public List<String> getDescription(Player player) {
+        return INVENTORY_FOLDER_PUBLIC_DESCRIPTION.asList(player).replace(
+                "%amount%", Integer.toString(waypoints.size()));
+    }
 
-	@Override
-	protected boolean isCorrectWaypointType(Waypoint waypoint) {
-		return waypoint instanceof PublicWaypoint;
-	}
+    @Override
+    protected boolean isCorrectWaypointType(Waypoint waypoint) {
+        return waypoint instanceof PublicWaypoint;
+    }
 
-	@Override
-	public GUIType getType() {
-		return GUIType.PUBLIC_FOLDER;
-	}
+    @Override
+    public GUIType getType() {
+        return GUIType.PUBLIC_FOLDER;
+    }
 }

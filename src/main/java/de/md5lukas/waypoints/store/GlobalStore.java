@@ -33,69 +33,69 @@ import java.util.logging.Level;
 
 public class GlobalStore {
 
-	private final Plugin plugin;
-	private Location compassTarget;
-	private PublicFolder publicFolder;
-	private PermissionFolder permissionFolder;
+    private final Plugin plugin;
+    private Location compassTarget;
+    private PublicFolder publicFolder;
+    private PermissionFolder permissionFolder;
 
-	public GlobalStore(Plugin plugin) throws IOException {
-		this.plugin = plugin;
-		if (Waypoints.getFileManager().getGlobalStore().exists()) {
-			CompoundTag tag = NbtIo.readCompressed(Waypoints.getFileManager().getGlobalStore());
-			if (tag.contains("compassTarget"))
-				compassTarget = ((LocationTag) tag.get("compassTarget")).value();
+    public GlobalStore(Plugin plugin) throws IOException {
+        this.plugin = plugin;
+        if (Waypoints.getFileManager().getGlobalStore().exists()) {
+            CompoundTag tag = NbtIo.readCompressed(Waypoints.getFileManager().getGlobalStore());
+            if (tag.contains("compassTarget"))
+                compassTarget = ((LocationTag) tag.get("compassTarget")).value();
 
-			if (tag.contains("publicWaypoints"))
-				publicFolder = new PublicFolder(tag.getCompound("publicWaypoints"));
+            if (tag.contains("publicWaypoints"))
+                publicFolder = new PublicFolder(tag.getCompound("publicWaypoints"));
 
-			if (tag.contains("permissionWaypoints"))
-				permissionFolder = new PermissionFolder(tag.getCompound("permissionWaypoints"));
-		}
-		if (publicFolder == null) publicFolder = new PublicFolder();
-		if (permissionFolder == null) permissionFolder = new PermissionFolder();
+            if (tag.contains("permissionWaypoints"))
+                permissionFolder = new PermissionFolder(tag.getCompound("permissionWaypoints"));
+        }
+        if (publicFolder == null) publicFolder = new PublicFolder();
+        if (permissionFolder == null) permissionFolder = new PermissionFolder();
 
 
-		// Save global store async every 5 minutes
-		Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> save(false), 20 * 60 * 5, 20 * 60 * 5);
-	}
+        // Save global store async every 5 minutes
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> save(false), 20 * 60 * 5, 20 * 60 * 5);
+    }
 
-	public PublicFolder getPublicFolder() {
-		return publicFolder;
-	}
+    public PublicFolder getPublicFolder() {
+        return publicFolder;
+    }
 
-	public PermissionFolder getPermissionFolder() {
-		return permissionFolder;
-	}
+    public PermissionFolder getPermissionFolder() {
+        return permissionFolder;
+    }
 
-	public Location getCompassTarget() {
-		return compassTarget;
-	}
+    public Location getCompassTarget() {
+        return compassTarget;
+    }
 
-	public void setCompassTarget(Location compassTarget) {
-		this.compassTarget = compassTarget;
-	}
+    public void setCompassTarget(Location compassTarget) {
+        this.compassTarget = compassTarget;
+    }
 
-	public void save(boolean async) {
-		Runnable save = () -> {
-			CompoundTag tag = new CompoundTag("globalStore");
+    public void save(boolean async) {
+        Runnable save = () -> {
+            CompoundTag tag = new CompoundTag("globalStore");
 
-			if (compassTarget != null) {
-				tag.put("compassTarget", new LocationTag(null, compassTarget));
-			}
+            if (compassTarget != null) {
+                tag.put("compassTarget", new LocationTag(null, compassTarget));
+            }
 
-			tag.putCompound("publicWaypoints", publicFolder.toCompoundTag());
-			tag.putCompound("permissionWaypoints", permissionFolder.toCompoundTag());
+            tag.putCompound("publicWaypoints", publicFolder.toCompoundTag());
+            tag.putCompound("permissionWaypoints", permissionFolder.toCompoundTag());
 
-			try {
-				NbtIo.writeCompressed(tag, Waypoints.getFileManager().getGlobalStore());
-			} catch (IOException e) {
-				Waypoints.logger().log(Level.SEVERE, "Couldn't save the global data store", e);
-			}
-		};
-		if (async) {
-			Bukkit.getScheduler().runTaskAsynchronously(plugin, save);
-		} else {
-			save.run();
-		}
-	}
+            try {
+                NbtIo.writeCompressed(tag, Waypoints.getFileManager().getGlobalStore());
+            } catch (IOException e) {
+                Waypoints.logger().log(Level.SEVERE, "Couldn't save the global data store", e);
+            }
+        };
+        if (async) {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, save);
+        } else {
+            save.run();
+        }
+    }
 }

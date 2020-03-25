@@ -34,44 +34,44 @@ import static de.md5lukas.waypoints.Messages.INVENTORY_WAYPOINT_DEATH_DISPLAY_NA
 
 public class DeathWaypoint extends Waypoint {
 
-	public DeathWaypoint(CompoundTag tag) {
-		super(tag);
-	}
+    public DeathWaypoint(CompoundTag tag) {
+        super(tag);
+    }
 
-	public DeathWaypoint(Location location) {
-		super("", location);
-	}
+    public DeathWaypoint(Location location) {
+        super("", location);
+    }
 
-	@Override
-	public Material getMaterial() {
-		return WPConfig.inventory().getWaypointDeathItem();
-	}
+    @Override
+    public Material getMaterial() {
+        return WPConfig.inventory().getWaypointDeathItem();
+    }
 
-	@Override
-	public String getDisplayName(Player player) {
-		return INVENTORY_WAYPOINT_DEATH_DISPLAY_NAME.getRaw(player);
-	}
+    @Override
+    public String getDisplayName(Player player) {
+        return INVENTORY_WAYPOINT_DEATH_DISPLAY_NAME.getRaw(player);
+    }
 
-	@Override
-	public GUIType getType() {
-		return GUIType.DEATH_WAYPOINT;
-	}
+    @Override
+    public GUIType getType() {
+        return GUIType.DEATH_WAYPOINT;
+    }
 
-	@Override
-	public BlockColor getBeaconColor() {
-		return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorDeath() : beaconColor;
-	}
+    @Override
+    public BlockColor getBeaconColor() {
+        return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorDeath() : beaconColor;
+    }
 
-	@Override
-	public List<String> getDescription(Player player) {
-		return INVENTORY_WAYPOINT_DEATH_DESCRIPTION.asList(player).replace(
-			"%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
-			"%x%", MathHelper.format(location.getX()),
-			"%y%", MathHelper.format(location.getY()),
-			"%z%", MathHelper.format(location.getZ()),
-			"%blockX%", Integer.toString(location.getBlockX()),
-			"%blockY%", Integer.toString(location.getBlockY()),
-			"%blockZ%", Integer.toString(location.getBlockZ()),
-			"%distance%", getDistance2D(player));
-	}
+    @Override
+    public List<String> getDescription(Player player) {
+        return INVENTORY_WAYPOINT_DEATH_DESCRIPTION.asList(player).replace(
+                "%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
+                "%x%", MathHelper.format(location.getX()),
+                "%y%", MathHelper.format(location.getY()),
+                "%z%", MathHelper.format(location.getZ()),
+                "%blockX%", Integer.toString(location.getBlockX()),
+                "%blockY%", Integer.toString(location.getBlockY()),
+                "%blockZ%", Integer.toString(location.getBlockZ()),
+                "%distance%", getDistance2D(player));
+    }
 }

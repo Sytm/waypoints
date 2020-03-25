@@ -31,26 +31,26 @@ import static de.md5lukas.waypoints.Messages.DISPLAY_WRONG_WORLD;
 
 public final class WrongWorldDisplay extends WaypointDisplay {
 
-	protected WrongWorldDisplay(Plugin plugin) {
-		super(plugin, WPConfig.displays().getWrongWorldInterval());
-	}
+    protected WrongWorldDisplay(Plugin plugin) {
+        super(plugin, WPConfig.displays().getWrongWorldInterval());
+    }
 
-	@Override
-	public void show(Player player, Waypoint waypoint) {
-		update(player, waypoint);
-	}
+    @Override
+    public void show(Player player, Waypoint waypoint) {
+        update(player, waypoint);
+    }
 
-	@Override
-	public void update(Player player, Waypoint waypoint) {
-		if (!player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
-			TextComponent component = new TextComponent(StringHelper.multiReplace(DISPLAY_WRONG_WORLD.getRaw(player),
-				"%currentworld%", WPConfig.translateWorldName(player.getWorld().getName(), player),
-				"%correctworld%", WPConfig.translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
-			player.spigot().sendMessage(WPConfig.displays().isWrongWorldActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT, component);
-		}
-	}
+    @Override
+    public void update(Player player, Waypoint waypoint) {
+        if (!player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
+            TextComponent component = new TextComponent(StringHelper.multiReplace(DISPLAY_WRONG_WORLD.getRaw(player),
+                    "%currentworld%", WPConfig.translateWorldName(player.getWorld().getName(), player),
+                    "%correctworld%", WPConfig.translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
+            player.spigot().sendMessage(WPConfig.displays().isWrongWorldActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT, component);
+        }
+    }
 
-	@Override
-	public void disable(Player player, Waypoint waypoint) {
-	}
+    @Override
+    public void disable(Player player, Waypoint waypoint) {
+    }
 }

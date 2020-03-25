@@ -32,49 +32,50 @@ import static de.md5lukas.waypoints.store.WPConfig.displays;
 
 public final class CompassDisplay extends WaypointDisplay {
 
-	protected CompassDisplay(Plugin plugin) {
-		super(plugin, 0);
-		PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
-			if (canUse) {
-				show(player, getActiveWaypoint(player));
-			} else {
-				disable(player, null);
-			}
-		});
-	}
+    protected CompassDisplay(Plugin plugin) {
+        super(plugin, 0);
+        PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
+            if (canUse) {
+                show(player, getActiveWaypoint(player));
+            } else {
+                disable(player, null);
+            }
+        });
+    }
 
-	@Override
-	public void show(Player player, Waypoint waypoint) {
-		if (displays().getCompassDefaultLocationType() == WPConfig.DefaultCompassLocationType.PREVIOUS) {
-			CompoundTag store = getStore(player);
-			store.put("location", new LocationTag(null, player.getCompassTarget()));
-		}
-		player.setCompassTarget(waypoint.getLocation());
-	}
+    @Override
+    public void show(Player player, Waypoint waypoint) {
+        if (displays().getCompassDefaultLocationType() == WPConfig.DefaultCompassLocationType.PREVIOUS) {
+            CompoundTag store = getStore(player);
+            store.put("location", new LocationTag(null, player.getCompassTarget()));
+        }
+        player.setCompassTarget(waypoint.getLocation());
+    }
 
-	@Override
-	public void update(Player player, Waypoint waypoint) {}
+    @Override
+    public void update(Player player, Waypoint waypoint) {
+    }
 
-	@Override
-	public void disable(Player player, Waypoint waypoint) {
-		switch (displays().getCompassDefaultLocationType()) {
-			case SPAWN:
-				player.setCompassTarget(Bukkit.getWorlds().get(0).getSpawnLocation());
-				break;
-			case CONFIG:
-				player.setCompassTarget(displays().getCompassDefaultLocation());
-				break;
-			case PREVIOUS:
-				CompoundTag store = getStore(player);
-				if (store.contains("location")) {
-					player.setCompassTarget(((LocationTag) store.get("location")).value());
-					store.put("location", null);
-				}
-				break;
-			case INGAME:
-			case INGAME_LOCK:
-				player.setCompassTarget(Waypoints.getGlobalStore().getCompassTarget());
-				break;
-		}
-	}
+    @Override
+    public void disable(Player player, Waypoint waypoint) {
+        switch (displays().getCompassDefaultLocationType()) {
+            case SPAWN:
+                player.setCompassTarget(Bukkit.getWorlds().get(0).getSpawnLocation());
+                break;
+            case CONFIG:
+                player.setCompassTarget(displays().getCompassDefaultLocation());
+                break;
+            case PREVIOUS:
+                CompoundTag store = getStore(player);
+                if (store.contains("location")) {
+                    player.setCompassTarget(((LocationTag) store.get("location")).value());
+                    store.put("location", null);
+                }
+                break;
+            case INGAME:
+            case INGAME_LOCK:
+                player.setCompassTarget(Waypoints.getGlobalStore().getCompassTarget());
+                break;
+        }
+    }
 }
