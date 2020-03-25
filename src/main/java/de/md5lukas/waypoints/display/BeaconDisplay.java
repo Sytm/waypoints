@@ -20,6 +20,7 @@ package de.md5lukas.waypoints.display;
 
 import de.md5lukas.commons.MathHelper;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
+import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,6 +44,13 @@ public final class BeaconDisplay extends WaypointDisplay {
 	BeaconDisplay(Plugin plugin) {
 		super(plugin, displays().getBeaconInterval());
 		activeBeacons = new HashMap<>();
+		PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
+			if (canUse) {
+				show(player, getActiveWaypoint(player));
+			} else {
+				disable(player, null);
+			}
+		});
 	}
 
 	@Override
@@ -52,7 +60,7 @@ public final class BeaconDisplay extends WaypointDisplay {
 
 	@Override
 	public void update(Player player, Waypoint waypoint) {
-		if (player.getWorld().equals(waypoint.getLocation().getWorld())) {
+		if (player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
 			UUID uuid = player.getUniqueId();
 			double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
 			Location loc = waypoint.getLocation().getWorld().getHighestBlockAt(waypoint.getLocation()).getLocation();

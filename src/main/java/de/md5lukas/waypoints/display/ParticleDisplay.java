@@ -19,6 +19,7 @@
 package de.md5lukas.waypoints.display;
 
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
+import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -39,7 +40,7 @@ public final class ParticleDisplay extends WaypointDisplay {
 
 	@Override
 	public void update(Player player, Waypoint waypoint) {
-		if (player.getWorld().equals(waypoint.getLocation().getWorld())) {
+		if (player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
 			Location pLoc = player.getLocation();
 			Vector dir = waypoint.getLocation().toVector().subtract(pLoc.toVector()).normalize().multiply(displays().getParticlesDistance());
 			for (int i = 0; i < displays().getParticlesAmount(); i++) {

@@ -23,6 +23,7 @@ import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -33,6 +34,13 @@ public final class CompassDisplay extends WaypointDisplay {
 
 	protected CompassDisplay(Plugin plugin) {
 		super(plugin, 0);
+		PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
+			if (canUse) {
+				show(player, getActiveWaypoint(player));
+			} else {
+				disable(player, null);
+			}
+		});
 	}
 
 	@Override
