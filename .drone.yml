@@ -11,12 +11,19 @@ steps:
 trigger:
   event:
     - push
+  branch:
+    exclude:
+      - master
 ---
 kind: pipeline
 name: publish
 type: docker
 
 steps:
+  - name: test
+    image: maven:3-jdk-8
+    commands:
+      - mvn test -B
   - name: build
     image: maven:3-jdk-8
     commands:
@@ -31,14 +38,9 @@ steps:
         - md5
         - sha256
 
-depends_on:
-  - test
-
 trigger:
   event:
     include:
-      - push
+      - tag
     exclude:
       - pull_request
-  branch:
-    - master
