@@ -87,6 +87,23 @@
     </dependencies>
 
     <build>
+        <defaultGoal>clean verify</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>plugin.yml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>plugin.yml</exclude>
+                </excludes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -120,12 +137,22 @@
                                     <pattern>net.wesjd</pattern>
                                     <shadedPattern>de.md5lukas.waypoints.shaded.wesjd</shadedPattern>
                                 </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>de.md5lukas.waypoints.shaded.bstats</shadedPattern>
+                                </relocation>
                             </relocations>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
-                                        <exclude>META-INF/maven/**</exclude>
+                                        <exclude>META-INF/**</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>fr.minuskube.inv:smart-invs</artifact>
+                                    <excludes>
+                                        <exclude>plugin.yml</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
