@@ -29,6 +29,7 @@ import de.md5lukas.waypoints.store.GlobalStore;
 import de.md5lukas.waypoints.store.LegacyImporter;
 import de.md5lukas.waypoints.store.WPConfig;
 import fr.minuskube.inv.SmartInvsPlugin;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,6 +40,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Waypoints extends JavaPlugin {
+
+    private static final int METRICS_PLUGIN_ID = 6864;
 
     private boolean inOnEnableDisable = false;
 
@@ -107,6 +110,8 @@ public class Waypoints extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new WaypointsListener(), this);
         getCommand("waypoints").setExecutor(new WaypointsCommand());
+
+        setupMetrics();
     }
 
     //<editor-fold defaultstate="collapsed" desc="onEnabled helpers">
@@ -160,6 +165,10 @@ public class Waypoints extends JavaPlugin {
             return false;
         }
         return true;
+    }
+
+    private void setupMetrics() {
+        Metrics metrics = new Metrics(this, METRICS_PLUGIN_ID);
     }
     //</editor-fold>
 
