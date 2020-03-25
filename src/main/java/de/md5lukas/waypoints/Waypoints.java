@@ -28,13 +28,19 @@ import de.md5lukas.waypoints.store.FileManager;
 import de.md5lukas.waypoints.store.GlobalStore;
 import de.md5lukas.waypoints.store.LegacyImporter;
 import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.util.FileHelper;
 import fr.minuskube.inv.SmartInvsPlugin;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -93,7 +99,15 @@ public class Waypoints extends JavaPlugin {
         }
 
         setupExternalDependencies();
-        loadConfig();
+
+        try {
+            loadConfig();
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "Couldn't load the config", e);
+            inOnEnableDisable = true;
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         fileManager = new FileManager(this);
 
@@ -130,9 +144,22 @@ public class Waypoints extends JavaPlugin {
         return false;
     }
 
-    private void loadConfig() {
-        saveDefaultConfig();
-        WPConfig.loadConfig(getConfig());
+    private void loadConfig() throws IOException {
+        saveResource("config.base.yml", true);
+
+        File baseConfigFile = new File(getDataFolder(), "config.base.yml");
+        File configFile = new File(getDataFolder(), "config.yml");
+
+        if (!configFile.exists()) {
+            FileHelper.copyFile(baseConfigFile, configFile);
+        }
+
+        FileConfiguration baseConfig = YamlConfiguration.loadConfiguration(baseConfigFile);
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+        config.setDefaults(baseConfig);
+
+        WPConfig.loadConfig(config);
     }
 
     private boolean extractMessages() {
