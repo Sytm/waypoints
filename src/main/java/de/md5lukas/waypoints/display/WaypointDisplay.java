@@ -46,7 +46,7 @@ public abstract class WaypointDisplay implements Listener {
     private final static List<WaypointDisplay> activeDisplays = new ArrayList<>();
     private final static AllWaypointDisplays global = new AllWaypointDisplays();
     private final static Map<Player, Map<String, BukkitTask>> updateTasks = new HashMap<>();
-    private final static Map<Player, Waypoint> activeWaypoint = new HashMap<>();
+    private final static Map<Player, Waypoint> lastActiveWaypoint = new HashMap<>();
 
     static {
         Bukkit.getPluginManager().registerEvents(global, Waypoints.instance());
@@ -98,16 +98,13 @@ public abstract class WaypointDisplay implements Listener {
     }
 
     protected final Waypoint getActiveWaypoint(Player player) {
-        return activeWaypoint.get(player);
+        return lastActiveWaypoint.get(player);
     }
 
     public final static class AllWaypointDisplays implements Listener {
 
-        private Map<Player, Waypoint> lastActiveWaypoint;
-
 
         private AllWaypointDisplays() {
-            lastActiveWaypoint = new HashMap<>();
         }
 
         public void show(Player player, Waypoint waypoint) {
