@@ -21,12 +21,13 @@ package de.md5lukas.waypoints.listener;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.gui.GUIManager;
 import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import static org.bukkit.event.EventPriority.LOWEST;
 
@@ -44,5 +45,10 @@ public class WaypointsListener implements Listener {
 			GUIManager.openGUI(e.getPlayer());
 			e.setCancelled(true);
 		}
+	}
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		PlayerItemCheckRunner.playerLeft(e.getPlayer());
 	}
 }
