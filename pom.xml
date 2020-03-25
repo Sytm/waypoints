@@ -27,6 +27,10 @@
             <id>sonatype</id>
             <url>https://repo.sytm.de/repository/maven-sonatype/</url>
         </repository>
+        <repository>
+            <id>codemc</id>
+            <url>https://repo.sytm.de/repository/maven-codemc/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -35,6 +39,12 @@
             <artifactId>spigot-api</artifactId>
             <version>1.13.2-R0.1-SNAPSHOT</version> <!-- Keep this version, as this plugin should work for mc versions > 1.13 -->
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.7</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.wesjd</groupId>
