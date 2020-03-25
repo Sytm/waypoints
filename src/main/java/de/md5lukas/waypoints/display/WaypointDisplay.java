@@ -46,6 +46,7 @@ public abstract class WaypointDisplay implements Listener {
 	private final static List<WaypointDisplay> activeDisplays = new ArrayList<>();
 	private final static AllWaypointDisplays global = new AllWaypointDisplays();
 	private final static Map<Player, Map<String, BukkitTask>> updateTasks = new HashMap<>();
+	private final static Map<Player, Waypoint> activeWaypoint = new HashMap<>();
 
 	static {
 		Bukkit.getPluginManager().registerEvents(global, Waypoints.instance());
@@ -94,6 +95,10 @@ public abstract class WaypointDisplay implements Listener {
 
 	protected final CompoundTag getStore(Player player) {
 		return WPPlayerData.getPlayerData(player.getUniqueId()).getCustomTag("display").getCompound(type);
+	}
+
+	protected final Waypoint getActiveWaypoint(Player player) {
+		return activeWaypoint.get(player);
 	}
 
 	public final static class AllWaypointDisplays implements Listener {

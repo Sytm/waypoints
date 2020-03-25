@@ -21,6 +21,7 @@ package de.md5lukas.waypoints.display;
 import de.md5lukas.commons.StringHelper;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
@@ -41,7 +42,7 @@ public final class WrongWorldDisplay extends WaypointDisplay {
 
 	@Override
 	public void update(Player player, Waypoint waypoint) {
-		if (!player.getWorld().equals(waypoint.getLocation().getWorld())) {
+		if (!player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
 			TextComponent component = new TextComponent(StringHelper.multiReplace(DISPLAY_WRONG_WORLD.getRaw(player),
 				"%currentworld%", WPConfig.translateWorldName(player.getWorld().getName(), player),
 				"%correctworld%", WPConfig.translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
