@@ -29,6 +29,7 @@ import de.md5lukas.waypoints.store.GlobalStore;
 import de.md5lukas.waypoints.store.LegacyImporter;
 import de.md5lukas.waypoints.store.WPConfig;
 import de.md5lukas.waypoints.util.FileHelper;
+import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import fr.minuskube.inv.SmartInvsPlugin;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -120,6 +121,7 @@ public class Waypoints extends JavaPlugin {
 
         LegacyImporter.registerLoadedLegacyData();
 
+        PlayerItemCheckRunner.start(this);
         WaypointDisplay.activateDisplays();
 
         getServer().getPluginManager().registerEvents(new WaypointsListener(), this);

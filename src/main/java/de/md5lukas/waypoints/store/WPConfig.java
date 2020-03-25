@@ -914,7 +914,7 @@ public class WPConfig {
         public boolean testPlayer(Player player) {
             switch (this) {
                 case ITEM_IN_INVENTORY:
-                    return Arrays.stream(player.getInventory().getContents()).anyMatch(stack -> {
+                    return Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).anyMatch(stack -> {
                         for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
                             if (material == stack.getType()) {
                                 return true;

@@ -39,7 +39,8 @@ public class PlayerItemCheckRunner implements Runnable {
     }
 
     public static void start(Plugin plugin) {
-        Bukkit.getScheduler().runTaskTimer(plugin, new PlayerItemCheckRunner(), 10L * 20L, 20L);
+        if (WPConfig.getDisplaysActiveWhen() != WPConfig.DisplaysActiveWhen.FALSE)
+            Bukkit.getScheduler().runTaskTimer(plugin, new PlayerItemCheckRunner(), 10L * 20L, 20L);
     }
 
     public static void playerLeft(Player player) {
