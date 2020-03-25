@@ -35,61 +35,61 @@ import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PERMISSION_DISPLAY
 
 public class PermissionFolder extends Folder {
 
-	public PermissionFolder(CompoundTag tag) {
-		super(tag);
-	}
+    public PermissionFolder(CompoundTag tag) {
+        super(tag);
+    }
 
-	public PermissionFolder() {
-		super("");
-	}
+    public PermissionFolder() {
+        super("");
+    }
 
-	@Override
-	protected List<Waypoint> loadWaypoints(ListTag waypoints) {
-		return waypoints.values().stream().map(tag -> new PermissionWaypoint((CompoundTag) tag)).collect(Collectors.toList());
-	}
+    @Override
+    protected List<Waypoint> loadWaypoints(ListTag waypoints) {
+        return waypoints.values().stream().map(tag -> new PermissionWaypoint((CompoundTag) tag)).collect(Collectors.toList());
+    }
 
-	@Override
-	public Material getMaterial() {
-		return WPConfig.inventory().getFolderPrivateDefaultItem();
-	}
+    @Override
+    public Material getMaterial() {
+        return WPConfig.inventory().getFolderPrivateDefaultItem();
+    }
 
-	@Override
-	public long createdAt() {
-		return 0;
-	}
+    @Override
+    public long createdAt() {
+        return 0;
+    }
 
-	@Override
-	public int getAmount(Player player) {
-		return (int) Math.min(64, count(player));
-	}
+    @Override
+    public int getAmount(Player player) {
+        return (int) Math.min(64, count(player));
+    }
 
-	@Override
-	public String getDisplayName(Player player) {
-		return INVENTORY_FOLDER_PERMISSION_DISPLAY_NAME.getRaw(player);
-	}
+    @Override
+    public String getDisplayName(Player player) {
+        return INVENTORY_FOLDER_PERMISSION_DISPLAY_NAME.getRaw(player);
+    }
 
-	@Override
-	public List<String> getDescription(Player player) {
-		return INVENTORY_FOLDER_PERMISSION_DESCRIPTION.asList(player).replace(
-			"%amount%", Long.toString(count(player)));
-	}
+    @Override
+    public List<String> getDescription(Player player) {
+        return INVENTORY_FOLDER_PERMISSION_DESCRIPTION.asList(player).replace(
+                "%amount%", Long.toString(count(player)));
+    }
 
-	@Override
-	public List<Waypoint> getWaypoints(Player player) {
-		return waypoints.stream().filter(wp -> player.hasPermission("waypoints.gui.permission.*") || player.hasPermission(((PermissionWaypoint) wp).getPermission())).collect(Collectors.toList());
-	}
+    @Override
+    public List<Waypoint> getWaypoints(Player player) {
+        return waypoints.stream().filter(wp -> player.hasPermission("waypoints.gui.permission.*") || player.hasPermission(((PermissionWaypoint) wp).getPermission())).collect(Collectors.toList());
+    }
 
-	@Override
-	protected boolean isCorrectWaypointType(Waypoint waypoint) {
-		return waypoint instanceof PermissionWaypoint;
-	}
+    @Override
+    protected boolean isCorrectWaypointType(Waypoint waypoint) {
+        return waypoint instanceof PermissionWaypoint;
+    }
 
-	@Override
-	public GUIType getType() {
-		return GUIType.PERMISSION_FOLDER;
-	}
+    @Override
+    public GUIType getType() {
+        return GUIType.PERMISSION_FOLDER;
+    }
 
-	private long count(Player player) {
-		return waypoints.stream().filter(wp -> player.hasPermission(((PermissionWaypoint) wp).getPermission())).count();
-	}
+    private long count(Player player) {
+        return waypoints.stream().filter(wp -> player.hasPermission(((PermissionWaypoint) wp).getPermission())).count();
+    }
 }

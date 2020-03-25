@@ -27,13 +27,17 @@ import java.util.List;
 
 public interface GUIDisplayable {
 
-	Material getMaterial();
-	default int getAmount(Player player) {
-		return 1;
-	}
-	String getDisplayName(Player player);
-	List<String> getDescription(Player player);
-	default ItemStack getStack(Player player) {
-		return new ItemBuilder(getMaterial(), getAmount(player)).name(getDisplayName(player)).lore(getDescription(player)).make();
-	}
+    Material getMaterial();
+
+    default int getAmount(Player player) {
+        return 1;
+    }
+
+    String getDisplayName(Player player);
+
+    List<String> getDescription(Player player);
+
+    default ItemStack getStack(Player player) {
+        return new ItemBuilder(getMaterial(), getAmount(player)).name(getDisplayName(player)).lore(getDescription(player)).make();
+    }
 }

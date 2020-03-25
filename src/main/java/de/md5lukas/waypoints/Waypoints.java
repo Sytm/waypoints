@@ -40,136 +40,136 @@ import java.util.logging.Logger;
 
 public class Waypoints extends JavaPlugin {
 
-	private boolean inOnEnableDisable = false;
+    private boolean inOnEnableDisable = false;
 
-	private static Waypoints instance;
-	private MessageStore messageStore;
-	private FileManager fileManager;
-	private GlobalStore globalStore;
-	private boolean disabled = false;
+    private static Waypoints instance;
+    private MessageStore messageStore;
+    private FileManager fileManager;
+    private GlobalStore globalStore;
+    private boolean disabled = false;
 
-	public static Plugin instance() {
-		return instance;
-	}
+    public static Plugin instance() {
+        return instance;
+    }
 
-	public static Logger logger() {
-		return instance.getLogger();
-	}
+    public static Logger logger() {
+        return instance.getLogger();
+    }
 
-	public static MessageStore messageStore() {
-		return instance.messageStore;
-	}
+    public static MessageStore messageStore() {
+        return instance.messageStore;
+    }
 
-	public static FileManager getFileManager() {
-		return instance.fileManager;
-	}
+    public static FileManager getFileManager() {
+        return instance.fileManager;
+    }
 
-	public static GlobalStore getGlobalStore() {
-		return instance.globalStore;
-	}
+    public static GlobalStore getGlobalStore() {
+        return instance.globalStore;
+    }
 
-	public static boolean isDisabled() {
-		return instance.disabled;
-	}
+    public static boolean isDisabled() {
+        return instance.disabled;
+    }
 
-	@Override
-	public void onEnable() {
-		instance = this;
+    @Override
+    public void onEnable() {
+        instance = this;
 
-		if (detectLegacy()) {
-			File config = new File(getDataFolder(), "config.yml"), data = new File(getDataFolder(), "data");
-			try {
-				Files.move(config.toPath(), new File(getDataFolder(), "config.old.yml").toPath());
-				Files.move(data.toPath(), new File(getDataFolder(), "data.old").toPath());
-			} catch (IOException e) {
-				getLogger().log(Level.SEVERE, "Couldn't move old plugin data", e);
-				inOnEnableDisable = true;
-				getServer().getPluginManager().disablePlugin(this);
-				return;
-			}
-		}
+        if (detectLegacy()) {
+            File config = new File(getDataFolder(), "config.yml"), data = new File(getDataFolder(), "data");
+            try {
+                Files.move(config.toPath(), new File(getDataFolder(), "config.old.yml").toPath());
+                Files.move(data.toPath(), new File(getDataFolder(), "data.old").toPath());
+            } catch (IOException e) {
+                getLogger().log(Level.SEVERE, "Couldn't move old plugin data", e);
+                inOnEnableDisable = true;
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
+        }
 
-		setupExternalDependencies();
-		loadConfig();
+        setupExternalDependencies();
+        loadConfig();
 
-		fileManager = new FileManager(this);
+        fileManager = new FileManager(this);
 
-		if (!extractMessages())
-			return;
-		if (!loadMessages())
-			return;
-		if (!loadGlobalStore())
-			return;
+        if (!extractMessages())
+            return;
+        if (!loadMessages())
+            return;
+        if (!loadGlobalStore())
+            return;
 
-		LegacyImporter.registerLoadedLegacyData();
+        LegacyImporter.registerLoadedLegacyData();
 
-		WaypointDisplay.activateDisplays();
+        WaypointDisplay.activateDisplays();
 
-		getServer().getPluginManager().registerEvents(new WaypointsListener(), this);
-		getCommand("waypoints").setExecutor(new WaypointsCommand());
-	}
+        getServer().getPluginManager().registerEvents(new WaypointsListener(), this);
+        getCommand("waypoints").setExecutor(new WaypointsCommand());
+    }
 
-	//<editor-fold defaultstate="collapsed" desc="onEnabled helpers">
-	private void setupExternalDependencies() {
-		Tags.registerTag(LocationTag::new);
-		SmartInvsPlugin.setPlugin(this);
-	}
+    //<editor-fold defaultstate="collapsed" desc="onEnabled helpers">
+    private void setupExternalDependencies() {
+        Tags.registerTag(LocationTag::new);
+        SmartInvsPlugin.setPlugin(this);
+    }
 
-	private boolean detectLegacy() {
-		if (new File(getDataFolder(), "data").exists()) {
-			getLogger().log(Level.INFO, "Loading legacy stores");
-			LegacyImporter.importLegacy(getDataFolder());
-			getLogger().log(Level.INFO, "Done!");
-			return true;
-		}
-		return false;
-	}
+    private boolean detectLegacy() {
+        if (new File(getDataFolder(), "data").exists()) {
+            getLogger().log(Level.INFO, "Loading legacy stores");
+            LegacyImporter.importLegacy(getDataFolder());
+            getLogger().log(Level.INFO, "Done!");
+            return true;
+        }
+        return false;
+    }
 
-	private void loadConfig() {
-		saveDefaultConfig();
-		WPConfig.loadConfig(getConfig());
-	}
+    private void loadConfig() {
+        saveDefaultConfig();
+        WPConfig.loadConfig(getConfig());
+    }
 
-	private boolean extractMessages() {
-		if (!new File(getDataFolder(), "lang/messages_en.msg").exists())
-			saveResource("lang/messages_en.msg", false);
-		if (!new File(getDataFolder(), "lang/messages_de.msg").exists())
-			saveResource("lang/messages_de.msg", false);
-		return true;
-	}
+    private boolean extractMessages() {
+        if (!new File(getDataFolder(), "lang/messages_en.msg").exists())
+            saveResource("lang/messages_en.msg", false);
+        if (!new File(getDataFolder(), "lang/messages_de.msg").exists())
+            saveResource("lang/messages_de.msg", false);
+        return true;
+    }
 
-	private boolean loadMessages() {
-		try {
-			messageStore = new MessageStore(this, fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
-		} catch (IOException e) {
-			getLogger().log(Level.SEVERE, "Couldn't load message files", e);
-			inOnEnableDisable = true;
-			getServer().getPluginManager().disablePlugin(this);
-			return false;
-		}
-		return true;
-	}
+    private boolean loadMessages() {
+        try {
+            messageStore = new MessageStore(this, fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "Couldn't load message files", e);
+            inOnEnableDisable = true;
+            getServer().getPluginManager().disablePlugin(this);
+            return false;
+        }
+        return true;
+    }
 
-	private boolean loadGlobalStore() {
-		try {
-			globalStore = new GlobalStore(this);
-		} catch (IOException e) {
-			getLogger().log(Level.SEVERE, "Couldn't load global store, shutting down plugin", e);
-			inOnEnableDisable = true;
-			getServer().getPluginManager().disablePlugin(this);
-			return false;
-		}
-		return true;
-	}
-	//</editor-fold>
+    private boolean loadGlobalStore() {
+        try {
+            globalStore = new GlobalStore(this);
+        } catch (IOException e) {
+            getLogger().log(Level.SEVERE, "Couldn't load global store, shutting down plugin", e);
+            inOnEnableDisable = true;
+            getServer().getPluginManager().disablePlugin(this);
+            return false;
+        }
+        return true;
+    }
+    //</editor-fold>
 
-	@Override
-	public void onDisable() {
-		disabled = true;
-		SmartInvsPlugin.deleteStaticReferences();
-		if (inOnEnableDisable)
-			return;
-		if (globalStore != null)
-			globalStore.save(false);
-	}
+    @Override
+    public void onDisable() {
+        disabled = true;
+        SmartInvsPlugin.deleteStaticReferences();
+        if (inOnEnableDisable)
+            return;
+        if (globalStore != null)
+            globalStore.save(false);
+    }
 }

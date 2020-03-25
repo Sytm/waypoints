@@ -32,45 +32,45 @@ import static de.md5lukas.waypoints.store.WPConfig.displays;
 
 public final class BlinkingBlockDisplay extends WaypointDisplay {
 
-	protected BlinkingBlockDisplay(Plugin plugin) {
-		super(plugin, displays().getBlinkingBlockInterval());
-		PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
-			if (canUse) {
-				show(player, getActiveWaypoint(player));
-			} else {
-				disable(player, getActiveWaypoint(player));
-			}
-		});
-	}
+    protected BlinkingBlockDisplay(Plugin plugin) {
+        super(plugin, displays().getBlinkingBlockInterval());
+        PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
+            if (canUse) {
+                show(player, getActiveWaypoint(player));
+            } else {
+                disable(player, getActiveWaypoint(player));
+            }
+        });
+    }
 
-	private Map<UUID, Integer> counters = new HashMap<>();
+    private Map<UUID, Integer> counters = new HashMap<>();
 
-	@Override
-	public void show(Player player, Waypoint waypoint) {
-		update(player, waypoint);
-	}
+    @Override
+    public void show(Player player, Waypoint waypoint) {
+        update(player, waypoint);
+    }
 
-	@Override
-	public void update(Player player, Waypoint waypoint) {
-		if (PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
-			UUID pUUID = player.getUniqueId();
-			double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
-			if (distance < displays().getBlinkingBlockMinDistance() || distance > displays().getBlinkingBlockMaxDistance()) {
-				if (counters.containsKey(pUUID)) {
-					player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
-					counters.remove(pUUID);
-				}
-				return;
-			}
-			counters.compute(pUUID, (uuid, count) -> count == null ? 0 : (count + 1) % displays().getBlinkingBlockBlocks().size());
-			player.sendBlockChange(waypoint.getLocation(), displays().getBlinkingBlockBlocks().get(counters.get(player.getUniqueId())));
-		}
-	}
+    @Override
+    public void update(Player player, Waypoint waypoint) {
+        if (PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
+            UUID pUUID = player.getUniqueId();
+            double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
+            if (distance < displays().getBlinkingBlockMinDistance() || distance > displays().getBlinkingBlockMaxDistance()) {
+                if (counters.containsKey(pUUID)) {
+                    player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
+                    counters.remove(pUUID);
+                }
+                return;
+            }
+            counters.compute(pUUID, (uuid, count) -> count == null ? 0 : (count + 1) % displays().getBlinkingBlockBlocks().size());
+            player.sendBlockChange(waypoint.getLocation(), displays().getBlinkingBlockBlocks().get(counters.get(player.getUniqueId())));
+        }
+    }
 
-	@Override
-	public void disable(Player player, Waypoint waypoint) {
-		counters.remove(player.getUniqueId());
-		if (waypoint != null)
-			player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
-	}
+    @Override
+    public void disable(Player player, Waypoint waypoint) {
+        counters.remove(player.getUniqueId());
+        if (waypoint != null)
+            player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
+    }
 }

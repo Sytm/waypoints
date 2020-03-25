@@ -33,22 +33,22 @@ import static org.bukkit.event.EventPriority.LOWEST;
 
 public class WaypointsListener implements Listener {
 
-	@EventHandler(priority = LOWEST)
-	public void onDeath(PlayerDeathEvent e) {
-		if (WPConfig.isDeathWaypointEnabled())
-			WPPlayerData.getPlayerData(e.getEntity().getUniqueId()).setDeath(e.getEntity().getLocation());
-	}
+    @EventHandler(priority = LOWEST)
+    public void onDeath(PlayerDeathEvent e) {
+        if (WPConfig.isDeathWaypointEnabled())
+            WPPlayerData.getPlayerData(e.getEntity().getUniqueId()).setDeath(e.getEntity().getLocation());
+    }
 
-	@EventHandler
-	public void onInteract(PlayerInteractEvent e) {
-		if (Material.COMPASS.equals(e.getMaterial()) && WPConfig.getOpenUsingCompass().isValidAction(e.getAction())) {
-			GUIManager.openGUI(e.getPlayer());
-			e.setCancelled(true);
-		}
-	}
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        if (Material.COMPASS.equals(e.getMaterial()) && WPConfig.getOpenUsingCompass().isValidAction(e.getAction())) {
+            GUIManager.openGUI(e.getPlayer());
+            e.setCancelled(true);
+        }
+    }
 
-	@EventHandler
-	public void onQuit(PlayerQuitEvent e) {
-		PlayerItemCheckRunner.playerLeft(e.getPlayer());
-	}
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        PlayerItemCheckRunner.playerLeft(e.getPlayer());
+    }
 }

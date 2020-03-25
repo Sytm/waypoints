@@ -37,88 +37,88 @@ import static de.md5lukas.waypoints.store.WPConfig.displays;
 
 public final class BeaconDisplay extends WaypointDisplay {
 
-	private static final BlockData BLOCK_DATA_BEACON = Bukkit.createBlockData(Material.BEACON);
+    private static final BlockData BLOCK_DATA_BEACON = Bukkit.createBlockData(Material.BEACON);
 
-	private Map<UUID, Location> activeBeacons;
+    private Map<UUID, Location> activeBeacons;
 
-	BeaconDisplay(Plugin plugin) {
-		super(plugin, displays().getBeaconInterval());
-		activeBeacons = new HashMap<>();
-		PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
-			if (canUse) {
-				show(player, getActiveWaypoint(player));
-			} else {
-				disable(player, null);
-			}
-		});
-	}
+    BeaconDisplay(Plugin plugin) {
+        super(plugin, displays().getBeaconInterval());
+        activeBeacons = new HashMap<>();
+        PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
+            if (canUse) {
+                show(player, getActiveWaypoint(player));
+            } else {
+                disable(player, null);
+            }
+        });
+    }
 
-	@Override
-	public void show(Player player, Waypoint waypoint) {
-		update(player, waypoint);
-	}
+    @Override
+    public void show(Player player, Waypoint waypoint) {
+        update(player, waypoint);
+    }
 
-	@Override
-	public void update(Player player, Waypoint waypoint) {
-		if (player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
-			UUID uuid = player.getUniqueId();
-			double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
-			Location loc = waypoint.getLocation().getWorld().getHighestBlockAt(waypoint.getLocation()).getLocation();
-			if (distance < displays().getBeaconMinDistance() || distance > displays().getBeaconMaxDistance()) {
-				if (activeBeacons.containsKey(uuid)) {
-					sendBeacon(player, loc,null, false);
-				}
-				return;
-			}
-			if (activeBeacons.containsKey(uuid)) {
-				if (!blockEquals(activeBeacons.get(uuid), loc)) {
-					sendBeacon(player, activeBeacons.get(uuid), null, false);
-				}
-			}
-			activeBeacons.put(uuid, loc);
-			sendBeacon(player, loc, waypoint.getBeaconColor(),  true);
-		}
-	}
+    @Override
+    public void update(Player player, Waypoint waypoint) {
+        if (player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
+            UUID uuid = player.getUniqueId();
+            double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
+            Location loc = waypoint.getLocation().getWorld().getHighestBlockAt(waypoint.getLocation()).getLocation();
+            if (distance < displays().getBeaconMinDistance() || distance > displays().getBeaconMaxDistance()) {
+                if (activeBeacons.containsKey(uuid)) {
+                    sendBeacon(player, loc, null, false);
+                }
+                return;
+            }
+            if (activeBeacons.containsKey(uuid)) {
+                if (!blockEquals(activeBeacons.get(uuid), loc)) {
+                    sendBeacon(player, activeBeacons.get(uuid), null, false);
+                }
+            }
+            activeBeacons.put(uuid, loc);
+            sendBeacon(player, loc, waypoint.getBeaconColor(), true);
+        }
+    }
 
-	@Override
-	public void disable(Player player, Waypoint waypoint) {
-		UUID uuid = player.getUniqueId();
-		if (activeBeacons.containsKey(uuid) && Objects.equals(player.getLocation().getWorld(), activeBeacons.get(uuid).getWorld())) {
-			sendBeacon(player, activeBeacons.get(uuid), null, false);
-		}
-		activeBeacons.remove(uuid);
-	}
+    @Override
+    public void disable(Player player, Waypoint waypoint) {
+        UUID uuid = player.getUniqueId();
+        if (activeBeacons.containsKey(uuid) && Objects.equals(player.getLocation().getWorld(), activeBeacons.get(uuid).getWorld())) {
+            sendBeacon(player, activeBeacons.get(uuid), null, false);
+        }
+        activeBeacons.remove(uuid);
+    }
 
-	private static void sendBeacon(Player player, Location location, BlockColor color, boolean create) {
-		for (int x = -1; x <= 1; x++) {
-			for (int z = -1; z <= 1; z++) {
-				location.add(x, 0, z);
-				if (create) {
-					player.sendBlockChange(location, displays().getBeaconBaseBlock());
-				} else {
-					player.sendBlockChange(location, location.getBlock().getBlockData());
-				}
-				location.subtract(x, 0, z);
-			}
-		}
-		location.add(0, 1, 0);
-		if (create) {
-			player.sendBlockChange(location, BLOCK_DATA_BEACON);
-			location.add(0, 1, 0);
-			if (color == null || color.getMaterial() == null) {
-				player.sendBlockChange(location, location.getBlock().getBlockData());
-			} else {
-				player.sendBlockChange(location, color.getBlockData());
-			}
-		} else {
-			player.sendBlockChange(location, location.getBlock().getBlockData());
-			location.add(0, 1, 0);
-			player.sendBlockChange(location, location.getBlock().getBlockData());
-		}
-		location.subtract(0, 2, 0);
-	}
+    private static void sendBeacon(Player player, Location location, BlockColor color, boolean create) {
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                location.add(x, 0, z);
+                if (create) {
+                    player.sendBlockChange(location, displays().getBeaconBaseBlock());
+                } else {
+                    player.sendBlockChange(location, location.getBlock().getBlockData());
+                }
+                location.subtract(x, 0, z);
+            }
+        }
+        location.add(0, 1, 0);
+        if (create) {
+            player.sendBlockChange(location, BLOCK_DATA_BEACON);
+            location.add(0, 1, 0);
+            if (color == null || color.getMaterial() == null) {
+                player.sendBlockChange(location, location.getBlock().getBlockData());
+            } else {
+                player.sendBlockChange(location, color.getBlockData());
+            }
+        } else {
+            player.sendBlockChange(location, location.getBlock().getBlockData());
+            location.add(0, 1, 0);
+            player.sendBlockChange(location, location.getBlock().getBlockData());
+        }
+        location.subtract(0, 2, 0);
+    }
 
-	private static boolean blockEquals(Location loc1, Location loc2) {
-		return loc1.getBlockX() == loc2.getBlockX() && loc1.getBlockY() == loc2.getBlockY() && loc1.getBlockZ() == loc2.getBlockZ();
-	}
+    private static boolean blockEquals(Location loc1, Location loc2) {
+        return loc1.getBlockX() == loc2.getBlockX() && loc1.getBlockY() == loc2.getBlockY() && loc1.getBlockZ() == loc2.getBlockZ();
+    }
 }

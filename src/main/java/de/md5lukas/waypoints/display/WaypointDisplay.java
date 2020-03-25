@@ -42,124 +42,124 @@ import static de.md5lukas.waypoints.store.WPConfig.displays;
 
 public abstract class WaypointDisplay implements Listener {
 
-	private final static Map<String, Tuple2<Supplier<Boolean>, Supplier<WaypointDisplay>>> displays = new HashMap<>();
-	private final static List<WaypointDisplay> activeDisplays = new ArrayList<>();
-	private final static AllWaypointDisplays global = new AllWaypointDisplays();
-	private final static Map<Player, Map<String, BukkitTask>> updateTasks = new HashMap<>();
-	private final static Map<Player, Waypoint> activeWaypoint = new HashMap<>();
+    private final static Map<String, Tuple2<Supplier<Boolean>, Supplier<WaypointDisplay>>> displays = new HashMap<>();
+    private final static List<WaypointDisplay> activeDisplays = new ArrayList<>();
+    private final static AllWaypointDisplays global = new AllWaypointDisplays();
+    private final static Map<Player, Map<String, BukkitTask>> updateTasks = new HashMap<>();
+    private final static Map<Player, Waypoint> activeWaypoint = new HashMap<>();
 
-	static {
-		Bukkit.getPluginManager().registerEvents(global, Waypoints.instance());
-		registerDisplay("compass", () -> displays().isCompassEnabled(), () -> new CompassDisplay(Waypoints.instance()));
-		registerDisplay("beacon", () -> displays().isBeaconEnabled(), () -> new BeaconDisplay(Waypoints.instance()));
-		registerDisplay("blinkingBlock", () -> displays().isBlinkingBlockEnabled(), () -> new BlinkingBlockDisplay(Waypoints.instance()));
-		registerDisplay("wrongWorld", () -> displays().isWrongWorldEnabled(), () -> new WrongWorldDisplay(Waypoints.instance()));
-		registerDisplay("actionBar", () -> displays().isActionBarEnabled(), () -> new ActionBarDisplay(Waypoints.instance()));
-		registerDisplay("particles", () -> displays().isParticlesEnabled(), () -> new ParticleDisplay(Waypoints.instance()));
-	}
+    static {
+        Bukkit.getPluginManager().registerEvents(global, Waypoints.instance());
+        registerDisplay("compass", () -> displays().isCompassEnabled(), () -> new CompassDisplay(Waypoints.instance()));
+        registerDisplay("beacon", () -> displays().isBeaconEnabled(), () -> new BeaconDisplay(Waypoints.instance()));
+        registerDisplay("blinkingBlock", () -> displays().isBlinkingBlockEnabled(), () -> new BlinkingBlockDisplay(Waypoints.instance()));
+        registerDisplay("wrongWorld", () -> displays().isWrongWorldEnabled(), () -> new WrongWorldDisplay(Waypoints.instance()));
+        registerDisplay("actionBar", () -> displays().isActionBarEnabled(), () -> new ActionBarDisplay(Waypoints.instance()));
+        registerDisplay("particles", () -> displays().isParticlesEnabled(), () -> new ParticleDisplay(Waypoints.instance()));
+    }
 
-	public static void activateDisplays() {
-		displays.forEach((type, checkerAndFactory) -> {
-			if (checkerAndFactory.getL().get()) {
-				WaypointDisplay display = checkerAndFactory.getR().get();
-				display.type = type;
-				Bukkit.getPluginManager().registerEvents(display, Waypoints.instance());
-				activeDisplays.add(display);
-			}
-		});
-	}
+    public static void activateDisplays() {
+        displays.forEach((type, checkerAndFactory) -> {
+            if (checkerAndFactory.getL().get()) {
+                WaypointDisplay display = checkerAndFactory.getR().get();
+                display.type = type;
+                Bukkit.getPluginManager().registerEvents(display, Waypoints.instance());
+                activeDisplays.add(display);
+            }
+        });
+    }
 
-	public static void registerDisplay(String type, Supplier<Boolean> isActiveCheck, Supplier<WaypointDisplay> factory) {
-		displays.put(checkNotNull(type, "The type name cannot be null"),
-			Tuple2.of(checkNotNull(isActiveCheck, "The is active check cannot be null"), checkNotNull(factory, "The display factory cannot be null")));
-	}
+    public static void registerDisplay(String type, Supplier<Boolean> isActiveCheck, Supplier<WaypointDisplay> factory) {
+        displays.put(checkNotNull(type, "The type name cannot be null"),
+                Tuple2.of(checkNotNull(isActiveCheck, "The is active check cannot be null"), checkNotNull(factory, "The display factory cannot be null")));
+    }
 
-	public static AllWaypointDisplays getAll() {
-		return global;
-	}
+    public static AllWaypointDisplays getAll() {
+        return global;
+    }
 
-	protected final Plugin plugin;
-	private String type;
-	protected final long updateInterval;
+    protected final Plugin plugin;
+    private String type;
+    protected final long updateInterval;
 
-	protected WaypointDisplay(Plugin plugin, long updateInterval) {
-		this.plugin = plugin;
-		this.updateInterval = updateInterval;
-	}
+    protected WaypointDisplay(Plugin plugin, long updateInterval) {
+        this.plugin = plugin;
+        this.updateInterval = updateInterval;
+    }
 
-	public abstract void show(Player player, Waypoint waypoint);
+    public abstract void show(Player player, Waypoint waypoint);
 
-	public abstract void update(Player player, Waypoint waypoint);
+    public abstract void update(Player player, Waypoint waypoint);
 
-	public abstract void disable(Player player, Waypoint waypoint);
+    public abstract void disable(Player player, Waypoint waypoint);
 
-	protected final CompoundTag getStore(Player player) {
-		return WPPlayerData.getPlayerData(player.getUniqueId()).getCustomTag("display").getCompound(type);
-	}
+    protected final CompoundTag getStore(Player player) {
+        return WPPlayerData.getPlayerData(player.getUniqueId()).getCustomTag("display").getCompound(type);
+    }
 
-	protected final Waypoint getActiveWaypoint(Player player) {
-		return activeWaypoint.get(player);
-	}
+    protected final Waypoint getActiveWaypoint(Player player) {
+        return activeWaypoint.get(player);
+    }
 
-	public final static class AllWaypointDisplays implements Listener {
+    public final static class AllWaypointDisplays implements Listener {
 
-		private Map<Player, Waypoint> lastActiveWaypoint;
+        private Map<Player, Waypoint> lastActiveWaypoint;
 
 
-		private AllWaypointDisplays() {
-			lastActiveWaypoint = new HashMap<>();
-		}
+        private AllWaypointDisplays() {
+            lastActiveWaypoint = new HashMap<>();
+        }
 
-		public void show(Player player, Waypoint waypoint) {
-			Waypoint lastWaypoint = lastActiveWaypoint.get(player);
-			lastActiveWaypoint.put(player, waypoint);
-			activeDisplays.forEach(wd -> {
-				if (lastWaypoint != null)
-					wd.disable(player, lastWaypoint);
-				wd.show(player, waypoint);
-				if (wd.updateInterval > 0) {
-					updateTasks.computeIfPresent(player, (p, tasks) -> {
-						tasks.computeIfPresent(wd.type, (type, task) -> {
-							task.cancel();
-							return null;
-						});
-						return tasks;
-					});
+        public void show(Player player, Waypoint waypoint) {
+            Waypoint lastWaypoint = lastActiveWaypoint.get(player);
+            lastActiveWaypoint.put(player, waypoint);
+            activeDisplays.forEach(wd -> {
+                if (lastWaypoint != null)
+                    wd.disable(player, lastWaypoint);
+                wd.show(player, waypoint);
+                if (wd.updateInterval > 0) {
+                    updateTasks.computeIfPresent(player, (p, tasks) -> {
+                        tasks.computeIfPresent(wd.type, (type, task) -> {
+                            task.cancel();
+                            return null;
+                        });
+                        return tasks;
+                    });
 
-					BukkitTask task = Bukkit.getScheduler().runTaskTimer(Waypoints.instance(), () -> {
-						wd.update(player, waypoint);
-					}, wd.updateInterval, wd.updateInterval);
+                    BukkitTask task = Bukkit.getScheduler().runTaskTimer(Waypoints.instance(), () -> {
+                        wd.update(player, waypoint);
+                    }, wd.updateInterval, wd.updateInterval);
 
-					updateTasks.compute(player, (p, tasks) -> {
-						if (tasks == null)
-							tasks = new HashMap<>();
-						tasks.put(wd.type, task);
-						return tasks;
-					});
-				}
-			});
-		}
+                    updateTasks.compute(player, (p, tasks) -> {
+                        if (tasks == null)
+                            tasks = new HashMap<>();
+                        tasks.put(wd.type, task);
+                        return tasks;
+                    });
+                }
+            });
+        }
 
-		public void disable(Player player) {
-			Waypoint lastWaypoint = lastActiveWaypoint.get(player);
-			lastActiveWaypoint.remove(player);
-			activeDisplays.forEach(wd -> {
-				wd.disable(player, lastWaypoint);
-				if (wd.updateInterval > 0) {
-					updateTasks.computeIfPresent(player, (p, tasks) -> {
-						tasks.computeIfPresent(wd.type, (type, task) -> {
-							task.cancel();
-							return null;
-						});
-						return tasks;
-					});
-				}
-			});
-		}
+        public void disable(Player player) {
+            Waypoint lastWaypoint = lastActiveWaypoint.get(player);
+            lastActiveWaypoint.remove(player);
+            activeDisplays.forEach(wd -> {
+                wd.disable(player, lastWaypoint);
+                if (wd.updateInterval > 0) {
+                    updateTasks.computeIfPresent(player, (p, tasks) -> {
+                        tasks.computeIfPresent(wd.type, (type, task) -> {
+                            task.cancel();
+                            return null;
+                        });
+                        return tasks;
+                    });
+                }
+            });
+        }
 
-		@EventHandler
-		public void onQuit(PlayerQuitEvent e) {
-			disable(e.getPlayer());
-		}
-	}
+        @EventHandler
+        public void onQuit(PlayerQuitEvent e) {
+            disable(e.getPlayer());
+        }
+    }
 }

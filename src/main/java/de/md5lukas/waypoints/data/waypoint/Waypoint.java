@@ -34,87 +34,87 @@ import java.util.UUID;
 
 public abstract class Waypoint implements GUISortable {
 
-	protected final UUID id;
-	protected String name;
-	protected final long createdAt;
-	protected final Location location;
-	protected Material material;
+    protected final UUID id;
+    protected String name;
+    protected final long createdAt;
+    protected final Location location;
+    protected Material material;
 
-	protected BlockColor beaconColor;
+    protected BlockColor beaconColor;
 
-	public Waypoint(CompoundTag tag) {
-		this.id = ((UUIDTag) tag.get("id")).value();
-		this.name = tag.getString("name");
-		this.createdAt = tag.getLong("createdAt");
-		this.location = ((LocationTag) tag.get("location")).value();
-		if (tag.contains("material")) {
-			this.material = Material.valueOf(tag.getString("material"));
-		}
-		if (tag.contains("beaconColor")) {
-			this.beaconColor = BlockColor.valueOf(tag.getString("beaconColor"));
-		}
-	}
+    public Waypoint(CompoundTag tag) {
+        this.id = ((UUIDTag) tag.get("id")).value();
+        this.name = tag.getString("name");
+        this.createdAt = tag.getLong("createdAt");
+        this.location = ((LocationTag) tag.get("location")).value();
+        if (tag.contains("material")) {
+            this.material = Material.valueOf(tag.getString("material"));
+        }
+        if (tag.contains("beaconColor")) {
+            this.beaconColor = BlockColor.valueOf(tag.getString("beaconColor"));
+        }
+    }
 
-	public Waypoint(String name, Location location) {
-		this.id = UUID.randomUUID();
-		this.name = name;
-		this.createdAt = System.currentTimeMillis();
-		this.location = location;
-	}
+    public Waypoint(String name, Location location) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.createdAt = System.currentTimeMillis();
+        this.location = location;
+    }
 
-	public final UUID getID() {
-		return this.id;
-	}
+    public final UUID getID() {
+        return this.id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public final String getName() {
-		return this.name;
-	}
+    @Override
+    public final String getName() {
+        return this.name;
+    }
 
-	@Override
-	public long createdAt() {
-		return createdAt;
-	}
+    @Override
+    public long createdAt() {
+        return createdAt;
+    }
 
-	public final Location getLocation() {
-		return this.location;
-	}
+    public final Location getLocation() {
+        return this.location;
+    }
 
-	public final void setMaterial(Material material) {
-		this.material = material;
-	}
+    public final void setMaterial(Material material) {
+        this.material = material;
+    }
 
-	@Override
-	public GUIType getType() {
-		return GUIType.WAYPOINT;
-	}
+    @Override
+    public GUIType getType() {
+        return GUIType.WAYPOINT;
+    }
 
-	public void setBeaconColor(BlockColor beaconColor) {
-		this.beaconColor = beaconColor;
-	}
+    public void setBeaconColor(BlockColor beaconColor) {
+        this.beaconColor = beaconColor;
+    }
 
-	public abstract BlockColor getBeaconColor();
+    public abstract BlockColor getBeaconColor();
 
-	public CompoundTag toCompoundTag() {
-		CompoundTag tag = new CompoundTag();
-		tag.put("id", new UUIDTag(null, id));
-		tag.putString("name", name);
-		tag.put("location", new LocationTag(null, location));
-		if (material != null)
-			tag.putString("material", material.name());
-		if (beaconColor != null)
-			tag.putString("beaconColor", beaconColor.name());
-		return tag;
-	}
+    public CompoundTag toCompoundTag() {
+        CompoundTag tag = new CompoundTag();
+        tag.put("id", new UUIDTag(null, id));
+        tag.putString("name", name);
+        tag.put("location", new LocationTag(null, location));
+        if (material != null)
+            tag.putString("material", material.name());
+        if (beaconColor != null)
+            tag.putString("beaconColor", beaconColor.name());
+        return tag;
+    }
 
-	protected String getDistance2D(Player player) {
-		if (player.getWorld().equals(location.getWorld())) {
-			return MathHelper.format(MathHelper.distance2D(player.getLocation(), location));
-		}
-		return Messages.INVENTORY_WAYPOINT_DISTANCE_OTHER_WORLD.getRaw(player);
-	}
+    protected String getDistance2D(Player player) {
+        if (player.getWorld().equals(location.getWorld())) {
+            return MathHelper.format(MathHelper.distance2D(player.getLocation(), location));
+        }
+        return Messages.INVENTORY_WAYPOINT_DISTANCE_OTHER_WORLD.getRaw(player);
+    }
 }

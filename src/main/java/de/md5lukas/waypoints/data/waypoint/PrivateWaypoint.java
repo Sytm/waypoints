@@ -33,43 +33,43 @@ import static de.md5lukas.waypoints.Messages.INVENTORY_WAYPOINT_PRIVATE_DISPLAY_
 
 public class PrivateWaypoint extends Waypoint {
 
-	public PrivateWaypoint(CompoundTag tag) {
-		super(tag);
-	}
+    public PrivateWaypoint(CompoundTag tag) {
+        super(tag);
+    }
 
-	public PrivateWaypoint(String name, Location location) {
-		super(name, location);
-	}
+    public PrivateWaypoint(String name, Location location) {
+        super(name, location);
+    }
 
-	@Override
-	public Material getMaterial() {
-		return material == null ? WPConfig.inventory().getWaypointPrivateDefaultItem() : material;
-	}
+    @Override
+    public Material getMaterial() {
+        return material == null ? WPConfig.inventory().getWaypointPrivateDefaultItem() : material;
+    }
 
-	@Override
-	public String getDisplayName(Player player) {
-		return INVENTORY_WAYPOINT_PRIVATE_DISPLAY_NAME.getRaw(player).replace("%name%", name);
-	}
+    @Override
+    public String getDisplayName(Player player) {
+        return INVENTORY_WAYPOINT_PRIVATE_DISPLAY_NAME.getRaw(player).replace("%name%", name);
+    }
 
-	@Override
-	public BlockColor getBeaconColor() {
-		return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorPrivate() : beaconColor;
-	}
+    @Override
+    public BlockColor getBeaconColor() {
+        return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorPrivate() : beaconColor;
+    }
 
-	@Override
-	public List<String> getDescription(Player player) {
-		return INVENTORY_WAYPOINT_PRIVATE_DESCRIPTION.asList(player).replace(
-			"%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
-			"%x%", MathHelper.format(location.getX()),
-			"%y%", MathHelper.format(location.getY()),
-			"%z%", MathHelper.format(location.getZ()),
-			"%blockX%", Integer.toString(location.getBlockX()),
-			"%blockY%", Integer.toString(location.getBlockY()),
-			"%blockZ%", Integer.toString(location.getBlockZ()),
-			"%distance%", getDistance2D(player));
-	}
+    @Override
+    public List<String> getDescription(Player player) {
+        return INVENTORY_WAYPOINT_PRIVATE_DESCRIPTION.asList(player).replace(
+                "%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
+                "%x%", MathHelper.format(location.getX()),
+                "%y%", MathHelper.format(location.getY()),
+                "%z%", MathHelper.format(location.getZ()),
+                "%blockX%", Integer.toString(location.getBlockX()),
+                "%blockY%", Integer.toString(location.getBlockY()),
+                "%blockZ%", Integer.toString(location.getBlockZ()),
+                "%distance%", getDistance2D(player));
+    }
 
-	public static PrivateWaypoint fromCompoundTag(CompoundTag tag) {
-		return new PrivateWaypoint(tag);
-	}
+    public static PrivateWaypoint fromCompoundTag(CompoundTag tag) {
+        return new PrivateWaypoint(tag);
+    }
 }

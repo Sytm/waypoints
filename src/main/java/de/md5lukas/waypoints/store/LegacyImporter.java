@@ -37,98 +37,98 @@ import java.util.logging.Level;
 
 public class LegacyImporter {
 
-	private static List<PublicWaypoint> publicWaypoints;
-	private static List<PermissionWaypoint> permissionWaypoints;
-	private static Map<UUID, List<PrivateWaypoint>> playerWaypoints;
+    private static List<PublicWaypoint> publicWaypoints;
+    private static List<PermissionWaypoint> permissionWaypoints;
+    private static Map<UUID, List<PrivateWaypoint>> playerWaypoints;
 
-	@SuppressWarnings("ConstantConditions")
-	public static void importLegacy(File pluginFolder) {
-		publicWaypoints = new ArrayList<>();
-		permissionWaypoints = new ArrayList<>();
-		playerWaypoints = new HashMap<>();
-		File legacyDataFolder = new File(pluginFolder, "data");
-		loadPublicWaypoints(new File(legacyDataFolder, "global.wp"));
-		loadPermissionWaypoints(new File(legacyDataFolder, "permission.wp"));
-		Arrays.stream(legacyDataFolder.listFiles()).forEach(file -> {
-			String[] parts = file.getName().split("\\.");
-			if (parts.length == 2 && "wp".equalsIgnoreCase(parts[1]) && UUIDUtils.isUUID(parts[0])) {
-				loadPlayerWaypoints(UUID.fromString(parts[0]), file);
-			}
-		});
-	}
+    @SuppressWarnings("ConstantConditions")
+    public static void importLegacy(File pluginFolder) {
+        publicWaypoints = new ArrayList<>();
+        permissionWaypoints = new ArrayList<>();
+        playerWaypoints = new HashMap<>();
+        File legacyDataFolder = new File(pluginFolder, "data");
+        loadPublicWaypoints(new File(legacyDataFolder, "global.wp"));
+        loadPermissionWaypoints(new File(legacyDataFolder, "permission.wp"));
+        Arrays.stream(legacyDataFolder.listFiles()).forEach(file -> {
+            String[] parts = file.getName().split("\\.");
+            if (parts.length == 2 && "wp".equalsIgnoreCase(parts[1]) && UUIDUtils.isUUID(parts[0])) {
+                loadPlayerWaypoints(UUID.fromString(parts[0]), file);
+            }
+        });
+    }
 
-	public static void registerLoadedLegacyData() {
-		if (publicWaypoints == null)
-			return;
-		publicWaypoints.forEach(Waypoints.getGlobalStore().getPublicFolder()::addWaypoint);
-		permissionWaypoints.forEach(Waypoints.getGlobalStore().getPermissionFolder()::addWaypoint);
-		playerWaypoints.forEach((uuid, privateWaypoints) -> {
-			WPPlayerData data = WPPlayerData.getPlayerData(uuid);
-			privateWaypoints.forEach(data::addWaypoint);
-		});
-	}
+    public static void registerLoadedLegacyData() {
+        if (publicWaypoints == null)
+            return;
+        publicWaypoints.forEach(Waypoints.getGlobalStore().getPublicFolder()::addWaypoint);
+        permissionWaypoints.forEach(Waypoints.getGlobalStore().getPermissionFolder()::addWaypoint);
+        playerWaypoints.forEach((uuid, privateWaypoints) -> {
+            WPPlayerData data = WPPlayerData.getPlayerData(uuid);
+            privateWaypoints.forEach(data::addWaypoint);
+        });
+    }
 
-	private static void loadPublicWaypoints(File file) {
-		if (file.exists()) {
-			try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
-				int amount = dis.readInt();
-				while (amount-- > 0) {
-					readUUID(dis);
-					String name = readString(dis);
-					Location location = readLocation(dis);
-					publicWaypoints.add(new PublicWaypoint(name, location));
-				}
-			} catch (IOException e) {
-				Waypoints.logger().log(Level.SEVERE, "Couldn't load legacy global waypoints", e);
-			}
-		}
-	}
+    private static void loadPublicWaypoints(File file) {
+        if (file.exists()) {
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+                int amount = dis.readInt();
+                while (amount-- > 0) {
+                    readUUID(dis);
+                    String name = readString(dis);
+                    Location location = readLocation(dis);
+                    publicWaypoints.add(new PublicWaypoint(name, location));
+                }
+            } catch (IOException e) {
+                Waypoints.logger().log(Level.SEVERE, "Couldn't load legacy global waypoints", e);
+            }
+        }
+    }
 
-	private static void loadPermissionWaypoints(File file) {
-		if (file.exists()) {
-			try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
-				int amount = dis.readInt();
-				while (amount-- > 0) {
-					readUUID(dis);
-					String name = readString(dis);
-					String permission = readString(dis);
-					Location location = readLocation(dis);
-					permissionWaypoints.add(new PermissionWaypoint(name, location, permission));
-				}
-			} catch (IOException e) {
-				Waypoints.logger().log(Level.SEVERE, "Couldn't load legacy permission waypoints", e);
-			}
-		}
-	}
+    private static void loadPermissionWaypoints(File file) {
+        if (file.exists()) {
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+                int amount = dis.readInt();
+                while (amount-- > 0) {
+                    readUUID(dis);
+                    String name = readString(dis);
+                    String permission = readString(dis);
+                    Location location = readLocation(dis);
+                    permissionWaypoints.add(new PermissionWaypoint(name, location, permission));
+                }
+            } catch (IOException e) {
+                Waypoints.logger().log(Level.SEVERE, "Couldn't load legacy permission waypoints", e);
+            }
+        }
+    }
 
-	private static void loadPlayerWaypoints(UUID uuid, File file) {
-		if (file.exists()) {
-			WPPlayerData data = WPPlayerData.getPlayerData(uuid);
-			try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
-				int amount = dis.readInt();
-				while (amount-- > 0) {
-					readUUID(dis);
-					String name = readString(dis);
-					Location location = readLocation(dis);
-					playerWaypoints.computeIfAbsent(uuid, key -> new ArrayList<>()).add(new PrivateWaypoint(name, location));
-				}
-			} catch (IOException e) {
-				Waypoints.logger().log(Level.SEVERE, "Couldn't load legacy player waypoints with the uuid " + uuid, e);
-			}
-		}
-	}
+    private static void loadPlayerWaypoints(UUID uuid, File file) {
+        if (file.exists()) {
+            WPPlayerData data = WPPlayerData.getPlayerData(uuid);
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+                int amount = dis.readInt();
+                while (amount-- > 0) {
+                    readUUID(dis);
+                    String name = readString(dis);
+                    Location location = readLocation(dis);
+                    playerWaypoints.computeIfAbsent(uuid, key -> new ArrayList<>()).add(new PrivateWaypoint(name, location));
+                }
+            } catch (IOException e) {
+                Waypoints.logger().log(Level.SEVERE, "Couldn't load legacy player waypoints with the uuid " + uuid, e);
+            }
+        }
+    }
 
-	private static String readString(DataInputStream dis) throws IOException {
-		byte[] buffer = new byte[dis.readInt()];
-		dis.read(buffer);
-		return new String(buffer, StandardCharsets.UTF_8);
-	}
+    private static String readString(DataInputStream dis) throws IOException {
+        byte[] buffer = new byte[dis.readInt()];
+        dis.read(buffer);
+        return new String(buffer, StandardCharsets.UTF_8);
+    }
 
-	private static UUID readUUID(DataInputStream dis) throws IOException {
-		return new UUID(dis.readLong(), dis.readLong());
-	}
+    private static UUID readUUID(DataInputStream dis) throws IOException {
+        return new UUID(dis.readLong(), dis.readLong());
+    }
 
-	private static Location readLocation(DataInputStream dis) throws IOException {
-		return new Location(Bukkit.getWorld(readString(dis)), dis.readDouble(), dis.readDouble(), dis.readDouble());
-	}
+    private static Location readLocation(DataInputStream dis) throws IOException {
+        return new Location(Bukkit.getWorld(readString(dis)), dis.readDouble(), dis.readDouble(), dis.readDouble());
+    }
 }

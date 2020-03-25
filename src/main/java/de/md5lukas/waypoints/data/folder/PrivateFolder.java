@@ -35,42 +35,42 @@ import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PRIVATE_DISPLAY_NA
 
 public class PrivateFolder extends Folder {
 
-	public PrivateFolder(CompoundTag tag) {
-		super(tag);
-	}
+    public PrivateFolder(CompoundTag tag) {
+        super(tag);
+    }
 
-	public PrivateFolder(String name) {
-		super(name);
-	}
+    public PrivateFolder(String name) {
+        super(name);
+    }
 
-	@Override
-	protected List<Waypoint> loadWaypoints(ListTag waypoints) {
-		return waypoints.values().stream().map(tag -> new PrivateWaypoint((CompoundTag) tag)).collect(Collectors.toList());
-	}
+    @Override
+    protected List<Waypoint> loadWaypoints(ListTag waypoints) {
+        return waypoints.values().stream().map(tag -> new PrivateWaypoint((CompoundTag) tag)).collect(Collectors.toList());
+    }
 
-	@Override
-	public Material getMaterial() {
-		return material == null ? WPConfig.inventory().getFolderPrivateDefaultItem() : material;
-	}
+    @Override
+    public Material getMaterial() {
+        return material == null ? WPConfig.inventory().getFolderPrivateDefaultItem() : material;
+    }
 
-	@Override
-	public String getDisplayName(Player player) {
-		return INVENTORY_FOLDER_PRIVATE_DISPLAY_NAME.getRaw(player).replace("%name%", getName());
-	}
+    @Override
+    public String getDisplayName(Player player) {
+        return INVENTORY_FOLDER_PRIVATE_DISPLAY_NAME.getRaw(player).replace("%name%", getName());
+    }
 
-	@Override
-	public List<String> getDescription(Player player) {
-		return INVENTORY_FOLDER_PRIVATE_DESCRIPTION.asList(player).replace(
-			"%amount%", Integer.toString(waypoints.size()));
-	}
+    @Override
+    public List<String> getDescription(Player player) {
+        return INVENTORY_FOLDER_PRIVATE_DESCRIPTION.asList(player).replace(
+                "%amount%", Integer.toString(waypoints.size()));
+    }
 
-	@Override
-	protected boolean isCorrectWaypointType(Waypoint waypoint) {
-		return waypoint instanceof PrivateWaypoint;
-	}
+    @Override
+    protected boolean isCorrectWaypointType(Waypoint waypoint) {
+        return waypoint instanceof PrivateWaypoint;
+    }
 
-	@Override
-	public GUIType getType() {
-		return GUIType.PRIVATE_FOLDER;
-	}
+    @Override
+    public GUIType getType() {
+        return GUIType.PRIVATE_FOLDER;
+    }
 }
