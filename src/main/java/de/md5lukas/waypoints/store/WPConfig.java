@@ -21,7 +21,6 @@ package de.md5lukas.waypoints.store;
 import de.md5lukas.commons.language.Languages;
 import de.md5lukas.waypoints.Messages;
 import de.md5lukas.waypoints.display.BlockColor;
-import de.md5lukas.waypoints.util.InventoryHelper;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
@@ -30,6 +29,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -114,6 +115,10 @@ public class WPConfig {
 		return openUsingCompass;
 	}
 
+	public static DisplaysActiveWhen getDisplaysActiveWhen() {
+		return displaysActiveWhen;
+	}
+
 	public static boolean allowDuplicateFolderPrivateNames() {
 		return allowDuplicateFolderPrivateNames;
 	}
@@ -163,6 +168,10 @@ public class WPConfig {
 		deathWaypointEnabled = cfg.getBoolean("general.deathWaypointEnabled");
 
 		openUsingCompass = OpenUsingCompass.getFromConfig(cfg.getString("general.openUsingCompass"));
+
+		displaysActiveWhen = DisplaysActiveWhen.getFromConfig(cfg.getString("general.displaysActiveWhen.enabled"));
+
+		displaysActiveWhenRequiredMaterials = cfg.getStringList("general.displaysActiveWhen.requiredItems").stream().map(Material::matchMaterial).collect(Collectors.toList());
 
 		allowDuplicateFolderPrivateNames = cfg.getBoolean("general.allowDuplicatePrivateFolderNames");
 		allowDuplicateWaypointNamesPrivate = cfg.getBoolean("general.allowDuplicateWaypointNames.private");
@@ -903,12 +912,37 @@ public class WPConfig {
 		public boolean testPlayer(Player player) {
 			switch (this) {
 				case ITEM_IN_INVENTORY:
-					for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
-
+					return Arrays.stream(player.getInventory().getContents()).anyMatch(stack -> {
+						for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
+							if (material == stack.getType()) {
+								return true;
+							}
+						}
+						return false;
+					});
+				case ITEM_IN_HOTBAR:
+					for (int i = 0; i < 9; i++) {
+						for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
+							ItemStack stack = player.getInventory().getItem(i);
+							if (stack != null && material == stack.getType()) {
+								return true;
+							}
+						}
 					}
 					return false;
+				case ITEM_IN_HAND:
+					PlayerInventory inventory = player.getInventory();
+					Material mainHand = inventory.getItemInMainHand().getType();
+					Material offHand = inventory.getItemInOffHand().getType();
+					for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
+						if (material == mainHand || material == offHand) {
+							return true;
+						}
+					}
+					return false;
+				default:
+					return true;
 			}
-			return false;
 		}
 
 		public static DisplaysActiveWhen getFromConfig(String inConfig) {
