@@ -30,6 +30,7 @@ import de.md5lukas.waypoints.store.LegacyImporter;
 import de.md5lukas.waypoints.store.WPConfig;
 import de.md5lukas.waypoints.util.FileHelper;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
+import de.md5lukas.waypoints.util.VaultHook;
 import fr.minuskube.inv.SmartInvsPlugin;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -108,6 +109,16 @@ public class Waypoints extends JavaPlugin {
             inOnEnableDisable = true;
             getServer().getPluginManager().disablePlugin(this);
             return;
+        }
+
+        if (WPConfig.isVaultRequired()) {
+            String result = VaultHook.setupEconomy();
+            if (result != null) {
+                getLogger().log(Level.SEVERE, result);
+                inOnEnableDisable = true;
+                getServer().getPluginManager().disablePlugin(this);
+                return;
+            }
         }
 
         fileManager = new FileManager(this);

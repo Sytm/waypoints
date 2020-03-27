@@ -1,4 +1,4 @@
-# Waypoints [![Build Status](https://drone.sytm.de/api/badges/Sytm/waypoints2/status.svg?ref=refs/heads/development)](https://drone.sytm.de/Sytm/waypoints2)
+# Waypoints [![Build Status](https://drone.sytm.de/api/badges/Sytm/waypoints2/status.svg?ref=refs/heads/development)](https://drone.sytm.de/Sytm/waypoints2) [![Maintainability](https://api.codeclimate.com/v1/badges/75b03956b986d522af74/maintainability)](https://codeclimate.com/github/Sytm/waypoints2/maintainability)
 
 ## Installation:
 1. Download [Md5-Commons] and put it into the plugin folder 

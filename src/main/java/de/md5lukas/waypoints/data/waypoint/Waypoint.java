@@ -26,6 +26,7 @@ import de.md5lukas.waypoints.Messages;
 import de.md5lukas.waypoints.data.GUISortable;
 import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.gui.GUIType;
+import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -41,6 +42,7 @@ public abstract class Waypoint implements GUISortable {
     protected Material material;
 
     protected BlockColor beaconColor;
+    protected int teleportations;
 
     public Waypoint(CompoundTag tag) {
         this.id = ((UUIDTag) tag.get("id")).value();
@@ -53,6 +55,7 @@ public abstract class Waypoint implements GUISortable {
         if (tag.contains("beaconColor")) {
             this.beaconColor = BlockColor.valueOf(tag.getString("beaconColor"));
         }
+        this.teleportations = tag.getInt("teleportations");
     }
 
     public Waypoint(String name, Location location) {
@@ -60,6 +63,7 @@ public abstract class Waypoint implements GUISortable {
         this.name = name;
         this.createdAt = System.currentTimeMillis();
         this.location = location;
+        this.teleportations = 0;
     }
 
     public final UUID getID() {
@@ -88,6 +92,10 @@ public abstract class Waypoint implements GUISortable {
         this.material = material;
     }
 
+    public final WPConfig.TeleportSettings getTeleportSettings() {
+        return WPConfig.getTeleportSettings(this.getClass());
+    }
+
     @Override
     public GUIType getType() {
         return GUIType.WAYPOINT;
@@ -95,6 +103,19 @@ public abstract class Waypoint implements GUISortable {
 
     public void setBeaconColor(BlockColor beaconColor) {
         this.beaconColor = beaconColor;
+    }
+
+    public int getTeleportations() {
+        return teleportations;
+    }
+
+    public void teleportationUsed(Player player) {
+        if (WPConfig.TeleportEnabled.PAY.equals(this.getTeleportSettings().getEnabled())) {
+            getTeleportSettings().withdraw(player, this.teleportations);
+            this.teleportations++;
+        } else if (WPConfig.TeleportEnabled.FREE.equals(getTeleportSettings().getEnabled()) && WPConfig.getTeleportCountFree()) {
+            this.teleportations++;
+        }
     }
 
     public abstract BlockColor getBeaconColor();
@@ -108,6 +129,7 @@ public abstract class Waypoint implements GUISortable {
             tag.putString("material", material.name());
         if (beaconColor != null)
             tag.putString("beaconColor", beaconColor.name());
+        tag.putInt("teleportations", teleportations);
         return tag;
     }
 

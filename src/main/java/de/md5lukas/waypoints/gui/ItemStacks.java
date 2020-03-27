@@ -87,6 +87,21 @@ class ItemStacks {
                 .lore(INVENTORY_WAYPOINT_DEATH_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
     }
 
+    static ItemStack getWaypointDeathTeleportXpPointsItem(Player p, long points) {
+        return new ItemBuilder(inventory().getWaypointDeathTeleportItem()).name(INVENTORY_WAYPOINT_DEATH_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_DEATH_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION.getRaw(p).replace("%points%", Long.toString(points)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointDeathTeleportXpLevelsItem(Player p, long levels) {
+        return new ItemBuilder(inventory().getWaypointDeathTeleportItem()).name(INVENTORY_WAYPOINT_DEATH_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_DEATH_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION.getRaw(p).replace("%levels%", Long.toString(levels)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointDeathTeleportVaultItem(Player p, long money) {
+        return new ItemBuilder(inventory().getWaypointDeathTeleportItem()).name(INVENTORY_WAYPOINT_DEATH_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_DEATH_TELEPORT_PAYMENT_VAULT_DESCRIPTION.getRaw(p).replace("%money%", Long.toString(money)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
     static ItemStack getWaypointPrivateBackgroundItem(Player p) {
         return new ItemBuilder(inventory().getWaypointPrivateBackgroundItem()).name(INVENTORY_WAYPOINT_PRIVATE_BACKGROUND_DISPLAY_NAME.getRaw(p))
                 .lore(INVENTORY_WAYPOINT_PRIVATE_BACKGROUND_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
@@ -115,6 +130,21 @@ class ItemStacks {
     static ItemStack getWaypointPrivateTeleportItem(Player p) {
         return new ItemBuilder(inventory().getWaypointPrivateTeleportItem()).name(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DISPLAY_NAME.getRaw(p))
                 .lore(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointPrivateTeleportXpPointsItem(Player p, long points) {
+        return new ItemBuilder(inventory().getWaypointPrivateTeleportItem()).name(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION.getRaw(p).replace("%points%", Long.toString(points)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointPrivateTeleportXpLevelsItem(Player p, long levels) {
+        return new ItemBuilder(inventory().getWaypointPrivateTeleportItem()).name(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION.getRaw(p).replace("%levels%", Long.toString(levels)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointPrivateTeleportVaultItem(Player p, long money) {
+        return new ItemBuilder(inventory().getWaypointPrivateTeleportItem()).name(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_VAULT_DESCRIPTION.getRaw(p).replace("%money%", Long.toString(money)), inventory().getMaxDescriptionLineLength()).make();
     }
 
     static ItemStack getWaypointPrivateSelectBeaconColor(Player p) {
@@ -148,6 +178,21 @@ class ItemStacks {
                 .lore(INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
     }
 
+    static ItemStack getWaypointPublicTeleportXpPointsItem(Player p, long points) {
+        return new ItemBuilder(inventory().getWaypointPublicTeleportItem()).name(INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION.getRaw(p).replace("%points%", Long.toString(points)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointPublicTeleportXpLevelsItem(Player p, long levels) {
+        return new ItemBuilder(inventory().getWaypointPublicTeleportItem()).name(INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION.getRaw(p).replace("%levels%", Long.toString(levels)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointPublicTeleportVaultItem(Player p, long money) {
+        return new ItemBuilder(inventory().getWaypointPublicTeleportItem()).name(INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_VAULT_DESCRIPTION.getRaw(p).replace("%money%", Long.toString(money)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
     static ItemStack getWaypointPublicSelectBeaconColor(Player p) {
         return new ItemBuilder(inventory().getWaypointPublicSelectBeaconColorItem()).name(INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DISPLAY_NAME.getRaw(p))
                 .lore(INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
@@ -177,6 +222,21 @@ class ItemStacks {
     static ItemStack getWaypointPermissionTeleportItem(Player p) {
         return new ItemBuilder(inventory().getWaypointPermissionTeleportItem()).name(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME.getRaw(p))
                 .lore(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DESCRIPTION.getRaw(p), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointPermissionTeleportXpPointsItem(Player p, long points) {
+        return new ItemBuilder(inventory().getWaypointPermissionTeleportItem()).name(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION.getRaw(p).replace("%points%", Long.toString(points)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointPermissionTeleportXpLevelsItem(Player p, long levels) {
+        return new ItemBuilder(inventory().getWaypointPermissionTeleportItem()).name(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION.getRaw(p).replace("%levels%", Long.toString(levels)), inventory().getMaxDescriptionLineLength()).make();
+    }
+
+    static ItemStack getWaypointPermissionTeleportVaultItem(Player p, long money) {
+        return new ItemBuilder(inventory().getWaypointPermissionTeleportItem()).name(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME.getRaw(p))
+                .lore(INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_VAULT_DESCRIPTION.getRaw(p).replace("%money%", Long.toString(money)), inventory().getMaxDescriptionLineLength()).make();
     }
 
     static ItemStack getWaypointPermissionSelectBeaconColor(Player p) {

@@ -6,6 +6,8 @@ website: https://www.spigotmc.org/resources/waypoints.66647/
 api-version: 1.13
 depend:
   - Md5Lukas-Commons
+softdepend:
+  - Vault
 
 commands:
   waypoints:

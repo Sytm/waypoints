@@ -32,9 +32,18 @@ public enum Messages {
     GENERAL_FOLDER_NOT_FOUND("general.folderNotFound"),
     GENERAL_NOT_A_VALID_UUID("general.notAValidUuid"),
 
-    // ---------------------- Misc chat messages ----------------------
+    //<editor-fold defaultstate="collapsed" desc="Miscellaneous">
 
     DISPLAY_WRONG_WORLD("display.wrongWorld"), // %currentworld%, %correctworld%
+
+    CHAT_DURATION_SECOND("chat.duration.second"),
+    CHAT_DURATION_SECONDS("chat.duration.seconds"),
+    CHAT_DURATION_MINUTE("chat.duration.minute"),
+    CHAT_DURATION_MINUTES("chat.duration.minutes"),
+    CHAT_DURATION_HOUR("chat.duration.hour"),
+    CHAT_DURATION_HOURS("chat.duration.hours"),
+    CHAT_DURATION_DAY("chat.duration.day"),
+    CHAT_DURATION_DAYS("chat.duration.days"),
 
     CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PRIVATE("chatAction.updateItem.waypoint.private"),
     CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PUBLIC("chatAction.updateItem.waypoint.public"),
@@ -47,6 +56,14 @@ public enum Messages {
     CHAT_ACTION_RENAME_FOLDER_PRIVATE("chatAction.rename.folder.private"),
 
     CHAT_WARNING_WORLD_TRANSLATIONS_MISSING("chatWarning.worldTranslationsMissing"),
+
+    CHAT_TELEPORT_ON_COOLDOWN("chat.teleport.onCooldown"), // %remainingTime%
+    CHAT_TELEPORT_NOT_ENOUGH_XP_POINTS("chat.teleport.notEnough.xpPoints"),
+    CHAT_TELEPORT_NOT_ENOUGH_XP_LEVELS("chat.teleport.notEnough.xpLevels"),
+    CHAT_TELEPORT_NOT_ENOUGH_BALANCE("chat.teleport.notEnough.balance"),
+    CHAT_TELEPORT_STAND_STILL_NOTICE("chat.teleport.standStillNotice"), // %timeRequired%
+    CHAT_TELEPORT_CANCELLED_MOVE("chat.teleport.cancelledMove"),
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Commands">
     COMMAND_HELP_TITLE("command.help.title"),
@@ -166,6 +183,9 @@ public enum Messages {
     INVENTORY_WAYPOINT_DEATH_SELECT_DESCRIPTION("inventory.waypoint.death.select.description"),
     INVENTORY_WAYPOINT_DEATH_TELEPORT_DISPLAY_NAME("inventory.waypoint.death.teleport.displayName"),
     INVENTORY_WAYPOINT_DEATH_TELEPORT_DESCRIPTION("inventory.waypoint.death.teleport.description"),
+    INVENTORY_WAYPOINT_DEATH_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION("inventory.waypoint.death.teleport.payment.xpPoints.description"), // %points%
+    INVENTORY_WAYPOINT_DEATH_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION("inventory.waypoint.death.teleport.payment.xpLevels.description"), // %levels%
+    INVENTORY_WAYPOINT_DEATH_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.death.teleport.payment.vault.description"), // %money%
 
     INVENTORY_WAYPOINT_PRIVATE_DISPLAY_NAME("inventory.waypoint.private.displayName"), // %name%
     INVENTORY_WAYPOINT_PRIVATE_DESCRIPTION("inventory.waypoint.private.description"), // %world%, %x%, %y%, %z%, %blockX%, %blockY%, %blockZ%, %distance%
@@ -181,6 +201,9 @@ public enum Messages {
     INVENTORY_WAYPOINT_PRIVATE_MOVE_TO_FOLDER_DESCRIPTION("inventory.waypoint.private.moveToFolder.description"),
     INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DISPLAY_NAME("inventory.waypoint.private.teleport.displayName"),
     INVENTORY_WAYPOINT_PRIVATE_TELEPORT_DESCRIPTION("inventory.waypoint.private.teleport.description"),
+    INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION("inventory.waypoint.private.teleport.payment.xpPoints.description"), // %points%
+    INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION("inventory.waypoint.private.teleport.payment.xpLevels.description"), // %levels%
+    INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.private.teleport.payment.vault.description"), // %money%
     INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.private.selectBeaconColor.displayName"),
     INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.private.selectBeaconColor.description"),
 
@@ -196,6 +219,9 @@ public enum Messages {
     INVENTORY_WAYPOINT_PUBLIC_RENAME_DESCRIPTION("inventory.waypoint.public.rename.description"),
     INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DISPLAY_NAME("inventory.waypoint.public.teleport.displayName"),
     INVENTORY_WAYPOINT_PUBLIC_TELEPORT_DESCRIPTION("inventory.waypoint.public.teleport.description"),
+    INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION("inventory.waypoint.public.teleport.payment.xpPoints.description"), // %points%
+    INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION("inventory.waypoint.public.teleport.payment.xpLevels.description"), // %levels%
+    INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.public.teleport.payment.vault.description"), // %money%
     INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.public.selectBeaconColor.displayName"),
     INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.public.selectBeaconColor.description"),
 
@@ -211,6 +237,9 @@ public enum Messages {
     INVENTORY_WAYPOINT_PERMISSION_RENAME_DESCRIPTION("inventory.waypoint.permission.rename.description"),
     INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DISPLAY_NAME("inventory.waypoint.permission.teleport.displayName"),
     INVENTORY_WAYPOINT_PERMISSION_TELEPORT_DESCRIPTION("inventory.waypoint.permission.teleport.description"),
+    INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION("inventory.waypoint.permission.teleport.payment.xpPoints.description"), // %points%
+    INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION("inventory.waypoint.permission.teleport.payment.xpLevels.description"), // %levels%
+    INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.permission.teleport.payment.vault.description"), // %money%
     INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.permission.selectBeaconColor.displayName"),
     INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.permission.selectBeaconColor.description"),
 

@@ -26,6 +26,7 @@ import de.md5lukas.waypoints.data.folder.PrivateFolder;
 import de.md5lukas.waypoints.data.waypoint.DeathWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
+import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -55,6 +56,8 @@ public class WPPlayerData {
     private List<PrivateFolder> folders;
     private List<PrivateWaypoint> waypoints;
 
+    private long lastTeleportation;
+
     public WPPlayerData(PlayerStore store) {
         this.store = store;
         this.rootTag = store.getTag(Waypoints.instance());
@@ -70,12 +73,19 @@ public class WPPlayerData {
         if (rootTag.contains("deathWaypoint"))
             deathWaypoint = new DeathWaypoint(rootTag.getCompound("deathWaypoint"));
 
+        if (rootTag.contains("lastTeleportation")) {
+            this.lastTeleportation = rootTag.getLong("lastTeleportation");
+        } else {
+            this.lastTeleportation = -1;
+        }
+
         store.onSaveSync(Waypoints.instance(), tag -> {
             tag.putCompound("settings", settings.toCompoundTag());
             tag.putListTag("folders", folders.stream().map(Folder::toCompoundTag).collect(Collectors.toList()));
             tag.putListTag("waypoints", waypoints.stream().map(Waypoint::toCompoundTag).collect(Collectors.toList()));
             if (deathWaypoint != null)
                 tag.putCompound("deathWaypoint", deathWaypoint.toCompoundTag());
+            tag.putLong("lastTeleportation", lastTeleportation);
             cache.remove(store.getOwner());
         });
     }
@@ -206,6 +216,20 @@ public class WPPlayerData {
             }
         }
         folders.removeIf(pf -> pf.getID().equals(uuid));
+    }
+
+    public boolean canTeleport() {
+        return WPConfig.getTeleportCooldown() <= 0
+                || lastTeleportation == -1
+                || (lastTeleportation + WPConfig.getTeleportCooldown()) <= System.currentTimeMillis();
+    }
+
+    public void playerTeleported() {
+        this.lastTeleportation = System.currentTimeMillis();
+    }
+
+    public long remainingTeleportCooldown() {
+        return Math.max(0, (lastTeleportation + WPConfig.getTeleportCooldown()) - System.currentTimeMillis());
     }
 
     public CompoundTag getCustomTag(String usage) {
