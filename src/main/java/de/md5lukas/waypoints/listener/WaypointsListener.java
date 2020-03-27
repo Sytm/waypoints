@@ -18,20 +18,27 @@
 
 package de.md5lukas.waypoints.listener;
 
+import com.google.common.math.DoubleMath;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.gui.GUIManager;
 import de.md5lukas.waypoints.store.WPConfig;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
+import de.md5lukas.waypoints.util.TeleportManager;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.util.Vector;
 
 import static org.bukkit.event.EventPriority.LOWEST;
+import static org.bukkit.event.EventPriority.MONITOR;
 
 public class WaypointsListener implements Listener {
+
+    private final static double EQ_TOLERANCE = 0.0001;
 
     @EventHandler(priority = LOWEST)
     public void onDeath(PlayerDeathEvent e) {
@@ -50,5 +57,15 @@ public class WaypointsListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         PlayerItemCheckRunner.playerLeft(e.getPlayer());
+        TeleportManager.removeWaitingPlayer(e.getPlayer());
+    }
+
+    @EventHandler(priority = MONITOR)
+    public void onMove(PlayerMoveEvent e) {
+        if (!e.isCancelled()) {
+            if (e.getTo() != null && !e.getFrom().toVector().equals(e.getTo().toVector())) {
+                TeleportManager.playerMoved((e.getPlayer()));
+            }
+        }
     }
 }

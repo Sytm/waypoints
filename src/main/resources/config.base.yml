@@ -6,12 +6,12 @@
 
 general:
 
-  # Set how the gui can be opened by using the compass. Possible values are: right (right-click), left (left-click), false (disabled)
+  # Set how the gui can be opened by using the compass. Possible values are: 'right' (right-click), 'left' (left-click), 'false' (disabled)
   openUsingCompass: right
 
   # Set how the displays should only be active when a certain condition is met.
   displaysActiveWhen:
-    # Available options are: itemInInventory, itemInHotbar, itemInHand (main or off-hand), false (disabled)
+    # Available options are: 'itemInInventory', 'itemInHotbar', 'itemInHand' (main or off-hand), 'false' (disabled)
     enabled: false
     # Only one of the items provided here needs to be present to work, NOT all at once
     requiredItems:
@@ -19,6 +19,52 @@ general:
       - MAP
       - FILLED_MAP
 
+  teleport:
+    # If a teleport to a waypoint was free, should it be counted as a teleportation or not.
+    # If it is enabled and in the future you have to pay for the waypoint the prices will go up
+    countFreeTeleportations: false
+
+    condition:
+      # Specify the minimum time between teleports (if the player has the permission, this will be ignored)
+      # Set to 0 to disable the cooldown
+      cooldown:
+        timeUnit: minutes
+        value: 5
+      # The amount of seconds a player should be not moving until he can teleport. The timer will start when the player issues the teleport
+      # Set to 0 to disable this functionality
+      standStillTime: 3
+      #
+    template: &teleportPayment
+      # Available options are 'permissionOnly' (permission is 'waypoints.teleport'), 'pay' (permission and pay) or 'free' (everyone can teleport)
+      enabled: permissionOnly
+      # What kind of economy should be used for the payment
+      # Available options are 'xpPoints', 'xpLevels' and 'vault'. For 'vault' to work you need to have vault installed and setup with a economy
+      method: xpPoints
+      # You have multiple options that decide how the price will change over time for teleportation
+      # 'locked': price = baseAmount
+      # The price will always stay at 'baseAmount' disregarding the other values
+      # 'linear': price = min(maxAmount, baseAmount + (growthModifier * n))
+      # The price will start at 'baseAmount' and will grow with every consecutive teleportation by 'growthModifier' up until 'maxAmount' is reached
+      # 'multiply': price = min(maxAmount, baseAmount * (growthModifier ^ n))
+      # The price will start at 'baseAmount' and will be multiplied by 'growthModifier' after every use up until 'maxAmount' is reached
+      # Numbers with decimals are not permitted except for 'growthModifier' and the result of the equation is always rounded to the nearest full number
+      growthType: linear
+      baseAmount: 10
+      growthModifier: 10
+      # Set to -1 to use max value defined by the plugin
+      # When using vault the max value is (2 ^ 63) - 1 = 9,223,372,036,854,775,807
+      # When using the xp options the max value is ( 2 ^ 31 ) - 1 = 2,147,483,647
+      maxAmount: 250
+
+    waypoint:
+      death:
+        <<: *teleportPayment
+      private:
+        <<: *teleportPayment
+      public:
+        <<: *teleportPayment
+      permission:
+        <<: *teleportPayment
 
 
   # The maximum amount of waypoints a player can have saved, set to 0 or negative for no limit

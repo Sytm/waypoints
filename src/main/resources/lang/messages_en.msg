@@ -12,6 +12,15 @@ general.notAValidUuid=$prefix$ &cThe id provided is not in a valid format.
 # %correctworld% = Name of the world, where the waypoint is
 display.wrongWorld=&cYou are currently in the world &a%currentworld%&c, but the waypoint is in &a%correctworld%
 
+chat.duration.second=second
+chat.duration.seconds=seconds
+chat.duration.minute=minute
+chat.duration.minutes=minutes
+chat.duration.hour=hour
+chat.duration.hours=hours
+chat.duration.day=day
+chat.duration.days=days
+
 variable.chatAction.updateItem.waypoint=&7Click here when you are holding the item you want to use as the new waypoint icon.
 
 chatAction.updateItem.waypoint.private=$prefix$ $chatAction.updateItem.waypoint$
@@ -25,6 +34,15 @@ chatAction.rename.waypoint.permission=$prefix$ &7Click here to get the command t
 chatAction.rename.folder.private=$prefix$ &7Click here to get the command to rename your folder.
 
 chatWarning.worldTranslationsMissing=$prefix$ &cSome world name translations are missing.
+
+# %remainingTime% the time that is left until the player can teleport again
+chat.teleport.onCooldown=$prefix$ &cYou cannot teleport right now because it is on cooldown. You can teleport again in &e%remainingTime%&c.
+chat.teleport.notEnough.xpPoints=$prefix$ &cYou do not have enough xp points to perform this teleportation.
+chat.teleport.notEnough.xpLevels=$prefix$ &cYou do not have enough xp levels to perform this teleportation.
+chat.teleport.notEnough.balance=$prefix$ &cYou do not have enough balance to perform this teleportation.
+# %timeRequired% the time the player is required to stand still
+chat.teleport.standStillNotice=$prefix$ &7You need to stand still for &e%timeRequired%&7 to be able to teleport.
+chat.teleport.cancelledMove=$prefix$ &cYour teleportation has been cancelled because you moved.
 
 # Commands
 command.help.title=$prefix$ &7&nHelp
@@ -116,6 +134,9 @@ variable.waypoints.rename.displayName=&eRename waypoint
 variable.waypoints.rename.description=&7Click here to receive a message, which you can click to receive the rename command
 variable.waypoints.teleport.displayName=&eTeleport to waypoint
 variable.waypoints.teleport.description=&0-
+variable.waypoints.teleport.payment.xpPoints.description=&7You need &e%points%&7 experience points to perform this teleportation
+variable.waypoints.teleport.payment.xpLevels.description=&7You need &e%levels%&7 experience levels to perform this teleportation
+variable.waypoints.teleport.payment.vault.description=&7You need &e%money%&7€ to perform this teleportation
 variable.waypoints.selectBeaconColor.displayName=&7Change the color of the beacon beam
 variable.waypoints.selectBeaconColor.description=&eChange the color of the beacon beam, if this waypoint has been selected
 
@@ -185,6 +206,9 @@ inventory.waypoint.death.select.displayName=$waypoints.select.displayName$
 inventory.waypoint.death.select.description=$waypoints.select.description$
 inventory.waypoint.death.teleport.displayName=$waypoints.teleport.displayName$
 inventory.waypoint.death.teleport.description=$waypoints.teleport.description$
+inventory.waypoint.death.teleport.payment.xpPoints.description=$waypoints.teleport.payment.xpPoints.description$
+inventory.waypoint.death.teleport.payment.xpLevels.description=$waypoints.teleport.payment.xpLevels.description$
+inventory.waypoint.death.teleport.payment.vault.description=$waypoints.teleport.payment.vault.description$
 
 # %name% = Name of the waypoint
 inventory.waypoint.private.displayName=&5%name%
@@ -210,6 +234,9 @@ inventory.waypoint.private.moveToFolder.displayName=&eMove waypoint into a folde
 inventory.waypoint.private.moveToFolder.description=&7Put the waypoint into a folder to group it, or remove it from the current folder
 inventory.waypoint.private.teleport.displayName=$waypoints.teleport.displayName$
 inventory.waypoint.private.teleport.description=$waypoints.teleport.description$
+inventory.waypoint.private.teleport.payment.xpPoints.description=$waypoints.teleport.payment.xpPoints.description$
+inventory.waypoint.private.teleport.payment.xpLevels.description=$waypoints.teleport.payment.xpLevels.description$
+inventory.waypoint.private.teleport.payment.vault.description=$waypoints.teleport.payment.vault.description$
 inventory.waypoint.private.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.private.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
 
@@ -235,6 +262,9 @@ inventory.waypoint.public.rename.displayName=$waypoints.rename.displayName$
 inventory.waypoint.public.rename.description=$waypoints.rename.description$
 inventory.waypoint.public.teleport.displayName=$waypoints.teleport.displayName$
 inventory.waypoint.public.teleport.description=$waypoints.teleport.description$
+inventory.waypoint.public.teleport.payment.xpPoints.description=$waypoints.teleport.payment.xpPoints.description$
+inventory.waypoint.public.teleport.payment.xpLevels.description=$waypoints.teleport.payment.xpLevels.description$
+inventory.waypoint.public.teleport.payment.vault.description=$waypoints.teleport.payment.vault.description$
 inventory.waypoint.public.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.public.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
 
@@ -260,6 +290,9 @@ inventory.waypoint.permission.rename.displayName=$waypoints.rename.displayName$
 inventory.waypoint.permission.rename.description=$waypoints.rename.description$
 inventory.waypoint.permission.teleport.displayName=$waypoints.teleport.displayName$
 inventory.waypoint.permission.teleport.description=$waypoints.teleport.description$
+inventory.waypoint.permission.teleport.payment.xpPoints.description=$waypoints.teleport.payment.xpPoints.description$
+inventory.waypoint.permission.teleport.payment.xpLevels.description=$waypoints.teleport.payment.xpLevels.description$
+inventory.waypoint.permission.teleport.payment.vault.description=$waypoints.teleport.payment.vault.description$
 inventory.waypoint.permission.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.permission.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
 
