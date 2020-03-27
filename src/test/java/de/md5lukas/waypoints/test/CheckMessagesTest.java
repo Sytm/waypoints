@@ -14,20 +14,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class CheckMessagesTest {
 
 	public void verifyCompleteMessageFile(File file) throws IOException {
-		System.out.println("Testing file " + file.getName());
 		MessageParser.ParseResult result = MessageParser.getDefaultParser().parse(file);
 		List<String> missing = new ArrayList<>();
-		for (Messages m : Messages.values()) {
+		for (Messages m : Messages.values())
 			if (!result.getOriginal().containsKey(m.toString()))
-				missing.add(m.toString());
-		}
-		if (missing.isEmpty()) {
-			System.out.println("File " + file.getName() + " is complete");
-		} else {
-			System.err.println("Some translations are missing from the file \"" + file.getName() + "\":");
-			missing.forEach(System.err::println);
-			fail("Some translations are missing from the file, see above for more information");
-		}
+				fail("Some translations are missing from the file " + file.getName());
 	}
 
 	@Test
