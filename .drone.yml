@@ -27,7 +27,7 @@ steps:
   - name: build
     image: maven:3-jdk-8
     commands:
-      - mvn verify -DskipTests
+      - mvn verify -B -DskipTests -Pprod
   - name: publish
     image: plugins/github-release
     settings:
