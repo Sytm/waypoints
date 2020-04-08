@@ -60,7 +60,7 @@ public final class BeaconDisplay extends WaypointDisplay {
 
     @Override
     public void update(Player player, Waypoint waypoint) {
-        if (player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
+        if (waypoint != null && player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
             UUID uuid = player.getUniqueId();
             double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
             Location loc = waypoint.getLocation().getWorld().getHighestBlockAt(waypoint.getLocation()).getLocation();

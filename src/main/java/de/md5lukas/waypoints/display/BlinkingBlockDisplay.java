@@ -52,7 +52,7 @@ public final class BlinkingBlockDisplay extends WaypointDisplay {
 
     @Override
     public void update(Player player, Waypoint waypoint) {
-        if (PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
+        if (waypoint != null && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
             UUID pUUID = player.getUniqueId();
             double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
             if (distance < displays().getBlinkingBlockMinDistance() || distance > displays().getBlinkingBlockMaxDistance()) {
