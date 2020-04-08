@@ -42,7 +42,7 @@ public final class WrongWorldDisplay extends WaypointDisplay {
 
     @Override
     public void update(Player player, Waypoint waypoint) {
-        if (!player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
+        if (waypoint != null && !player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
             TextComponent component = new TextComponent(StringHelper.multiReplace(DISPLAY_WRONG_WORLD.getRaw(player),
                     "%currentworld%", WPConfig.translateWorldName(player.getWorld().getName(), player),
                     "%correctworld%", WPConfig.translateWorldName(waypoint.getLocation().getWorld().getName(), player)));

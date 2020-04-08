@@ -45,11 +45,13 @@ public final class CompassDisplay extends WaypointDisplay {
 
     @Override
     public void show(Player player, Waypoint waypoint) {
-        if (displays().getCompassDefaultLocationType() == WPConfig.DefaultCompassLocationType.PREVIOUS) {
-            CompoundTag store = getStore(player);
-            store.put("location", new LocationTag(null, player.getCompassTarget()));
+        if (waypoint != null) {
+            if (displays().getCompassDefaultLocationType() == WPConfig.DefaultCompassLocationType.PREVIOUS) {
+                CompoundTag store = getStore(player);
+                store.put("location", new LocationTag(null, player.getCompassTarget()));
+            }
+            player.setCompassTarget(waypoint.getLocation());
         }
-        player.setCompassTarget(waypoint.getLocation());
     }
 
     @Override
