@@ -93,7 +93,8 @@ public class WaypointsCommand implements CommandExecutor {
                         if ((WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic()
                                 || WPConfig.allowRenamingWaypointsPermission()) && WPConfig.allowRenamingFoldersPrivate())
                             COMMAND_HELP_RENAME_NORMAL.send(p);
-                        else if (WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic() || WPConfig.allowRenamingWaypointsPermission())
+                        else if (WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic() || WPConfig
+                                .allowRenamingWaypointsPermission())
                             COMMAND_HELP_RENAME_WAYPOINT_ONLY.send(p);
                         else if (WPConfig.allowRenamingFoldersPrivate())
                             COMMAND_HELP_RENAME_FOLDER_ONLY.send(p);

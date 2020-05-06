@@ -255,7 +255,8 @@ public class WaypointProvider implements InventoryProvider {
             });
             overviewPattern.attach('t', viewerData.settings().showGlobals() ? globalsShown : globalsHidden);
             if (WPConfig.isAnvilGUICreationEnabled()) {
-                if (viewer.hasPermission("waypoints.set.private") || viewer.hasPermission("waypoints.set.public") || viewer.hasPermission("waypoints.set.permission")) {
+                if (viewer.hasPermission("waypoints.set.private") || viewer.hasPermission("waypoints.set.public") || viewer
+                        .hasPermission("waypoints.set.permission")) {
                     overviewPattern.attach('c', ClickableItem.from(ItemStacks.getOverviewSetWaypointItem(viewer), click -> {
                         if (viewer.hasPermission("waypoints.set.private") && !viewer.hasPermission("waypoints.set.public")
                                 && !viewer.hasPermission("waypoints.set.permission")) {
@@ -334,7 +335,8 @@ public class WaypointProvider implements InventoryProvider {
 
         if (isOwner && folder instanceof PrivateFolder) {
             folderPattern.attach('d', ClickableItem.from(ItemStacks.getFolderPrivateDeleteItem(viewer),
-                    click -> showConfirm(INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_DESCRIPTION_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_DESCRIPTION_DESCRIPTION,
+                    click -> showConfirm(INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_DESCRIPTION_DISPLAY_NAME,
+                            INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_DESCRIPTION_DESCRIPTION,
                             INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_YES_DESCRIPTION,
                             INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_FOLDER_PRIVATE_DELETE_NO_DESCRIPTION,
                             result -> {
@@ -377,9 +379,10 @@ public class WaypointProvider implements InventoryProvider {
     }
 
     private void showConfirm(Messages descriptionDisplayName, Messages descriptionDescription, Messages yesDisplayName, Messages yesDescription,
-                             Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
+            Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
         confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuBackgroundItem())
-                .name(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME.getRaw(viewer)).lore(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION.asList(viewer)).make()));
+                .name(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME.getRaw(viewer)).lore(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION.asList(viewer))
+                .make()));
         confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).name(descriptionDisplayName.getRaw(viewer))
                 .lore(descriptionDescription.asList(viewer)).make()));
         confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).name(noDisplayName.getRaw(viewer))
@@ -483,7 +486,8 @@ public class WaypointProvider implements InventoryProvider {
                     click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DISPLAY_NAME,
                             INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_DESCRIPTION_DESCRIPTION,
                             INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_YES_DESCRIPTION,
-                            INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DESCRIPTION, result -> {
+                            INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PRIVATE_DELETE_NO_DESCRIPTION,
+                            result -> {
                                 if (result) {
                                     targetData.removeWaypoint(waypoint.getID());
                                     showLast();
@@ -575,7 +579,8 @@ public class WaypointProvider implements InventoryProvider {
                     click -> showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DISPLAY_NAME,
                             INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_DESCRIPTION_DESCRIPTION,
                             INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_YES_DESCRIPTION,
-                            INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DESCRIPTION, result -> {
+                            INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PUBLIC_DELETE_NO_DESCRIPTION,
+                            result -> {
                                 if (result) {
                                     Waypoints.getGlobalStore().getPublicFolder().removeWaypoint(waypoint.getID());
                                 }
@@ -604,7 +609,8 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (viewer.hasPermission("waypoints.changeBeaconColor.public") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays().isBeaconEnableSelectColor()) {
+        if (viewer.hasPermission("waypoints.changeBeaconColor.public") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays()
+                .isBeaconEnableSelectColor()) {
             waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
         } else {
             waypointPattern.attach('c', bg);
@@ -662,7 +668,8 @@ public class WaypointProvider implements InventoryProvider {
                 showConfirm(INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_DESCRIPTION_DISPLAY_NAME,
                         INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_DESCRIPTION_DESCRIPTION,
                         INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_YES_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_YES_DESCRIPTION,
-                        INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_NO_DESCRIPTION, result -> {
+                        INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_NO_DISPLAY_NAME, INVENTORY_CONFIRM_MENU_WAYPOINT_PERMISSION_DELETE_NO_DESCRIPTION,
+                        result -> {
                             if (result) {
                                 Waypoints.getGlobalStore().getPermissionFolder().removeWaypoint(waypoint.getID());
                             }
@@ -692,7 +699,8 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (viewer.hasPermission("waypoints.changeBeaconColor.permission") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays().isBeaconEnableSelectColor()) {
+        if (viewer.hasPermission("waypoints.changeBeaconColor.permission") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays()
+                .isBeaconEnableSelectColor()) {
             waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
         } else {
             waypointPattern.attach('c', bg);
@@ -968,7 +976,8 @@ public class WaypointProvider implements InventoryProvider {
         PaginationList<GUISortable> items = new PaginationList<>(pageSize);
         items.addAll(folder.getWaypoints(viewer));
         items.sort(viewerData.settings().sortMode().getComparator());
-        return items.page(folderPage).stream().map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> showWaypoint((Waypoint) guiSortable)))
+        return items.page(folderPage).stream()
+                .map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> showWaypoint((Waypoint) guiSortable)))
                 .collect(Collectors.toList());
     }
 
@@ -976,7 +985,9 @@ public class WaypointProvider implements InventoryProvider {
         PaginationList<GUISortable> items = new PaginationList<>(pageSize);
         items.addAll(targetData.getFolders());
         items.sort(viewerData.settings().sortMode().getComparator());
-        return items.page(folderListPage).stream().map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> onClick.accept((Folder) guiSortable))).collect(Collectors.toList());
+        return items.page(folderListPage).stream()
+                .map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> onClick.accept((Folder) guiSortable)))
+                .collect(Collectors.toList());
     }
 
     private List<ClickableItem> getSelectBeaconColorItems(Consumer<BlockColor> onClick) {
