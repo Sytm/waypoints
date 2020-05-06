@@ -78,7 +78,8 @@ public final class ActionBarDisplay extends WaypointDisplay {
     // Original code: https://bitbucket.org/Md5Lukas/waypoints/src/763ee8314b396fb5441c8eb5e0e7e281375ed989/src/main/java/de/md5lukas/wp/util/StringHelper.java?at=master
     private static String generateDirectionIndicator(double angle) {
         if (angle > displays().getActionBarRange()) {
-            return displays().getActionBarIndicatorColor() + displays().getActionBarLeftArrow() + displays().getActionBarNormalColor() + StringHelper.repeatString(displays().getActionBarSection(), displays().getActionBarAmountOfSections()) + displays().getActionBarRightArrow();
+            return displays().getActionBarIndicatorColor() + displays().getActionBarLeftArrow() + displays().getActionBarNormalColor() + StringHelper
+                    .repeatString(displays().getActionBarSection(), displays().getActionBarAmountOfSections()) + displays().getActionBarRightArrow();
         }
         if (-angle > displays().getActionBarRange()) {
             return displays().getActionBarNormalColor() + displays().getActionBarLeftArrow() + StringHelper.repeatString(displays().getActionBarSection(),
@@ -87,7 +88,9 @@ public final class ActionBarDisplay extends WaypointDisplay {
         double percent = -(angle / displays().getActionBarRange());
         int nthSection = (int) Math.round(((double) (displays().getActionBarAmountOfSections() - 1) / 2) * percent);
         nthSection += Math.round((double) displays().getActionBarAmountOfSections() / 2);
-        return displays().getActionBarNormalColor() + displays().getActionBarLeftArrow() + StringHelper.repeatString(displays().getActionBarSection(), nthSection - 1) + displays().getActionBarIndicatorColor() + displays().getActionBarSection() + displays().getActionBarNormalColor() + StringHelper.repeatString(displays().getActionBarSection(),
+        return displays().getActionBarNormalColor() + displays().getActionBarLeftArrow() + StringHelper
+                .repeatString(displays().getActionBarSection(), nthSection - 1) + displays().getActionBarIndicatorColor() + displays().getActionBarSection()
+                + displays().getActionBarNormalColor() + StringHelper.repeatString(displays().getActionBarSection(),
                 displays().getActionBarAmountOfSections() - nthSection) + displays().getActionBarRightArrow();
     }
 

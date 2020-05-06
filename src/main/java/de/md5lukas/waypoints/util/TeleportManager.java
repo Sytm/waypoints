@@ -27,9 +27,13 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
-import static de.md5lukas.waypoints.Messages.*;;
+import static de.md5lukas.waypoints.Messages.*;
+
+;
 
 public class TeleportManager {
 
@@ -54,7 +58,8 @@ public class TeleportManager {
                 return;
             player.closeInventory();
             if (WPConfig.getTeleportStandStillTime() > 0) {
-                player.sendMessage(CHAT_TELEPORT_STAND_STILL_NOTICE.getRaw(player).replace("%timeRequired%", TimeHelper.pluralizeSeconds(player, WPConfig.getTeleportStandStillTime())));
+                player.sendMessage(CHAT_TELEPORT_STAND_STILL_NOTICE.getRaw(player)
+                        .replace("%timeRequired%", TimeHelper.pluralizeSeconds(player, WPConfig.getTeleportStandStillTime())));
                 BukkitTask task = Bukkit.getScheduler().runTaskLater(Waypoints.instance(), () -> {
                     waitingForTeleport.remove(player.getUniqueId());
                     teleportPlayer(player, playerData, waypoint);
@@ -64,7 +69,8 @@ public class TeleportManager {
                 teleportPlayer(player, playerData, waypoint);
             }
         } else {
-            player.sendMessage(CHAT_TELEPORT_ON_COOLDOWN.getRaw(player).replace("%remainingTime%", TimeHelper.formatDuration(player, playerData.remainingTeleportCooldown())));
+            player.sendMessage(CHAT_TELEPORT_ON_COOLDOWN.getRaw(player)
+                    .replace("%remainingTime%", TimeHelper.formatDuration(player, playerData.remainingTeleportCooldown())));
         }
     }
 

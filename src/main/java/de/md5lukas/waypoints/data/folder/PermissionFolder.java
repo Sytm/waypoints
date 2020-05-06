@@ -76,7 +76,9 @@ public class PermissionFolder extends Folder {
 
     @Override
     public List<Waypoint> getWaypoints(Player player) {
-        return waypoints.stream().filter(wp -> player.hasPermission("waypoints.gui.permission.*") || player.hasPermission(((PermissionWaypoint) wp).getPermission())).collect(Collectors.toList());
+        return waypoints.stream()
+                .filter(wp -> player.hasPermission("waypoints.gui.permission.*") || player.hasPermission(((PermissionWaypoint) wp).getPermission()))
+                .collect(Collectors.toList());
     }
 
     @Override
