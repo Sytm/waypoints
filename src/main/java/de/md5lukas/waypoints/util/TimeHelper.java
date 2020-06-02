@@ -26,7 +26,7 @@ import static de.md5lukas.waypoints.Messages.*;
 import static java.util.concurrent.TimeUnit.*;
 
 public class TimeHelper {
-    
+
     public static String formatDuration(Player player, long millis) {
         StringBuilder builder = new StringBuilder();
         if (millis < 0) {
@@ -34,30 +34,30 @@ public class TimeHelper {
         }
         long days = MILLISECONDS.toDays(millis);
         if (days > 0) {
-            builder.append(days).append(' ').append(pluralizationHelper(player,  days, DAYS));
+            builder.append(days).append(' ').append(pluralizationHelper(player, days, DAYS));
             millis -= DAYS.toMillis(days);
         }
         long hours = MILLISECONDS.toHours(millis);
         if (hours > 0) {
             if (days > 0)
                 builder.append(' ');
-            builder.append(hours).append(' ').append(pluralizationHelper(player,  hours, HOURS));
+            builder.append(hours).append(' ').append(pluralizationHelper(player, hours, HOURS));
             millis -= HOURS.toMillis(hours);
         }
         long minutes = MILLISECONDS.toMinutes(millis);
         if (minutes > 0) {
             if (days > 0 || hours > 0)
                 builder.append(' ');
-            builder.append(minutes).append(' ').append(pluralizationHelper(player,  minutes, MINUTES));
+            builder.append(minutes).append(' ').append(pluralizationHelper(player, minutes, MINUTES));
             millis -= MINUTES.toMillis(minutes);
         }
         long seconds = MILLISECONDS.toSeconds(millis);
         if (seconds > 0) {
             if (days > 0 || hours > 0 || minutes > 0)
                 builder.append(' ');
-            builder.append(seconds).append(' ').append(pluralizationHelper(player,  seconds, SECONDS));
+            builder.append(seconds).append(' ').append(pluralizationHelper(player, seconds, SECONDS));
         } else if (days == 0 && hours == 0 && minutes == 0) {
-            builder.append("1 ").append(pluralizationHelper(player,  1, SECONDS));
+            builder.append("1 ").append(pluralizationHelper(player, 1, SECONDS));
         }
 
         return builder.toString();
