@@ -18,7 +18,6 @@
 
 package de.md5lukas.waypoints.listener;
 
-import com.google.common.math.DoubleMath;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.gui.GUIManager;
 import de.md5lukas.waypoints.store.WPConfig;
@@ -31,7 +30,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.util.Vector;
 
 import static org.bukkit.event.EventPriority.LOWEST;
 import static org.bukkit.event.EventPriority.MONITOR;

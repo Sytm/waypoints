@@ -201,7 +201,8 @@ public class WPConfig {
 
         displaysActiveWhen = DisplaysActiveWhen.getFromConfig(cfg.getString("general.displaysActiveWhen.enabled"));
 
-        displaysActiveWhenRequiredMaterials = cfg.getStringList("general.displaysActiveWhen.requiredItems").stream().map(Material::matchMaterial).collect(Collectors.toList());
+        displaysActiveWhenRequiredMaterials = cfg.getStringList("general.displaysActiveWhen.requiredItems").stream().map(Material::matchMaterial)
+                .collect(Collectors.toList());
 
         teleportCountFree = cfg.getBoolean("general.teleport.countFreeTeleportations");
         TimeUnit teleportCdTU = TimeUnit.valueOf(cfg.getString("general.teleport.condition.cooldown.timeUnit").toUpperCase());
@@ -211,7 +212,8 @@ public class WPConfig {
         teleportSettings.put(DeathWaypoint.class.getSimpleName(), new TeleportSettings(cfg.getConfigurationSection("general.teleport.waypoint.death")));
         teleportSettings.put(PrivateWaypoint.class.getSimpleName(), new TeleportSettings(cfg.getConfigurationSection("general.teleport.waypoint.private")));
         teleportSettings.put(PublicWaypoint.class.getSimpleName(), new TeleportSettings(cfg.getConfigurationSection("general.teleport.waypoint.public")));
-        teleportSettings.put(PermissionWaypoint.class.getSimpleName(), new TeleportSettings(cfg.getConfigurationSection("general.teleport.waypoint.permission")));
+        teleportSettings
+                .put(PermissionWaypoint.class.getSimpleName(), new TeleportSettings(cfg.getConfigurationSection("general.teleport.waypoint.permission")));
 
         allowDuplicateFolderPrivateNames = cfg.getBoolean("general.allowDuplicatePrivateFolderNames");
         allowDuplicateWaypointNamesPrivate = cfg.getBoolean("general.allowDuplicateWaypointNames.private");
@@ -308,7 +310,8 @@ public class WPConfig {
         inventory.customItemEnabled = cfg.getBoolean("inventory.customItem.enabled");
         inventory.customItemFilterIsBlacklist = "blacklist".equalsIgnoreCase(cfg.getString("inventory.customItem.filter.useAs"));
         inventory.customItemFilter =
-                cfg.getStringList("inventory.customItem.filter.list").stream().map(Material::matchMaterial).filter(Objects::nonNull).collect(Collectors.toList());
+                cfg.getStringList("inventory.customItem.filter.list").stream().map(Material::matchMaterial).filter(Objects::nonNull)
+                        .collect(Collectors.toList());
 
         inventory.overviewBackgroundItem = matchMaterial(cfg.getString("inventory.overview.backgroundItem"));
         inventory.overviewCycleSortItem = matchMaterial(cfg.getString("inventory.overview.cycleSortItem"));
@@ -1038,7 +1041,8 @@ public class WPConfig {
                 case MULTIPLY:
                     return limit((long) (baseAmount * (Math.pow(growthModifier, n))), maxAmount);
                 default:
-                    throw new IllegalStateException("If you get this error, the configuration seems to be messed up regarding the teleport payment growth modifier. But normally this shouldn't be possible so report this error please");
+                    throw new IllegalStateException(
+                            "If you get this error, the configuration seems to be messed up regarding the teleport payment growth modifier. But normally this shouldn't be possible so report this error please");
             }
         }
 

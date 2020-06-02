@@ -86,7 +86,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.6.1</version>
+            <version>5.6.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -130,7 +130,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
