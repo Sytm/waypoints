@@ -19,8 +19,8 @@
 package de.md5lukas.waypoints.display;
 
 import de.md5lukas.commons.StringHelper;
-import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.config.WPConfig;
+import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -32,7 +32,7 @@ import static de.md5lukas.waypoints.Messages.DISPLAY_WRONG_WORLD;
 public final class WrongWorldDisplay extends WaypointDisplay {
 
     protected WrongWorldDisplay(Plugin plugin) {
-        super(plugin, WPConfig.displays().getWrongWorldInterval());
+        super(plugin, WPConfig.getDisplayConfigs().getWrongWorldConfig().getInterval());
     }
 
     @Override
@@ -46,7 +46,8 @@ public final class WrongWorldDisplay extends WaypointDisplay {
             TextComponent component = new TextComponent(StringHelper.multiReplace(DISPLAY_WRONG_WORLD.getRaw(player),
                     "%currentworld%", WPConfig.translateWorldName(player.getWorld().getName(), player),
                     "%correctworld%", WPConfig.translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
-            player.spigot().sendMessage(WPConfig.displays().isWrongWorldActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT, component);
+            player.spigot().sendMessage(WPConfig.getDisplayConfigs().getWrongWorldConfig().isActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT,
+                    component);
         }
     }
 

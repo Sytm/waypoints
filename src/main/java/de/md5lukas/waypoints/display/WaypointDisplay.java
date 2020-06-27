@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static de.md5lukas.waypoints.config.WPConfig.displays;
+import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfigs;
 
 public abstract class WaypointDisplay implements Listener {
 
@@ -50,12 +50,12 @@ public abstract class WaypointDisplay implements Listener {
 
     static {
         Bukkit.getPluginManager().registerEvents(global, Waypoints.instance());
-        registerDisplay("compass", () -> displays().isCompassEnabled(), () -> new CompassDisplay(Waypoints.instance()));
-        registerDisplay("beacon", () -> displays().isBeaconEnabled(), () -> new BeaconDisplay(Waypoints.instance()));
-        registerDisplay("blinkingBlock", () -> displays().isBlinkingBlockEnabled(), () -> new BlinkingBlockDisplay(Waypoints.instance()));
-        registerDisplay("wrongWorld", () -> displays().isWrongWorldEnabled(), () -> new WrongWorldDisplay(Waypoints.instance()));
-        registerDisplay("actionBar", () -> displays().isActionBarEnabled(), () -> new ActionBarDisplay(Waypoints.instance()));
-        registerDisplay("particles", () -> displays().isParticlesEnabled(), () -> new ParticleDisplay(Waypoints.instance()));
+        registerDisplay("compass", () -> getDisplayConfigs().getCompassConfig().isEnabled(), () -> new CompassDisplay(Waypoints.instance()));
+        registerDisplay("beacon", () -> getDisplayConfigs().getBeaconConfig().isEnabled(), () -> new BeaconDisplay(Waypoints.instance()));
+        registerDisplay("blinkingBlock", () -> getDisplayConfigs().getBlinkingBlockConfig().isEnabled(), () -> new BlinkingBlockDisplay(Waypoints.instance()));
+        registerDisplay("wrongWorld", () -> getDisplayConfigs().getWrongWorldConfig().isEnabled(), () -> new WrongWorldDisplay(Waypoints.instance()));
+        registerDisplay("actionBar", () -> getDisplayConfigs().getActionBarConfig().isEnabled(), () -> new ActionBarDisplay(Waypoints.instance()));
+        registerDisplay("particles", () -> getDisplayConfigs().getParticleConfig().isEnabled(), () -> new ParticleDisplay(Waypoints.instance()));
     }
 
     public static void activateDisplays() {

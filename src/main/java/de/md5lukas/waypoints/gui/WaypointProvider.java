@@ -25,6 +25,8 @@ import de.md5lukas.commons.inventory.ItemBuilder;
 import de.md5lukas.waypoints.Messages;
 import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.command.WaypointsCommand;
+import de.md5lukas.waypoints.config.TeleportConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.GUISortable;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.folder.Folder;
@@ -34,7 +36,6 @@ import de.md5lukas.waypoints.data.folder.PublicFolder;
 import de.md5lukas.waypoints.data.waypoint.*;
 import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.display.WaypointDisplay;
-import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.util.GeneralHelper;
 import de.md5lukas.waypoints.util.TeleportManager;
 import fr.minuskube.inv.ClickableItem;
@@ -518,7 +519,7 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (isOwner && WPConfig.displays().isBeaconEnabled() && WPConfig.displays().isBeaconEnableSelectColor()) {
+        if (isOwner && WPConfig.getDisplayConfigs().getBeaconConfig().isEnabled() && WPConfig.getDisplayConfigs().getBeaconConfig().isEnableSelectColor()) {
             waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
         } else {
             waypointPattern.attach('c', bg);
@@ -528,16 +529,16 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
                 TeleportManager.teleportKeepOrientation(viewer, waypoint.getLocation());
             }));
-        } else if (WPConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPrivateTeleportItem(viewer), click -> {
                 TeleportManager.teleportPlayerToWaypoint(viewer, viewerData, waypoint);
             }));
-        } else if (WPConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             long cost = waypoint.getTeleportSettings().calculateCost(waypoint.getTeleportations());
             ItemStack stack;
-            if (WPConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPrivateTeleportXpPointsItem(viewer, cost);
-            } else if (WPConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            } else if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPrivateTeleportXpLevelsItem(viewer, cost);
             } else {
                 stack = ItemStacks.getWaypointPrivateTeleportVaultItem(viewer, cost);
@@ -609,8 +610,8 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (viewer.hasPermission("waypoints.changeBeaconColor.public") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays()
-                .isBeaconEnableSelectColor()) {
+        if (viewer.hasPermission("waypoints.changeBeaconColor.public") && WPConfig.getDisplayConfigs().getBeaconConfig().isEnabled() && WPConfig
+                .getDisplayConfigs().getBeaconConfig().isEnableSelectColor()) {
             waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
         } else {
             waypointPattern.attach('c', bg);
@@ -620,16 +621,16 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
                 TeleportManager.teleportKeepOrientation(viewer, waypoint.getLocation());
             }));
-        } else if (WPConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPublicTeleportItem(viewer), click -> {
                 TeleportManager.teleportPlayerToWaypoint(viewer, viewerData, waypoint);
             }));
-        } else if (WPConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             long cost = waypoint.getTeleportSettings().calculateCost(waypoint.getTeleportations());
             ItemStack stack;
-            if (WPConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPublicTeleportXpPointsItem(viewer, cost);
-            } else if (WPConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            } else if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPublicTeleportXpLevelsItem(viewer, cost);
             } else {
                 stack = ItemStacks.getWaypointPublicTeleportVaultItem(viewer, cost);
@@ -699,8 +700,8 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (viewer.hasPermission("waypoints.changeBeaconColor.permission") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays()
-                .isBeaconEnableSelectColor()) {
+        if (viewer.hasPermission("waypoints.changeBeaconColor.permission") && WPConfig.getDisplayConfigs().getBeaconConfig().isEnabled() && WPConfig
+                .getDisplayConfigs().getBeaconConfig().isEnableSelectColor()) {
             waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
         } else {
             waypointPattern.attach('c', bg);
@@ -710,16 +711,16 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
                 TeleportManager.teleportKeepOrientation(viewer, waypoint.getLocation());
             }));
-        } else if (WPConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPermissionTeleportItem(viewer), click -> {
                 TeleportManager.teleportPlayerToWaypoint(viewer, viewerData, waypoint);
             }));
-        } else if (WPConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             long cost = waypoint.getTeleportSettings().calculateCost(waypoint.getTeleportations());
             ItemStack stack;
-            if (WPConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPermissionTeleportXpPointsItem(viewer, cost);
-            } else if (WPConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            } else if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPermissionTeleportXpLevelsItem(viewer, cost);
             } else {
                 stack = ItemStacks.getWaypointPermissionTeleportVaultItem(viewer, cost);
@@ -749,16 +750,16 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
                 viewer.teleport(waypoint.getLocation());
             }));
-        } else if (WPConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointDeathTeleportItem(viewer), click -> {
                 TeleportManager.teleportKeepOrientation(viewer, waypoint.getLocation());
             }));
-        } else if (WPConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             long cost = waypoint.getTeleportSettings().calculateCost(waypoint.getTeleportations());
             ItemStack stack;
-            if (WPConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointDeathTeleportXpPointsItem(viewer, cost);
-            } else if (WPConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            } else if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointDeathTeleportXpLevelsItem(viewer, cost);
             } else {
                 stack = ItemStacks.getWaypointDeathTeleportVaultItem(viewer, cost);

@@ -19,9 +19,10 @@
 package de.md5lukas.waypoints.util;
 
 import de.md5lukas.waypoints.Waypoints;
+import de.md5lukas.waypoints.config.TeleportConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -97,7 +98,7 @@ public class TeleportManager {
     }
 
     private static boolean checkPlayerCurrency(Player player, Waypoint waypoint) {
-        if (WPConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled())) {
+        if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled())) {
             if (!waypoint.getTeleportSettings().hasPlayerEnoughCurrency(player, waypoint.getTeleportations())) {
                 sendPlayerNotEnoughCurrency(player, waypoint);
                 return false;

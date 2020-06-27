@@ -21,6 +21,7 @@ package de.md5lukas.waypoints.command;
 import de.md5lukas.commons.StringHelper;
 import de.md5lukas.commons.UUIDUtils;
 import de.md5lukas.waypoints.Waypoints;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.folder.Folder;
 import de.md5lukas.waypoints.data.folder.PermissionFolder;
@@ -30,7 +31,6 @@ import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PublicWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.gui.GUIManager;
-import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -106,7 +106,7 @@ public class WaypointsCommand implements CommandExecutor {
                         GENERAL_NO_PERMISSION.send(p);
                         return true;
                     }
-                    switch (WPConfig.displays().getCompassDefaultLocationType()) {
+                    switch (WPConfig.getDisplayConfigs().getCompassConfig().getDefaultLocationType()) {
                         case INGAME:
                             Waypoints.getGlobalStore().setCompassTarget(p.getLocation());
                             Waypoints.getGlobalStore().save(true);

@@ -20,13 +20,14 @@ package de.md5lukas.waypoints.config;
 
 import de.md5lukas.commons.language.Languages;
 import de.md5lukas.waypoints.Messages;
+import de.md5lukas.waypoints.config.displays.*;
 import de.md5lukas.waypoints.data.waypoint.*;
-import de.md5lukas.waypoints.display.BlockColor;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.*;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
@@ -37,13 +38,11 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static de.md5lukas.commons.MathHelper.square;
 import static org.bukkit.Material.matchMaterial;
 
 public class WPConfig {
 
     private static Map<String, Map<String, String>> worldNameAliases;
-    private static WPConfigDisplays displays;
     private static WPConfigInventory inventory;
     private static int waypointLimit, folderLimit;
     private static boolean deathWaypointEnabled;
@@ -63,9 +62,6 @@ public class WPConfig {
 
     private static boolean anvilGUICreationEnabled, anvilGUIRenamingEnabled;
 
-    public static WPConfigDisplays displays() {
-        return displays;
-    }
 
     public static WPConfigInventory inventory() {
         return inventory;
@@ -235,60 +231,7 @@ public class WPConfig {
         }
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Displays">
-        displays = new WPConfigDisplays();
-
-        displays.wrongWorldEnabled = cfg.getBoolean("displays.wrongWorld.enabled");
-        displays.wrongWorldActionBar = cfg.getBoolean("displays.wrongWorld.actionBar");
-        displays.wrongWorldInterval = cfg.getInt("displays.wrongWorld.interval");
-
-        displays.actionBarEnabled = cfg.getBoolean("displays.actionBar.enabled");
-        displays.actionBarInterval = cfg.getInt("displays.actionBar.interval");
-        displays.actionBarIndicatorColor = ChatColor.translateAlternateColorCodes('&', cfg.getString("displays.actionBar.indicatorColor"));
-        displays.actionBarNormalColor = ChatColor.translateAlternateColorCodes('&', cfg.getString("displays.actionBar.normalColor"));
-        displays.actionBarSection = cfg.getString("displays.actionBar.section");
-        displays.actionBarLeftArrow = cfg.getString("displays.actionBar.arrow.left");
-        displays.actionBarRightArrow = cfg.getString("displays.actionBar.arrow.right");
-        displays.actionBarAmountOfSections = cfg.getInt("displays.actionBar.amountOfSections");
-        if (displays.actionBarAmountOfSections % 2 == 0)
-            displays.actionBarAmountOfSections++;
-        displays.actionBarRange = cfg.getInt("displays.actionBar.range");
-
-        displays.compassEnabled = cfg.getBoolean("displays.compass.enabled");
-        displays.compassDefaultLocationType = DefaultCompassLocationType.getFromConfig(cfg.getString("displays.compass.defaultLocationType"));
-        if (displays.compassDefaultLocationType == DefaultCompassLocationType.CONFIG) {
-            displays.compassDefaultLocation = new Location(Bukkit.getWorld(cfg.getString("displays.compass.defaultLocation.world")),
-                    cfg.getDouble("displays.compass.defaultLocation.x"), 0, cfg.getDouble("displays.compass.defaultLocation"));
-        }
-
-        displays.blinkingBlockEnabled = cfg.getBoolean("displays.blinkingBlock.enabled");
-        displays.blinkingBlockMinDistance = square(cfg.getInt("displays.blinkingBlock.minDistance"));
-        displays.blinkingBlockMaxDistance = square(cfg.getInt("displays.blinkingBlock.maxDistance"));
-        displays.blinkingBlockInterval = cfg.getInt("displays.blinkingBlock.interval");
-        displays.blinkingBlockBlocks = cfg.getStringList("displays.blinkingBlock.blocks").stream()
-                .map(Material::matchMaterial).filter(Objects::nonNull).map(Bukkit::createBlockData).collect(Collectors.toList());
-
-        displays.beaconEnabled = cfg.getBoolean("displays.beacon.enabled");
-        displays.beaconMinDistance = square(cfg.getInt("displays.beacon.minDistance"));
-        if (cfg.isString("displays.beacon.maxDistance") && cfg.getString("displays.beacon.maxDistance").equalsIgnoreCase("auto")) {
-            displays.beaconMaxDistance = square(Bukkit.getViewDistance() * 16);
-        } else {
-            displays.beaconMaxDistance = square(cfg.getInt("displays.beacon.maxDistance"));
-        }
-        displays.beaconBaseBlock = Bukkit.createBlockData(matchMaterial(cfg.getString("displays.beacon.baseBlock")));
-        displays.beaconInterval = cfg.getInt("displays.beacon.interval");
-        displays.beaconDefaultColorPrivate = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.private"));
-        displays.beaconDefaultColorPublic = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.public"));
-        displays.beaconDefaultColorPermission = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.permission"));
-        displays.beaconDefaultColorDeath = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.death"));
-        displays.beaconEnableSelectColor = cfg.getBoolean("displays.beacon.enableSelectColor");
-
-        displays.particlesEnabled = cfg.getBoolean("displays.particles.enabled");
-        displays.particlesInterval = cfg.getInt("displays.particles.interval");
-        displays.particlesHeightOffset = cfg.getDouble("displays.particles.heightOffset");
-        displays.particlesVerticalDirection = cfg.getBoolean("displays.particles.verticalDirection");
-        displays.particlesAmount = cfg.getInt("displays.particles.amount");
-        displays.particlesDistance = cfg.getDouble("displays.particles.distance");
-        displays.particlesParticle = Particle.valueOf(cfg.getString("displays.particles.particle").toUpperCase());
+        displayConfigs = new DisplayConfigs(cfg.getConfigurationSection("displays"));
         //</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Inventory">
         inventory = new WPConfigInventory();
@@ -373,208 +316,63 @@ public class WPConfig {
         //</editor-fold>
     }
 
-    public final static class WPConfigDisplays {
+    private static DisplayConfigs displayConfigs;
 
-        private WPConfigDisplays() {
+    public static DisplayConfigs getDisplayConfigs() {
+        return displayConfigs;
+    }
+
+    public final static class DisplayConfigs {
+
+        private final ActionBarConfig actionBarConfig;
+        private final BeaconConfig beaconConfig;
+        private final BlinkingBlockConfig blinkingBlockConfig;
+        private final CompassConfig compassConfig;
+        private final ParticleConfig particleConfig;
+        private final WrongWorldConfig wrongWorldConfig;
+
+        public DisplayConfigs(ConfigurationSection cfg) {
+            this.actionBarConfig = new ActionBarConfig();
+            this.beaconConfig = new BeaconConfig();
+            this.blinkingBlockConfig = new BlinkingBlockConfig();
+            this.compassConfig = new CompassConfig();
+            this.particleConfig = new ParticleConfig();
+            this.wrongWorldConfig = new WrongWorldConfig();
+            load(cfg);
         }
 
-        private boolean wrongWorldEnabled;
-        private boolean wrongWorldActionBar;
-        private int wrongWorldInterval;
-
-        private boolean actionBarEnabled;
-        private int actionBarInterval;
-        private String actionBarIndicatorColor;
-        private String actionBarNormalColor;
-        private String actionBarSection;
-        private String actionBarLeftArrow;
-        private String actionBarRightArrow;
-        private int actionBarAmountOfSections;
-        private int actionBarRange;
-
-        private boolean compassEnabled;
-        private DefaultCompassLocationType compassDefaultLocationType;
-        private Location compassDefaultLocation;
-
-        private boolean blinkingBlockEnabled;
-        private long blinkingBlockMinDistance;
-        private long blinkingBlockMaxDistance;
-        private List<BlockData> blinkingBlockBlocks;
-        private int blinkingBlockInterval;
-
-        private boolean beaconEnabled;
-        private long beaconMinDistance;
-        private long beaconMaxDistance;
-        private BlockData beaconBaseBlock;
-        private int beaconInterval;
-        private BlockColor beaconDefaultColorPrivate;
-        private BlockColor beaconDefaultColorPublic;
-        private BlockColor beaconDefaultColorPermission;
-        private BlockColor beaconDefaultColorDeath;
-        private boolean beaconEnableSelectColor;
-
-        private boolean particlesEnabled;
-        private int particlesInterval;
-        private double particlesHeightOffset;
-        private boolean particlesVerticalDirection;
-        private int particlesAmount;
-        private double particlesDistance;
-        private Particle particlesParticle;
-
-        public boolean isWrongWorldEnabled() {
-            return wrongWorldEnabled;
+        @SuppressWarnings("ConstantConditions")
+        public void load(ConfigurationSection cfg) {
+            this.actionBarConfig.load(cfg.getConfigurationSection("actionBar"));
+            this.beaconConfig.load(cfg.getConfigurationSection("beacon"));
+            this.blinkingBlockConfig.load(cfg.getConfigurationSection("blinkingBlock"));
+            this.compassConfig.load(cfg.getConfigurationSection("compass"));
+            this.particleConfig.load(cfg.getConfigurationSection("particles"));
+            this.wrongWorldConfig.load(cfg.getConfigurationSection("wrongWorld"));
         }
 
-        public boolean isWrongWorldActionBar() {
-            return wrongWorldActionBar;
+        public ActionBarConfig getActionBarConfig() {
+            return actionBarConfig;
         }
 
-        public long getWrongWorldInterval() {
-            return wrongWorldInterval;
+        public BeaconConfig getBeaconConfig() {
+            return beaconConfig;
         }
 
-        public boolean isActionBarEnabled() {
-            return actionBarEnabled;
+        public BlinkingBlockConfig getBlinkingBlockConfig() {
+            return blinkingBlockConfig;
         }
 
-        public int getActionBarInterval() {
-            return actionBarInterval;
+        public CompassConfig getCompassConfig() {
+            return compassConfig;
         }
 
-        public String getActionBarIndicatorColor() {
-            return actionBarIndicatorColor;
+        public ParticleConfig getParticleConfig() {
+            return particleConfig;
         }
 
-        public String getActionBarNormalColor() {
-            return actionBarNormalColor;
-        }
-
-        public String getActionBarSection() {
-            return actionBarSection;
-        }
-
-        public String getActionBarLeftArrow() {
-            return actionBarLeftArrow;
-        }
-
-        public String getActionBarRightArrow() {
-            return actionBarRightArrow;
-        }
-
-        public int getActionBarAmountOfSections() {
-            return actionBarAmountOfSections;
-        }
-
-        public int getActionBarRange() {
-            return actionBarRange;
-        }
-
-        public boolean isCompassEnabled() {
-            return compassEnabled;
-        }
-
-        public DefaultCompassLocationType getCompassDefaultLocationType() {
-            return compassDefaultLocationType;
-        }
-
-        public Location getCompassDefaultLocation() {
-            return compassDefaultLocation;
-        }
-
-        public boolean isBlinkingBlockEnabled() {
-            return blinkingBlockEnabled;
-        }
-
-        /**
-         * @return the squared min distance
-         */
-        public long getBlinkingBlockMinDistance() {
-            return blinkingBlockMinDistance;
-        }
-
-        /**
-         * This value is s
-         *
-         * @return the squared max distance
-         */
-        public long getBlinkingBlockMaxDistance() {
-            return blinkingBlockMaxDistance;
-        }
-
-        public List<BlockData> getBlinkingBlockBlocks() {
-            return blinkingBlockBlocks;
-        }
-
-        public int getBlinkingBlockInterval() {
-            return blinkingBlockInterval;
-        }
-
-        public boolean isBeaconEnabled() {
-            return beaconEnabled;
-        }
-
-        public long getBeaconMinDistance() {
-            return beaconMinDistance;
-        }
-
-        public long getBeaconMaxDistance() {
-            return beaconMaxDistance;
-        }
-
-        public int getBeaconInterval() {
-            return beaconInterval;
-        }
-
-        public BlockData getBeaconBaseBlock() {
-            return beaconBaseBlock;
-        }
-
-        public BlockColor getBeaconDefaultColorPrivate() {
-            return beaconDefaultColorPrivate;
-        }
-
-        public BlockColor getBeaconDefaultColorPublic() {
-            return beaconDefaultColorPublic;
-        }
-
-        public BlockColor getBeaconDefaultColorPermission() {
-            return beaconDefaultColorPermission;
-        }
-
-        public BlockColor getBeaconDefaultColorDeath() {
-            return beaconDefaultColorDeath;
-        }
-
-        public boolean isBeaconEnableSelectColor() {
-            return beaconEnableSelectColor;
-        }
-
-        public boolean isParticlesEnabled() {
-            return particlesEnabled;
-        }
-
-        public int getParticlesInterval() {
-            return particlesInterval;
-        }
-
-        public double getParticlesHeightOffset() {
-            return particlesHeightOffset;
-        }
-
-        public boolean isParticlesVerticalDirection() {
-            return particlesVerticalDirection;
-        }
-
-        public int getParticlesAmount() {
-            return particlesAmount;
-        }
-
-        public double getParticlesDistance() {
-            return particlesDistance;
-        }
-
-        public Particle getParticlesParticle() {
-            return particlesParticle;
+        public WrongWorldConfig getWrongWorldConfig() {
+            return wrongWorldConfig;
         }
     }
 
@@ -897,21 +695,6 @@ public class WPConfig {
 
         public Material getFolderPermissionBackgroundItem() {
             return folderPermissionBackgroundItem;
-        }
-    }
-
-    public enum DefaultCompassLocationType {
-        SPAWN("spawn"), CONFIG("config"), PREVIOUS("previous"), INGAME("ingame"), INGAME_LOCK("ingame-lock");
-
-        private String inConfig;
-
-        DefaultCompassLocationType(String inConfig) {
-            this.inConfig = inConfig;
-        }
-
-        public static DefaultCompassLocationType getFromConfig(String inConfig) {
-            return Arrays.stream(DefaultCompassLocationType.values()).filter(type -> type.inConfig.equalsIgnoreCase(inConfig)).findFirst()
-                    .orElse(SPAWN); // TODO replace with enum matcher when new md5-commons is in place
         }
     }
 

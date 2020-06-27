@@ -50,9 +50,8 @@ public enum BlockColor {
     PURPLE(Material.PURPLE_STAINED_GLASS, INVENTORY_SELECT_BEACON_COLOR_PURPLE_DISPLAY_NAME, INVENTORY_SELECT_BEACON_COLOR_PURPLE_DESCRIPTION),
     ;
 
-    private String config;
-    private Material material;
-    private Messages displayName, description;
+    private final Material material;
+    private final Messages displayName, description;
     private BlockData blockData;
 
     BlockColor(Material material, Messages displayName, Messages description) {
