@@ -23,7 +23,7 @@ import de.md5lukas.nbt.tags.ListTag;
 import de.md5lukas.waypoints.data.waypoint.PermissionWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.gui.GUIType;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 

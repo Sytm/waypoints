@@ -20,7 +20,7 @@ package de.md5lukas.waypoints.display;
 
 import de.md5lukas.commons.inventory.ItemBuilder;
 import de.md5lukas.waypoints.Messages;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;

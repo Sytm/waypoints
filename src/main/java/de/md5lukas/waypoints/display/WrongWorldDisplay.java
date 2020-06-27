@@ -20,7 +20,7 @@ package de.md5lukas.waypoints.display;
 
 import de.md5lukas.commons.StringHelper;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;

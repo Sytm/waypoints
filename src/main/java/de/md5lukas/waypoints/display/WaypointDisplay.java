@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static de.md5lukas.waypoints.store.WPConfig.displays;
+import static de.md5lukas.waypoints.config.WPConfig.displays;
 
 public abstract class WaypointDisplay implements Listener {
 

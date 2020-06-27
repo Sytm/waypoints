@@ -34,7 +34,7 @@ import de.md5lukas.waypoints.data.folder.PublicFolder;
 import de.md5lukas.waypoints.data.waypoint.*;
 import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.display.WaypointDisplay;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.util.GeneralHelper;
 import de.md5lukas.waypoints.util.TeleportManager;
 import fr.minuskube.inv.ClickableItem;
@@ -58,7 +58,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static de.md5lukas.waypoints.Messages.*;
-import static de.md5lukas.waypoints.store.WPConfig.inventory;
+import static de.md5lukas.waypoints.config.WPConfig.inventory;
 
 public class WaypointProvider implements InventoryProvider {
 

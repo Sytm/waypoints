@@ -26,7 +26,7 @@ import de.md5lukas.waypoints.data.folder.PrivateFolder;
 import de.md5lukas.waypoints.data.waypoint.DeathWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

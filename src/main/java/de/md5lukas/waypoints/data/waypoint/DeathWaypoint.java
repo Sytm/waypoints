@@ -22,7 +22,7 @@ import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.gui.GUIType;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

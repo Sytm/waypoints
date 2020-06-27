@@ -23,7 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import static de.md5lukas.waypoints.Messages.*;
-import static de.md5lukas.waypoints.store.WPConfig.inventory;
+import static de.md5lukas.waypoints.config.WPConfig.inventory;
 
 class ItemStacks {
 

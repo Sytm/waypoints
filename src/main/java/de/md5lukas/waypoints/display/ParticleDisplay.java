@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import static de.md5lukas.waypoints.store.WPConfig.displays;
+import static de.md5lukas.waypoints.config.WPConfig.displays;
 
 public final class ParticleDisplay extends WaypointDisplay {
 

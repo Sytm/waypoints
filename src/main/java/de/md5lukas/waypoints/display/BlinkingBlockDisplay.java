@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static de.md5lukas.waypoints.store.WPConfig.displays;
+import static de.md5lukas.waypoints.config.WPConfig.displays;
 
 public final class BlinkingBlockDisplay extends WaypointDisplay {
 

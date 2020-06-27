@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static de.md5lukas.waypoints.store.WPConfig.displays;
+import static de.md5lukas.waypoints.config.WPConfig.displays;
 
 public final class ActionBarDisplay extends WaypointDisplay {
 

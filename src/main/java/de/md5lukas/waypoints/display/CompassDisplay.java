@@ -22,13 +22,13 @@ import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import static de.md5lukas.waypoints.store.WPConfig.displays;
+import static de.md5lukas.waypoints.config.WPConfig.displays;
 
 public final class CompassDisplay extends WaypointDisplay {
 

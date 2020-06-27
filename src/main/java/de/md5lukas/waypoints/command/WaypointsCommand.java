@@ -30,7 +30,7 @@ import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PublicWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.gui.GUIManager;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

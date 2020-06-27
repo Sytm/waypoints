@@ -21,7 +21,7 @@ package de.md5lukas.waypoints.util;
 import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

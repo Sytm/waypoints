@@ -27,7 +27,7 @@ import de.md5lukas.waypoints.listener.WaypointsListener;
 import de.md5lukas.waypoints.store.FileManager;
 import de.md5lukas.waypoints.store.GlobalStore;
 import de.md5lukas.waypoints.store.LegacyImporter;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.util.FileHelper;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import de.md5lukas.waypoints.util.VaultHook;
