@@ -1,0 +1,8 @@
+version: 1
+update_configs:
+  - package_manager: "java:maven"
+    directory: "/"
+    target_branch: "dev"
+    update_schedule: "weekly"
+    default_assignees:
+      - "Sytm"
