@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfigs;
+import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfig;
 
 public final class ActionBarDisplay extends WaypointDisplay {
 
@@ -40,7 +40,7 @@ public final class ActionBarDisplay extends WaypointDisplay {
     private ConcurrentHashMap<Player, String> bars = new ConcurrentHashMap<>();
 
     protected ActionBarDisplay(Plugin plugin) {
-        super(plugin, getDisplayConfigs().getActionBarConfig().getInterval());
+        super(plugin, getDisplayConfig().getActionBarConfig().getInterval());
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             List<Player> notFound = new ArrayList<>();
             bars.forEach((player, str) -> {
@@ -55,7 +55,7 @@ public final class ActionBarDisplay extends WaypointDisplay {
                     bars.remove(player);
                 }
             });
-        }, getDisplayConfigs().getActionBarConfig().getInterval(), getDisplayConfigs().getActionBarConfig().getInterval());
+        }, getDisplayConfig().getActionBarConfig().getInterval(), getDisplayConfig().getActionBarConfig().getInterval());
     }
 
     @Override
@@ -76,26 +76,26 @@ public final class ActionBarDisplay extends WaypointDisplay {
     }
 
     private static String generateDirectionIndicator(double angle) {
-        if (angle > getDisplayConfigs().getActionBarConfig().getRange()) {
-            return getDisplayConfigs().getActionBarConfig().getIndicatorColor() + getDisplayConfigs().getActionBarConfig().getLeftArrow() + getDisplayConfigs()
+        if (angle > getDisplayConfig().getActionBarConfig().getRange()) {
+            return getDisplayConfig().getActionBarConfig().getIndicatorColor() + getDisplayConfig().getActionBarConfig().getLeftArrow() + getDisplayConfig()
                     .getActionBarConfig().getNormalColor() + StringHelper
-                    .repeatString(getDisplayConfigs().getActionBarConfig().getSection(), getDisplayConfigs().getActionBarConfig().getAmountOfSections())
-                    + getDisplayConfigs().getActionBarConfig().getRightArrow();
+                    .repeatString(getDisplayConfig().getActionBarConfig().getSection(), getDisplayConfig().getActionBarConfig().getAmountOfSections())
+                    + getDisplayConfig().getActionBarConfig().getRightArrow();
         }
-        if (-angle > getDisplayConfigs().getActionBarConfig().getRange()) {
-            return getDisplayConfigs().getActionBarConfig().getNormalColor() + getDisplayConfigs().getActionBarConfig().getLeftArrow() + StringHelper
-                    .repeatString(getDisplayConfigs().getActionBarConfig().getSection(),
-                            getDisplayConfigs().getActionBarConfig().getAmountOfSections()) + getDisplayConfigs().getActionBarConfig().getIndicatorColor()
-                    + getDisplayConfigs().getActionBarConfig().getRightArrow();
+        if (-angle > getDisplayConfig().getActionBarConfig().getRange()) {
+            return getDisplayConfig().getActionBarConfig().getNormalColor() + getDisplayConfig().getActionBarConfig().getLeftArrow() + StringHelper
+                    .repeatString(getDisplayConfig().getActionBarConfig().getSection(),
+                            getDisplayConfig().getActionBarConfig().getAmountOfSections()) + getDisplayConfig().getActionBarConfig().getIndicatorColor()
+                    + getDisplayConfig().getActionBarConfig().getRightArrow();
         }
-        double percent = -(angle / getDisplayConfigs().getActionBarConfig().getRange());
-        int nthSection = (int) Math.round(((double) (getDisplayConfigs().getActionBarConfig().getAmountOfSections() - 1) / 2) * percent);
-        nthSection += Math.round((double) getDisplayConfigs().getActionBarConfig().getAmountOfSections() / 2);
-        return getDisplayConfigs().getActionBarConfig().getNormalColor() + getDisplayConfigs().getActionBarConfig().getLeftArrow() + StringHelper
-                .repeatString(getDisplayConfigs().getActionBarConfig().getSection(), nthSection - 1) + getDisplayConfigs().getActionBarConfig()
-                .getIndicatorColor() + getDisplayConfigs().getActionBarConfig().getSection()
-                + getDisplayConfigs().getActionBarConfig().getNormalColor() + StringHelper.repeatString(getDisplayConfigs().getActionBarConfig().getSection(),
-                getDisplayConfigs().getActionBarConfig().getAmountOfSections() - nthSection) + getDisplayConfigs().getActionBarConfig().getRightArrow();
+        double percent = -(angle / getDisplayConfig().getActionBarConfig().getRange());
+        int nthSection = (int) Math.round(((double) (getDisplayConfig().getActionBarConfig().getAmountOfSections() - 1) / 2) * percent);
+        nthSection += Math.round((double) getDisplayConfig().getActionBarConfig().getAmountOfSections() / 2);
+        return getDisplayConfig().getActionBarConfig().getNormalColor() + getDisplayConfig().getActionBarConfig().getLeftArrow() + StringHelper
+                .repeatString(getDisplayConfig().getActionBarConfig().getSection(), nthSection - 1) + getDisplayConfig().getActionBarConfig()
+                .getIndicatorColor() + getDisplayConfig().getActionBarConfig().getSection()
+                + getDisplayConfig().getActionBarConfig().getNormalColor() + StringHelper.repeatString(getDisplayConfig().getActionBarConfig().getSection(),
+                getDisplayConfig().getActionBarConfig().getAmountOfSections() - nthSection) + getDisplayConfig().getActionBarConfig().getRightArrow();
     }
 
     // Original code: https://bitbucket.org/Md5Lukas/waypoints/src/763ee8314b396fb5441c8eb5e0e7e281375ed989/src/main/java/de/md5lukas/wp/util/MathHelper.java?at=master

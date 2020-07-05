@@ -18,221 +18,40 @@
 
 package de.md5lukas.waypoints.config;
 
-import de.md5lukas.commons.language.Languages;
-import de.md5lukas.waypoints.Messages;
-import de.md5lukas.waypoints.config.displays.*;
-import de.md5lukas.waypoints.data.waypoint.*;
-import org.bukkit.Bukkit;
+import de.md5lukas.waypoints.config.displays.DisplayConfig;
+import de.md5lukas.waypoints.config.general.GeneralConfig;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.Action;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.bukkit.Material.matchMaterial;
 
 public class WPConfig {
 
-    private static Map<String, Map<String, String>> worldNameAliases;
+    private static DisplayConfig displayConfig;
+    private static GeneralConfig generalConfig;
+
+    public static DisplayConfig getDisplayConfig() {
+        return displayConfig;
+    }
+
+    public static GeneralConfig getGeneralConfig() {
+        return generalConfig;
+    }
+
     private static WPConfigInventory inventory;
-    private static int waypointLimit, folderLimit;
-    private static boolean deathWaypointEnabled;
-
-    private static OpenUsingCompass openUsingCompass;
-
-    private static DisplaysActiveWhen displaysActiveWhen;
-    private static List<Material> displaysActiveWhenRequiredMaterials;
-
-    private static boolean teleportCountFree;
-    private static long teleportCooldown;
-    private static long teleportStandStillTime;
-    private static Map<String, TeleportConfig> teleportConfigs;
-
-    private static boolean allowDuplicateFolderPrivateNames, allowDuplicateWaypointNamesPrivate, allowDuplicateWaypointNamesPublic, allowDuplicateWaypointNamesPermission;
-    private static boolean allowRenamingWaypointsPrivate, allowRenamingWaypointsPublic, allowRenamingWaypointsPermission, allowRenamingFoldersPrivate;
-
-    private static boolean anvilGUICreationEnabled, anvilGUIRenamingEnabled;
-
 
     public static WPConfigInventory inventory() {
         return inventory;
     }
 
-    public static String translateWorldName(String world, String language) {
-        if (!worldNameAliases.containsKey(language))
-            language = Languages.getDefaultLanguage();
-        if (!worldNameAliases.containsKey(language))
-            return world;
-        String translated = worldNameAliases.get(language).get(world);
-        return translated == null ? world : translated;
-    }
-
-    public static String translateWorldName(String world, CommandSender sender) {
-        return translateWorldName(world, Languages.getLanguage(sender));
-    }
-
-    public static void checkWorldTranslations() {
-        ConsoleCommandSender console = Bukkit.getConsoleSender();
-        StringBuilder message = new StringBuilder();
-        for (String lang : worldNameAliases.keySet()) {
-            boolean firstLang = true;
-            for (World w : Bukkit.getWorlds()) {
-                if (!worldNameAliases.get(lang).containsKey(w.getName())) {
-                    if (firstLang) {
-                        firstLang = false;
-                        message.append("\n&c").append(lang).append(": &e").append(w.getName());
-                    } else {
-                        message.append(", ").append(w.getName());
-                    }
-                }
-            }
-        }
-        String messageString = message.toString();
-        console.sendMessage(Messages.CHAT_WARNING_WORLD_TRANSLATIONS_MISSING.getRaw(console) + messageString);
-        Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).filter(p ->
-                p.hasPermission("waypoints.admin")).forEach(p -> p.sendMessage(Messages.CHAT_WARNING_WORLD_TRANSLATIONS_MISSING.getRaw(p) + messageString));
-    }
-
-    public static int getWaypointLimit() {
-        return waypointLimit;
-    }
-
-    public static int getFolderLimit() {
-        return folderLimit;
-    }
-
-    public static boolean isDeathWaypointEnabled() {
-        return deathWaypointEnabled;
-    }
-
-    public static OpenUsingCompass getOpenUsingCompass() {
-        return openUsingCompass;
-    }
-
-    public static DisplaysActiveWhen getDisplaysActiveWhen() {
-        return displaysActiveWhen;
-    }
-
-    public static boolean getTeleportCountFree() {
-        return teleportCountFree;
-    }
-
-    public static long getTeleportCooldown() {
-        return teleportCooldown;
-    }
-
-    public static long getTeleportStandStillTime() {
-        return teleportStandStillTime;
-    }
-
-    public static TeleportConfig getTeleportSettings(Class<? extends Waypoint> clazz) {
-        return teleportConfigs.get(clazz.getSimpleName());
-    }
-
-    public static boolean isVaultRequired() {
-        return teleportConfigs.values().stream().anyMatch(settings -> TeleportConfig.TeleportPaymentMethod.VAULT.equals(settings.getPaymentMethod()));
-    }
-
-    public static boolean allowDuplicateFolderPrivateNames() {
-        return allowDuplicateFolderPrivateNames;
-    }
-
-    public static boolean allowDuplicateWaypointNamesPrivate() {
-        return allowDuplicateWaypointNamesPrivate;
-    }
-
-    public static boolean allowDuplicateWaypointNamesPublic() {
-        return allowDuplicateWaypointNamesPublic;
-    }
-
-    public static boolean allowDuplicateWaypointNamesPermission() {
-        return allowDuplicateWaypointNamesPermission;
-    }
-
-    public static boolean allowRenamingWaypointsPrivate() {
-        return allowRenamingWaypointsPrivate;
-    }
-
-    public static boolean allowRenamingWaypointsPublic() {
-        return allowRenamingWaypointsPublic;
-    }
-
-    public static boolean allowRenamingWaypointsPermission() {
-        return allowRenamingWaypointsPermission;
-    }
-
-    public static boolean allowRenamingFoldersPrivate() {
-        return allowRenamingFoldersPrivate;
-    }
-
-    public static boolean isAnvilGUICreationEnabled() {
-        return anvilGUICreationEnabled;
-    }
-
-    public static boolean isAnvilGUIRenamingEnabled() {
-        return anvilGUIRenamingEnabled;
-    }
-
     @SuppressWarnings("ConstantConditions")
     public static void loadConfig(FileConfiguration cfg) {
-        //<editor-fold defaultstate="collapsed" desc="General">
-        waypointLimit = cfg.getInt("general.waypointLimit");
-        folderLimit = cfg.getInt("general.folderLimit");
-
-        deathWaypointEnabled = cfg.getBoolean("general.deathWaypointEnabled");
-
-        openUsingCompass = OpenUsingCompass.getFromConfig(cfg.getString("general.openUsingCompass"));
-
-        displaysActiveWhen = DisplaysActiveWhen.getFromConfig(cfg.getString("general.displaysActiveWhen.enabled"));
-
-        displaysActiveWhenRequiredMaterials = cfg.getStringList("general.displaysActiveWhen.requiredItems").stream().map(Material::matchMaterial)
-                .collect(Collectors.toList());
-
-        teleportCountFree = cfg.getBoolean("general.teleport.countFreeTeleportations");
-        TimeUnit teleportCdTU = TimeUnit.valueOf(cfg.getString("general.teleport.condition.cooldown.timeUnit").toUpperCase());
-        teleportCooldown = teleportCdTU.toMillis(cfg.getLong("general.teleport.condition.cooldown.value"));
-        teleportStandStillTime = cfg.getLong("general.teleport.condition.standStillTime");
-        teleportConfigs = new HashMap<>();
-        teleportConfigs.put(DeathWaypoint.class.getSimpleName(), new TeleportConfig(cfg.getConfigurationSection("general.teleport.waypoint.death")));
-        teleportConfigs.put(PrivateWaypoint.class.getSimpleName(), new TeleportConfig(cfg.getConfigurationSection("general.teleport.waypoint.private")));
-        teleportConfigs.put(PublicWaypoint.class.getSimpleName(), new TeleportConfig(cfg.getConfigurationSection("general.teleport.waypoint.public")));
-        teleportConfigs
-                .put(PermissionWaypoint.class.getSimpleName(), new TeleportConfig(cfg.getConfigurationSection("general.teleport.waypoint.permission")));
-
-        allowDuplicateFolderPrivateNames = cfg.getBoolean("general.allowDuplicatePrivateFolderNames");
-        allowDuplicateWaypointNamesPrivate = cfg.getBoolean("general.allowDuplicateWaypointNames.private");
-        allowDuplicateWaypointNamesPublic = cfg.getBoolean("general.allowDuplicateWaypointNames.public");
-        allowDuplicateWaypointNamesPermission = cfg.getBoolean("general.allowDuplicateWaypointNames.permission");
-
-        allowRenamingFoldersPrivate = cfg.getBoolean("general.allowRenamingPrivateFolders");
-        allowRenamingWaypointsPrivate = cfg.getBoolean("general.allowRenamingWaypoints.private");
-        allowRenamingWaypointsPublic = cfg.getBoolean("general.allowRenamingWaypoints.public");
-        allowRenamingWaypointsPermission = cfg.getBoolean("general.allowRenamingWaypoints.permission");
-
-        anvilGUICreationEnabled = cfg.getBoolean("general.anvilGUI.creation");
-        anvilGUIRenamingEnabled = cfg.getBoolean("general.anvilGUI.renaming");
-
-        worldNameAliases = new HashMap<>();
-        for (String lang : cfg.getConfigurationSection("general.worldNameAliases").getKeys(false)) {
-            Map<String, String> aliases = new HashMap<>();
-            worldNameAliases.put(lang.toLowerCase(), aliases);
-            for (String world : cfg.getConfigurationSection("general.worldNameAliases." + lang).getKeys(false)) {
-                aliases.put(world, cfg.getString("general.worldNameAliases." + lang + "." + world));
-            }
-        }
-        //</editor-fold>
-        //<editor-fold defaultstate="collapsed" desc="Displays">
-        displayConfigs = new DisplayConfigs(cfg.getConfigurationSection("displays"));
-        //</editor-fold>
+        generalConfig = new GeneralConfig(cfg.getConfigurationSection("general"));
+        displayConfig = new DisplayConfig(cfg.getConfigurationSection("displays"));
         //<editor-fold defaultstate="collapsed" desc="Inventory">
         inventory = new WPConfigInventory();
 
@@ -314,66 +133,6 @@ public class WPConfig {
         inventory.folderPermissionItem = matchMaterial(cfg.getString("inventory.folders.permission.item"));
         inventory.folderPermissionBackgroundItem = matchMaterial(cfg.getString("inventory.folders.permission.backgroundItem"));
         //</editor-fold>
-    }
-
-    private static DisplayConfigs displayConfigs;
-
-    public static DisplayConfigs getDisplayConfigs() {
-        return displayConfigs;
-    }
-
-    public final static class DisplayConfigs {
-
-        private final ActionBarConfig actionBarConfig;
-        private final BeaconConfig beaconConfig;
-        private final BlinkingBlockConfig blinkingBlockConfig;
-        private final CompassConfig compassConfig;
-        private final ParticleConfig particleConfig;
-        private final WrongWorldConfig wrongWorldConfig;
-
-        public DisplayConfigs(ConfigurationSection cfg) {
-            this.actionBarConfig = new ActionBarConfig();
-            this.beaconConfig = new BeaconConfig();
-            this.blinkingBlockConfig = new BlinkingBlockConfig();
-            this.compassConfig = new CompassConfig();
-            this.particleConfig = new ParticleConfig();
-            this.wrongWorldConfig = new WrongWorldConfig();
-            load(cfg);
-        }
-
-        @SuppressWarnings("ConstantConditions")
-        public void load(ConfigurationSection cfg) {
-            this.actionBarConfig.load(cfg.getConfigurationSection("actionBar"));
-            this.beaconConfig.load(cfg.getConfigurationSection("beacon"));
-            this.blinkingBlockConfig.load(cfg.getConfigurationSection("blinkingBlock"));
-            this.compassConfig.load(cfg.getConfigurationSection("compass"));
-            this.particleConfig.load(cfg.getConfigurationSection("particles"));
-            this.wrongWorldConfig.load(cfg.getConfigurationSection("wrongWorld"));
-        }
-
-        public ActionBarConfig getActionBarConfig() {
-            return actionBarConfig;
-        }
-
-        public BeaconConfig getBeaconConfig() {
-            return beaconConfig;
-        }
-
-        public BlinkingBlockConfig getBlinkingBlockConfig() {
-            return blinkingBlockConfig;
-        }
-
-        public CompassConfig getCompassConfig() {
-            return compassConfig;
-        }
-
-        public ParticleConfig getParticleConfig() {
-            return particleConfig;
-        }
-
-        public WrongWorldConfig getWrongWorldConfig() {
-            return wrongWorldConfig;
-        }
     }
 
     public final static class WPConfigInventory {
@@ -695,86 +454,6 @@ public class WPConfig {
 
         public Material getFolderPermissionBackgroundItem() {
             return folderPermissionBackgroundItem;
-        }
-    }
-
-    public enum OpenUsingCompass {
-        LEFT("left"), RIGHT("right"), FALSE("false");
-
-        private String inConfig;
-
-        OpenUsingCompass(String inConfig) {
-            this.inConfig = inConfig;
-        }
-
-        public boolean isValidAction(Action action) {
-            switch (action) {
-                case LEFT_CLICK_AIR:
-                case LEFT_CLICK_BLOCK:
-                    return this == LEFT;
-                case RIGHT_CLICK_AIR:
-                case RIGHT_CLICK_BLOCK:
-                    return this == RIGHT;
-                case PHYSICAL:
-                default:
-                    return false;
-            }
-        }
-
-        public static OpenUsingCompass getFromConfig(String inConfig) {
-            return Arrays.stream(values()).filter(variant -> variant.inConfig.equalsIgnoreCase(inConfig)).findFirst()
-                    .orElse(FALSE); // TODO replace with enum matcher when new md5-commons is in place
-        }
-    }
-
-    public enum DisplaysActiveWhen {
-        ITEM_IN_INVENTORY("itemInInventory"), ITEM_IN_HOTBAR("itemInHotbar"), ITEM_IN_HAND("itemInHand"), FALSE("false");
-
-        private String inConfig;
-
-        DisplaysActiveWhen(String inConfig) {
-            this.inConfig = inConfig;
-        }
-
-        public boolean testPlayer(Player player) {
-            switch (this) {
-                case ITEM_IN_INVENTORY:
-                    return Arrays.stream(player.getInventory().getContents()).filter(Objects::nonNull).anyMatch(stack -> {
-                        for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
-                            if (material == stack.getType()) {
-                                return true;
-                            }
-                        }
-                        return false;
-                    });
-                case ITEM_IN_HOTBAR:
-                    for (int i = 0; i < 9; i++) {
-                        for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
-                            ItemStack stack = player.getInventory().getItem(i);
-                            if (stack != null && material == stack.getType()) {
-                                return true;
-                            }
-                        }
-                    }
-                    return false;
-                case ITEM_IN_HAND:
-                    PlayerInventory inventory = player.getInventory();
-                    Material mainHand = inventory.getItemInMainHand().getType();
-                    Material offHand = inventory.getItemInOffHand().getType();
-                    for (Material material : WPConfig.displaysActiveWhenRequiredMaterials) {
-                        if (material == mainHand || material == offHand) {
-                            return true;
-                        }
-                    }
-                    return false;
-                default:
-                    return true;
-            }
-        }
-
-        public static DisplaysActiveWhen getFromConfig(String inConfig) {
-            return Arrays.stream(values()).filter(variant -> variant.inConfig.equalsIgnoreCase(inConfig)).findFirst()
-                    .orElse(FALSE); // TODO replace with enum matcher when new md5-commons is in place
         }
     }
 }

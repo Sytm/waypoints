@@ -28,11 +28,6 @@ chatAction.updateItem.waypoint.public=$prefix$ $chatAction.updateItem.waypoint$
 chatAction.updateItem.waypoint.permission=$prefix$ $chatAction.updateItem.waypoint$
 chatAction.updateItem.folder.private=$prefix$ &7Click here when you are holding the item you want to use as the new folder icon.
 
-chatAction.rename.waypoint.private=$prefix$ &7Click here to get the command to rename your waypoint.
-chatAction.rename.waypoint.public=$prefix$ &7Click here to get the command to rename the public waypoint.
-chatAction.rename.waypoint.permission=$prefix$ &7Click here to get the command to rename the permission waypoint.
-chatAction.rename.folder.private=$prefix$ &7Click here to get the command to rename your folder.
-
 chatWarning.worldTranslationsMissing=$prefix$ &cSome world name translations are missing.
 
 # %remainingTime% the time that is left until the player can teleport again
@@ -53,9 +48,6 @@ command.help.set.permission=&7 - &e/waypoints setPermission <Permission> <Name> 
 command.help.compass=&7 - &e/waypoints compass &7&l|&r&7 Sets the new default compass target, when set to "ingame"
 command.help.other=&7 - &e/waypoints other <Name|UUID> &7&l|&r&7 View the waypoints of another player
 command.help.updateItem=&7 - &e/waypoints updateItem <Waypoint|Folder> <ID> &7&l|&r&7 This command is used to update the icons of waypoints and folders
-command.help.rename.normal=&7 - &e/waypoints rename <PrivateWaypoint|PublicWaypoint|PermissionWaypoint|Folder> <ID> &7&l|&r&7 This command is used to rename waypoints or folders
-command.help.rename.waypointOnly=&7 - &e/waypoints rename <PrivateWaypoint|PublicWaypoint|PermissionWaypoint> <ID> &7&l|&r&7 This command is used to rename waypoints
-command.help.rename.folderOnly=&7 - &e/waypoints rename <Folder> <ID> &7&l|&r&7 This command is used to rename folders
 
 command.compass.disabled=$prefix$ &cThis method to set the default compass target has not been enabled in the config.
 command.compass.locked=$prefix$ &cThis command has been disabled in the config.
@@ -105,7 +97,6 @@ command.updateItem.waypoint.success=$prefix$ &7The item of the waypoint has been
 command.updateItem.folder.success=$prefix$ &7The item of the folder has been updated successfully.
 
 command.rename.disabled=$prefix$ &cRenaming has been disabled.
-command.rename.viaCmdDisabled=$prefix$ &cRenaming waypoints with the command is disabled, please use the gui.
 command.rename.waypoint.private.disabled=$prefix$ &cRenaming private waypoints has been disabled.
 command.rename.waypoint.public.disabled=$prefix$ &cRenaming public waypoints has been disabled.
 command.rename.waypoint.permission.disabled=$prefix$ &cRenaming permission waypoints has been disabled.

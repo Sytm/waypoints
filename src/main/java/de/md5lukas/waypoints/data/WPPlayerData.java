@@ -21,12 +21,12 @@ package de.md5lukas.waypoints.data;
 import de.md5lukas.commons.data.PlayerStore;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Waypoints;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.folder.Folder;
 import de.md5lukas.waypoints.data.folder.PrivateFolder;
 import de.md5lukas.waypoints.data.waypoint.DeathWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -219,9 +219,9 @@ public class WPPlayerData {
     }
 
     public boolean canTeleport() {
-        return WPConfig.getTeleportCooldown() <= 0
+        return WPConfig.getGeneralConfig().getTeleportConfig().getCooldown() <= 0
                 || lastTeleportation == -1
-                || (lastTeleportation + WPConfig.getTeleportCooldown()) <= System.currentTimeMillis();
+                || (lastTeleportation + WPConfig.getGeneralConfig().getTeleportConfig().getCooldown()) <= System.currentTimeMillis();
     }
 
     public void playerTeleported() {
@@ -229,7 +229,7 @@ public class WPPlayerData {
     }
 
     public long remainingTeleportCooldown() {
-        return Math.max(0, (lastTeleportation + WPConfig.getTeleportCooldown()) - System.currentTimeMillis());
+        return Math.max(0, (lastTeleportation + WPConfig.getGeneralConfig().getTeleportConfig().getCooldown()) - System.currentTimeMillis());
     }
 
     public CompoundTag getCustomTag(String usage) {

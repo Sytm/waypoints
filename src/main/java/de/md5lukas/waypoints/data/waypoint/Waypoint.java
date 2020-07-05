@@ -23,8 +23,8 @@ import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.extended.UUIDTag;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Messages;
-import de.md5lukas.waypoints.config.TeleportConfig;
 import de.md5lukas.waypoints.config.WPConfig;
+import de.md5lukas.waypoints.config.general.TeleportWaypointConfig;
 import de.md5lukas.waypoints.data.GUISortable;
 import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.gui.GUIType;
@@ -93,8 +93,8 @@ public abstract class Waypoint implements GUISortable {
         this.material = material;
     }
 
-    public final TeleportConfig getTeleportSettings() {
-        return WPConfig.getTeleportSettings(this.getClass());
+    public final TeleportWaypointConfig getTeleportSettings() {
+        return WPConfig.getGeneralConfig().getTeleportConfig().getTeleportSettings(this.getClass());
     }
 
     @Override
@@ -111,10 +111,11 @@ public abstract class Waypoint implements GUISortable {
     }
 
     public void teleportationUsed(Player player) {
-        if (TeleportConfig.TeleportEnabled.PAY.equals(this.getTeleportSettings().getEnabled())) {
+        if (TeleportWaypointConfig.TeleportEnabled.PAY.equals(this.getTeleportSettings().getEnabled())) {
             getTeleportSettings().withdraw(player, this.teleportations);
             this.teleportations++;
-        } else if (TeleportConfig.TeleportEnabled.FREE.equals(getTeleportSettings().getEnabled()) && WPConfig.getTeleportCountFree()) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.FREE.equals(getTeleportSettings().getEnabled()) && WPConfig.getGeneralConfig().getTeleportConfig()
+                .isCountFreeTeleports()) {
             this.teleportations++;
         }
     }

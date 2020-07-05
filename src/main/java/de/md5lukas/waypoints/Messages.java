@@ -50,11 +50,6 @@ public enum Messages {
     CHAT_ACTION_UPDATE_ITEM_WAYPOINT_PERMISSION("chatAction.updateItem.waypoint.permission"),
     CHAT_ACTION_UPDATE_ITEM_FOLDER_PRIVATE("chatAction.updateItem.folder.private"),
 
-    CHAT_ACTION_RENAME_WAYPOINT_PRIVATE("chatAction.rename.waypoint.private"),
-    CHAT_ACTION_RENAME_WAYPOINT_PUBLIC("chatAction.rename.waypoint.public"),
-    CHAT_ACTION_RENAME_WAYPOINT_PERMISSION("chatAction.rename.waypoint.permission"),
-    CHAT_ACTION_RENAME_FOLDER_PRIVATE("chatAction.rename.folder.private"),
-
     CHAT_WARNING_WORLD_TRANSLATIONS_MISSING("chatWarning.worldTranslationsMissing"),
 
     CHAT_TELEPORT_ON_COOLDOWN("chat.teleport.onCooldown"), // %remainingTime%
@@ -74,9 +69,6 @@ public enum Messages {
     COMMAND_HELP_COMPASS("command.help.compass"),
     COMMAND_HELP_OTHER("command.help.other"),
     COMMAND_HELP_UPDATE_ITEM("command.help.updateItem"),
-    COMMAND_HELP_RENAME_NORMAL("command.help.rename.normal"),
-    COMMAND_HELP_RENAME_WAYPOINT_ONLY("command.help.rename.waypointOnly"),
-    COMMAND_HELP_RENAME_FOLDER_ONLY("command.help.rename.folderOnly"),
 
     COMMAND_COMPASS_DISABLED("command.compass.disabled"),
     COMMAND_COMPASS_LOCKED("command.compass.locked"),
@@ -112,7 +104,6 @@ public enum Messages {
     COMMAND_UPDATE_ITEM_FOLDER_SUCCESS("command.updateItem.folder.success"),
 
     COMMAND_RENAME_DISABLED("command.rename.disabled"),
-    COMMAND_RENAME_VIA_CMD_DISABLED("command.rename.viaCmdDisabled"),
     COMMAND_RENAME_WAYPOINT_PRIVATE_DISABLED("command.rename.waypoint.private.disabled"),
     COMMAND_RENAME_WAYPOINT_PUBLIC_DISABLED("command.rename.waypoint.public.disabled"),
     COMMAND_RENAME_WAYPOINT_PERMISSION_DISABLED("command.rename.waypoint.permission.disabled"),

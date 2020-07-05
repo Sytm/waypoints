@@ -25,8 +25,8 @@ import de.md5lukas.commons.inventory.ItemBuilder;
 import de.md5lukas.waypoints.Messages;
 import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.command.WaypointsCommand;
-import de.md5lukas.waypoints.config.TeleportConfig;
 import de.md5lukas.waypoints.config.WPConfig;
+import de.md5lukas.waypoints.config.general.TeleportWaypointConfig;
 import de.md5lukas.waypoints.data.GUISortable;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.folder.Folder;
@@ -255,36 +255,32 @@ public class WaypointProvider implements InventoryProvider {
                 updateOverview();
             });
             overviewPattern.attach('t', viewerData.settings().showGlobals() ? globalsShown : globalsHidden);
-            if (WPConfig.isAnvilGUICreationEnabled()) {
-                if (viewer.hasPermission("waypoints.set.private") || viewer.hasPermission("waypoints.set.public") || viewer
-                        .hasPermission("waypoints.set.permission")) {
-                    overviewPattern.attach('c', ClickableItem.from(ItemStacks.getOverviewSetWaypointItem(viewer), click -> {
-                        if (viewer.hasPermission("waypoints.set.private") && !viewer.hasPermission("waypoints.set.public")
-                                && !viewer.hasPermission("waypoints.set.permission")) {
-                            closeInventory();
-                            new AnvilGUI.Builder().plugin(Waypoints.instance()).text(INVENTORY_ANVIL_GUI_ENTER_NAME_HERE.getRaw(viewer))
-                                    .onComplete((player, text) -> {
-                                        WaypointsCommand.setPrivateWaypoint(viewer, text);
-                                        return AnvilGUI.Response.close();
-                                    }).open(viewer);
-                        } else {
-                            showSelectWaypointType();
-                        }
-                    }));
-                } else {
-                    overviewPattern.attach('c', bg);
-                }
-                overviewPattern.attach('f', ClickableItem.from(ItemStacks.getOverviewCreateFolderItem(viewer), click -> {
-                    closeInventory();
-                    new AnvilGUI.Builder().plugin(Waypoints.instance()).text(INVENTORY_ANVIL_GUI_ENTER_NAME_HERE.getRaw(viewer))
-                            .onComplete((player, text) -> {
-                                WaypointsCommand.createFolder(viewer, text);
-                                return AnvilGUI.Response.close();
-                            }).open(viewer);
+            if (viewer.hasPermission("waypoints.set.private") || viewer.hasPermission("waypoints.set.public") || viewer
+                    .hasPermission("waypoints.set.permission")) {
+                overviewPattern.attach('c', ClickableItem.from(ItemStacks.getOverviewSetWaypointItem(viewer), click -> {
+                    if (viewer.hasPermission("waypoints.set.private") && !viewer.hasPermission("waypoints.set.public")
+                            && !viewer.hasPermission("waypoints.set.permission")) {
+                        closeInventory();
+                        new AnvilGUI.Builder().plugin(Waypoints.instance()).text(INVENTORY_ANVIL_GUI_ENTER_NAME_HERE.getRaw(viewer))
+                                .onComplete((player, text) -> {
+                                    WaypointsCommand.setPrivateWaypoint(viewer, text);
+                                    return AnvilGUI.Response.close();
+                                }).open(viewer);
+                    } else {
+                        showSelectWaypointType();
+                    }
                 }));
             } else {
                 overviewPattern.attach('c', bg);
             }
+            overviewPattern.attach('f', ClickableItem.from(ItemStacks.getOverviewCreateFolderItem(viewer), click -> {
+                closeInventory();
+                new AnvilGUI.Builder().plugin(Waypoints.instance()).text(INVENTORY_ANVIL_GUI_ENTER_NAME_HERE.getRaw(viewer))
+                        .onComplete((player, text) -> {
+                            WaypointsCommand.createFolder(viewer, text);
+                            return AnvilGUI.Response.close();
+                        }).open(viewer);
+            }));
         } else {
             overviewPattern.attach('t', bg);
             overviewPattern.attach('c', bg);
@@ -354,20 +350,12 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
             }));
             folderPattern.attach('r', ClickableItem.from(ItemStacks.getFolderPrivateRenameItem(viewer), click -> {
-                if (WPConfig.isAnvilGUIRenamingEnabled()) {
-                    closeInventory();
-                    new AnvilGUI.Builder().plugin(Waypoints.instance()).text(folder.getName())
-                            .onComplete((player, text) -> {
-                                folder.setName(text);
-                                return AnvilGUI.Response.close();
-                            }).onClose(player -> GUIManager.openGUI(viewer, target, this)).open(viewer);
-                } else {
-                    BaseComponent[] components = CHAT_ACTION_RENAME_FOLDER_PRIVATE.get(viewer).getComponentsModifiable();
-                    ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename folder " + folder.getID());
-                    Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
-                    viewer.spigot().sendMessage(components);
-                    viewer.closeInventory();
-                }
+                closeInventory();
+                new AnvilGUI.Builder().plugin(Waypoints.instance()).text(folder.getName())
+                        .onComplete((player, text) -> {
+                            folder.setName(text);
+                            return AnvilGUI.Response.close();
+                        }).onClose(player -> GUIManager.openGUI(viewer, target, this)).open(viewer);
             }));
         } else {
             folderPattern.attach('d', bg);
@@ -499,27 +487,19 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('d', bg);
         }
-        if (isOwner && WPConfig.allowRenamingWaypointsPrivate()) {
+        if (isOwner && WPConfig.getGeneralConfig().getRenamingConfig().isAllowRenamingWaypointsPrivate()) {
             waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPrivateRenameItem(viewer), click -> {
-                if (WPConfig.isAnvilGUIRenamingEnabled()) {
-                    closeInventory();
-                    new AnvilGUI.Builder().plugin(Waypoints.instance()).text(waypoint.getName())
-                            .onComplete((player, text) -> {
-                                waypoint.setName(text);
-                                return AnvilGUI.Response.close();
-                            }).onClose(player -> GUIManager.openGUI(viewer, target, this)).open(viewer);
-                } else {
-                    BaseComponent[] components = CHAT_ACTION_RENAME_WAYPOINT_PRIVATE.get(viewer).getComponentsModifiable();
-                    ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename privateWaypoint " + waypoint.getID());
-                    Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
-                    viewer.spigot().sendMessage(components);
-                    viewer.closeInventory();
-                }
+                closeInventory();
+                new AnvilGUI.Builder().plugin(Waypoints.instance()).text(waypoint.getName())
+                        .onComplete((player, text) -> {
+                            waypoint.setName(text);
+                            return AnvilGUI.Response.close();
+                        }).onClose(player -> GUIManager.openGUI(viewer, target, this)).open(viewer);
             }));
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (isOwner && WPConfig.getDisplayConfigs().getBeaconConfig().isEnabled() && WPConfig.getDisplayConfigs().getBeaconConfig().isEnableSelectColor()) {
+        if (isOwner && WPConfig.getDisplayConfig().getBeaconConfig().isEnabled() && WPConfig.getDisplayConfig().getBeaconConfig().isEnableSelectColor()) {
             waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
         } else {
             waypointPattern.attach('c', bg);
@@ -529,16 +509,16 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
                 TeleportManager.teleportKeepOrientation(viewer, waypoint.getLocation());
             }));
-        } else if (TeleportConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPrivateTeleportItem(viewer), click -> {
                 TeleportManager.teleportPlayerToWaypoint(viewer, viewerData, waypoint);
             }));
-        } else if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             long cost = waypoint.getTeleportSettings().calculateCost(waypoint.getTeleportations());
             ItemStack stack;
-            if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            if (TeleportWaypointConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPrivateTeleportXpPointsItem(viewer, cost);
-            } else if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            } else if (TeleportWaypointConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPrivateTeleportXpLevelsItem(viewer, cost);
             } else {
                 stack = ItemStacks.getWaypointPrivateTeleportVaultItem(viewer, cost);
@@ -590,28 +570,20 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('d', bg);
         }
-        if (viewer.hasPermission("waypoints.rename.public") && WPConfig.allowRenamingWaypointsPublic()) {
+        if (viewer.hasPermission("waypoints.rename.public") && WPConfig.getGeneralConfig().getRenamingConfig().isAllowRenamingWaypointsPublic()) {
             waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPublicRenameItem(viewer), click -> {
-                if (WPConfig.isAnvilGUIRenamingEnabled()) {
-                    closeInventory();
-                    new AnvilGUI.Builder().plugin(Waypoints.instance()).text(waypoint.getName())
-                            .onComplete((player, text) -> {
-                                waypoint.setName(text);
-                                return AnvilGUI.Response.close();
-                            }).onClose(player -> GUIManager.openGUI(viewer, target, this)).open(viewer);
-                } else {
-                    BaseComponent[] components = CHAT_ACTION_RENAME_WAYPOINT_PUBLIC.get(viewer).getComponentsModifiable();
-                    ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename publicWaypoint " + waypoint.getID());
-                    Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
-                    viewer.spigot().sendMessage(components);
-                    viewer.closeInventory();
-                }
+                closeInventory();
+                new AnvilGUI.Builder().plugin(Waypoints.instance()).text(waypoint.getName())
+                        .onComplete((player, text) -> {
+                            waypoint.setName(text);
+                            return AnvilGUI.Response.close();
+                        }).onClose(player -> GUIManager.openGUI(viewer, target, this)).open(viewer);
             }));
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (viewer.hasPermission("waypoints.changeBeaconColor.public") && WPConfig.getDisplayConfigs().getBeaconConfig().isEnabled() && WPConfig
-                .getDisplayConfigs().getBeaconConfig().isEnableSelectColor()) {
+        if (viewer.hasPermission("waypoints.changeBeaconColor.public") && WPConfig.getDisplayConfig().getBeaconConfig().isEnabled() && WPConfig
+                .getDisplayConfig().getBeaconConfig().isEnableSelectColor()) {
             waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
         } else {
             waypointPattern.attach('c', bg);
@@ -621,16 +593,16 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
                 TeleportManager.teleportKeepOrientation(viewer, waypoint.getLocation());
             }));
-        } else if (TeleportConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPublicTeleportItem(viewer), click -> {
                 TeleportManager.teleportPlayerToWaypoint(viewer, viewerData, waypoint);
             }));
-        } else if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             long cost = waypoint.getTeleportSettings().calculateCost(waypoint.getTeleportations());
             ItemStack stack;
-            if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            if (TeleportWaypointConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPublicTeleportXpPointsItem(viewer, cost);
-            } else if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            } else if (TeleportWaypointConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPublicTeleportXpLevelsItem(viewer, cost);
             } else {
                 stack = ItemStacks.getWaypointPublicTeleportVaultItem(viewer, cost);
@@ -680,28 +652,20 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('d', bg);
         }
-        if (viewer.hasPermission("waypoints.rename.permission") && WPConfig.allowRenamingWaypointsPermission()) {
+        if (viewer.hasPermission("waypoints.rename.permission") && WPConfig.getGeneralConfig().getRenamingConfig().isAllowRenamingWaypointsPermission()) {
             waypointPattern.attach('r', ClickableItem.from(ItemStacks.getWaypointPermissionRenameItem(viewer), click -> {
-                if (WPConfig.isAnvilGUIRenamingEnabled()) {
-                    closeInventory();
-                    new AnvilGUI.Builder().plugin(Waypoints.instance()).text(waypoint.getName())
-                            .onComplete((player, text) -> {
-                                waypoint.setName(text);
-                                return AnvilGUI.Response.close();
-                            }).onClose(player -> GUIManager.openGUI(viewer, target, this)).open(viewer);
-                } else {
-                    BaseComponent[] components = CHAT_ACTION_RENAME_WAYPOINT_PERMISSION.get(viewer).getComponentsModifiable();
-                    ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/waypoints rename permissionWaypoint " + waypoint.getID());
-                    Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
-                    viewer.spigot().sendMessage(components);
-                    viewer.closeInventory();
-                }
+                closeInventory();
+                new AnvilGUI.Builder().plugin(Waypoints.instance()).text(waypoint.getName())
+                        .onComplete((player, text) -> {
+                            waypoint.setName(text);
+                            return AnvilGUI.Response.close();
+                        }).onClose(player -> GUIManager.openGUI(viewer, target, this)).open(viewer);
             }));
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (viewer.hasPermission("waypoints.changeBeaconColor.permission") && WPConfig.getDisplayConfigs().getBeaconConfig().isEnabled() && WPConfig
-                .getDisplayConfigs().getBeaconConfig().isEnableSelectColor()) {
+        if (viewer.hasPermission("waypoints.changeBeaconColor.permission") && WPConfig.getDisplayConfig().getBeaconConfig().isEnabled() && WPConfig
+                .getDisplayConfig().getBeaconConfig().isEnableSelectColor()) {
             waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
         } else {
             waypointPattern.attach('c', bg);
@@ -711,16 +675,16 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
                 TeleportManager.teleportKeepOrientation(viewer, waypoint.getLocation());
             }));
-        } else if (TeleportConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPermissionTeleportItem(viewer), click -> {
                 TeleportManager.teleportPlayerToWaypoint(viewer, viewerData, waypoint);
             }));
-        } else if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             long cost = waypoint.getTeleportSettings().calculateCost(waypoint.getTeleportations());
             ItemStack stack;
-            if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            if (TeleportWaypointConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPermissionTeleportXpPointsItem(viewer, cost);
-            } else if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            } else if (TeleportWaypointConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointPermissionTeleportXpLevelsItem(viewer, cost);
             } else {
                 stack = ItemStacks.getWaypointPermissionTeleportVaultItem(viewer, cost);
@@ -750,16 +714,16 @@ public class WaypointProvider implements InventoryProvider {
                 viewer.closeInventory();
                 viewer.teleport(waypoint.getLocation());
             }));
-        } else if (TeleportConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.FREE.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointDeathTeleportItem(viewer), click -> {
                 TeleportManager.teleportKeepOrientation(viewer, waypoint.getLocation());
             }));
-        } else if (TeleportConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
+        } else if (TeleportWaypointConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled()) && isOwner) {
             long cost = waypoint.getTeleportSettings().calculateCost(waypoint.getTeleportations());
             ItemStack stack;
-            if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            if (TeleportWaypointConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointDeathTeleportXpPointsItem(viewer, cost);
-            } else if (TeleportConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
+            } else if (TeleportWaypointConfig.TeleportPaymentMethod.XP_POINTS.equals(waypoint.getTeleportSettings().getPaymentMethod())) {
                 stack = ItemStacks.getWaypointDeathTeleportXpLevelsItem(viewer, cost);
             } else {
                 stack = ItemStacks.getWaypointDeathTeleportVaultItem(viewer, cost);
@@ -917,7 +881,7 @@ public class WaypointProvider implements InventoryProvider {
                 if (!Waypoints.getGlobalStore().getPermissionFolder().getWaypoints(viewer).isEmpty())
                     items++;
             }
-            if (WPConfig.isDeathWaypointEnabled() && targetData.getDeathWaypoint() != null)
+            if (WPConfig.getGeneralConfig().isDeathWaypointEnabled() && targetData.getDeathWaypoint() != null)
                 items++;
         }
         items += targetData.getWaypoints().size() + targetData.getFolders().size();
@@ -944,7 +908,7 @@ public class WaypointProvider implements InventoryProvider {
                 if (!pubFolder.getWaypoints(viewer).isEmpty())
                     items.add(Waypoints.getGlobalStore().getPublicFolder());
             }
-            if (WPConfig.isDeathWaypointEnabled() && targetData.getDeathWaypoint() != null) {
+            if (WPConfig.getGeneralConfig().isDeathWaypointEnabled() && targetData.getDeathWaypoint() != null) {
                 items.add(targetData.getDeathWaypoint());
             }
         }

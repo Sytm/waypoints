@@ -53,13 +53,13 @@ public class PublicWaypoint extends Waypoint {
 
     @Override
     public BlockColor getBeaconColor() {
-        return beaconColor == null ? WPConfig.getDisplayConfigs().getBeaconConfig().getDefaultColorPublic() : beaconColor;
+        return beaconColor == null ? WPConfig.getDisplayConfig().getBeaconConfig().getDefaultColorPublic() : beaconColor;
     }
 
     @Override
     public List<String> getDescription(Player player) {
         return INVENTORY_WAYPOINT_PUBLIC_DESCRIPTION.asList(player).replace(
-                "%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
+                "%world%", WPConfig.getGeneralConfig().translateWorldName(location.getWorld().getName(), player),
                 "%x%", MathHelper.format(location.getX()),
                 "%y%", MathHelper.format(location.getY()),
                 "%z%", MathHelper.format(location.getZ()),

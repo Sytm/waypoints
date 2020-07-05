@@ -16,7 +16,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package de.md5lukas.waypoints.config;
+package de.md5lukas.waypoints.config.general;
 
 import de.md5lukas.waypoints.util.VaultHook;
 import de.md5lukas.waypoints.util.XPHelper;
@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
-public class TeleportConfig {
+public class TeleportWaypointConfig {
 
     private TeleportEnabled enabled;
     private TeleportPaymentMethod paymentMethod;
@@ -34,7 +34,7 @@ public class TeleportConfig {
     private double growthModifier;
     private long maxAmount;
 
-    public TeleportConfig(ConfigurationSection cfg) {
+    public TeleportWaypointConfig(ConfigurationSection cfg) {
         load(cfg);
     }
 

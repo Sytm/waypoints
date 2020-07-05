@@ -19,6 +19,7 @@
 package de.md5lukas.waypoints.util;
 
 import de.md5lukas.waypoints.config.WPConfig;
+import de.md5lukas.waypoints.config.general.DisplaysActiveWhen;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -32,14 +33,14 @@ public class PlayerItemCheckRunner implements Runnable {
     private static List<BiConsumer<Player, Boolean>> updateHooks = new ArrayList<>();
 
     public static boolean canPlayerUseDisplays(Player player) {
-        if (WPConfig.getDisplaysActiveWhen() == WPConfig.DisplaysActiveWhen.FALSE) {
+        if (WPConfig.getDisplayConfig().getDisplaysActiveWhen() == DisplaysActiveWhen.FALSE) {
             return true;
         }
         return canPlayerUseDisplays.getOrDefault(player.getUniqueId(), false);
     }
 
     public static void start(Plugin plugin) {
-        if (WPConfig.getDisplaysActiveWhen() != WPConfig.DisplaysActiveWhen.FALSE)
+        if (WPConfig.getDisplayConfig().getDisplaysActiveWhen() != DisplaysActiveWhen.FALSE)
             Bukkit.getScheduler().runTaskTimer(plugin, new PlayerItemCheckRunner(), 10L * 20L, 20L);
     }
 
@@ -55,7 +56,7 @@ public class PlayerItemCheckRunner implements Runnable {
     public void run() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             boolean oldState = canPlayerUseDisplays.getOrDefault(player.getUniqueId(), false);
-            boolean newState = WPConfig.getDisplaysActiveWhen().testPlayer(player);
+            boolean newState = WPConfig.getDisplayConfig().isDisplayActiveForPlayer(player);
             canPlayerUseDisplays.put(player.getUniqueId(), newState);
             if (oldState != newState) {
                 updateHooks.forEach(playerConsumer -> playerConsumer.accept(player, newState));

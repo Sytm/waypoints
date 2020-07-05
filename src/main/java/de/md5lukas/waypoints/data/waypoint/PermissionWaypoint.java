@@ -58,7 +58,7 @@ public class PermissionWaypoint extends Waypoint {
     @Override
     public List<String> getDescription(Player player) {
         return INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION.asList(player).replace(
-                "%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
+                "%world%", WPConfig.getGeneralConfig().translateWorldName(location.getWorld().getName(), player),
                 "%x%", MathHelper.format(location.getX()),
                 "%y%", MathHelper.format(location.getY()),
                 "%z%", MathHelper.format(location.getZ()),
@@ -70,7 +70,7 @@ public class PermissionWaypoint extends Waypoint {
 
     @Override
     public BlockColor getBeaconColor() {
-        return beaconColor == null ? WPConfig.getDisplayConfigs().getBeaconConfig().getDefaultColorPermission() : beaconColor;
+        return beaconColor == null ? WPConfig.getDisplayConfig().getBeaconConfig().getDefaultColorPermission() : beaconColor;
     }
 
     public String getPermission() {

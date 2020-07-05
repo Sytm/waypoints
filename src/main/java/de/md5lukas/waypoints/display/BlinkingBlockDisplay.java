@@ -28,12 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfigs;
+import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfig;
 
 public final class BlinkingBlockDisplay extends WaypointDisplay {
 
     protected BlinkingBlockDisplay(Plugin plugin) {
-        super(plugin, getDisplayConfigs().getBlinkingBlockConfig().getInterval());
+        super(plugin, getDisplayConfig().getBlinkingBlockConfig().getInterval());
         PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
             if (canUse) {
                 show(player, getActiveWaypoint(player));
@@ -55,7 +55,7 @@ public final class BlinkingBlockDisplay extends WaypointDisplay {
         if (waypoint != null && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
             UUID pUUID = player.getUniqueId();
             double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
-            if (distance < getDisplayConfigs().getBlinkingBlockConfig().getMinDistance() || distance > getDisplayConfigs().getBlinkingBlockConfig()
+            if (distance < getDisplayConfig().getBlinkingBlockConfig().getMinDistance() || distance > getDisplayConfig().getBlinkingBlockConfig()
                     .getMaxDistance()) {
                 if (counters.containsKey(pUUID)) {
                     player.sendBlockChange(waypoint.getLocation(), waypoint.getLocation().getBlock().getBlockData());
@@ -63,8 +63,8 @@ public final class BlinkingBlockDisplay extends WaypointDisplay {
                 }
                 return;
             }
-            counters.compute(pUUID, (uuid, count) -> count == null ? 0 : (count + 1) % getDisplayConfigs().getBlinkingBlockConfig().getBlocks().size());
-            player.sendBlockChange(waypoint.getLocation(), getDisplayConfigs().getBlinkingBlockConfig().getBlocks().get(counters.get(player.getUniqueId())));
+            counters.compute(pUUID, (uuid, count) -> count == null ? 0 : (count + 1) % getDisplayConfig().getBlinkingBlockConfig().getBlocks().size());
+            player.sendBlockChange(waypoint.getLocation(), getDisplayConfig().getBlinkingBlockConfig().getBlocks().get(counters.get(player.getUniqueId())));
         }
     }
 

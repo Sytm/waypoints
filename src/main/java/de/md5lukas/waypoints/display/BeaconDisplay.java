@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfigs;
+import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfig;
 
 public final class BeaconDisplay extends WaypointDisplay {
 
@@ -42,7 +42,7 @@ public final class BeaconDisplay extends WaypointDisplay {
     private Map<UUID, Location> activeBeacons;
 
     BeaconDisplay(Plugin plugin) {
-        super(plugin, getDisplayConfigs().getBeaconConfig().getInterval());
+        super(plugin, getDisplayConfig().getBeaconConfig().getInterval());
         activeBeacons = new HashMap<>();
         PlayerItemCheckRunner.registerUpdateHook((player, canUse) -> {
             if (canUse) {
@@ -64,7 +64,7 @@ public final class BeaconDisplay extends WaypointDisplay {
             UUID uuid = player.getUniqueId();
             double distance = MathHelper.distance2DSquared(player.getLocation(), waypoint.getLocation());
             Location loc = waypoint.getLocation().getWorld().getHighestBlockAt(waypoint.getLocation()).getLocation();
-            if (distance < getDisplayConfigs().getBeaconConfig().getMinDistance() || distance > getDisplayConfigs().getBeaconConfig().getMaxDistance()) {
+            if (distance < getDisplayConfig().getBeaconConfig().getMinDistance() || distance > getDisplayConfig().getBeaconConfig().getMaxDistance()) {
                 if (activeBeacons.containsKey(uuid)) {
                     sendBeacon(player, loc, null, false);
                 }
@@ -94,7 +94,7 @@ public final class BeaconDisplay extends WaypointDisplay {
             for (int z = -1; z <= 1; z++) {
                 location.add(x, 0, z);
                 if (create) {
-                    player.sendBlockChange(location, getDisplayConfigs().getBeaconConfig().getBaseBlock());
+                    player.sendBlockChange(location, getDisplayConfig().getBeaconConfig().getBaseBlock());
                 } else {
                     player.sendBlockChange(location, location.getBlock().getBlockData());
                 }

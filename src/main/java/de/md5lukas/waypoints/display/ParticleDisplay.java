@@ -25,12 +25,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfigs;
+import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfig;
 
 public final class ParticleDisplay extends WaypointDisplay {
 
     protected ParticleDisplay(Plugin plugin) {
-        super(plugin, getDisplayConfigs().getParticleConfig().getInterval());
+        super(plugin, getDisplayConfig().getParticleConfig().getInterval());
     }
 
     @Override
@@ -43,11 +43,11 @@ public final class ParticleDisplay extends WaypointDisplay {
         if (player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
             Location pLoc = player.getLocation();
             Vector dir = waypoint.getLocation().toVector().subtract(pLoc.toVector()).normalize()
-                    .multiply(getDisplayConfigs().getParticleConfig().getDistance());
-            for (int i = 0; i < getDisplayConfigs().getParticleConfig().getAmount(); i++) {
-                player.spawnParticle(getDisplayConfigs().getParticleConfig().getParticle(),
+                    .multiply(getDisplayConfig().getParticleConfig().getDistance());
+            for (int i = 0; i < getDisplayConfig().getParticleConfig().getAmount(); i++) {
+                player.spawnParticle(getDisplayConfig().getParticleConfig().getParticle(),
                         pLoc.getX() + dir.getX() * i,
-                        pLoc.getY() + getDisplayConfigs().getParticleConfig().getHeightOffset() + (getDisplayConfigs().getParticleConfig().isVerticalDirection()
+                        pLoc.getY() + getDisplayConfig().getParticleConfig().getHeightOffset() + (getDisplayConfig().getParticleConfig().isVerticalDirection()
                                 ? dir.getY() * i : 0),
                         pLoc.getZ() + dir.getZ() * i,
                         1, 0, 0, 0, 0);

@@ -32,7 +32,7 @@ import static de.md5lukas.waypoints.Messages.DISPLAY_WRONG_WORLD;
 public final class WrongWorldDisplay extends WaypointDisplay {
 
     protected WrongWorldDisplay(Plugin plugin) {
-        super(plugin, WPConfig.getDisplayConfigs().getWrongWorldConfig().getInterval());
+        super(plugin, WPConfig.getDisplayConfig().getWrongWorldConfig().getInterval());
     }
 
     @Override
@@ -44,9 +44,9 @@ public final class WrongWorldDisplay extends WaypointDisplay {
     public void update(Player player, Waypoint waypoint) {
         if (waypoint != null && !player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
             TextComponent component = new TextComponent(StringHelper.multiReplace(DISPLAY_WRONG_WORLD.getRaw(player),
-                    "%currentworld%", WPConfig.translateWorldName(player.getWorld().getName(), player),
-                    "%correctworld%", WPConfig.translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
-            player.spigot().sendMessage(WPConfig.getDisplayConfigs().getWrongWorldConfig().isActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT,
+                    "%currentworld%", WPConfig.getGeneralConfig().translateWorldName(player.getWorld().getName(), player),
+                    "%correctworld%", WPConfig.getGeneralConfig().translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
+            player.spigot().sendMessage(WPConfig.getDisplayConfig().getWrongWorldConfig().isActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT,
                     component);
         }
     }
