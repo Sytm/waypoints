@@ -51,8 +51,6 @@ public abstract class WaypointDisplay implements Listener {
     static {
         Bukkit.getPluginManager().registerEvents(global, Waypoints.instance());
         registerDisplay("compass", () -> displays().isCompassEnabled(), () -> new CompassDisplay(Waypoints.instance()));
-        registerDisplay("beacon", () -> displays().isBeaconEnabled(), () -> new BeaconDisplay(Waypoints.instance()));
-        registerDisplay("blinkingBlock", () -> displays().isBlinkingBlockEnabled(), () -> new BlinkingBlockDisplay(Waypoints.instance()));
         registerDisplay("wrongWorld", () -> displays().isWrongWorldEnabled(), () -> new WrongWorldDisplay(Waypoints.instance()));
         registerDisplay("actionBar", () -> displays().isActionBarEnabled(), () -> new ActionBarDisplay(Waypoints.instance()));
         registerDisplay("particles", () -> displays().isParticlesEnabled(), () -> new ParticleDisplay(Waypoints.instance()));

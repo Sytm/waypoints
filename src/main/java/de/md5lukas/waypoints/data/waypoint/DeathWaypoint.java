@@ -20,7 +20,6 @@ package de.md5lukas.waypoints.data.waypoint;
 
 import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.tags.CompoundTag;
-import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.gui.GUIType;
 import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Location;
@@ -55,11 +54,6 @@ public class DeathWaypoint extends Waypoint {
     @Override
     public GUIType getType() {
         return GUIType.DEATH_WAYPOINT;
-    }
-
-    @Override
-    public BlockColor getBeaconColor() {
-        return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorDeath() : beaconColor;
     }
 
     @Override

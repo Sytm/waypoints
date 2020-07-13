@@ -21,12 +21,10 @@ package de.md5lukas.waypoints.store;
 import de.md5lukas.commons.language.Languages;
 import de.md5lukas.waypoints.Messages;
 import de.md5lukas.waypoints.data.waypoint.*;
-import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.util.VaultHook;
 import de.md5lukas.waypoints.util.XPHelper;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,7 +38,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static de.md5lukas.commons.MathHelper.square;
 import static org.bukkit.Material.matchMaterial;
 
 public class WPConfig {
@@ -263,27 +260,6 @@ public class WPConfig {
                     cfg.getDouble("displays.compass.defaultLocation.x"), 0, cfg.getDouble("displays.compass.defaultLocation"));
         }
 
-        displays.blinkingBlockEnabled = cfg.getBoolean("displays.blinkingBlock.enabled");
-        displays.blinkingBlockMinDistance = square(cfg.getInt("displays.blinkingBlock.minDistance"));
-        displays.blinkingBlockMaxDistance = square(cfg.getInt("displays.blinkingBlock.maxDistance"));
-        displays.blinkingBlockInterval = cfg.getInt("displays.blinkingBlock.interval");
-        displays.blinkingBlockBlocks = cfg.getStringList("displays.blinkingBlock.blocks").stream()
-                .map(Material::matchMaterial).filter(Objects::nonNull).map(Bukkit::createBlockData).collect(Collectors.toList());
-
-        displays.beaconEnabled = cfg.getBoolean("displays.beacon.enabled");
-        displays.beaconMinDistance = square(cfg.getInt("displays.beacon.minDistance"));
-        if (cfg.isString("displays.beacon.maxDistance") && cfg.getString("displays.beacon.maxDistance").equalsIgnoreCase("auto")) {
-            displays.beaconMaxDistance = square(Bukkit.getViewDistance() * 16);
-        } else {
-            displays.beaconMaxDistance = square(cfg.getInt("displays.beacon.maxDistance"));
-        }
-        displays.beaconBaseBlock = Bukkit.createBlockData(matchMaterial(cfg.getString("displays.beacon.baseBlock")));
-        displays.beaconInterval = cfg.getInt("displays.beacon.interval");
-        displays.beaconDefaultColorPrivate = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.private"));
-        displays.beaconDefaultColorPublic = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.public"));
-        displays.beaconDefaultColorPermission = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.permission"));
-        displays.beaconDefaultColorDeath = BlockColor.valueOf(cfg.getString("displays.beacon.defaultColor.death"));
-        displays.beaconEnableSelectColor = cfg.getBoolean("displays.beacon.enableSelectColor");
 
         displays.particlesEnabled = cfg.getBoolean("displays.particles.enabled");
         displays.particlesInterval = cfg.getInt("displays.particles.interval");
@@ -332,7 +308,6 @@ public class WPConfig {
         inventory.waypointPrivateRenameItem = matchMaterial(cfg.getString("inventory.waypoints.private.renameItem"));
         inventory.waypointPrivateMoveToFolderItem = matchMaterial(cfg.getString("inventory.waypoints.private.moveToFolderItem"));
         inventory.waypointPrivateTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.private.teleportItem"));
-        inventory.waypointPrivateSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.private.selectBeaconColorItem"));
 
         inventory.waypointPublicItem = matchMaterial(cfg.getString("inventory.waypoints.public.item"));
         inventory.waypointPublicBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.public.backgroundItem"));
@@ -340,7 +315,6 @@ public class WPConfig {
         inventory.waypointPublicDeleteItem = matchMaterial(cfg.getString("inventory.waypoints.public.deleteItem"));
         inventory.waypointPublicRenameItem = matchMaterial(cfg.getString("inventory.waypoints.public.renameItem"));
         inventory.waypointPublicTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.public.teleportItem"));
-        inventory.waypointPublicSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.public.selectBeaconColorItem"));
 
         inventory.waypointPermissionItem = matchMaterial(cfg.getString("inventory.waypoints.permission.item"));
         inventory.waypointPermissionBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.permission.backgroundItem"));
@@ -348,11 +322,6 @@ public class WPConfig {
         inventory.waypointPermissionDeleteItem = matchMaterial(cfg.getString("inventory.waypoints.permission.deleteItem"));
         inventory.waypointPermissionRenameItem = matchMaterial(cfg.getString("inventory.waypoints.permission.renameItem"));
         inventory.waypointPermissionTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.permission.teleportItem"));
-        inventory.waypointPermissionSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.permission.selectBeaconColorItem"));
-
-        inventory.selectBeaconColorBackgroundItem = matchMaterial(cfg.getString("inventory.selectBeaconColor.backgroundItem"));
-        inventory.selectBeaconColorPreviousItem = matchMaterial(cfg.getString("inventory.selectBeaconColor.previousItem"));
-        inventory.selectBeaconColorNextItem = matchMaterial(cfg.getString("inventory.selectBeaconColor.nextItem"));
 
         inventory.selectWaypointTypeBackgroundItem = matchMaterial(cfg.getString("inventory.selectWaypointType.backgroundItem"));
         inventory.selectWaypointTypeTitleItem = matchMaterial(cfg.getString("inventory.selectWaypointType.titleItem"));
@@ -398,23 +367,6 @@ public class WPConfig {
         private boolean compassEnabled;
         private DefaultCompassLocationType compassDefaultLocationType;
         private Location compassDefaultLocation;
-
-        private boolean blinkingBlockEnabled;
-        private long blinkingBlockMinDistance;
-        private long blinkingBlockMaxDistance;
-        private List<BlockData> blinkingBlockBlocks;
-        private int blinkingBlockInterval;
-
-        private boolean beaconEnabled;
-        private long beaconMinDistance;
-        private long beaconMaxDistance;
-        private BlockData beaconBaseBlock;
-        private int beaconInterval;
-        private BlockColor beaconDefaultColorPrivate;
-        private BlockColor beaconDefaultColorPublic;
-        private BlockColor beaconDefaultColorPermission;
-        private BlockColor beaconDefaultColorDeath;
-        private boolean beaconEnableSelectColor;
 
         private boolean particlesEnabled;
         private int particlesInterval;
@@ -482,74 +434,6 @@ public class WPConfig {
 
         public Location getCompassDefaultLocation() {
             return compassDefaultLocation;
-        }
-
-        public boolean isBlinkingBlockEnabled() {
-            return blinkingBlockEnabled;
-        }
-
-        /**
-         * @return the squared min distance
-         */
-        public long getBlinkingBlockMinDistance() {
-            return blinkingBlockMinDistance;
-        }
-
-        /**
-         * This value is s
-         *
-         * @return the squared max distance
-         */
-        public long getBlinkingBlockMaxDistance() {
-            return blinkingBlockMaxDistance;
-        }
-
-        public List<BlockData> getBlinkingBlockBlocks() {
-            return blinkingBlockBlocks;
-        }
-
-        public int getBlinkingBlockInterval() {
-            return blinkingBlockInterval;
-        }
-
-        public boolean isBeaconEnabled() {
-            return beaconEnabled;
-        }
-
-        public long getBeaconMinDistance() {
-            return beaconMinDistance;
-        }
-
-        public long getBeaconMaxDistance() {
-            return beaconMaxDistance;
-        }
-
-        public int getBeaconInterval() {
-            return beaconInterval;
-        }
-
-        public BlockData getBeaconBaseBlock() {
-            return beaconBaseBlock;
-        }
-
-        public BlockColor getBeaconDefaultColorPrivate() {
-            return beaconDefaultColorPrivate;
-        }
-
-        public BlockColor getBeaconDefaultColorPublic() {
-            return beaconDefaultColorPublic;
-        }
-
-        public BlockColor getBeaconDefaultColorPermission() {
-            return beaconDefaultColorPermission;
-        }
-
-        public BlockColor getBeaconDefaultColorDeath() {
-            return beaconDefaultColorDeath;
-        }
-
-        public boolean isBeaconEnableSelectColor() {
-            return beaconEnableSelectColor;
         }
 
         public boolean isParticlesEnabled() {
@@ -620,7 +504,6 @@ public class WPConfig {
         private Material waypointPrivateRenameItem;
         private Material waypointPrivateMoveToFolderItem;
         private Material waypointPrivateTeleportItem;
-        private Material waypointPrivateSelectBeaconColorItem;
 
         private Material waypointPublicItem;
         private Material waypointPublicBackgroundItem;
@@ -628,7 +511,6 @@ public class WPConfig {
         private Material waypointPublicDeleteItem;
         private Material waypointPublicRenameItem;
         private Material waypointPublicTeleportItem;
-        private Material waypointPublicSelectBeaconColorItem;
 
         private Material waypointPermissionItem;
         private Material waypointPermissionBackgroundItem;
@@ -636,11 +518,6 @@ public class WPConfig {
         private Material waypointPermissionDeleteItem;
         private Material waypointPermissionRenameItem;
         private Material waypointPermissionTeleportItem;
-        private Material waypointPermissionSelectBeaconColorItem;
-
-        private Material selectBeaconColorBackgroundItem;
-        private Material selectBeaconColorPreviousItem;
-        private Material selectBeaconColorNextItem;
 
         private Material selectWaypointTypeBackgroundItem;
         private Material selectWaypointTypeTitleItem;
@@ -770,10 +647,6 @@ public class WPConfig {
             return waypointPrivateTeleportItem;
         }
 
-        public Material getWaypointPrivateSelectBeaconColorItem() {
-            return waypointPrivateSelectBeaconColorItem;
-        }
-
         public Material getWaypointPublicItem() {
             return waypointPublicItem;
         }
@@ -798,10 +671,6 @@ public class WPConfig {
             return waypointPublicTeleportItem;
         }
 
-        public Material getWaypointPublicSelectBeaconColorItem() {
-            return waypointPublicSelectBeaconColorItem;
-        }
-
         public Material getWaypointPermissionItem() {
             return waypointPermissionItem;
         }
@@ -824,22 +693,6 @@ public class WPConfig {
 
         public Material getWaypointPermissionTeleportItem() {
             return waypointPermissionTeleportItem;
-        }
-
-        public Material getWaypointPermissionSelectBeaconColorItem() {
-            return waypointPermissionSelectBeaconColorItem;
-        }
-
-        public Material getSelectBeaconColorBackgroundItem() {
-            return selectBeaconColorBackgroundItem;
-        }
-
-        public Material getSelectBeaconColorNextItem() {
-            return selectBeaconColorNextItem;
-        }
-
-        public Material getSelectBeaconColorPreviousItem() {
-            return selectBeaconColorPreviousItem;
         }
 
         public Material getSelectWaypointTypeBackgroundItem() {

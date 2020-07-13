@@ -24,7 +24,6 @@ import de.md5lukas.nbt.extended.UUIDTag;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Messages;
 import de.md5lukas.waypoints.data.GUISortable;
-import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.gui.GUIType;
 import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Location;
@@ -41,7 +40,6 @@ public abstract class Waypoint implements GUISortable {
     protected final Location location;
     protected Material material;
 
-    protected BlockColor beaconColor;
     protected int teleportations;
 
     public Waypoint(CompoundTag tag) {
@@ -51,9 +49,6 @@ public abstract class Waypoint implements GUISortable {
         this.location = ((LocationTag) tag.get("location")).value();
         if (tag.contains("material")) {
             this.material = Material.valueOf(tag.getString("material"));
-        }
-        if (tag.contains("beaconColor")) {
-            this.beaconColor = BlockColor.valueOf(tag.getString("beaconColor"));
         }
         this.teleportations = tag.getInt("teleportations");
     }
@@ -101,9 +96,6 @@ public abstract class Waypoint implements GUISortable {
         return GUIType.WAYPOINT;
     }
 
-    public void setBeaconColor(BlockColor beaconColor) {
-        this.beaconColor = beaconColor;
-    }
 
     public int getTeleportations() {
         return teleportations;
@@ -118,7 +110,6 @@ public abstract class Waypoint implements GUISortable {
         }
     }
 
-    public abstract BlockColor getBeaconColor();
 
     public CompoundTag toCompoundTag() {
         CompoundTag tag = new CompoundTag();
@@ -127,8 +118,6 @@ public abstract class Waypoint implements GUISortable {
         tag.put("location", new LocationTag(null, location));
         if (material != null)
             tag.putString("material", material.name());
-        if (beaconColor != null)
-            tag.putString("beaconColor", beaconColor.name());
         tag.putInt("teleportations", teleportations);
         return tag;
     }

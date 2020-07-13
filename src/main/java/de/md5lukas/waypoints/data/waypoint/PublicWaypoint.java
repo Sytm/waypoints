@@ -20,7 +20,6 @@ package de.md5lukas.waypoints.data.waypoint;
 
 import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.tags.CompoundTag;
-import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,11 +48,6 @@ public class PublicWaypoint extends Waypoint {
     @Override
     public String getDisplayName(Player player) {
         return INVENTORY_WAYPOINT_PUBLIC_DISPLAY_NAME.getRaw(player).replace("%name%", name);
-    }
-
-    @Override
-    public BlockColor getBeaconColor() {
-        return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorPublic() : beaconColor;
     }
 
     @Override

@@ -19,7 +19,6 @@
 package de.md5lukas.waypoints.gui;
 
 import com.google.common.collect.ImmutableMap;
-import de.md5lukas.commons.collections.LoopAroundList;
 import de.md5lukas.commons.collections.PaginationList;
 import de.md5lukas.commons.inventory.ItemBuilder;
 import de.md5lukas.waypoints.Messages;
@@ -32,7 +31,6 @@ import de.md5lukas.waypoints.data.folder.PermissionFolder;
 import de.md5lukas.waypoints.data.folder.PrivateFolder;
 import de.md5lukas.waypoints.data.folder.PublicFolder;
 import de.md5lukas.waypoints.data.waypoint.*;
-import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.display.WaypointDisplay;
 import de.md5lukas.waypoints.store.WPConfig;
 import de.md5lukas.waypoints.util.GeneralHelper;
@@ -181,7 +179,6 @@ public class WaypointProvider implements InventoryProvider {
     private Folder lastFolder = null;
     private Waypoint lastWaypoint = null;
     private int overviewPage = 0, folderPage = 0, folderListPage = 0;
-    private LoopAroundList<BlockColor> beaconColorWheel;
 
     WaypointProvider(UUID target) {
         this.target = target;
@@ -518,11 +515,7 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (isOwner && WPConfig.displays().isBeaconEnabled() && WPConfig.displays().isBeaconEnableSelectColor()) {
-            waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
-        } else {
-            waypointPattern.attach('c', bg);
-        }
+        waypointPattern.attach('c', bg);// 1.12 support disable beacon color selection
         if (viewer.hasPermission("waypoints.teleport.private")) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPrivateTeleportItem(viewer), click -> {
                 viewer.closeInventory();
@@ -609,12 +602,7 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (viewer.hasPermission("waypoints.changeBeaconColor.public") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays()
-                .isBeaconEnableSelectColor()) {
-            waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
-        } else {
-            waypointPattern.attach('c', bg);
-        }
+        waypointPattern.attach('c', bg);// 1.12 support disable beacon color selection
         if (viewer.hasPermission("waypoints.teleport.public")) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPublicTeleportItem(viewer), click -> {
                 viewer.closeInventory();
@@ -699,12 +687,7 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('r', bg);
         }
-        if (viewer.hasPermission("waypoints.changeBeaconColor.permission") && WPConfig.displays().isBeaconEnabled() && WPConfig.displays()
-                .isBeaconEnableSelectColor()) {
-            waypointPattern.attach('c', ClickableItem.from(ItemStacks.getWaypointPrivateSelectBeaconColor(viewer), click -> showSelectBeaconColor(waypoint)));
-        } else {
-            waypointPattern.attach('c', bg);
-        }
+        waypointPattern.attach('c', bg);// 1.12 support disable beacon color selection
         if (viewer.hasPermission("waypoints.teleport.permission")) {
             waypointPattern.attach('t', ClickableItem.from(ItemStacks.getWaypointPermissionTeleportItem(viewer), click -> {
                 viewer.closeInventory();
@@ -811,30 +794,6 @@ public class WaypointProvider implements InventoryProvider {
 
         updateSelectFolder(onClick);
     }
-
-    private void showSelectBeaconColor(Waypoint waypoint) {
-        if (beaconColorWheel != null)
-            beaconColorWheel.setIndex(0);
-        Consumer<BlockColor> bcConsumer = bc -> {
-            waypoint.setBeaconColor(bc);
-            WaypointDisplay.getAll().show(viewer, waypoint);
-            showWaypoint(waypoint);
-        };
-        contents.fill(ClickableItem.NONE);
-        selectBeaconColorPattern.setDefault(ClickableItem.empty(ItemStacks.getSelectBeaconColorBackgroundItem(viewer)));
-        selectBeaconColorPattern.attach('#', ClickableItem.NONE);
-        selectBeaconColorPattern.attach('p', ClickableItem.from(ItemStacks.getSelectBeaconColorPreviousItem(viewer), click -> {
-            beaconColorWheel.next();
-            updateSelectBeaconColor(bcConsumer);
-        }));
-        selectBeaconColorPattern.attach('n', ClickableItem.from(ItemStacks.getSelectBeaconColorNextItem(viewer), click -> {
-            beaconColorWheel.previous();
-            updateSelectBeaconColor(bcConsumer);
-        }));
-        selectBeaconColorPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showWaypoint(waypoint)));
-        contents.fillPattern(selectBeaconColorPattern);
-        updateSelectBeaconColor(bcConsumer);
-    }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Cycle Sort mode helpers">
@@ -895,13 +854,6 @@ public class WaypointProvider implements InventoryProvider {
             } else {
                 contents.set(i, ClickableItem.NONE);
             }
-        }
-    }
-
-    private void updateSelectBeaconColor(Consumer<BlockColor> onClick) {
-        List<ClickableItem> items = getSelectBeaconColorItems(onClick);
-        for (int i = 0; i < 5; i++) {
-            contents.set(2, 2 + i, items.get(i));
         }
     }
     //</editor-fold>
@@ -988,15 +940,6 @@ public class WaypointProvider implements InventoryProvider {
         return items.page(folderListPage).stream()
                 .map(guiSortable -> ClickableItem.from(guiSortable.getStack(viewer), click -> onClick.accept((Folder) guiSortable)))
                 .collect(Collectors.toList());
-    }
-
-    private List<ClickableItem> getSelectBeaconColorItems(Consumer<BlockColor> onClick) {
-        if (beaconColorWheel == null) {
-            beaconColorWheel = new LoopAroundList<>(5);
-            beaconColorWheel.addAll(Arrays.asList(BlockColor.values()));
-        }
-        return beaconColorWheel.getCutOut().stream().map(bc -> ClickableItem.from(bc.asInventoryItem(viewer),
-                click -> onClick.accept(bc))).collect(Collectors.toList());
     }
     //</editor-fold>
 

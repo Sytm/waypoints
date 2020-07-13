@@ -20,7 +20,6 @@ package de.md5lukas.waypoints.data.waypoint;
 
 import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.tags.CompoundTag;
-import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -66,11 +65,6 @@ public class PermissionWaypoint extends Waypoint {
                 "%blockY%", Integer.toString(location.getBlockY()),
                 "%blockZ%", Integer.toString(location.getBlockZ()),
                 "%distance%", getDistance2D(player));
-    }
-
-    @Override
-    public BlockColor getBeaconColor() {
-        return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorPermission() : beaconColor;
     }
 
     public String getPermission() {

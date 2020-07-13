@@ -204,8 +204,6 @@ public enum Messages {
     INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION("inventory.waypoint.private.teleport.payment.xpPoints.description"), // %points%
     INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION("inventory.waypoint.private.teleport.payment.xpLevels.description"), // %levels%
     INVENTORY_WAYPOINT_PRIVATE_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.private.teleport.payment.vault.description"), // %money%
-    INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.private.selectBeaconColor.displayName"),
-    INVENTORY_WAYPOINT_PRIVATE_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.private.selectBeaconColor.description"),
 
     INVENTORY_WAYPOINT_PUBLIC_DISPLAY_NAME("inventory.waypoint.public.displayName"), // %name%
     INVENTORY_WAYPOINT_PUBLIC_DESCRIPTION("inventory.waypoint.public.description"), // %world%, %x%, %y%, %z%, %blockX%, %blockY%, %blockZ%, %distance%
@@ -222,8 +220,6 @@ public enum Messages {
     INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION("inventory.waypoint.public.teleport.payment.xpPoints.description"), // %points%
     INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION("inventory.waypoint.public.teleport.payment.xpLevels.description"), // %levels%
     INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.public.teleport.payment.vault.description"), // %money%
-    INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.public.selectBeaconColor.displayName"),
-    INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.public.selectBeaconColor.description"),
 
     INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME("inventory.waypoint.permission.displayName"), // %name%
     INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION("inventory.waypoint.permission.description"), // %world%, %x%, %y%, %z%, %blockX%, %blockY%, %blockZ%, %distance%
@@ -240,49 +236,6 @@ public enum Messages {
     INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_XP_POINTS_DESCRIPTION("inventory.waypoint.permission.teleport.payment.xpPoints.description"), // %points%
     INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_XP_LEVELS_DESCRIPTION("inventory.waypoint.permission.teleport.payment.xpLevels.description"), // %levels%
     INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.permission.teleport.payment.vault.description"), // %money%
-    INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.permission.selectBeaconColor.displayName"),
-    INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.permission.selectBeaconColor.description"),
-
-    INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DISPLAY_NAME("inventory.selectBeaconColor.background.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DESCRIPTION("inventory.selectBeaconColor.background.description"),
-    INVENTORY_SELECT_BEACON_COLOR_PREVIOUS_DISPLAY_NAME("inventory.selectBeaconColor.previous.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_PREVIOUS_DESCRIPTION("inventory.selectBeaconColor.previous.description"),
-    INVENTORY_SELECT_BEACON_COLOR_NEXT_DISPLAY_NAME("inventory.selectBeaconColor.next.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_NEXT_DESCRIPTION("inventory.selectBeaconColor.next.description"),
-    INVENTORY_SELECT_BEACON_COLOR_CLEAR_DISPLAY_NAME("inventory.selectBeaconColor.clear.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_CLEAR_DESCRIPTION("inventory.selectBeaconColor.clear.description"),
-    INVENTORY_SELECT_BEACON_COLOR_LIGHT_GRAY_DISPLAY_NAME("inventory.selectBeaconColor.lightGray.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_LIGHT_GRAY_DESCRIPTION("inventory.selectBeaconColor.lightGray.description"),
-    INVENTORY_SELECT_BEACON_COLOR_GRAY_DISPLAY_NAME("inventory.selectBeaconColor.gray.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_GRAY_DESCRIPTION("inventory.selectBeaconColor.gray.description"),
-    INVENTORY_SELECT_BEACON_COLOR_PINK_DISPLAY_NAME("inventory.selectBeaconColor.pink.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_PINK_DESCRIPTION("inventory.selectBeaconColor.pink.description"),
-    INVENTORY_SELECT_BEACON_COLOR_LIME_DISPLAY_NAME("inventory.selectBeaconColor.lime.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_LIME_DESCRIPTION("inventory.selectBeaconColor.lime.description"),
-    INVENTORY_SELECT_BEACON_COLOR_YELLOW_DISPLAY_NAME("inventory.selectBeaconColor.yellow.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_YELLOW_DESCRIPTION("inventory.selectBeaconColor.yellow.description"),
-    INVENTORY_SELECT_BEACON_COLOR_LIGHT_BLUE_DISPLAY_NAME("inventory.selectBeaconColor.lightBlue.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_LIGHT_BLUE_DESCRIPTION("inventory.selectBeaconColor.lightBlue.description"),
-    INVENTORY_SELECT_BEACON_COLOR_MAGENTA_DISPLAY_NAME("inventory.selectBeaconColor.magenta.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_MAGENTA_DESCRIPTION("inventory.selectBeaconColor.magenta.description"),
-    INVENTORY_SELECT_BEACON_COLOR_ORANGE_DISPLAY_NAME("inventory.selectBeaconColor.orange.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_ORANGE_DESCRIPTION("inventory.selectBeaconColor.orange.description"),
-    INVENTORY_SELECT_BEACON_COLOR_WHITE_DISPLAY_NAME("inventory.selectBeaconColor.white.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_WHITE_DESCRIPTION("inventory.selectBeaconColor.white.description"),
-    INVENTORY_SELECT_BEACON_COLOR_BLACK_DISPLAY_NAME("inventory.selectBeaconColor.black.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_BLACK_DESCRIPTION("inventory.selectBeaconColor.black.description"),
-    INVENTORY_SELECT_BEACON_COLOR_RED_DISPLAY_NAME("inventory.selectBeaconColor.red.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_RED_DESCRIPTION("inventory.selectBeaconColor.red.description"),
-    INVENTORY_SELECT_BEACON_COLOR_GREEN_DISPLAY_NAME("inventory.selectBeaconColor.green.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_GREEN_DESCRIPTION("inventory.selectBeaconColor.green.description"),
-    INVENTORY_SELECT_BEACON_COLOR_BROWN_DISPLAY_NAME("inventory.selectBeaconColor.brown.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_BROWN_DESCRIPTION("inventory.selectBeaconColor.brown.description"),
-    INVENTORY_SELECT_BEACON_COLOR_BLUE_DISPLAY_NAME("inventory.selectBeaconColor.blue.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_BLUE_DESCRIPTION("inventory.selectBeaconColor.blue.description"),
-    INVENTORY_SELECT_BEACON_COLOR_CYAN_DISPLAY_NAME("inventory.selectBeaconColor.cyan.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_CYAN_DESCRIPTION("inventory.selectBeaconColor.cyan.description"),
-    INVENTORY_SELECT_BEACON_COLOR_PURPLE_DISPLAY_NAME("inventory.selectBeaconColor.purple.displayName"),
-    INVENTORY_SELECT_BEACON_COLOR_PURPLE_DESCRIPTION("inventory.selectBeaconColor.purple.description"),
 
     INVENTORY_SELECT_FOLDER_BACKGROUND_DISPLAY_NAME("inventory.selectFolder.background.displayName"),
     INVENTORY_SELECT_FOLDER_BACKGROUND_DESCRIPTION("inventory.selectFolder.background.description"),

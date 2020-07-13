@@ -17,7 +17,7 @@ general:
     requiredItems:
       - COMPASS
       - MAP
-      - FILLED_MAP
+      - EMPTY_MAP
 
   teleport:
     # If a teleport to a waypoint was free, should it be counted as a teleportation or not.
@@ -113,9 +113,9 @@ inventory:
   confirmMenu:
     # The item in the top middle
     descriptionItem: CHEST
-    yesItem: GREEN_WOOL
-    noItem: RED_WOOL
-    backgroundItem: GRAY_STAINED_GLASS_PANE
+    yesItem: LAVA_BUCKET
+    noItem: WATER_BUCKET
+    backgroundItem: STAINED_GLASS_PANE
   customItem:
     # If true players can set custom items for their waypoints and folders
     enabled: true
@@ -138,7 +138,7 @@ inventory:
     # Item to go to the previous "window", for example going back from a waypoint to the overview
     backItem: BARRIER
   overview:
-    backgroundItem: GRAY_STAINED_GLASS_PANE
+    backgroundItem: STAINED_GLASS_PANE
     # The item that is used to cycle through all the different sort modes
     cycleSortItem: HOPPER
     # The item to deselect the selected waypoints
@@ -148,12 +148,12 @@ inventory:
     # The item to click to set a new waypoint
     setWaypointItem: TORCH
     # The item to click to create a new folder
-    createFolderItem: WRITABLE_BOOK
+    createFolderItem: BOOK_AND_QUILL
 
   # When you want to create a new waypoint via the anvil gui, and have permissions to create more than one type of waypoints,
   # a inventory where you can select the type will be opened
   selectWaypointType:
-    backgroundItem: GRAY_STAINED_GLASS_PANE
+    backgroundItem: STAINED_GLASS_PANE
     # The item acting as the title describing this menu
     titleItem: BOOK
     # The item, which represents a new private waypoint
@@ -165,63 +165,55 @@ inventory:
 
   # This is for the window when selecting a folder to move the waypoint into
   selectFolder:
-    backgroundItem: GRAY_STAINED_GLASS_PANE
+    backgroundItem: STAINED_GLASS_PANE
     # The item, when clicked the waypoint is moved back to the overview
-    noFolderItem: MAP
-
-  selectBeaconColor:
-    backgroundItem: GRAY_STAINED_GLASS_PANE
-    previousItem: ARROW
-    nextItem: ARROW
+    noFolderItem: EMPTY_MAP
 
   # The "item" is the item used as an icon for the waypoint
   # The "selectItem" is the item used to select a waypoint
   # The "teleportItem" is the item used to teleport to a waypoint
   waypoints:
     death:
-      item: SKELETON_SKULL
-      backgroundItem: GRAY_STAINED_GLASS_PANE
+      item: SKULL_ITEM
+      backgroundItem: STAINED_GLASS_PANE
       selectItem: REDSTONE
       teleportItem: ENDER_PEARL
     private:
       # Same as "item", but with the default prefix, because the item can be changed
       defaultItem: BEACON
-      backgroundItem: GRAY_STAINED_GLASS_PANE
+      backgroundItem: STAINED_GLASS_PANE
       selectItem: REDSTONE
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
       # Item to represent the button used to move a waypoint into a folder
-      moveToFolderItem: CHEST_MINECART
+      moveToFolderItem: STORAGE_MINECART
       teleportItem: ENDER_PEARL
-      selectBeaconColorItem: LIME_STAINED_GLASS
     public:
       item: BEACON
-      backgroundItem: GREEN_STAINED_GLASS_PANE
+      backgroundItem: STAINED_GLASS_PANE
       selectItem: REDSTONE
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
       teleportItem: ENDER_PEARL
-      selectBeaconColorItem: LIME_STAINED_GLASS
     permission:
       item: BEACON
-      backgroundItem: RED_STAINED_GLASS_PANE
+      backgroundItem: STAINED_GLASS_PANE
       selectItem: REDSTONE
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
       teleportItem: ENDER_PEARL
-      selectBeaconColorItem: LIME_STAINED_GLASS
   folders:
     private:
       defaultItem: BOOK
-      backgroundItem: GRAY_STAINED_GLASS_PANE
+      backgroundItem: STAINED_GLASS_PANE
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
     public:
       item: BOOK
-      backgroundItem: GREEN_STAINED_GLASS_PANE
+      backgroundItem: STAINED_GLASS_PANE
     permission:
       item: BOOK
-      backgroundItem: RED_STAINED_GLASS_PANE
+      backgroundItem: STAINED_GLASS_PANE
 
 displays:
   wrongWorld:
@@ -248,42 +240,6 @@ displays:
       world: 'world'
       x: 0
       z: 0
-
-  blinkingBlock:
-    enabled: true
-
-    minDistance: 10
-    maxDistance: 50
-
-    # The interval in game ticks in which the block should be changed
-    interval: 20
-
-    # The blocks that are cycled through
-    blocks: [GLASS, GLOWSTONE]
-
-  beacon:
-    enabled: true
-
-    minDistance: 50
-
-    # If set to auto it will use the render distance of the server
-    maxDistance: auto
-
-    # The base block for the beacon. Use one of these for it to work: IRON_BLOCK, GOLD_BLOCK, DIAMOND_BLOCK or EMERALD_BLOCK
-    baseBlock: IRON_BLOCK
-
-    # The interval in game ticks when the ghost block changes should be sent
-    interval: 30
-
-    # If set to true, users can select the color of beacon beams for each of their waypoints
-    enableSelectColor: true
-
-    defaultColor:
-      private: CLEAR
-      public: GREEN
-      permission: PURPLE
-      # The color of the death waypoint cannot be changed by the user
-      death: RED
 
   actionBar:
     # Enable or disable it here
