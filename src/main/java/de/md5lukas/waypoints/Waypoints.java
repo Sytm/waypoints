@@ -22,12 +22,12 @@ import de.md5lukas.commons.messages.MessageStore;
 import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.Tags;
 import de.md5lukas.waypoints.command.WaypointsCommand;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.display.WaypointDisplay;
 import de.md5lukas.waypoints.listener.WaypointsListener;
 import de.md5lukas.waypoints.store.FileManager;
 import de.md5lukas.waypoints.store.GlobalStore;
 import de.md5lukas.waypoints.store.LegacyImporter;
-import de.md5lukas.waypoints.store.WPConfig;
 import de.md5lukas.waypoints.util.FileHelper;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import de.md5lukas.waypoints.util.VaultHook;
@@ -108,7 +108,7 @@ public class Waypoints extends JavaPlugin {
             return;
         }
 
-        if (WPConfig.isVaultRequired()) {
+        if (WPConfig.getGeneralConfig().getTeleportConfig().isVaultRequired()) {
             String result = VaultHook.setupEconomy();
             if (result != null) {
                 getLogger().log(Level.SEVERE, result);

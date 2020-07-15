@@ -28,11 +28,6 @@ chatAction.updateItem.waypoint.public=$prefix$ $chatAction.updateItem.waypoint$
 chatAction.updateItem.waypoint.permission=$prefix$ $chatAction.updateItem.waypoint$
 chatAction.updateItem.folder.private=$prefix$ &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Ordner verwenden möchtest.
 
-chatAction.rename.waypoint.private=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, deinen Wegpunkt umzubenennen.
-chatAction.rename.waypoint.public=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, den öffentlichen Wegpunkt umzubenennen.
-chatAction.rename.waypoint.permission=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, den eingeschränkten Wegpunkt umzubenennen.
-chatAction.rename.folder.private=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, deinen Ordner umzubenennen.
-
 chatWarning.worldTranslationsMissing=$prefix$ &cEs fehlen Übersetzungen für Welt-Namen.
 
 # %remainingTime% the time that is left until the player can teleport again
@@ -53,9 +48,6 @@ command.help.set.permission=&7 - &e/waypoints setPermission <Berechtigung> <Name
 command.help.compass=&7 - &e/waypoints compass &7&l|&r&7 Setze das standard Kompass Ziel, wenn in der Config der Modus auf "ingame" steht.
 command.help.other=&7 - &e/waypoints other <Name|UUID> &7&l|&r&7 Begutachte die Wegpunkte eines anderen Spielers.
 command.help.updateItem=&7 - &e/waypoints updateItem <Waypoint|Folder> <ID> &7&l|&r&7 Dieser Befehl wird verwendet um das Icon eines Wegpunktes oder Ordners zu ändern.
-command.help.rename.normal=&7 - &e/waypoints rename <PrivateWaypoint|PublicWaypoint|PermissionWaypoint|Folder> <ID> &7&l|&r&7 Dieser Befehl wird verwendet um Wegpunkte und Order umzubenennen
-command.help.rename.waypointOnly=&7 - &e/waypoints rename <PrivateWaypoint|PublicWaypoint|PermissionWaypoint> <ID> &7&l|&r&7 Dieser Befehl wird verwendet um Wegpunkte umzubenennen
-command.help.rename.folderOnly=&7 - &e/waypoints rename <Folder> <ID> &7&l|&r&7 Dieser Befehl wird verwendet um Order umzubenennen
 
 command.compass.disabled=$prefix$ &cDiese Art das standard Kompass-Ziel zu setzten wurde in der Config deaktiviert
 command.compass.locked=$prefix$ &cDieser Befehl wurde in der Config deaktiviert.
@@ -105,7 +97,6 @@ command.updateItem.waypoint.success=$prefix$ &7Das Icon vom Wegpunkt wurde erfol
 command.updateItem.folder.success=$prefix$ &7Das Icon vom Ordner wurde erfolgreich aktualisiert.
 
 command.rename.disabled=$prefix$ &cUmbenennen wurde deaktiviert.
-command.rename.viaCmdDisabled=$prefix$ &cDas umbenennen von Wegpunkten mit diesem Befehl ist deaktiviert, bitte benutze die GUI.
 command.rename.waypoint.private.disabled=$prefix$ &cDas Umbenennen von privaten Wegpunkten wurde deaktiviert.
 command.rename.waypoint.public.disabled=$prefix$ &cDas Umbenennen von öffentlichen Wegpunkten wurde deaktiviert.
 command.rename.waypoint.permission.disabled=$prefix$ &cDas Umbenennen von eingeschränkten Wegpunkten wurde deaktiviert.

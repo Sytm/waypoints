@@ -21,14 +21,14 @@ package de.md5lukas.waypoints.display;
 import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.waypoints.Waypoints;
+import de.md5lukas.waypoints.config.displays.CompassConfig;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.store.WPConfig;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import static de.md5lukas.waypoints.store.WPConfig.displays;
+import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfig;
 
 public final class CompassDisplay extends WaypointDisplay {
 
@@ -46,7 +46,7 @@ public final class CompassDisplay extends WaypointDisplay {
     @Override
     public void show(Player player, Waypoint waypoint) {
         if (waypoint != null) {
-            if (displays().getCompassDefaultLocationType() == WPConfig.DefaultCompassLocationType.PREVIOUS) {
+            if (getDisplayConfig().getCompassConfig().getDefaultLocationType() == CompassConfig.DefaultCompassLocationType.PREVIOUS) {
                 CompoundTag store = getStore(player);
                 store.put("location", new LocationTag(null, player.getCompassTarget()));
             }
@@ -60,12 +60,12 @@ public final class CompassDisplay extends WaypointDisplay {
 
     @Override
     public void disable(Player player, Waypoint waypoint) {
-        switch (displays().getCompassDefaultLocationType()) {
+        switch (getDisplayConfig().getCompassConfig().getDefaultLocationType()) {
             case SPAWN:
                 player.setCompassTarget(Bukkit.getWorlds().get(0).getSpawnLocation());
                 break;
             case CONFIG:
-                player.setCompassTarget(displays().getCompassDefaultLocation());
+                player.setCompassTarget(getDisplayConfig().getCompassConfig().getDefaultLocation());
                 break;
             case PREVIOUS:
                 CompoundTag store = getStore(player);

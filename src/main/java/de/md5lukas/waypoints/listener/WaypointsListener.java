@@ -20,7 +20,7 @@ package de.md5lukas.waypoints.listener;
 
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.gui.GUIManager;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import de.md5lukas.waypoints.util.TeleportManager;
 import org.bukkit.Material;
@@ -40,13 +40,13 @@ public class WaypointsListener implements Listener {
 
     @EventHandler(priority = LOWEST)
     public void onDeath(PlayerDeathEvent e) {
-        if (WPConfig.isDeathWaypointEnabled())
+        if (WPConfig.getGeneralConfig().isDeathWaypointEnabled())
             WPPlayerData.getPlayerData(e.getEntity().getUniqueId()).setDeath(e.getEntity().getLocation());
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        if (Material.COMPASS.equals(e.getMaterial()) && WPConfig.getOpenUsingCompass().isValidAction(e.getAction())) {
+        if (Material.COMPASS.equals(e.getMaterial()) && WPConfig.getGeneralConfig().getOpenUsingCompass().isValidAction(e.getAction())) {
             GUIManager.openGUI(e.getPlayer());
             e.setCancelled(true);
         }

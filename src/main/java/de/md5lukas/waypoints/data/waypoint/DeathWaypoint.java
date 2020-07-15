@@ -20,9 +20,9 @@ package de.md5lukas.waypoints.data.waypoint;
 
 import de.md5lukas.commons.MathHelper;
 import de.md5lukas.nbt.tags.CompoundTag;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.display.BlockColor;
 import de.md5lukas.waypoints.gui.GUIType;
-import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,7 +44,7 @@ public class DeathWaypoint extends Waypoint {
 
     @Override
     public Material getMaterial() {
-        return WPConfig.inventory().getWaypointDeathItem();
+        return WPConfig.getInventoryConfig().getDeathWaypointMenuConfig().getItem();
     }
 
     @Override
@@ -59,13 +59,13 @@ public class DeathWaypoint extends Waypoint {
 
     @Override
     public BlockColor getBeaconColor() {
-        return beaconColor == null ? WPConfig.displays().getBeaconDefaultColorDeath() : beaconColor;
+        return beaconColor == null ? WPConfig.getDisplayConfig().getBeaconConfig().getDefaultColorDeath() : beaconColor;
     }
 
     @Override
     public List<String> getDescription(Player player) {
         return INVENTORY_WAYPOINT_DEATH_DESCRIPTION.asList(player).replace(
-                "%world%", WPConfig.translateWorldName(location.getWorld().getName(), player),
+                "%world%", WPConfig.getGeneralConfig().translateWorldName(location.getWorld().getName(), player),
                 "%x%", MathHelper.format(location.getX()),
                 "%y%", MathHelper.format(location.getY()),
                 "%z%", MathHelper.format(location.getZ()),

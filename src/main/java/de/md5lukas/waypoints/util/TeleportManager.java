@@ -19,9 +19,10 @@
 package de.md5lukas.waypoints.util;
 
 import de.md5lukas.waypoints.Waypoints;
+import de.md5lukas.waypoints.config.WPConfig;
+import de.md5lukas.waypoints.config.general.TeleportWaypointConfig;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
-import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -46,7 +47,7 @@ public class TeleportManager {
     }
 
     public static void playerMoved(Player player) {
-        if (WPConfig.getTeleportStandStillTime() > 0 && waitingForTeleport.containsKey(player.getUniqueId())) {
+        if (WPConfig.getGeneralConfig().getTeleportConfig().getStandStillTime() > 0 && waitingForTeleport.containsKey(player.getUniqueId())) {
             waitingForTeleport.remove(player.getUniqueId()).cancel();
             CHAT_TELEPORT_CANCELLED_MOVE.send(player);
         }
@@ -57,13 +58,13 @@ public class TeleportManager {
             if (!checkPlayerCurrency(player, waypoint))
                 return;
             player.closeInventory();
-            if (WPConfig.getTeleportStandStillTime() > 0) {
+            if (WPConfig.getGeneralConfig().getTeleportConfig().getStandStillTime() > 0) {
                 player.sendMessage(CHAT_TELEPORT_STAND_STILL_NOTICE.getRaw(player)
-                        .replace("%timeRequired%", TimeHelper.pluralizeSeconds(player, WPConfig.getTeleportStandStillTime())));
+                        .replace("%timeRequired%", TimeHelper.pluralizeSeconds(player, WPConfig.getGeneralConfig().getTeleportConfig().getStandStillTime())));
                 BukkitTask task = Bukkit.getScheduler().runTaskLater(Waypoints.instance(), () -> {
                     waitingForTeleport.remove(player.getUniqueId());
                     teleportPlayer(player, playerData, waypoint);
-                }, WPConfig.getTeleportStandStillTime() * 20L);
+                }, WPConfig.getGeneralConfig().getTeleportConfig().getStandStillTime() * 20L);
                 waitingForTeleport.putIfAbsent(player.getUniqueId(), task);
             } else {
                 teleportPlayer(player, playerData, waypoint);
@@ -97,7 +98,7 @@ public class TeleportManager {
     }
 
     private static boolean checkPlayerCurrency(Player player, Waypoint waypoint) {
-        if (WPConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled())) {
+        if (TeleportWaypointConfig.TeleportEnabled.PAY.equals(waypoint.getTeleportSettings().getEnabled())) {
             if (!waypoint.getTeleportSettings().hasPlayerEnoughCurrency(player, waypoint.getTeleportations())) {
                 sendPlayerNotEnoughCurrency(player, waypoint);
                 return false;

@@ -20,7 +20,7 @@ package de.md5lukas.waypoints.display;
 
 import de.md5lukas.commons.inventory.ItemBuilder;
 import de.md5lukas.waypoints.Messages;
-import de.md5lukas.waypoints.store.WPConfig;
+import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -50,9 +50,8 @@ public enum BlockColor {
     PURPLE(Material.PURPLE_STAINED_GLASS, INVENTORY_SELECT_BEACON_COLOR_PURPLE_DISPLAY_NAME, INVENTORY_SELECT_BEACON_COLOR_PURPLE_DESCRIPTION),
     ;
 
-    private String config;
-    private Material material;
-    private Messages displayName, description;
+    private final Material material;
+    private final Messages displayName, description;
     private BlockData blockData;
 
     BlockColor(Material material, Messages displayName, Messages description) {
@@ -72,7 +71,8 @@ public enum BlockColor {
         if (this == CLEAR) {
             itemMat = Material.GLASS;
         }
-        return new ItemBuilder(itemMat).name(displayName.getRaw(p)).lore(description.getRaw(p), WPConfig.inventory().getMaxDescriptionLineLength()).make();
+        return new ItemBuilder(itemMat).name(displayName.getRaw(p)).lore(description.getRaw(p), WPConfig.getInventoryConfig().getMaxDescriptionLineLength())
+                .make();
     }
 
     public BlockData getBlockData() {

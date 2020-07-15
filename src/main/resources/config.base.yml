@@ -9,16 +9,6 @@ general:
   # Set how the gui can be opened by using the compass. Possible values are: 'right' (right-click), 'left' (left-click), 'false' (disabled)
   openUsingCompass: right
 
-  # Set how the displays should only be active when a certain condition is met.
-  displaysActiveWhen:
-    # Available options are: 'itemInInventory', 'itemInHotbar', 'itemInHand' (main or off-hand), 'false' (disabled)
-    enabled: false
-    # Only one of the items provided here needs to be present to work, NOT all at once
-    requiredItems:
-      - COMPASS
-      - MAP
-      - FILLED_MAP
-
   teleport:
     # If a teleport to a waypoint was free, should it be counted as a teleportation or not.
     # If it is enabled and in the future you have to pay for the waypoint the prices will go up
@@ -66,56 +56,30 @@ general:
       permission:
         <<: *teleportPayment
 
-
-  # The maximum amount of waypoints a player can have saved, set to 0 or negative for no limit
-  waypointLimit: 200
-  # The maximum amount of folders a player can have saved, set to 0 or negative for no limit
-  folderLimit: 50
+  limits:
+    # The maximum amount of waypoints a player can have saved, set to 0 or negative for no limit
+    waypoints: 200
+    # The maximum amount of folders a player can have saved, set to 0 or negative for no limit
+    folders: 50
   # Whether a waypoint should be set, where the player died the last time
   deathWaypointEnabled: true
-  # Enable or disable duplicate waypoint names here
-  allowDuplicateWaypointNames:
-    private: true
-    public: false
-    permission: false
-  # Allow duplicate names for private folders
-  allowDuplicatePrivateFolderNames: true
-  # Allow renaming waypoints
-  allowRenamingWaypoints:
-    private: true
-    public: true
-    permission: true
-  # Allow renaming private folders
-  allowRenamingPrivateFolders: true
-  # Set where the anvil gui can be used. If the plugin throws errors, when the anvil gui should open, make sure you are using the latest version of 1.13.x or 1.14.x
-  anvilGUI:
-    # Should be the anvil gui available for folder and waypoint creation, the commands will still work like normal
-    creation: true
-    # Should be the anvil gui available for renaming of folders and waypoints, this disables the rename command
-    renaming: true
-  # Translate world names into something more readable
-  worldNameAliases:
-    # Specify the language here. Examples for other languages: de, at etc.
-    en:
-      # Here the internal world name is mapped to a readable version
-      world: 'Overworld'
-      world_nether: 'Nether'
-      world_the_end: 'The End'
-    de:
-      world: 'Welt'
-      world_nether: 'Nether'
-      world_the_end: 'Das Ende'
-
-inventory:
-  # Maximum line length of descriptions after a linebreak is inserted automatically
-  maxDescriptionLineLength: 30
-  # Select the items for the yes / no menu
-  confirmMenu:
-    # The item in the top middle
-    descriptionItem: CHEST
-    yesItem: GREEN_WOOL
-    noItem: RED_WOOL
-    backgroundItem: GRAY_STAINED_GLASS_PANE
+  # Enable or disable duplicate names here
+  allowDuplicateNames:
+    waypoints:
+      private: true
+      public: false
+      permission: false
+    folders:
+      private: true
+  allowRenaming:
+    # Allow renaming waypoints
+    waypoints:
+      private: true
+      public: true
+      permission: true
+      # Allow renaming folders
+    folders:
+      private: true
   customItem:
     # If true players can set custom items for their waypoints and folders
     enabled: true
@@ -130,25 +94,58 @@ inventory:
         - AIR
         - BARRIER
         - BEDROCK
-  generalItems:
+  # Translate world names into something more readable
+  worldNameAliases:
+    # Specify the language here. Examples for other languages: de, at etc.
+    en:
+      # Here the internal world name is mapped to a readable version
+      world: 'Overworld'
+      world_nether: 'Nether'
+      world_the_end: 'The End'
+    de:
+      world: 'Welt'
+      world_nether: 'Nether'
+      world_the_end: 'Das Ende'
+
+inventory:
+  general:
+    # Maximum line length of descriptions after a linebreak is inserted automatically
+    maxDescriptionLineLength: 30
     # Item to go to the previous page
     previousItem: ARROW
     # Item to go to the next page
     nextItem: ARROW
     # Item to go to the previous "window", for example going back from a waypoint to the overview
     backItem: BARRIER
-  overview:
+  # Select the items for the yes / no menu
+  confirmMenu:
+    # The item in the top middle
+    descriptionItem: CHEST
+    yesItem: GREEN_WOOL
+    noItem: RED_WOOL
     backgroundItem: GRAY_STAINED_GLASS_PANE
-    # The item that is used to cycle through all the different sort modes
-    cycleSortItem: HOPPER
-    # The item to deselect the selected waypoints
-    deselectItem: MILK_BUCKET
-    # The item to toggle the global folders on and off
-    toggleGlobalsItem: CHEST
-    # The item to click to set a new waypoint
-    setWaypointItem: TORCH
-    # The item to click to create a new folder
-    createFolderItem: WRITABLE_BOOK
+  overviews:
+    # This is the overview that appears when opening the menu without clicking anything
+    default:
+      backgroundItem: GRAY_STAINED_GLASS_PANE
+      # The item that is used to cycle through all the different sort modes
+      cycleSortItem: HOPPER
+      # The item to deselect the selected waypoints
+      deselectItem: MILK_BUCKET
+      # The item to toggle the global folders on and off
+      toggleGlobalsItem: CHEST
+      # The item to click to set a new waypoint
+      setWaypointItem: TORCH
+      # The item to click to create a new folder
+      createFolderItem: WRITABLE_BOOK
+    # This is for the folder item for public waypoints
+    public:
+      item: BOOK
+      backgroundItem: GREEN_STAINED_GLASS_PANE
+    # This is for the folder item for permission waypoints
+    permission:
+      item: BOOK
+      backgroundItem: RED_STAINED_GLASS_PANE
 
   # When you want to create a new waypoint via the anvil gui, and have permissions to create more than one type of waypoints,
   # a inventory where you can select the type will be opened
@@ -171,8 +168,6 @@ inventory:
 
   selectBeaconColor:
     backgroundItem: GRAY_STAINED_GLASS_PANE
-    previousItem: ARROW
-    nextItem: ARROW
 
   # The "item" is the item used as an icon for the waypoint
   # The "selectItem" is the item used to select a waypoint
@@ -216,14 +211,19 @@ inventory:
       backgroundItem: GRAY_STAINED_GLASS_PANE
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
-    public:
-      item: BOOK
-      backgroundItem: GREEN_STAINED_GLASS_PANE
-    permission:
-      item: BOOK
-      backgroundItem: RED_STAINED_GLASS_PANE
 
 displays:
+  misc:
+    # Set how the displays should only be active when a certain condition is met.
+    displaysActiveWhen:
+      # Available options are: 'itemInInventory', 'itemInHotbar', 'itemInHand' (main or off-hand), 'false' (disabled)
+      enabled: false
+      # Only one of the items provided here needs to be present to work, NOT all at once
+      requiredItems:
+        - COMPASS
+        - MAP
+        - FILLED_MAP
+
   wrongWorld:
     # When enabled sends the player a message that he is in the wrong world
     enabled: true

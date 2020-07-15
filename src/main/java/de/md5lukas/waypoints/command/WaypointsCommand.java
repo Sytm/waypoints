@@ -21,6 +21,7 @@ package de.md5lukas.waypoints.command;
 import de.md5lukas.commons.StringHelper;
 import de.md5lukas.commons.UUIDUtils;
 import de.md5lukas.waypoints.Waypoints;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.WPPlayerData;
 import de.md5lukas.waypoints.data.folder.Folder;
 import de.md5lukas.waypoints.data.folder.PermissionFolder;
@@ -30,7 +31,6 @@ import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.PublicWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.gui.GUIManager;
-import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -87,18 +87,8 @@ public class WaypointsCommand implements CommandExecutor {
                         COMMAND_HELP_COMPASS.send(p);
                     if (p.hasPermission("waypoints.other"))
                         COMMAND_HELP_OTHER.send(p);
-                    if (WPConfig.inventory().isCustomItemEnabled())
+                    if (WPConfig.getGeneralConfig().isCustomItemEnabled())
                         COMMAND_HELP_UPDATE_ITEM.send(p);
-                    if (!WPConfig.isAnvilGUIRenamingEnabled()) {
-                        if ((WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic()
-                                || WPConfig.allowRenamingWaypointsPermission()) && WPConfig.allowRenamingFoldersPrivate())
-                            COMMAND_HELP_RENAME_NORMAL.send(p);
-                        else if (WPConfig.allowRenamingWaypointsPrivate() || WPConfig.allowRenamingWaypointsPublic() || WPConfig
-                                .allowRenamingWaypointsPermission())
-                            COMMAND_HELP_RENAME_WAYPOINT_ONLY.send(p);
-                        else if (WPConfig.allowRenamingFoldersPrivate())
-                            COMMAND_HELP_RENAME_FOLDER_ONLY.send(p);
-                    }
                     break;
                 }
                 case "compass": {
@@ -106,7 +96,7 @@ public class WaypointsCommand implements CommandExecutor {
                         GENERAL_NO_PERMISSION.send(p);
                         return true;
                     }
-                    switch (WPConfig.displays().getCompassDefaultLocationType()) {
+                    switch (WPConfig.getDisplayConfig().getCompassConfig().getDefaultLocationType()) {
                         case INGAME:
                             Waypoints.getGlobalStore().setCompassTarget(p.getLocation());
                             Waypoints.getGlobalStore().save(true);
@@ -202,7 +192,7 @@ public class WaypointsCommand implements CommandExecutor {
                     break;
                 }
                 case "updateitem": {
-                    if (!WPConfig.inventory().isCustomItemEnabled()) {
+                    if (!WPConfig.getGeneralConfig().isCustomItemEnabled()) {
                         COMMAND_UPDATE_ITEM_DISABLED.send(p);
                         return true;
                     }
@@ -216,7 +206,7 @@ public class WaypointsCommand implements CommandExecutor {
                     }
                     Material mat = p.getInventory().getItemInMainHand().getType();
                     UUID uuid = UUID.fromString(args[2]);
-                    if (!WPConfig.inventory().isValidCustomItem(mat)) {
+                    if (!WPConfig.getGeneralConfig().isValidCustomItem(mat)) {
                         COMMAND_UPDATE_ITEM_NOT_A_VALID_ITEM.send(p);
                         return true;
                     }
@@ -273,13 +263,11 @@ public class WaypointsCommand implements CommandExecutor {
                     break;
                 }
                 case "rename": {
-                    if (!WPConfig.allowRenamingWaypointsPrivate() && !WPConfig.allowRenamingWaypointsPublic()
-                            && !WPConfig.allowRenamingWaypointsPermission() && !WPConfig.allowRenamingFoldersPrivate()) {
+                    if (!WPConfig.getGeneralConfig().getRenamingConfig().isAllowRenamingWaypointsPrivate() && !WPConfig.getGeneralConfig().getRenamingConfig()
+                            .isAllowRenamingWaypointsPublic()
+                            && !WPConfig.getGeneralConfig().getRenamingConfig().isAllowRenamingWaypointsPermission() && !WPConfig.getGeneralConfig()
+                            .getRenamingConfig().isAllowRenamingFoldersPrivate()) {
                         COMMAND_RENAME_DISABLED.send(p);
-                        return true;
-                    }
-                    if (!WPConfig.isAnvilGUIRenamingEnabled()) {
-                        COMMAND_RENAME_VIA_CMD_DISABLED.send(p);
                         return true;
                     }
                     if (args.length <= 3) {
@@ -294,12 +282,12 @@ public class WaypointsCommand implements CommandExecutor {
                     String newName = StringHelper.buildStringFromArray(args, 3);
                     switch (args[1].toLowerCase()) {
                         case "privatewaypoint": {
-                            if (!WPConfig.allowRenamingWaypointsPrivate()) {
+                            if (!WPConfig.getGeneralConfig().getRenamingConfig().isAllowRenamingWaypointsPrivate()) {
                                 COMMAND_RENAME_WAYPOINT_PRIVATE_DISABLED.send(p);
                                 return true;
                             }
                             WPPlayerData data = WPPlayerData.getPlayerData(p.getUniqueId());
-                            if (!WPConfig.allowDuplicateWaypointNamesPrivate()) {
+                            if (!WPConfig.getGeneralConfig().getDuplicateConfig().isAllowDuplicateNamesWaypointPrivate()) {
                                 if (data.findWaypoint(wp -> newName.equalsIgnoreCase(wp.getName())).isPresent()) {
                                     COMMAND_RENAME_WAYPOINT_PRIVATE_NAME_DUPLICATE.send(p);
                                     return true;
@@ -319,11 +307,11 @@ public class WaypointsCommand implements CommandExecutor {
                                 GENERAL_NO_PERMISSION.send(p);
                                 return true;
                             }
-                            if (!WPConfig.allowRenamingWaypointsPublic()) {
+                            if (!WPConfig.getGeneralConfig().getRenamingConfig().isAllowRenamingWaypointsPublic()) {
                                 COMMAND_RENAME_WAYPOINT_PUBLIC_DISABLED.send(p);
                                 return true;
                             }
-                            if (!WPConfig.allowDuplicateWaypointNamesPublic()) {
+                            if (!WPConfig.getGeneralConfig().getDuplicateConfig().isAllowDuplicateNamesWaypointPublic()) {
                                 if (Waypoints.getGlobalStore().getPublicFolder().findWaypoint(wp -> newName.equalsIgnoreCase(wp.getName())).isPresent()) {
                                     COMMAND_RENAME_WAYPOINT_PUBLIC_NAME_DUPLICATE.send(p);
                                     return true;
@@ -343,11 +331,11 @@ public class WaypointsCommand implements CommandExecutor {
                                 GENERAL_NO_PERMISSION.send(p);
                                 return true;
                             }
-                            if (!WPConfig.allowRenamingWaypointsPermission()) {
+                            if (!WPConfig.getGeneralConfig().getRenamingConfig().isAllowRenamingWaypointsPermission()) {
                                 COMMAND_RENAME_WAYPOINT_PERMISSION_DISABLED.send(p);
                                 return true;
                             }
-                            if (!WPConfig.allowDuplicateWaypointNamesPermission()) {
+                            if (!WPConfig.getGeneralConfig().getDuplicateConfig().isAllowDuplicateNamesWaypointPermission()) {
                                 if (Waypoints.getGlobalStore().getPermissionFolder().findWaypoint(wp -> newName.equalsIgnoreCase(wp.getName())).isPresent()) {
                                     COMMAND_RENAME_WAYPOINT_PERMISSION_NAME_DUPLICATE.send(p);
                                     return true;
@@ -363,8 +351,9 @@ public class WaypointsCommand implements CommandExecutor {
                             break;
                         }
                         case "folder": {
+                            // TODO can rename check missing?
                             WPPlayerData data = WPPlayerData.getPlayerData(p.getUniqueId());
-                            if (!WPConfig.allowDuplicateFolderPrivateNames()) {
+                            if (!WPConfig.getGeneralConfig().getDuplicateConfig().isAllowDuplicateNamesFolderPrivate()) {
                                 if (data.findFolder(f -> f.getName().equalsIgnoreCase(newName)).isPresent()) {
                                     COMMAND_RENAME_FOLDER_NAME_DUPLICATE.send(p);
                                     return true;
@@ -397,14 +386,14 @@ public class WaypointsCommand implements CommandExecutor {
 
     public static boolean setPrivateWaypoint(Player p, String name) {
         WPPlayerData data = WPPlayerData.getPlayerData(p.getUniqueId());
-        if (!WPConfig.allowDuplicateWaypointNamesPrivate()) {
+        if (!WPConfig.getGeneralConfig().getDuplicateConfig().isAllowDuplicateNamesWaypointPrivate()) {
             if (data.findWaypoint(wp -> wp.getName().equalsIgnoreCase(name)).isPresent()) {
                 COMMAND_SET_PRIVATE_NAME_DUPLICATE.send(p);
                 return false;
             }
         }
-        if (WPConfig.getWaypointLimit() > 0) {
-            if (data.countWaypoints() >= WPConfig.getWaypointLimit()) {
+        if (WPConfig.getGeneralConfig().getWaypointLimit() > 0) {
+            if (data.countWaypoints() >= WPConfig.getGeneralConfig().getWaypointLimit()) {
                 COMMAND_SET_PRIVATE_LIMIT_REACHED.send(p);
                 return false;
             }
@@ -415,7 +404,7 @@ public class WaypointsCommand implements CommandExecutor {
     }
 
     public static boolean setPublicWaypoint(Player p, String name) {
-        if (!WPConfig.allowDuplicateWaypointNamesPublic()) {
+        if (!WPConfig.getGeneralConfig().getDuplicateConfig().isAllowDuplicateNamesWaypointPublic()) {
             for (Waypoint wp : Waypoints.getGlobalStore().getPublicFolder().getWaypoints(p)) {
                 if (wp.getName().equalsIgnoreCase(name)) {
                     COMMAND_SET_PUBLIC_NAME_DUPLICATE.send(p);
@@ -429,7 +418,7 @@ public class WaypointsCommand implements CommandExecutor {
     }
 
     public static boolean setPermissionWaypoint(Player p, String permission, String name) {
-        if (!WPConfig.allowDuplicateWaypointNamesPermission()) {
+        if (!WPConfig.getGeneralConfig().getDuplicateConfig().isAllowDuplicateNamesWaypointPermission()) {
             for (Waypoint wp : Waypoints.getGlobalStore().getPermissionFolder().getWaypoints(p)) {
                 if (wp.getName().equalsIgnoreCase(name)) {
                     COMMAND_SET_PERMISSION_NAME_DUPLICATE.send(p);
@@ -444,14 +433,14 @@ public class WaypointsCommand implements CommandExecutor {
 
     public static boolean createFolder(Player p, String name) {
         WPPlayerData data = WPPlayerData.getPlayerData(p.getUniqueId());
-        if (!WPConfig.allowDuplicateFolderPrivateNames()) {
+        if (!WPConfig.getGeneralConfig().getDuplicateConfig().isAllowDuplicateNamesFolderPrivate()) {
             if (data.findFolder(f -> f.getName().equalsIgnoreCase(name)).isPresent()) {
                 COMMAND_CREATE_FOLDER_NAME_DUPLICATE.send(p);
                 return false;
             }
         }
-        if (WPConfig.getFolderLimit() > 0) {
-            if (data.getFolders().size() >= WPConfig.getWaypointLimit()) {
+        if (WPConfig.getGeneralConfig().getFolderLimit() > 0) {
+            if (data.getFolders().size() >= WPConfig.getGeneralConfig().getFolderLimit()) {
                 COMMAND_CREATE_FOLDER_LIMIT_REACHED.send(p);
                 return false;
             }
