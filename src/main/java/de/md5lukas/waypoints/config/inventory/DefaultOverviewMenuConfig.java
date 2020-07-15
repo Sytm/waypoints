@@ -37,7 +37,7 @@ public class DefaultOverviewMenuConfig {
         cycleSortItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("cycleSortItem")));
         deselectItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("deselectItem")));
         toggleGlobalsItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("toggleGlobalsItem")));
-        setWaypointItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("setWaypointsItem")));
+        setWaypointItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("setWaypointItem")));
         createFolderItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("createFolderItem")));
     }
 
