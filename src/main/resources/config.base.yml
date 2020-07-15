@@ -80,29 +80,6 @@ general:
       # Allow renaming folders
     folders:
       private: true
-  # Translate world names into something more readable
-  worldNameAliases:
-    # Specify the language here. Examples for other languages: de, at etc.
-    en:
-      # Here the internal world name is mapped to a readable version
-      world: 'Overworld'
-      world_nether: 'Nether'
-      world_the_end: 'The End'
-    de:
-      world: 'Welt'
-      world_nether: 'Nether'
-      world_the_end: 'Das Ende'
-
-inventory:
-  # Maximum line length of descriptions after a linebreak is inserted automatically
-  maxDescriptionLineLength: 30
-  # Select the items for the yes / no menu
-  confirmMenu:
-    # The item in the top middle
-    descriptionItem: CHEST
-    yesItem: GREEN_WOOL
-    noItem: RED_WOOL
-    backgroundItem: GRAY_STAINED_GLASS_PANE
   customItem:
     # If true players can set custom items for their waypoints and folders
     enabled: true
@@ -117,25 +94,58 @@ inventory:
         - AIR
         - BARRIER
         - BEDROCK
-  generalItems:
+  # Translate world names into something more readable
+  worldNameAliases:
+    # Specify the language here. Examples for other languages: de, at etc.
+    en:
+      # Here the internal world name is mapped to a readable version
+      world: 'Overworld'
+      world_nether: 'Nether'
+      world_the_end: 'The End'
+    de:
+      world: 'Welt'
+      world_nether: 'Nether'
+      world_the_end: 'Das Ende'
+
+inventory:
+  general:
+    # Maximum line length of descriptions after a linebreak is inserted automatically
+    maxDescriptionLineLength: 30
     # Item to go to the previous page
     previousItem: ARROW
     # Item to go to the next page
     nextItem: ARROW
     # Item to go to the previous "window", for example going back from a waypoint to the overview
     backItem: BARRIER
-  overview:
+  # Select the items for the yes / no menu
+  confirmMenu:
+    # The item in the top middle
+    descriptionItem: CHEST
+    yesItem: GREEN_WOOL
+    noItem: RED_WOOL
     backgroundItem: GRAY_STAINED_GLASS_PANE
-    # The item that is used to cycle through all the different sort modes
-    cycleSortItem: HOPPER
-    # The item to deselect the selected waypoints
-    deselectItem: MILK_BUCKET
-    # The item to toggle the global folders on and off
-    toggleGlobalsItem: CHEST
-    # The item to click to set a new waypoint
-    setWaypointItem: TORCH
-    # The item to click to create a new folder
-    createFolderItem: WRITABLE_BOOK
+  overviews:
+    # This is the overview that appears when opening the menu without clicking anything
+    default:
+      backgroundItem: GRAY_STAINED_GLASS_PANE
+      # The item that is used to cycle through all the different sort modes
+      cycleSortItem: HOPPER
+      # The item to deselect the selected waypoints
+      deselectItem: MILK_BUCKET
+      # The item to toggle the global folders on and off
+      toggleGlobalsItem: CHEST
+      # The item to click to set a new waypoint
+      setWaypointItem: TORCH
+      # The item to click to create a new folder
+      createFolderItem: WRITABLE_BOOK
+    # This is for the folder item for public waypoints
+    public:
+      item: BOOK
+      backgroundItem: GREEN_STAINED_GLASS_PANE
+    # This is for the folder item for permission waypoints
+    permission:
+      item: BOOK
+      backgroundItem: RED_STAINED_GLASS_PANE
 
   # When you want to create a new waypoint via the anvil gui, and have permissions to create more than one type of waypoints,
   # a inventory where you can select the type will be opened
@@ -158,8 +168,6 @@ inventory:
 
   selectBeaconColor:
     backgroundItem: GRAY_STAINED_GLASS_PANE
-    previousItem: ARROW
-    nextItem: ARROW
 
   # The "item" is the item used as an icon for the waypoint
   # The "selectItem" is the item used to select a waypoint
@@ -203,12 +211,6 @@ inventory:
       backgroundItem: GRAY_STAINED_GLASS_PANE
       deleteItem: LAVA_BUCKET
       renameItem: NAME_TAG
-    public:
-      item: BOOK
-      backgroundItem: GREEN_STAINED_GLASS_PANE
-    permission:
-      item: BOOK
-      backgroundItem: RED_STAINED_GLASS_PANE
 
 displays:
   misc:

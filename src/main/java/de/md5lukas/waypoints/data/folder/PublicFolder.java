@@ -20,10 +20,10 @@ package de.md5lukas.waypoints.data.folder;
 
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
+import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.waypoint.PublicWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.gui.GUIType;
-import de.md5lukas.waypoints.config.WPConfig;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -50,7 +50,7 @@ public class PublicFolder extends Folder {
 
     @Override
     public Material getMaterial() {
-        return WPConfig.inventory().getFolderPrivateDefaultItem();
+        return WPConfig.getInventoryConfig().getPublicWaypointMenuConfig().getItem();
     }
 
     @Override

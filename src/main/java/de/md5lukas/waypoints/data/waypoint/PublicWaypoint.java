@@ -43,7 +43,7 @@ public class PublicWaypoint extends Waypoint {
 
     @Override
     public Material getMaterial() {
-        return material == null ? WPConfig.inventory().getWaypointPublicItem() : material;
+        return material == null ? WPConfig.getInventoryConfig().getPublicWaypointMenuConfig().getItem() : material;
     }
 
     @Override

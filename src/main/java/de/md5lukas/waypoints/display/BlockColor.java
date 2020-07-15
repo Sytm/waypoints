@@ -71,7 +71,8 @@ public enum BlockColor {
         if (this == CLEAR) {
             itemMat = Material.GLASS;
         }
-        return new ItemBuilder(itemMat).name(displayName.getRaw(p)).lore(description.getRaw(p), WPConfig.inventory().getMaxDescriptionLineLength()).make();
+        return new ItemBuilder(itemMat).name(displayName.getRaw(p)).lore(description.getRaw(p), WPConfig.getInventoryConfig().getMaxDescriptionLineLength())
+                .make();
     }
 
     public BlockData getBlockData() {

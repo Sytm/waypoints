@@ -87,7 +87,7 @@ public class WaypointsCommand implements CommandExecutor {
                         COMMAND_HELP_COMPASS.send(p);
                     if (p.hasPermission("waypoints.other"))
                         COMMAND_HELP_OTHER.send(p);
-                    if (WPConfig.inventory().isCustomItemEnabled())
+                    if (WPConfig.getGeneralConfig().isCustomItemEnabled())
                         COMMAND_HELP_UPDATE_ITEM.send(p);
                     break;
                 }
@@ -192,7 +192,7 @@ public class WaypointsCommand implements CommandExecutor {
                     break;
                 }
                 case "updateitem": {
-                    if (!WPConfig.inventory().isCustomItemEnabled()) {
+                    if (!WPConfig.getGeneralConfig().isCustomItemEnabled()) {
                         COMMAND_UPDATE_ITEM_DISABLED.send(p);
                         return true;
                     }
@@ -206,7 +206,7 @@ public class WaypointsCommand implements CommandExecutor {
                     }
                     Material mat = p.getInventory().getItemInMainHand().getType();
                     UUID uuid = UUID.fromString(args[2]);
-                    if (!WPConfig.inventory().isValidCustomItem(mat)) {
+                    if (!WPConfig.getGeneralConfig().isValidCustomItem(mat)) {
                         COMMAND_UPDATE_ITEM_NOT_A_VALID_ITEM.send(p);
                         return true;
                     }

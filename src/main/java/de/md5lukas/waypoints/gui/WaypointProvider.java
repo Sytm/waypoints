@@ -59,7 +59,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static de.md5lukas.waypoints.Messages.*;
-import static de.md5lukas.waypoints.config.WPConfig.inventory;
+import static de.md5lukas.waypoints.config.WPConfig.getInventoryConfig;
 
 public class WaypointProvider implements InventoryProvider {
 
@@ -289,12 +289,13 @@ public class WaypointProvider implements InventoryProvider {
         overviewPattern.attach('s', UNIQUE);
         SlotPos sortCyclePos = GeneralHelper.find(overviewPattern, ci -> ci == UNIQUE);
         final AtomicReference<Runnable> cycleUpdate = new AtomicReference<>();
-        cycleUpdate.set(() -> contents.set(sortCyclePos, ClickableItem.from(getSortCycleItem(inventory().getOverviewCycleSortItem()), click -> {
-            cycleSortMode();
-            updateOverview();
-            cycleUpdate.get().run();
-        })));
-        overviewPattern.attach('s', ClickableItem.from(getSortCycleItem(inventory().getOverviewCycleSortItem()), click -> {
+        cycleUpdate.set(() -> contents
+                .set(sortCyclePos, ClickableItem.from(getSortCycleItem(getInventoryConfig().getDefaultOverviewMenuConfig().getCycleSortItem()), click -> {
+                    cycleSortMode();
+                    updateOverview();
+                    cycleUpdate.get().run();
+                })));
+        overviewPattern.attach('s', ClickableItem.from(getSortCycleItem(getInventoryConfig().getDefaultOverviewMenuConfig().getCycleSortItem()), click -> {
             cycleSortMode();
             updateOverview();
             cycleUpdate.get().run();
@@ -369,15 +370,18 @@ public class WaypointProvider implements InventoryProvider {
 
     private void showConfirm(Messages descriptionDisplayName, Messages descriptionDescription, Messages yesDisplayName, Messages yesDescription,
             Messages noDisplayName, Messages noDescription, Consumer<Boolean> result) {
-        confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuBackgroundItem())
+        confirmPattern.setDefault(ClickableItem.empty(new ItemBuilder(getInventoryConfig().getConfirmMenuConfig().getBackgroundItem())
                 .name(INVENTORY_CONFIRM_MENU_BACKGROUND_DISPLAY_NAME.getRaw(viewer)).lore(INVENTORY_CONFIRM_MENU_BACKGROUND_DESCRIPTION.asList(viewer))
                 .make()));
-        confirmPattern.attach('t', ClickableItem.empty(new ItemBuilder(inventory().getConfirmMenuDescriptionItem()).name(descriptionDisplayName.getRaw(viewer))
-                .lore(descriptionDescription.asList(viewer)).make()));
-        confirmPattern.attach('n', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuNoItem()).name(noDisplayName.getRaw(viewer))
-                .lore(noDescription.asList(viewer)).make(), click -> result.accept(false)));
-        confirmPattern.attach('y', ClickableItem.from(new ItemBuilder(inventory().getConfirmMenuYesItem()).name(yesDisplayName.getRaw(viewer))
-                .lore(yesDescription.asList(viewer)).make(), click -> result.accept(true)));
+        confirmPattern.attach('t', ClickableItem
+                .empty(new ItemBuilder(getInventoryConfig().getConfirmMenuConfig().getDescriptionItem()).name(descriptionDisplayName.getRaw(viewer))
+                        .lore(descriptionDescription.asList(viewer)).make()));
+        confirmPattern
+                .attach('n', ClickableItem.from(new ItemBuilder(getInventoryConfig().getConfirmMenuConfig().getNoItem()).name(noDisplayName.getRaw(viewer))
+                        .lore(noDescription.asList(viewer)).make(), click -> result.accept(false)));
+        confirmPattern
+                .attach('y', ClickableItem.from(new ItemBuilder(getInventoryConfig().getConfirmMenuConfig().getYesItem()).name(yesDisplayName.getRaw(viewer))
+                        .lore(yesDescription.asList(viewer)).make(), click -> result.accept(true)));
         contents.fillPattern(confirmPattern);
     }
 

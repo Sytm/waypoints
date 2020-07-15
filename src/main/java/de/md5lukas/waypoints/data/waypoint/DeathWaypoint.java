@@ -44,7 +44,7 @@ public class DeathWaypoint extends Waypoint {
 
     @Override
     public Material getMaterial() {
-        return WPConfig.inventory().getWaypointDeathItem();
+        return WPConfig.getInventoryConfig().getDeathWaypointMenuConfig().getItem();
     }
 
     @Override

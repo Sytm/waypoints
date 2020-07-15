@@ -21,6 +21,7 @@ package de.md5lukas.waypoints.config.general;
 import de.md5lukas.commons.language.Languages;
 import de.md5lukas.waypoints.Messages;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -28,8 +29,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class GeneralConfig {
 
@@ -40,6 +43,10 @@ public class GeneralConfig {
     private final RenamingConfig renamingConfig;
     private final DuplicateNameConfig duplicateConfig;
     private final TeleportConfig teleportConfig;
+
+    private boolean customItemEnabled;
+    private boolean customItemFilterIsBlacklist;
+    private List<Material> customItemFilter;
 
     private final Map<String, Map<String, String>> worldNameAliases;
 
@@ -62,6 +69,12 @@ public class GeneralConfig {
         renamingConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("allowRenaming")));
         duplicateConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("allowDuplicateNames")));
         teleportConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("teleport")));
+
+        customItemEnabled = cfg.getBoolean("customItem.enabled");
+        customItemFilterIsBlacklist = "blacklist".equalsIgnoreCase(cfg.getString("customItem.filter.useAs"));
+        customItemFilter =
+                cfg.getStringList("inventory.customItem.filter.list").stream().map(Material::matchMaterial).filter(Objects::nonNull)
+                        .collect(Collectors.toList());
 
         worldNameAliases.clear();
         for (String lang : Objects.requireNonNull(cfg.getConfigurationSection("worldNameAliases")).getKeys(false)) {
@@ -99,6 +112,14 @@ public class GeneralConfig {
 
     public TeleportConfig getTeleportConfig() {
         return teleportConfig;
+    }
+
+    public boolean isCustomItemEnabled() {
+        return customItemEnabled;
+    }
+
+    public boolean isValidCustomItem(Material material) {
+        return customItemEnabled && customItemFilterIsBlacklist != customItemFilter.contains(material);
     }
 
     @Deprecated

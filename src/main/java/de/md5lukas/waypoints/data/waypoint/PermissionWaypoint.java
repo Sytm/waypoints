@@ -47,7 +47,7 @@ public class PermissionWaypoint extends Waypoint {
 
     @Override
     public Material getMaterial() {
-        return material == null ? WPConfig.inventory().getWaypointPermissionItem() : material;
+        return material == null ? WPConfig.getInventoryConfig().getPermissionWaypointMenuConfig().getItem() : material;
     }
 
     @Override
