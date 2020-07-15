@@ -111,7 +111,8 @@
             <resource>
                 <directory>./</directory>
                 <includes>
-                    <include>LICENSE.txt</include>
+                    <include>LICENSE</include>
+                    <include>THIRD-PARTY.md</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>
