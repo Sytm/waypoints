@@ -1,0 +1,458 @@
+"general":
+  "notAPlayer": "$prefix$ &cYou must be a player to use this command."
+  "folderNotFound": "$prefix$ &cA folder with that id could not be found."
+  "noPermission": "$prefix$ &cYou don't have permissions to do this."
+  "notAValidUuid": "$prefix$ &cThe id provided is not in a valid format."
+  "waypointNotFound": "$prefix$ &cA waypoint with that id could not be found."
+"chatAction":
+  "updateItem":
+    "waypoint":
+      "private": "$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon."
+      "public": "$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon."
+      "permission": "$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon."
+    "folder":
+      "private": "$prefix$ &7Click here when you are holding the item you want to use as the new folder icon."
+"chat":
+  "duration":
+    "hours": "hours"
+    "seconds": "seconds"
+    "hour": "hour"
+    "minutes": "minutes"
+    "days": "days"
+    "day": "day"
+    "minute": "minute"
+    "second": "second"
+  "teleport":
+    "standStillNotice": "$prefix$ &7You need to stand still for &e%timeRequired%&7 to be able to teleport."
+    "cancelledMove": "$prefix$ &cYour teleportation has been cancelled because you moved."
+    "onCooldown": "$prefix$ &cYou cannot teleport right now because it is on cooldown. You can teleport again in &e%remainingTime%&c."
+    "notEnough":
+      "xpPoints": "$prefix$ &cYou do not have enough xp points to perform this teleportation."
+      "balance": "$prefix$ &cYou do not have enough balance to perform this teleportation."
+      "xpLevels": "$prefix$ &cYou do not have enough xp levels to perform this teleportation."
+"display":
+  "wrongWorld": "&cYou are currently in the world &a%currentworld%&c, but the waypoint is in &a%correctworld%"
+"inventory":
+  "waypoint":
+    "private":
+      "select":
+        "displayName": "&eSelect waypoint"
+        "description": "&7Click here to make this waypoint your active one"
+      "moveToFolder":
+        "displayName": "&eMove waypoint into a folder"
+        "description": "&7Put the waypoint into a folder to group it, or remove it from the current folder"
+      "selectBeaconColor":
+        "displayName": "&7Change the color of the beacon beam"
+        "description": "&eChange the color of the beacon beam, if this waypoint has been selected"
+      "rename":
+        "displayName": "&eRename waypoint"
+        "description": "&7Click here to receive a message, which you can click to receive the rename command"
+      "background":
+        "displayName": "&0-"
+        "description": "&0-"
+      "displayName": "&5%name%"
+      "teleport":
+        "displayName": "&eTeleport to waypoint"
+        "description": "&0-"
+        "payment":
+          "xpPoints":
+            "description": "&7You need &e%points%&7 experience points to perform this teleportation"
+          "xpLevels":
+            "description": "&7You need &e%levels%&7 experience levels to perform this teleportation"
+          "vault":
+            "description": "&7You need &e%money%&7€ to perform this teleportation"
+      "description": |
+        &7World: &6%world%
+        &7X: &6%blockX%
+        &7Y: &6%blockY%
+        &7Z: &6%blockZ%
+        &7Distance: &6%distance%
+      "delete":
+        "displayName": "&cDelete the waypoint"
+        "description": "&0-"
+    "public":
+      "select":
+        "displayName": "&eSelect waypoint"
+        "description": "&7Click here to make this waypoint your active one"
+      "selectBeaconColor":
+        "displayName": "&7Change the color of the beacon beam"
+        "description": "&eChange the color of the beacon beam, if this waypoint has been selected"
+      "rename":
+        "displayName": "&eRename waypoint"
+        "description": "&7Click here to receive a message, which you can click to receive the rename command"
+      "background":
+        "displayName": "&0-"
+        "description": "&0-"
+      "displayName": "&b%name%"
+      "teleport":
+        "displayName": "&eTeleport to waypoint"
+        "description": "&0-"
+        "payment":
+          "xpPoints":
+            "description": "&7You need &e%points%&7 experience points to perform this teleportation"
+          "xpLevels":
+            "description": "&7You need &e%levels%&7 experience levels to perform this teleportation"
+          "vault":
+            "description": "&7You need &e%money%&7€ to perform this teleportation"
+      "description": |
+        &7World: &6%world%
+        &7X: &6%blockX%
+        &7Y: &6%blockY%
+        &7Z: &6%blockZ%
+        &7Distance: &6%distance%
+      "delete":
+        "displayName": "&cDelete the waypoint"
+        "description": "&0-"
+    "distance":
+      "otherWorld": "?"
+    "death":
+      "select":
+        "displayName": "&eSelect waypoint"
+        "description": "&7Click here to make this waypoint your active one"
+      "displayName": "&cDeath-Waypoint"
+      "background":
+        "displayName": "&0-"
+        "description": "&0-"
+      "teleport":
+        "displayName": "&eTeleport to waypoint"
+        "description": "&0-"
+        "payment":
+          "xpPoints":
+            "description": "&7You need &e%points%&7 experience points to perform this teleportation"
+          "xpLevels":
+            "description": "&7You need &e%levels%&7 experience levels to perform this teleportation"
+          "vault":
+            "description": "&7You need &e%money%&7€ to perform this teleportation"
+      "description": |
+        &7World: &6%world%
+        &7X: &6%blockX%
+        &7Y: &6%blockY%
+        &7Z: &6%blockZ%
+        &7Distance: &6%distance%
+    "permission":
+      "select":
+        "displayName": "&eSelect waypoint"
+        "description": "&7Click here to make this waypoint your active one"
+      "rename":
+        "displayName": "&eRename waypoint"
+        "description": "&7Click here to receive a message, which you can click to receive the rename command"
+      "selectBeaconColor":
+        "displayName": "&7Change the color of the beacon beam"
+        "description": "&eChange the color of the beacon beam, if this waypoint has been selected"
+      "background":
+        "displayName": "&0-"
+        "description": "&0-"
+      "displayName": "&d%name%"
+      "teleport":
+        "displayName": "&eTeleport to waypoint"
+        "description": "&0-"
+        "payment":
+          "xpPoints":
+            "description": "&7You need &e%points%&7 experience points to perform this teleportation"
+          "xpLevels":
+            "description": "&7You need &e%levels%&7 experience levels to perform this teleportation"
+          "vault":
+            "description": "&7You need &e%money%&7€ to perform this teleportation"
+      "description": |
+        &7World: &6%world%
+        &7X: &6%blockX%
+        &7Y: &6%blockY%
+        &7Z: &6%blockZ%
+        &7Distance: &6%distance%
+      "delete":
+        "displayName": "&cDelete the waypoint"
+        "description": "&0-"
+  "overview":
+    "setWaypoint":
+      "displayName": "&eSet new waypoints"
+      "description": "&0-"
+    "background":
+      "displayName": "&0-"
+      "description": "&0-"
+    "deselect":
+      "displayName": "&eDeselect active waypoint"
+      "description": "&7Click here, when you have reached the waypoint and don't need the direction indicators anymore"
+    "toggleGlobals":
+      "hidden":
+        "displayName": "&eGlobal waypoints are hidden"
+        "description": "&7Click here to show them"
+      "shown":
+        "displayName": "&eGlobal waypoints are visible"
+        "description": "&7Click here to hide them"
+    "createFolder":
+      "displayName": "&eCreate new folder"
+      "description": "&0-"
+  "general":
+    "next":
+      "displayName": "&eNext page"
+      "description": "&0-"
+    "previous":
+      "displayName": "&ePrevious page"
+      "description": "&0-"
+    "back":
+      "displayName": "&eGo back"
+      "description": "&0-"
+  "folder":
+    "private":
+      "rename":
+        "displayName": "&eRename folder"
+        "description": "&7Click here to receive a message, which you can click to receive the rename command"
+      "background":
+        "displayName": "&0-"
+        "description": "&0-"
+      "displayName": "&b%name%"
+      "description": "&7Waypoints in this folder: &6%amount%"
+      "delete":
+        "displayName": "&4Delete folder"
+        "description": "&0-"
+    "public":
+      "background":
+        "displayName": "&0-"
+        "description": "&0-"
+      "displayName": "&bGlobal waypoints"
+      "description": |
+        &7Waypoints in here are available to everyone
+
+        &7Currently &6%amount% &7waypoints are available
+    "permission":
+      "background":
+        "displayName": "&0-"
+        "description": "&0-"
+      "displayName": "&dPermission waypoints"
+      "description": |
+        &7Waypoints in here are only available to you,
+        &7if you have certain permissions
+
+        &6%amount% &7waypoints are available for you
+  "cycleSort":
+    "mode":
+      "createdAt":
+        "ascending": "Created (Ascending)"
+        "descending": "Created (Descending)"
+      "name":
+        "ascending": "Name (Ascending)"
+        "descending": "Name (Descending) "
+      "type": "Type"
+    "inactive": "&8%name%"
+    "displayName": "&eSort mode"
+    "active": "&6%name%"
+    "description": "&eClick here to cycle through the different sort modes"
+  "selectBeaconColor":
+    "lightGray":
+      "displayName": "&7Light Gray"
+      "description": "&0-"
+    "magenta":
+      "displayName": "&dMagenta"
+      "description": "&0-"
+    "pink":
+      "displayName": "&dPink"
+      "description": "&0-"
+    "green":
+      "displayName": "&2Green"
+      "description": "&0-"
+    "lightBlue":
+      "displayName": "&9Light Blue"
+      "description": "&0-"
+    "lime":
+      "displayName": "&aLime"
+      "description": "&0-"
+    "clear":
+      "displayName": "&fClear"
+      "description": "&0-"
+    "black":
+      "displayName": "&0Black"
+      "description": "&0-"
+    "yellow":
+      "displayName": "&eYellow"
+      "description": "&0-"
+    "brown":
+      "displayName": "&6Brown"
+      "description": "&0-"
+    "cyan":
+      "displayName": "&bCyan"
+      "description": "&0-"
+    "orange":
+      "displayName": "&6Orange"
+      "description": "&0-"
+    "red":
+      "displayName": "&4Red"
+      "description": "&0-"
+    "gray":
+      "displayName": "&8Gray"
+      "description": "&0-"
+    "blue":
+      "displayName": "&1Blue"
+      "description": "&0-"
+    "white":
+      "displayName": "&fWhite"
+      "description": "&0-"
+    "background":
+      "displayName": "&0-"
+      "description": "&0-"
+    "purple":
+      "displayName": "&5Purple"
+      "description": "&0-"
+  "selectFolder":
+    "background":
+      "displayName": "&0-"
+      "description": "&0-"
+    "noFolder":
+      "displayName": "&eNo folder"
+      "description": "&7Move this waypoint back to the main overview"
+  "anvilGUI":
+    "enterNameHere": "Enter name here"
+    "enterPermissionHere": "Enter permission here"
+  "confirmMenu":
+    "waypoint":
+      "private":
+        "delete":
+          "no":
+            "displayName": "&7&lNo&7, don't delete waypoint"
+            "description": "&0-"
+          "yes":
+            "displayName": "&7&lYes&7, delete waypoint"
+            "description": "&0-"
+          "title":
+            "displayName": "&7Are you sure you want to delete your waypoint?"
+            "description": "&0-"
+      "public":
+        "delete":
+          "no":
+            "displayName": "&7&lNo&7, don't delete waypoint"
+            "description": "&0-"
+          "yes":
+            "displayName": "&7&lYes&7, delete waypoint"
+            "description": "&0-"
+          "title":
+            "displayName": "&7Are you sure you want to delete this public waypoint?"
+            "description": "&0-"
+      "permission":
+        "delete":
+          "no":
+            "displayName": "&7&lNo&7, don't delete waypoint"
+            "description": "&0-"
+          "yes":
+            "displayName": "&7&lYes&7, delete waypoint"
+            "description": "&0-"
+          "title":
+            "displayName": "&7Are you sure want to delete this permission waypoint?"
+            "description": "&0-"
+    "folder":
+      "private":
+        "delete":
+          "no":
+            "displayName": "&7&lNo&7, don't delete waypoint"
+            "description": "&0-"
+          "yes":
+            "displayName": "&7&lYes&7, delete folder"
+            "description": "&0-"
+          "title":
+            "displayName": "&7Are you sure you want to delete your folder?"
+            "description": "&0-"
+    "background":
+      "displayName": "&0-"
+      "description": "&0-"
+  "title":
+    "other": "&6%name%'s &ewaypoints"
+    "own": "&eWaypoints"
+  "selectWaypointType":
+    "private":
+      "displayName": "&eA private Waypoint"
+      "description": "&0-"
+    "public":
+      "displayName": "&eA public Waypoint"
+      "description": "&0-"
+    "background":
+      "displayName": "&0-"
+      "description": "&0-"
+    "permission":
+      "displayName": "&eA permission Waypoint"
+      "description": "&0-"
+    "title":
+      "displayName": "What kind of waypoint would you like to set?"
+      "description": "&0-"
+"command":
+  "help":
+    "help": "&7 - &e/waypoints &7&l|&r&7 Show this help"
+    "other": "&7 - &e/waypoints other <Name|UUID> &7&l|&r&7 View the waypoints of another player"
+    "set":
+      "private": "&7 - &e/waypoints set <Name> &7&l|&r&7 Create a new waypoint"
+      "public": "&7 - &e/waypoints setPublic <Name> &7&l|&r&7 Create a new public waypoint"
+      "permission": "&7 - &e/waypoints setPermission <Permission> <Name> &7&l|&r&7 Create a new permission waypoint"
+    "compass": "&7 - &e/waypoints compass &7&l|&r&7 Sets the new default compass target, when set to \"ingame\""
+    "updateItem": "&7 - &e/waypoints updateItem <Waypoint|Folder> <ID> &7&l|&r&7 This command is used to update the icons of waypoints and folders"
+    "title": "$prefix$ &7&nHelp"
+  "other":
+    "playerNameNotFound": "$prefix$ &cA player with that name could not be found."
+    "wrongUsage": |
+      $prefix$ &cTo view the waypoints of another player you need to provide their name or uuid. Example:
+      &a/waypoints other Sytm
+      &a/waypoints other 68f22021-732e-4afe-9cf5-6906f07a41db
+    "uuidNotFound": "$prefix$ &cA player with that uuid could not be found."
+    "notAValidUuidOrPlayerName": "$prefix$ &cThe provided identifier is neither a Minecraft username nor a valid uuid."
+  "set":
+    "private":
+      "success": "$prefix$ &7The waypoint has been set successfully."
+      "wrongUsage": |
+        $prefix$ &cYou need to provide a name to create a new waypoint. Example:
+        &a/waypoints set My Home
+      "nameDuplicate": "$prefix$ &cWaypoints with duplicate names have been disabled."
+      "limitReached": "$prefix$ &cYou have reached your personal limit of waypoints you can set."
+    "public":
+      "success": "$prefix$ &7The public waypoint has been set successfully."
+      "wrongUsage": |
+        $prefix$ &cYou need to provide a name to create a new public waypoint. Example:
+        &a/waypoints setPublic Spawn
+      "nameDuplicate": "$prefix$ &cPublic waypoints with duplicate names have been disabled."
+    "permission":
+      "success": "$prefix$ &7Permission waypoint has been set successfully."
+      "wrongUsage": |
+        $prefix$ &cYou need to provide a permission and name to create a new permission waypoint. Example:
+        &a/waypoints setPermission ranks.vip.secretHideout Secret Hideout
+      "nameDuplicate": "$prefix$ &cPermission waypoints with duplicate names have been disabled."
+  "rename":
+    "waypoint":
+      "private":
+        "nameDuplicate": "$prefix$ &cDuplicate names for waypoints have been disabled."
+        "disabled": "$prefix$ &cRenaming private waypoints has been disabled."
+      "public":
+        "nameDuplicate": "$prefix$ &cDuplicate names for public waypoints have been disabled."
+        "disabled": "$prefix$ &cRenaming public waypoints has been disabled."
+      "success": "$prefix$ &7The waypoint has been renamed successfully."
+      "permission":
+        "nameDuplicate": "$prefix$ &cDuplicate names for permission waypoints have been disabled."
+        "disabled": "$prefix$ &cRenaming permission waypoints has been disabled."
+    "folder":
+      "success": "$prefix$ &7The folder has been renamed successfully."
+      "nameDuplicate": "$prefix$ &cDuplicate names for folders have been disabled."
+      "disabled": "$prefix$ &cRenaming folders has been disabled."
+    "wrongUsage": |
+      $prefix$ &cYou need to provide a new name and the type of what you want to rename. Example:
+      &a/waypoints rename privateWaypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35 Nether Portal No. 2
+      &a/waypoints rename folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870 Mines
+    "disabled": "$prefix$ &cRenaming has been disabled."
+  "compass":
+    "setSuccess": "$prefix$ &7The new default compass target has been set."
+    "disabled": "$prefix$ &cThis method to set the default compass target has not been enabled in the config."
+    "locked": "$prefix$ &cThis command has been disabled in the config."
+  "notFound": "$prefix$ &cThe command you entered was not found"
+  "updateItem":
+    "waypoint":
+      "success": "$prefix$ &7The item of the waypoint has been updated successfully."
+    "folder":
+      "success": "$prefix$ &7The item of the folder has been updated successfully."
+    "wrongUsage": |
+      $prefix$ &cTo update the item you need to specify whether its a folder or waypoint and provide the id of it. Example:
+      &a/waypoints updateItem waypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35
+      &a/waypoints updateItem folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870
+    "notAValidItem": "$prefix$ &cThe item you are trying to use is not allowed."
+    "disabled": "$prefix$ &cUpdating items has been disabled."
+  "createFolder":
+    "success": "$prefix$ &7Folder created successfully."
+    "wrongUsage": |
+      $prefix$ &cYou need to provide a name to create a new folder. Example:
+      &a/waypoints createFolder Nether portals
+    "nameDuplicate": "$prefix$ &cFolders with duplicate names have been disabled."
+    "limitReached": "$prefix$ &cYou have reached your personal limit of folders you can create."
+"chatWarning":
+  "worldTranslationsMissing": "$prefix$ &cSome world name translations are missing."

@@ -25,8 +25,6 @@ import java.util.Objects;
 
 public class InventoryConfig {
 
-    private int maxDescriptionLineLength;
-
     private Material previousItem;
     private Material nextItem;
     private Material backItem;
@@ -67,7 +65,6 @@ public class InventoryConfig {
     }
 
     public void load(ConfigurationSection cfg) {
-        maxDescriptionLineLength = cfg.getInt("general.maxDescriptionLineLength");
         previousItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("general.previousItem")));
         nextItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("general.nextItem")));
         backItem = Material.matchMaterial(Objects.requireNonNull(cfg.getString("general.backItem")));
@@ -86,10 +83,6 @@ public class InventoryConfig {
         permissionWaypointMenuConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("waypoints.permission")));
 
         privateFolderMenuConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("folders.private")));
-    }
-
-    public int getMaxDescriptionLineLength() {
-        return maxDescriptionLineLength;
     }
 
     public Material getPreviousItem() {

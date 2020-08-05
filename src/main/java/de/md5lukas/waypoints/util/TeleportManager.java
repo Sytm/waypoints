@@ -32,13 +32,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static de.md5lukas.waypoints.Messages.*;
-
-;
+import static de.md5lukas.waypoints.Waypoints.getTranslations;
 
 public class TeleportManager {
 
-    private static Map<UUID, BukkitTask> waitingForTeleport = new HashMap<>();
+    private static final Map<UUID, BukkitTask> waitingForTeleport = new HashMap<>();
 
     public static void removeWaitingPlayer(Player player) {
         BukkitTask task = waitingForTeleport.remove(player.getUniqueId());
@@ -49,7 +47,7 @@ public class TeleportManager {
     public static void playerMoved(Player player) {
         if (WPConfig.getGeneralConfig().getTeleportConfig().getStandStillTime() > 0 && waitingForTeleport.containsKey(player.getUniqueId())) {
             waitingForTeleport.remove(player.getUniqueId()).cancel();
-            CHAT_TELEPORT_CANCELLED_MOVE.send(player);
+            getTranslations().CHAT_TELEPORT_CANCELLED_MOVE.send(player);
         }
     }
 
@@ -59,8 +57,8 @@ public class TeleportManager {
                 return;
             player.closeInventory();
             if (WPConfig.getGeneralConfig().getTeleportConfig().getStandStillTime() > 0) {
-                player.sendMessage(CHAT_TELEPORT_STAND_STILL_NOTICE.getRaw(player)
-                        .replace("%timeRequired%", TimeHelper.pluralizeSeconds(player, WPConfig.getGeneralConfig().getTeleportConfig().getStandStillTime())));
+                getTranslations().CHAT_TELEPORT_STAND_STILL_NOTICE.send(player, "%timeRequired%",
+                        TimeHelper.pluralizeSeconds(player, WPConfig.getGeneralConfig().getTeleportConfig().getStandStillTime()));
                 BukkitTask task = Bukkit.getScheduler().runTaskLater(Waypoints.instance(), () -> {
                     waitingForTeleport.remove(player.getUniqueId());
                     teleportPlayer(player, playerData, waypoint);
@@ -70,21 +68,21 @@ public class TeleportManager {
                 teleportPlayer(player, playerData, waypoint);
             }
         } else {
-            player.sendMessage(CHAT_TELEPORT_ON_COOLDOWN.getRaw(player)
-                    .replace("%remainingTime%", TimeHelper.formatDuration(player, playerData.remainingTeleportCooldown())));
+            getTranslations().CHAT_TELEPORT_ON_COOLDOWN
+                    .send(player, "%remainingTime%", TimeHelper.formatDuration(player, playerData.remainingTeleportCooldown()));
         }
     }
 
     private static void sendPlayerNotEnoughCurrency(Player player, Waypoint waypoint) {
         switch (waypoint.getTeleportSettings().getPaymentMethod()) {
             case XP_POINTS:
-                CHAT_TELEPORT_NOT_ENOUGH_XP_POINTS.send(player);
+                getTranslations().CHAT_TELEPORT_NOT_ENOUGH_XP_POINTS.send(player);
                 break;
             case XP_LEVELS:
-                CHAT_TELEPORT_NOT_ENOUGH_XP_LEVELS.send(player);
+                getTranslations().CHAT_TELEPORT_NOT_ENOUGH_XP_LEVELS.send(player);
                 break;
             case VAULT:
-                CHAT_TELEPORT_NOT_ENOUGH_BALANCE.send(player);
+                getTranslations().CHAT_TELEPORT_NOT_ENOUGH_BALANCE.send(player);
                 break;
             default:
                 throw new IllegalArgumentException("The payment method of the waypoint " + waypoint.getName() + " is null");

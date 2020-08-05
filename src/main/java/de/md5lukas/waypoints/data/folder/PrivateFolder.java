@@ -18,8 +18,11 @@
 
 package de.md5lukas.waypoints.data.folder;
 
+import de.md5lukas.i18n.translations.ItemTranslation;
+import de.md5lukas.i18n.translations.ItemTranslationTAR;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
+import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.waypoint.PrivateWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
@@ -29,9 +32,6 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PRIVATE_DESCRIPTION;
-import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PRIVATE_DISPLAY_NAME;
 
 public class PrivateFolder extends Folder {
 
@@ -54,14 +54,13 @@ public class PrivateFolder extends Folder {
     }
 
     @Override
-    public String getDisplayName(Player player) {
-        return INVENTORY_FOLDER_PRIVATE_DISPLAY_NAME.getRaw(player).replace("%name%", getName());
+    public ItemTranslation getItemTranslation() {
+        return Waypoints.getITranslations().FOLDER_PRIVATE;
     }
 
     @Override
-    public List<String> getDescription(Player player) {
-        return INVENTORY_FOLDER_PRIVATE_DESCRIPTION.asList(player).replace(
-                "%amount%", Integer.toString(waypoints.size()));
+    public ItemTranslationTAR getItemTranslationTAR(Player player) {
+        return new ItemTranslationTAR().setDescription("%amount%", Integer.toString(waypoints.size()));
     }
 
     @Override

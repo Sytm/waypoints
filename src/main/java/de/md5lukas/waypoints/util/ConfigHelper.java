@@ -1,6 +1,6 @@
 /*
  *     Waypoints2, A plugin for spigot to add waypoints functionality
- *     Copyright (C) 2020  Lukas Planz
+ *     Copyright (C) 2019-2020 Lukas Planz
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Affero General Public License as published
@@ -16,32 +16,24 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package de.md5lukas.waypoints.gui;
+package de.md5lukas.waypoints.util;
 
-import de.md5lukas.i18n.translations.ItemTranslation;
-import de.md5lukas.i18n.translations.ItemTranslationTAR;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.configuration.file.FileConfiguration;
 
-public interface GUIDisplayable {
+import java.util.HashMap;
+import java.util.Map;
 
-    Material getMaterial();
+public class ConfigHelper {
 
-    default int getAmount(Player player) {
-        return 1;
-    }
+    public static Map<String, String> fileConfigurationToMap(FileConfiguration cfg) {
+        Map<String, String> result = new HashMap<>();
 
-    ItemTranslation getItemTranslation();
+        for (String path : cfg.getKeys(true)) {
+            if (cfg.isString(path)) {
+                result.put(path, cfg.getString(path));
+            }
+        }
 
-    default ItemTranslationTAR getItemTranslationTAR(Player player) {
-        return null;
-    }
-
-    default ItemStack getStack(Player player) {
-        ItemStack stack = getItemTranslation().getStack(player, getItemTranslationTAR(player));
-        stack.setType(getMaterial());
-        stack.setAmount(getAmount(player));
-        return stack;
+        return result;
     }
 }

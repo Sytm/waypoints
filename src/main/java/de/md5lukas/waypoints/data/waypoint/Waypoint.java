@@ -20,9 +20,10 @@ package de.md5lukas.waypoints.data.waypoint;
 
 import de.md5lukas.commons.MathHelper;
 import de.md5lukas.commons.tags.LocationTag;
+import de.md5lukas.i18n.translations.ItemTranslationTAR;
 import de.md5lukas.nbt.extended.UUIDTag;
 import de.md5lukas.nbt.tags.CompoundTag;
-import de.md5lukas.waypoints.Messages;
+import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.config.general.TeleportWaypointConfig;
 import de.md5lukas.waypoints.data.GUISortable;
@@ -78,6 +79,19 @@ public abstract class Waypoint implements GUISortable {
     @Override
     public final String getName() {
         return this.name;
+    }
+
+    @Override
+    public ItemTranslationTAR getItemTranslationTAR(Player player) {
+        return new ItemTranslationTAR().setDisplayName("%name%", getName()).setDescription(
+                "%world%", WPConfig.getGeneralConfig().translateWorldName(location.getWorld().getName(), player),
+                "%x%", MathHelper.format(location.getX()),
+                "%y%", MathHelper.format(location.getY()),
+                "%z%", MathHelper.format(location.getZ()),
+                "%blockX%", Integer.toString(location.getBlockX()),
+                "%blockY%", Integer.toString(location.getBlockY()),
+                "%blockZ%", Integer.toString(location.getBlockZ()),
+                "%distance%", getDistance2D(player));
     }
 
     @Override
@@ -139,6 +153,6 @@ public abstract class Waypoint implements GUISortable {
         if (player.getWorld().equals(location.getWorld())) {
             return MathHelper.format(MathHelper.distance2D(player.getLocation(), location));
         }
-        return Messages.INVENTORY_WAYPOINT_DISTANCE_OTHER_WORLD.getRaw(player);
+        return Waypoints.getITranslations().WAYPOINT_DISTANCE_OTHER_WORLD.getAsString(player);
     }
 }

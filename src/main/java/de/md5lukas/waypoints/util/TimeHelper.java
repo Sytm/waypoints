@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 
 import java.util.concurrent.TimeUnit;
 
-import static de.md5lukas.waypoints.Messages.*;
+import static de.md5lukas.waypoints.Waypoints.getTranslations;
 import static java.util.concurrent.TimeUnit.*;
 
 public class TimeHelper {
@@ -71,13 +71,13 @@ public class TimeHelper {
         boolean isPlural = value > 1;
         switch (timeUnit) {
             case SECONDS:
-                return isPlural ? CHAT_DURATION_SECONDS.getRaw(player) : CHAT_DURATION_SECOND.getRaw(player);
+                return isPlural ? getTranslations().CHAT_DURATION_SECONDS.getAsString(player) : getTranslations().CHAT_DURATION_SECOND.getAsString(player);
             case MINUTES:
-                return isPlural ? CHAT_DURATION_MINUTES.getRaw(player) : CHAT_DURATION_MINUTE.getRaw(player);
+                return isPlural ? getTranslations().CHAT_DURATION_MINUTES.getAsString(player) : getTranslations().CHAT_DURATION_MINUTE.getAsString(player);
             case HOURS:
-                return isPlural ? CHAT_DURATION_HOURS.getRaw(player) : CHAT_DURATION_HOUR.getRaw(player);
+                return isPlural ? getTranslations().CHAT_DURATION_HOURS.getAsString(player) : getTranslations().CHAT_DURATION_HOUR.getAsString(player);
             case DAYS:
-                return isPlural ? CHAT_DURATION_DAYS.getRaw(player) : CHAT_DURATION_DAY.getRaw(player);
+                return isPlural ? getTranslations().CHAT_DURATION_DAYS.getAsString(player) : getTranslations().CHAT_DURATION_DAY.getAsString(player);
             default:
                 throw new UnsupportedOperationException("The TimeUnit " + timeUnit + " is not supported by this method!");
         }
