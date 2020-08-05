@@ -33,7 +33,7 @@ public class FileManager {
         globalStore = new File(plugin.getDataFolder(), "globalstore.nbt");
     }
 
-    public File getMessageFolder() {
+    public File getTranslationFolder() {
         return new File(plugin.getDataFolder(), "lang/");
     }
 

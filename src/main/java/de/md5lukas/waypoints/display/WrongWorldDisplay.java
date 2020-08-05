@@ -27,7 +27,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import static de.md5lukas.waypoints.Messages.DISPLAY_WRONG_WORLD;
+import static de.md5lukas.waypoints.Waypoints.getTranslations;
 
 public final class WrongWorldDisplay extends WaypointDisplay {
 
@@ -43,7 +43,7 @@ public final class WrongWorldDisplay extends WaypointDisplay {
     @Override
     public void update(Player player, Waypoint waypoint) {
         if (waypoint != null && !player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
-            TextComponent component = new TextComponent(StringHelper.multiReplace(DISPLAY_WRONG_WORLD.getRaw(player),
+            TextComponent component = new TextComponent(StringHelper.multiReplace(getTranslations().DISPLAY_WRONG_WORLD.getAsString(player),
                     "%currentworld%", WPConfig.getGeneralConfig().translateWorldName(player.getWorld().getName(), player),
                     "%correctworld%", WPConfig.getGeneralConfig().translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
             player.spigot().sendMessage(WPConfig.getDisplayConfig().getWrongWorldConfig().isActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT,

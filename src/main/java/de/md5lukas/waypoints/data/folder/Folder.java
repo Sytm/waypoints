@@ -20,6 +20,7 @@ package de.md5lukas.waypoints.data.folder;
 
 import com.google.common.base.Preconditions;
 import de.md5lukas.commons.MathHelper;
+import de.md5lukas.i18n.translations.ItemTranslationTAR;
 import de.md5lukas.nbt.extended.UUIDTag;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
@@ -84,6 +85,11 @@ public abstract class Folder implements GUISortable {
 
     public final void setMaterial(Material material) {
         this.material = material;
+    }
+
+    @Override
+    public ItemTranslationTAR getItemTranslationTAR(Player player) {
+        return new ItemTranslationTAR().setDisplayName("%name%", getName()).setDescription("%amount%", Integer.toString(waypoints.size()));
     }
 
     public void addWaypoint(Waypoint waypoint) {

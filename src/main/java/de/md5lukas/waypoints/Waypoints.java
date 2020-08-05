@@ -18,12 +18,13 @@
 
 package de.md5lukas.waypoints;
 
-import de.md5lukas.commons.messages.MessageStore;
 import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.Tags;
 import de.md5lukas.waypoints.command.WaypointsCommand;
 import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.display.WaypointDisplay;
+import de.md5lukas.waypoints.lang.InventoryTranslations;
+import de.md5lukas.waypoints.lang.Translations;
 import de.md5lukas.waypoints.listener.WaypointsListener;
 import de.md5lukas.waypoints.store.FileManager;
 import de.md5lukas.waypoints.store.GlobalStore;
@@ -51,7 +52,7 @@ public class Waypoints extends JavaPlugin {
     private boolean inOnEnableDisable = false;
 
     private static Waypoints instance;
-    private MessageStore messageStore;
+    private Translations translations;
     private FileManager fileManager;
     private GlobalStore globalStore;
     private boolean disabled = false;
@@ -64,16 +65,19 @@ public class Waypoints extends JavaPlugin {
         return instance.getLogger();
     }
 
-    public static MessageStore messageStore() {
-        return instance.messageStore;
-    }
-
     public static FileManager getFileManager() {
         return instance.fileManager;
     }
 
     public static GlobalStore getGlobalStore() {
         return instance.globalStore;
+    }
+
+    public static Translations getTranslations() {
+        return instance.translations;
+    }
+    public static InventoryTranslations getITranslations() {
+        return instance.translations.getInventoryTranslations();
     }
 
     public static boolean isDisabled() {
@@ -120,14 +124,13 @@ public class Waypoints extends JavaPlugin {
 
         fileManager = new FileManager(this);
 
-        if (!extractMessages())
-            return;
-        if (!loadMessages())
+        if (!extractLanguages())
             return;
         if (!loadGlobalStore())
             return;
 
-        LegacyImporter.registerLoadedLegacyData();
+        translations = new Translations();
+        translations.updateLanguageStore();
 
         PlayerItemCheckRunner.start(this);
         WaypointDisplay.activateDisplays();
@@ -172,23 +175,11 @@ public class Waypoints extends JavaPlugin {
         WPConfig.loadConfig(config);
     }
 
-    private boolean extractMessages() {
-        if (!new File(getDataFolder(), "lang/messages_en.msg").exists())
-            saveResource("lang/messages_en.msg", false);
-        if (!new File(getDataFolder(), "lang/messages_de.msg").exists())
-            saveResource("lang/messages_de.msg", false);
-        return true;
-    }
-
-    private boolean loadMessages() {
-        try {
-            messageStore = new MessageStore(this, fileManager.getMessageFolder(), "messages_%s.msg", Messages.class);
-        } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Couldn't load message files", e);
-            inOnEnableDisable = true;
-            getServer().getPluginManager().disablePlugin(this);
-            return false;
-        }
+    private boolean extractLanguages() {
+        if (!new File(getDataFolder(), "lang/en.yml").exists())
+            saveResource("lang/en.yml", false);
+        if (!new File(getDataFolder(), "lang/de.yml").exists())
+            saveResource("lang/de.yml", false);
         return true;
     }
 

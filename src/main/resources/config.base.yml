@@ -5,6 +5,7 @@
 # When you need to set a distance, it is always in blocks
 
 general:
+  defaultLanguage: en
 
   # Set how the gui can be opened by using the compass. Possible values are: 'right' (right-click), 'left' (left-click), 'false' (disabled)
   openUsingCompass: right
@@ -109,8 +110,6 @@ general:
 
 inventory:
   general:
-    # Maximum line length of descriptions after a linebreak is inserted automatically
-    maxDescriptionLineLength: 30
     # Item to go to the previous page
     previousItem: ARROW
     # Item to go to the next page

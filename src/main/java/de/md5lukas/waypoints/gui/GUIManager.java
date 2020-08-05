@@ -19,23 +19,23 @@
 package de.md5lukas.waypoints.gui;
 
 import de.md5lukas.commons.UUIDUtils;
-import de.md5lukas.waypoints.Messages;
+import de.md5lukas.waypoints.Waypoints;
 import fr.minuskube.inv.SmartInventory;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-import static de.md5lukas.waypoints.Messages.INVENTORY_TITLE_OTHER;
-import static de.md5lukas.waypoints.Messages.INVENTORY_TITLE_OWN;
+import static de.md5lukas.waypoints.Waypoints.getTranslations;
 
 public class GUIManager {
 
     public static void openGUI(Player player) {
         if (player.hasPermission("waypoints.gui.open")) {
             SmartInventory.builder().id(player.getUniqueId().toString()).size(5, 9)
-                    .provider(new WaypointProvider(player.getUniqueId())).title(INVENTORY_TITLE_OWN.getRaw(player)).build().open(player);
+                    .provider(new WaypointProvider(player.getUniqueId())).title(Waypoints.getITranslations().TITLE_OWN.getAsString(player)).build()
+                    .open(player);
         } else {
-            Messages.GENERAL_NO_PERMISSION.send(player);
+            getTranslations().GENERAL_NO_PERMISSION.send(player);
         }
     }
 
@@ -45,16 +45,18 @@ public class GUIManager {
             return;
         }
         SmartInventory.builder().id(player.getUniqueId() + "|" + target).size(5, 9)
-                .provider(new WaypointProvider(target)).title(INVENTORY_TITLE_OTHER.getRaw(player).replace("%name%", UUIDUtils.getName(target))).build()
+                .provider(new WaypointProvider(target)).title(Waypoints.getITranslations().TITLE_OTHER.getAsString(player, "%name%", UUIDUtils.getName(target)))
+                .build()
                 .open(player);
     }
 
     static void openGUI(Player player, UUID target, WaypointProvider provider) {
         SmartInventory.Builder builder = SmartInventory.builder().size(5, 9).provider(provider);
         if (player.getUniqueId().equals(target)) {
-            builder.id(player.getUniqueId().toString()).title(INVENTORY_TITLE_OWN.getRaw(player));
+            builder.id(player.getUniqueId().toString()).title(Waypoints.getITranslations().TITLE_OWN.getAsString(player));
         } else {
-            builder.id(player.getUniqueId() + "|" + target).title(INVENTORY_TITLE_OTHER.getRaw(player).replace("%name%", UUIDUtils.getName(target)));
+            builder.id(player.getUniqueId() + "|" + target)
+                    .title(Waypoints.getITranslations().TITLE_OTHER.getAsString(player, "%name%", UUIDUtils.getName(target)));
         }
         builder.build().open(player);
     }

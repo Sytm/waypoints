@@ -19,7 +19,6 @@
 package de.md5lukas.waypoints.config.general;
 
 import de.md5lukas.commons.language.Languages;
-import de.md5lukas.waypoints.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -34,7 +33,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static de.md5lukas.waypoints.Waypoints.getTranslations;
+
 public class GeneralConfig {
+
+    private String defaultLanguage;
 
     private boolean deathWaypointEnabled;
     private int waypointLimit, folderLimit;
@@ -60,6 +63,7 @@ public class GeneralConfig {
     }
 
     public void load(ConfigurationSection cfg) {
+        defaultLanguage = cfg.getString("defaultLanguage");
         deathWaypointEnabled = cfg.getBoolean("deathWaypointEnabled");
         waypointLimit = cfg.getInt("limits.waypoints");
         folderLimit = cfg.getInt("limits.folders");
@@ -84,6 +88,10 @@ public class GeneralConfig {
                 aliases.put(world, cfg.getString("worldNameAliases." + lang + "." + world));
             }
         }
+    }
+
+    public String getDefaultLanguage() {
+        return defaultLanguage;
     }
 
     public boolean isDeathWaypointEnabled() {
@@ -155,8 +163,9 @@ public class GeneralConfig {
             }
         }
         String messageString = message.toString();
-        console.sendMessage(Messages.CHAT_WARNING_WORLD_TRANSLATIONS_MISSING.getRaw(console) + messageString);
+        console.sendMessage(getTranslations().CHAT_WARNING_WORLD_TRANSLATIONS_MISSING.getAsString(console) + messageString);
         Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).filter(p ->
-                p.hasPermission("waypoints.admin")).forEach(p -> p.sendMessage(Messages.CHAT_WARNING_WORLD_TRANSLATIONS_MISSING.getRaw(p) + messageString));
+                p.hasPermission("waypoints.admin"))
+                .forEach(p -> p.sendMessage(getTranslations().CHAT_WARNING_WORLD_TRANSLATIONS_MISSING.getAsString(p) + messageString));
     }
 }

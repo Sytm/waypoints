@@ -18,8 +18,11 @@
 
 package de.md5lukas.waypoints.data.folder;
 
+import de.md5lukas.i18n.translations.ItemTranslation;
+import de.md5lukas.i18n.translations.ItemTranslationTAR;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
+import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.waypoint.PermissionWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
@@ -29,9 +32,6 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PERMISSION_DESCRIPTION;
-import static de.md5lukas.waypoints.Messages.INVENTORY_FOLDER_PERMISSION_DISPLAY_NAME;
 
 public class PermissionFolder extends Folder {
 
@@ -64,14 +64,13 @@ public class PermissionFolder extends Folder {
     }
 
     @Override
-    public String getDisplayName(Player player) {
-        return INVENTORY_FOLDER_PERMISSION_DISPLAY_NAME.getRaw(player);
+    public ItemTranslation getItemTranslation() {
+        return Waypoints.getITranslations().FOLDER_PERMISSION;
     }
 
     @Override
-    public List<String> getDescription(Player player) {
-        return INVENTORY_FOLDER_PERMISSION_DESCRIPTION.asList(player).replace(
-                "%amount%", Long.toString(count(player)));
+    public ItemTranslationTAR getItemTranslationTAR(Player player) {
+        return super.getItemTranslationTAR(player).setDescription("%amount%", Long.toString(count(player)));
     }
 
     @Override

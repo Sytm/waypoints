@@ -18,18 +18,13 @@
 
 package de.md5lukas.waypoints.data.waypoint;
 
-import de.md5lukas.commons.MathHelper;
+import de.md5lukas.i18n.translations.ItemTranslation;
 import de.md5lukas.nbt.tags.CompoundTag;
+import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.display.BlockColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-
-import java.util.List;
-
-import static de.md5lukas.waypoints.Messages.INVENTORY_WAYPOINT_PRIVATE_DESCRIPTION;
-import static de.md5lukas.waypoints.Messages.INVENTORY_WAYPOINT_PRIVATE_DISPLAY_NAME;
 
 public class PrivateWaypoint extends Waypoint {
 
@@ -47,26 +42,13 @@ public class PrivateWaypoint extends Waypoint {
     }
 
     @Override
-    public String getDisplayName(Player player) {
-        return INVENTORY_WAYPOINT_PRIVATE_DISPLAY_NAME.getRaw(player).replace("%name%", name);
-    }
-
-    @Override
     public BlockColor getBeaconColor() {
         return beaconColor == null ? WPConfig.getDisplayConfig().getBeaconConfig().getDefaultColorPrivate() : beaconColor;
     }
 
     @Override
-    public List<String> getDescription(Player player) {
-        return INVENTORY_WAYPOINT_PRIVATE_DESCRIPTION.asList(player).replace(
-                "%world%", WPConfig.getGeneralConfig().translateWorldName(location.getWorld().getName(), player),
-                "%x%", MathHelper.format(location.getX()),
-                "%y%", MathHelper.format(location.getY()),
-                "%z%", MathHelper.format(location.getZ()),
-                "%blockX%", Integer.toString(location.getBlockX()),
-                "%blockY%", Integer.toString(location.getBlockY()),
-                "%blockZ%", Integer.toString(location.getBlockZ()),
-                "%distance%", getDistance2D(player));
+    public ItemTranslation getItemTranslation() {
+        return Waypoints.getITranslations().WAYPOINT_PRIVATE;
     }
 
     public static PrivateWaypoint fromCompoundTag(CompoundTag tag) {

@@ -1,0 +1,458 @@
+general:
+  notAPlayer: "&b&lWaypoints &e&l>&r &cDu musst ein Spieler sein, um diesen Befehl verwenden zu können"
+  folderNotFound: "&b&lWaypoints &e&l>&r &cEin Ordner mit dieser ID konnte nicht gefunden werden."
+  noPermission: "&b&lWaypoints &e&l>&r &cDu hast nicht die benötigte Berechtigung, um dies zu tun."
+  notAValidUuid: "&b&lWaypoints &e&l>&r &cDie angegebene ID ist in einem nicht gültigen Format."
+  waypointNotFound: "&b&lWaypoints &e&l>&r &cEin Wegpunkt mit dieser ID konnte nicht gefunden werden."
+chatAction:
+  updateItem:
+    waypoint:
+      private: "&b&lWaypoints &e&l>&r &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
+      public: "&b&lWaypoints &e&l>&r &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
+      permission: "&b&lWaypoints &e&l>&r &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
+    folder:
+      private: "&b&lWaypoints &e&l>&r &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Ordner verwenden möchtest."
+chat:
+  duration:
+    hours: "Stunden"
+    seconds: "Sekunden"
+    hour: "Stunde"
+    minutes: "Minuten"
+    days: "Tage"
+    day: "Tag"
+    minute: "Minute"
+    second: "Sekunde"
+  teleport:
+    standStillNotice: "&b&lWaypoints &e&l>&r &7Du musst für &e%timeRequired%&7 stehen bleiben, um dich teleportieren zu können."
+    cancelledMove: "&b&lWaypoints &e&l>&r &cDie teleportation wurde abgebrochen, da du dich bewegt hast."
+    onCooldown: "&b&lWaypoints &e&l>&r &cDu kannst im Moment dich nicht teleportieren. Dies ist erst in &e%remainingTime%&c möglich."
+    notEnough:
+      xpPoints: "&b&lWaypoints &e&l>&r &cDu hast nicht genügend Erfahrungspunkte um diese teleportation durchzuführen."
+      balance: "&b&lWaypoints &e&l>&r &cDu hast nicht genügend Guthaben um diese teleportation durchzuführen."
+      xpLevels: "&b&lWaypoints &e&l>&r &cDu hast nicht genügend Erfahrungs-Level um diese teleportation durchzuführen."
+display:
+  wrongWorld: "&cDu bist momentan in der Welt &a%currentworld%&c, aber der Wegpunkt ist in &a%correctworld%"
+inventory:
+  waypoint:
+    private:
+      select:
+        displayName: "&eWegpunkt auswählen"
+        description: "&7Drücke hier drauf, damit dieser Wegpunkt dir angezeigt wird."
+      moveToFolder:
+        displayName: "&eWegpunkt in einen Ordner verschieben"
+        description: "&7Gruppiere den Wegpunkt in einem Ordner oder entferne ihn von einem Ordner"
+      selectBeaconColor:
+        displayName: "&7Ändere die Farbe des Leuchtfeuer-Strahls"
+        description: "&eÄndere die Farbe des Leuchtfeuer-Strahls der zu sehen ist, wenn dieser Wegpunkt aktiv ist"
+      rename:
+        displayName: "&eDen Wegpunkt umbenennen"
+        description: "&7Drücke hier drauf, um einen Nachricht zu erhalten, welche wenn man drauf drückt den Befehl zum umbenennen gibt."
+      background:
+        displayName: "&0-"
+        description: "&0-"
+      displayName: "&5%name%"
+      teleport:
+        displayName: "&eZum Wegpunkt teleportieren"
+        description: "&0-"
+        payment:
+          xpPoints:
+            description: "$variable.waypoints.teleport.payment.xpPoints.description$"
+          xpLevels:
+            description: "$variable.waypoints.teleport.payment.xpLevels.description$"
+          vault:
+            description: "$variable.waypoints.teleport.payment.vault.description$"
+      description: |
+        &7Welt: &6%world%
+        &7X: &6%blockX%
+        &7Y: &6%blockY%
+        &7Z: &6%blockZ%
+        &7Distanz: &6%distance%
+      delete:
+        displayName: "&cDen Wegpunkt löschen"
+        description: "&0-"
+    public:
+      select:
+        displayName: "&eWegpunkt auswählen"
+        description: "&7Drücke hier drauf, damit dieser Wegpunkt dir angezeigt wird."
+      selectBeaconColor:
+        displayName: "&7Ändere die Farbe des Leuchtfeuer-Strahls"
+        description: "&eÄndere die Farbe des Leuchtfeuer-Strahls der zu sehen ist, wenn dieser Wegpunkt aktiv ist"
+      rename:
+        displayName: "&eDen Wegpunkt umbenennen"
+        description: "&7Drücke hier drauf, um einen Nachricht zu erhalten, welche wenn man drauf drückt den Befehl zum umbenennen gibt."
+      background:
+        displayName: "&0-"
+        description: "&0-"
+      displayName: "&b%name%"
+      teleport:
+        displayName: "&eZum Wegpunkt teleportieren"
+        description: "&0-"
+        payment:
+          xpPoints:
+            description: "$variable.waypoints.teleport.payment.xpPoints.description$"
+          xpLevels:
+            description: "$variable.waypoints.teleport.payment.xpLevels.description$"
+          vault:
+            description: "$variable.waypoints.teleport.payment.vault.description$"
+      description: |
+        &7Welt: &6%world%
+        &7X: &6%blockX%
+        &7Y: &6%blockY%
+        &7Z: &6%blockZ%
+        &7Distanz: &6%distance%
+      delete:
+        displayName: "&cDen Wegpunkt löschen"
+        description: "&0-"
+    distance:
+      otherWorld: "?"
+    death:
+      select:
+        displayName: "&eWegpunkt auswählen"
+        description: "&7Drücke hier drauf, damit dieser Wegpunkt dir angezeigt wird."
+      displayName: "&cTodes-Wegpunkt"
+      background:
+        displayName: "&0-"
+        description: "&0-"
+      teleport:
+        displayName: "&eZum Wegpunkt teleportieren"
+        description: "&0-"
+        payment:
+          xpPoints:
+            description: "$variable.waypoints.teleport.payment.xpPoints.description$"
+          xpLevels:
+            description: "$variable.waypoints.teleport.payment.xpLevels.description$"
+          vault:
+            description: "$variable.waypoints.teleport.payment.vault.description$"
+      description: |
+        &7Welt: &6%world%
+        &7X: &6%blockX%
+        &7Y: &6%blockY%
+        &7Z: &6%blockZ%
+        &7Distanz: &6%distance%
+    permission:
+      select:
+        displayName: "&eWegpunkt auswählen"
+        description: "&7Drücke hier drauf, damit dieser Wegpunkt dir angezeigt wird."
+      rename:
+        displayName: "&eDen Wegpunkt umbenennen"
+        description: "&7Drücke hier drauf, um einen Nachricht zu erhalten, welche wenn man drauf drückt den Befehl zum umbenennen gibt."
+      selectBeaconColor:
+        displayName: "&7Ändere die Farbe des Leuchtfeuer-Strahls"
+        description: "&eÄndere die Farbe des Leuchtfeuer-Strahls der zu sehen ist, wenn dieser Wegpunkt aktiv ist"
+      background:
+        displayName: "&0-"
+        description: "&0-"
+      displayName: "&d%name%"
+      teleport:
+        displayName: "&eZum Wegpunkt teleportieren"
+        description: "&0-"
+        payment:
+          xpPoints:
+            description: "$variable.waypoints.teleport.payment.xpPoints.description$"
+          xpLevels:
+            description: "$variable.waypoints.teleport.payment.xpLevels.description$"
+          vault:
+            description: "$variable.waypoints.teleport.payment.vault.description$"
+      description: |
+        &7Welt: &6%world%
+        &7X: &6%blockX%
+        &7Y: &6%blockY%
+        &7Z: &6%blockZ%
+        &7Distanz: &6%distance%
+      delete:
+        displayName: "&cDen Wegpunkt löschen"
+        description: "&0-"
+  overview:
+    setWaypoint:
+      displayName: "&eNeuen Wegpunkt setzten"
+      description: "&0-"
+    background:
+      displayName: "&0-"
+      description: "&0-"
+    deselect:
+      displayName: "&eAktiven Wegpunkt abwählen"
+      description: "&7Drücke hier drauf, wenn du den Wegpunkt erreicht hast, und die Richtungs Weiser nicht mehr benötigst."
+    toggleGlobals:
+      hidden:
+        displayName: "&eGlobale Wegpunkte sind versteckt"
+        description: "&7Drücke hier drauf um sie zu zeigen."
+      shown:
+        displayName: "&eGlobale Wegpunkte sind sichtbar"
+        description: "&7Drücke hier drauf um sie zu verstecken."
+    createFolder:
+      displayName: "&eNeuen Ordner erstellen"
+      description: "&0-"
+  general:
+    next:
+      displayName: "&eNächste Seite"
+      description: "&0-"
+    previous:
+      displayName: "&eVorherige Seite"
+      description: "&0-"
+    back:
+      displayName: "&eZurück"
+      description: "&0-"
+  folder:
+    private:
+      rename:
+        displayName: "&eOrdner umbenennen"
+        description: "&7Drücke hier drauf, um einen Nachricht zu erhalten, welche wenn man drauf drückt den Befehl zum umbenennen gibt."
+      background:
+        displayName: "&0-"
+        description: "&0-"
+      displayName: "&b%name%"
+      description: "&7Wegpunkte in diesem Ordner: &6%amount%"
+      delete:
+        displayName: "&4Ordner löschen"
+        description: "&0-"
+    public:
+      background:
+        displayName: "&0-"
+        description: "&0-"
+      displayName: "&bGlobale Wegpunkte"
+      description: |
+        &7Wegpunkte hier drin sind für jeden verfügbar.
+
+        &7Im Moment sind &6%amount% &7Wegpunkte verfügbar
+    permission:
+      background:
+        displayName: "&0-"
+        description: "&0-"
+      displayName: "&dEingeschränkte Wegpunkte"
+      description: |
+        &7Wegpunkte hier drin sind nur für einen verfügbar,
+        &7wenn man die benötigte Berechtigung hat.
+
+        &6%amount% &7Wegpunkte sind für dich verfügbar
+  cycleSort:
+    mode:
+      createdAt:
+        ascending: "Erstellt (Aufsteigend)"
+        descending: "Erstellt (Absteigend)"
+      name:
+        ascending: "Name (Aufsteigend)"
+        descending: "Name (Absteigend)"
+      type: "Art"
+    inactive: "&8%name%"
+    displayName: "&eSortierungs Modus"
+    active: "&6%name%"
+    description: "&eDrücke hier drauf um durch alle Sortierungs Modis zu wechseln."
+  selectBeaconColor:
+    lightGray:
+      displayName: "&7Hellgrau"
+      description: "&0-"
+    magenta:
+      displayName: "&dMagenta"
+      description: "&0-"
+    pink:
+      displayName: "&dRosa"
+      description: "&0-"
+    green:
+      displayName: "&2Grün"
+      description: "&0-"
+    lightBlue:
+      displayName: "&9Hellblau"
+      description: "&0-"
+    lime:
+      displayName: "&aHellgrün"
+      description: "&0-"
+    clear:
+      displayName: "&fKlar"
+      description: "&0-"
+    black:
+      displayName: "&0Schwarz"
+      description: "&0-"
+    yellow:
+      displayName: "&eGelb"
+      description: "&0-"
+    brown:
+      displayName: "&6Braun"
+      description: "&0-"
+    cyan:
+      displayName: "&bTürkis"
+      description: "&0-"
+    orange:
+      displayName: "&6Orange"
+      description: "&0-"
+    red:
+      displayName: "&4Rot"
+      description: "&0-"
+    gray:
+      displayName: "&8Grau"
+      description: "&0-"
+    blue:
+      displayName: "&1Blau"
+      description: "&0-"
+    white:
+      displayName: "&fWeiß"
+      description: "&0-"
+    background:
+      displayName: "&0-"
+      description: "&0-"
+    purple:
+      displayName: "&5Violett"
+      description: "&0-"
+  selectFolder:
+    background:
+      displayName: "&0-"
+      description: "&0-"
+    noFolder:
+      displayName: "&eKeinen Ordner"
+      description: "&7Entferne den Wegpunkt aus dem Ordner und füge ihm den Hauptbildschirm wieder hinzu."
+  anvilGUI:
+    enterNameHere: "Gebe Name hier ein"
+    enterPermissionHere: "Gebe Berechtigung hier ein"
+  confirmMenu:
+    waypoint:
+      private:
+        delete:
+          no:
+            displayName: "&7&lNein&7, Wegpunkt nicht löschen"
+            description: "&0-"
+          yes:
+            displayName: "&7&lJa&7, Wegpunkt löschen"
+            description: "&0-"
+          title:
+            displayName: "&7Bist du dir ganz sicher, dass du deinen Wegpunkt löschen möchtest?"
+            description: "&0-"
+      public:
+        delete:
+          no:
+            displayName: "&7&lNein&7, Wegpunkt nicht löschen"
+            description: "&0-"
+          yes:
+            displayName: "&7&lJa&7, Wegpunkt löschen"
+            description: "&0-"
+          title:
+            displayName: "&7Bist du dir ganz sicher, dass du diesen öffentlichen Wegpunkt löschen möchtest?"
+            description: "&0-"
+      permission:
+        delete:
+          no:
+            displayName: "&7&lNein&7, Wegpunkt nicht löschen"
+            description: "&0-"
+          yes:
+            displayName: "&7&lJa&7, Wegpunkt löschen"
+            description: "&0-"
+          title:
+            displayName: "&7Bist du dir ganz sicher, dass du diesen eingeschränkten Wegpunkt löschen möchtest?"
+            description: "&0-"
+    folder:
+      private:
+        delete:
+          no:
+            displayName: "&7&lNein&7, Ordner nicht löschen"
+            description: "&0-"
+          yes:
+            displayName: "&7&lJa&7, Ordner löschen"
+            description: "&0-"
+          title:
+            displayName: "&7Bist du dir ganz sicher, dass du deinen Ordner löschen möchtest?"
+            description: "&0-"
+    background:
+      displayName: "&0-"
+      description: "&0-"
+  title:
+    other: "&eWegpunkte von &6%name%"
+    own: "&eWegpunkte"
+  selectWaypointType:
+    private:
+      displayName: "&eEinen persönlichen Wegpunkt"
+      description: "&0-"
+    public:
+      displayName: "&eEinen öffentlichen Wegpunkt"
+      description: "&0-"
+    background:
+      displayName: "&0-"
+      description: "&0-"
+    permission:
+      displayName: "&eEinen eingeschränkten Wegpunkt"
+      description: "&0-"
+    title:
+      displayName: "&eWelche Art von Wegpunkt möchtest du erstellen?"
+      description: "&0-"
+command:
+  help:
+    help: "&7 - &e/waypoints &7&l|&r&7 Diese Hilfe anzeigen"
+    other: "&7 - &e/waypoints other <Name|UUID> &7&l|&r&7 Begutachte die Wegpunkte eines anderen Spielers."
+    set:
+      private: "&7 - &e/waypoints set <Name> &7&l|&r&7 Setze einen neuen Wegpunkt"
+      public: "&7 - &e/waypoints setPublic <Name> &7&l|&r&7 Setze einen neuen öffentlichen Wegpunkt"
+      permission: "&7 - &e/waypoints setPermission <Berechtigung> <Name> &7&l|&r&7 Setze einen neuen eingeschränkten Wegpunkt"
+    compass: "&7 - &e/waypoints compass &7&l|&r&7 Setze das standard Kompass Ziel, wenn in der Config der Modus auf \"ingame\" steht."
+    updateItem: "&7 - &e/waypoints updateItem <Waypoint|Folder> <ID> &7&l|&r&7 Dieser Befehl wird verwendet um das Icon eines Wegpunktes oder Ordners zu ändern."
+    title: "&b&lWaypoints &e&l>&r &7&nHilfe"
+  other:
+    playerNameNotFound: "&b&lWaypoints &e&l>&r &cEin Spieler mit diesem Namen konnte nicht gefunden werden."
+    wrongUsage: |
+      &b&lWaypoints &e&l>&r &cUm die Wegpunkte eines anderen Spielers einsehen zu können musst du deren Namen oder UUID angeben. Beispiel:
+      &a/waypoints other Sytm
+      &a/waypoints other 68f22021-732e-4afe-9cf5-6906f07a41db
+    uuidNotFound: "&b&lWaypoints &e&l>&r &cEin Spieler mit dieser UUID konnte nicht gefunden werden."
+    notAValidUuidOrPlayerName: "&b&lWaypoints &e&l>&r &cDie angegebene Identifizierung ist weder ein Name noch eine UUID."
+  set:
+    private:
+      success: "&b&lWaypoints &e&l>&r &7Der Wegpunkt wurde erfolgreich gesetzt."
+      wrongUsage: |
+        &b&lWaypoints &e&l>&r &cUm einen Wegpunkt zu erstellen, muss ein Name angegeben werden. Beispiel:
+        &a/waypoints set Mein Zuhause
+      nameDuplicate: "&b&lWaypoints &e&l>&r &cWegpunkte mit doppeltem Namen wurden deaktiviert."
+      limitReached: "&b&lWaypoints &e&l>&r &cDu hast das Limit an persönlichen Wegpunkten erreicht."
+    public:
+      success: "&b&lWaypoints &e&l>&r &7Der öffentliche Wegpunkt wurde erfolgreich gesetzt."
+      wrongUsage: |
+        &b&lWaypoints &e&l>&r &cUm einen öffentlichen Wegpunkt zu erstellen, muss ein Name angegeben werden. Beispiel:
+        &a/waypoints setPublic Spawn
+      nameDuplicate: "&b&lWaypoints &e&l>&r &cÖffentliche Wegpunkte mit doppelten Namen wurden deaktiviert."
+    permission:
+      success: "&b&lWaypoints &e&l>&r &7Der eingeschränkte Wegpunkt wurde erfolgreich gesetzt."
+      wrongUsage: |
+        &b&lWaypoints &e&l>&r &cUm einen eingeschränkten Wegpunkt zu erstellen, muss eine Berechtigung und ein Name angegeben werden. Beispiel:
+        &a/waypoints setPermission vip.secret Geheimversteck
+      nameDuplicate: "&b&lWaypoints &e&l>&r &cEingeschränkte Wegpunkte mit doppelten Namen wurden deaktiviert."
+  rename:
+    waypoint:
+      private:
+        nameDuplicate: "&b&lWaypoints &e&l>&r &cDoppelte Namen für private Wegpunkte wurden deaktiviert."
+        disabled: "&b&lWaypoints &e&l>&r &cDas Umbenennen von privaten Wegpunkten wurde deaktiviert."
+      public:
+        nameDuplicate: "&b&lWaypoints &e&l>&r &cDoppelte Namen für öffentliche Wegpunkte wurden deaktiviert."
+        disabled: "&b&lWaypoints &e&l>&r &cDas Umbenennen von öffentlichen Wegpunkten wurde deaktiviert."
+      success: "&b&lWaypoints &e&l>&r &7Der Wegpunkt wurde erfolgreich umbenannt."
+      permission:
+        nameDuplicate: "&b&lWaypoints &e&l>&r &cDoppelte Namen für eingeschränkte Wegpunkte wurden deaktiviert."
+        disabled: "&b&lWaypoints &e&l>&r &cDas Umbenennen von eingeschränkten Wegpunkten wurde deaktiviert."
+    folder:
+      success: "&b&lWaypoints &e&l>&r &7Der Ordner wurde erfolgreich unbenannt."
+      nameDuplicate: "&b&lWaypoints &e&l>&r &cDoppelte Namen für Order wurden deaktiviert."
+      disabled: "&b&lWaypoints &e&l>&r &cDas Umbenennen von Ordnern wurde deaktiviert."
+    wrongUsage: |
+      &b&lWaypoints &e&l>&r &cUm den Namen zu ändern musst du die Art des Wegpunktes/Ordner, dessen ID und den neuen Namen angeben. Beispiel:
+      &a/waypoints rename privateWaypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35 Nether Portal No. 2
+      &a/waypoints rename folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870 Mines
+    disabled: "&b&lWaypoints &e&l>&r &cUmbenennen wurde deaktiviert."
+  compass:
+    setSuccess: "&b&lWaypoints &e&l>&r &7Das neue standard Kompass-Ziel wurde gesetzt."
+    disabled: "&b&lWaypoints &e&l>&r &cDiese Art das standard Kompass-Ziel zu setzten wurde in der Config deaktiviert"
+    locked: "&b&lWaypoints &e&l>&r &cDieser Befehl wurde in der Config deaktiviert."
+  notFound: "&b&lWaypoints &e&l>&r &cThe command you entered was not found"
+  updateItem:
+    waypoint:
+      success: "&b&lWaypoints &e&l>&r &7Das Icon vom Wegpunkt wurde erfolgreich aktualisiert."
+    folder:
+      success: "&b&lWaypoints &e&l>&r &7Das Icon vom Ordner wurde erfolgreich aktualisiert."
+    wrongUsage: |
+      &b&lWaypoints &e&l>&r &cUm das Icon zu aktualisieren musst du angeben ob es ein Ordner oder Wegpunkt ist und dessen ID. Beispiele:
+      &a/waypoints updateItem waypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35
+      &a/waypoints updateItem folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870
+    notAValidItem: "&b&lWaypoints &e&l>&r &cDas Item das du verwenden möchtest, ist nicht erlaubt."
+    disabled: "&b&lWaypoints &e&l>&r &cDas aktualisieren von Icons wurde deaktiviert."
+  createFolder:
+    success: "&b&lWaypoints &e&l>&r &7Order wurde erfolgreich erstellt."
+    wrongUsage: |
+      &b&lWaypoints &e&l>&r &cUm einen Ordner zu erstellen musst du einen Namen angeben. Beispiel:
+      &a/waypoints createFolder Nether Portale
+    nameDuplicate: "&b&lWaypoints &e&l>&r &cOrdner mit doppeltem Namen wurden deaktiviert."
+    limitReached: "&b&lWaypoints &e&l>&r &cDu hast das Limit an persönlichen Ordern erreicht."
+chatWarning:
+  worldTranslationsMissing: "&b&lWaypoints &e&l>&r &cEs fehlen Übersetzungen für Welt-Namen."

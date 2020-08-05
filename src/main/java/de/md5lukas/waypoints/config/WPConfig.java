@@ -46,4 +46,10 @@ public class WPConfig {
         displayConfig = new DisplayConfig(cfg.getConfigurationSection("displays"));
         inventoryConfig = new InventoryConfig(cfg.getConfigurationSection("inventory"));
     }
+
+    public static void reloadConfig(FileConfiguration cfg) {
+        generalConfig.load(cfg);
+        displayConfig.load(cfg);
+        inventoryConfig.load(cfg);
+    }
 }
