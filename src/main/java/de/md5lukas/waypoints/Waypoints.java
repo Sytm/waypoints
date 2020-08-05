@@ -28,7 +28,6 @@ import de.md5lukas.waypoints.lang.Translations;
 import de.md5lukas.waypoints.listener.WaypointsListener;
 import de.md5lukas.waypoints.store.FileManager;
 import de.md5lukas.waypoints.store.GlobalStore;
-import de.md5lukas.waypoints.store.LegacyImporter;
 import de.md5lukas.waypoints.util.FileHelper;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
 import de.md5lukas.waypoints.util.VaultHook;
@@ -41,7 +40,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,6 +74,7 @@ public class Waypoints extends JavaPlugin {
     public static Translations getTranslations() {
         return instance.translations;
     }
+
     public static InventoryTranslations getITranslations() {
         return instance.translations.getInventoryTranslations();
     }
@@ -87,19 +86,6 @@ public class Waypoints extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
-        if (detectLegacy()) {
-            File config = new File(getDataFolder(), "config.yml"), data = new File(getDataFolder(), "data");
-            try {
-                Files.move(config.toPath(), new File(getDataFolder(), "config.old.yml").toPath());
-                Files.move(data.toPath(), new File(getDataFolder(), "data.old").toPath());
-            } catch (IOException e) {
-                getLogger().log(Level.SEVERE, "Couldn't move old plugin data", e);
-                inOnEnableDisable = true;
-                getServer().getPluginManager().disablePlugin(this);
-                return;
-            }
-        }
 
         setupExternalDependencies();
 
@@ -145,16 +131,6 @@ public class Waypoints extends JavaPlugin {
     private void setupExternalDependencies() {
         Tags.registerTag(LocationTag::new);
         SmartInvsPlugin.setPlugin(this);
-    }
-
-    private boolean detectLegacy() {
-        if (new File(getDataFolder(), "data").exists()) {
-            getLogger().log(Level.INFO, "Loading legacy stores");
-            LegacyImporter.importLegacy(getDataFolder());
-            getLogger().log(Level.INFO, "Done!");
-            return true;
-        }
-        return false;
     }
 
     private void loadConfig() throws IOException {
