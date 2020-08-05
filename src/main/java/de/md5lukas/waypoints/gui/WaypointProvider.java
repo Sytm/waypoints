@@ -21,7 +21,6 @@ package de.md5lukas.waypoints.gui;
 import com.google.common.collect.ImmutableMap;
 import de.md5lukas.commons.collections.LoopAroundList;
 import de.md5lukas.commons.collections.PaginationList;
-import de.md5lukas.commons.inventory.ItemBuilder;
 import de.md5lukas.i18n.translations.ItemTranslation;
 import de.md5lukas.i18n.translations.ItemTranslationTAR;
 import de.md5lukas.i18n.translations.Translation;
@@ -45,6 +44,7 @@ import fr.minuskube.inv.SmartInvsPlugin;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.SlotPos;
+import fr.minuskube.inv.util.ItemBuilder;
 import fr.minuskube.inv.util.Pattern;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -818,8 +818,7 @@ public class WaypointProvider implements InventoryProvider {
 
     //<editor-fold defaultstate="collapsed" desc="Cycle Sort mode helpers">
     private ItemStack getSortCycleItem(Material material) {
-        ItemBuilder builder = new ItemBuilder(getITranslations().CYCLE_SORT.getStack(viewer));
-
+        ItemBuilder builder = ItemBuilder.builder(getITranslations().CYCLE_SORT.getStack(viewer));
         builder.appendLore("");
 
         String active = getITranslations().CYCLE_SORT_ACTIVE.getAsString(viewer), inactive = getITranslations().CYCLE_SORT_INACTIVE.getAsString(viewer);
@@ -831,7 +830,7 @@ public class WaypointProvider implements InventoryProvider {
             }
         });
 
-        return builder.make();
+        return builder.build();
     }
 
     private void cycleSortMode() {

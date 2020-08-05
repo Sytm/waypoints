@@ -70,7 +70,7 @@ public class PermissionFolder extends Folder {
 
     @Override
     public ItemTranslationTAR getItemTranslationTAR(Player player) {
-        return new ItemTranslationTAR().setDescription("%amount%", Long.toString(count(player)));
+        return super.getItemTranslationTAR(player).setDescription("%amount%", Long.toString(count(player)));
     }
 
     @Override

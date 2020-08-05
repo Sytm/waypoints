@@ -124,14 +124,13 @@ public class Waypoints extends JavaPlugin {
 
         fileManager = new FileManager(this);
 
-        if (!extractMessages())
+        if (!extractLanguages())
             return;
         if (!loadGlobalStore())
             return;
 
         translations = new Translations();
-
-        LegacyImporter.registerLoadedLegacyData();
+        translations.updateLanguageStore();
 
         PlayerItemCheckRunner.start(this);
         WaypointDisplay.activateDisplays();
@@ -176,11 +175,11 @@ public class Waypoints extends JavaPlugin {
         WPConfig.loadConfig(config);
     }
 
-    private boolean extractMessages() {
-        if (!new File(getDataFolder(), "lang/en.msg").exists())
-            saveResource("lang/en.msg", false);
-        if (!new File(getDataFolder(), "lang/de.msg").exists())
-            saveResource("de.msg", false);
+    private boolean extractLanguages() {
+        if (!new File(getDataFolder(), "lang/en.yml").exists())
+            saveResource("lang/en.yml", false);
+        if (!new File(getDataFolder(), "lang/de.yml").exists())
+            saveResource("lang/de.yml", false);
         return true;
     }
 

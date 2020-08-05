@@ -1,17 +1,17 @@
 "general":
-  "notAPlayer": "$prefix$ &cYou must be a player to use this command."
-  "folderNotFound": "$prefix$ &cA folder with that id could not be found."
-  "noPermission": "$prefix$ &cYou don't have permissions to do this."
-  "notAValidUuid": "$prefix$ &cThe id provided is not in a valid format."
-  "waypointNotFound": "$prefix$ &cA waypoint with that id could not be found."
+  "notAPlayer": "&b&lWaypoints &e&l>&r &cYou must be a player to use this command."
+  "folderNotFound": "&b&lWaypoints &e&l>&r &cA folder with that id could not be found."
+  "noPermission": "&b&lWaypoints &e&l>&r &cYou don't have permissions to do this."
+  "notAValidUuid": "&b&lWaypoints &e&l>&r &cThe id provided is not in a valid format."
+  "waypointNotFound": "&b&lWaypoints &e&l>&r &cA waypoint with that id could not be found."
 "chatAction":
   "updateItem":
     "waypoint":
-      "private": "$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon."
-      "public": "$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon."
-      "permission": "$prefix$ &7Click here when you are holding the item you want to use as the new waypoint icon."
+      "private": "&b&lWaypoints &e&l>&r &7Click here when you are holding the item you want to use as the new waypoint icon."
+      "public": "&b&lWaypoints &e&l>&r &7Click here when you are holding the item you want to use as the new waypoint icon."
+      "permission": "&b&lWaypoints &e&l>&r &7Click here when you are holding the item you want to use as the new waypoint icon."
     "folder":
-      "private": "$prefix$ &7Click here when you are holding the item you want to use as the new folder icon."
+      "private": "&b&lWaypoints &e&l>&r &7Click here when you are holding the item you want to use as the new folder icon."
 "chat":
   "duration":
     "hours": "hours"
@@ -23,13 +23,13 @@
     "minute": "minute"
     "second": "second"
   "teleport":
-    "standStillNotice": "$prefix$ &7You need to stand still for &e%timeRequired%&7 to be able to teleport."
-    "cancelledMove": "$prefix$ &cYour teleportation has been cancelled because you moved."
-    "onCooldown": "$prefix$ &cYou cannot teleport right now because it is on cooldown. You can teleport again in &e%remainingTime%&c."
+    "standStillNotice": "&b&lWaypoints &e&l>&r &7You need to stand still for &e%timeRequired%&7 to be able to teleport."
+    "cancelledMove": "&b&lWaypoints &e&l>&r &cYour teleportation has been cancelled because you moved."
+    "onCooldown": "&b&lWaypoints &e&l>&r &cYou cannot teleport right now because it is on cooldown. You can teleport again in &e%remainingTime%&c."
     "notEnough":
-      "xpPoints": "$prefix$ &cYou do not have enough xp points to perform this teleportation."
-      "balance": "$prefix$ &cYou do not have enough balance to perform this teleportation."
-      "xpLevels": "$prefix$ &cYou do not have enough xp levels to perform this teleportation."
+      "xpPoints": "&b&lWaypoints &e&l>&r &cYou do not have enough xp points to perform this teleportation."
+      "balance": "&b&lWaypoints &e&l>&r &cYou do not have enough balance to perform this teleportation."
+      "xpLevels": "&b&lWaypoints &e&l>&r &cYou do not have enough xp levels to perform this teleportation."
 "display":
   "wrongWorld": "&cYou are currently in the world &a%currentworld%&c, but the waypoint is in &a%correctworld%"
 "inventory":
@@ -381,78 +381,78 @@
       "permission": "&7 - &e/waypoints setPermission <Permission> <Name> &7&l|&r&7 Create a new permission waypoint"
     "compass": "&7 - &e/waypoints compass &7&l|&r&7 Sets the new default compass target, when set to \"ingame\""
     "updateItem": "&7 - &e/waypoints updateItem <Waypoint|Folder> <ID> &7&l|&r&7 This command is used to update the icons of waypoints and folders"
-    "title": "$prefix$ &7&nHelp"
+    "title": "&b&lWaypoints &e&l>&r &7&nHelp"
   "other":
-    "playerNameNotFound": "$prefix$ &cA player with that name could not be found."
+    "playerNameNotFound": "&b&lWaypoints &e&l>&r &cA player with that name could not be found."
     "wrongUsage": |
-      $prefix$ &cTo view the waypoints of another player you need to provide their name or uuid. Example:
+      &b&lWaypoints &e&l>&r &cTo view the waypoints of another player you need to provide their name or uuid. Example:
       &a/waypoints other Sytm
       &a/waypoints other 68f22021-732e-4afe-9cf5-6906f07a41db
-    "uuidNotFound": "$prefix$ &cA player with that uuid could not be found."
-    "notAValidUuidOrPlayerName": "$prefix$ &cThe provided identifier is neither a Minecraft username nor a valid uuid."
+    "uuidNotFound": "&b&lWaypoints &e&l>&r &cA player with that uuid could not be found."
+    "notAValidUuidOrPlayerName": "&b&lWaypoints &e&l>&r &cThe provided identifier is neither a Minecraft username nor a valid uuid."
   "set":
     "private":
-      "success": "$prefix$ &7The waypoint has been set successfully."
+      "success": "&b&lWaypoints &e&l>&r &7The waypoint has been set successfully."
       "wrongUsage": |
-        $prefix$ &cYou need to provide a name to create a new waypoint. Example:
+        &b&lWaypoints &e&l>&r &cYou need to provide a name to create a new waypoint. Example:
         &a/waypoints set My Home
-      "nameDuplicate": "$prefix$ &cWaypoints with duplicate names have been disabled."
-      "limitReached": "$prefix$ &cYou have reached your personal limit of waypoints you can set."
+      "nameDuplicate": "&b&lWaypoints &e&l>&r &cWaypoints with duplicate names have been disabled."
+      "limitReached": "&b&lWaypoints &e&l>&r &cYou have reached your personal limit of waypoints you can set."
     "public":
-      "success": "$prefix$ &7The public waypoint has been set successfully."
+      "success": "&b&lWaypoints &e&l>&r &7The public waypoint has been set successfully."
       "wrongUsage": |
-        $prefix$ &cYou need to provide a name to create a new public waypoint. Example:
+        &b&lWaypoints &e&l>&r &cYou need to provide a name to create a new public waypoint. Example:
         &a/waypoints setPublic Spawn
-      "nameDuplicate": "$prefix$ &cPublic waypoints with duplicate names have been disabled."
+      "nameDuplicate": "&b&lWaypoints &e&l>&r &cPublic waypoints with duplicate names have been disabled."
     "permission":
-      "success": "$prefix$ &7Permission waypoint has been set successfully."
+      "success": "&b&lWaypoints &e&l>&r &7Permission waypoint has been set successfully."
       "wrongUsage": |
-        $prefix$ &cYou need to provide a permission and name to create a new permission waypoint. Example:
+        &b&lWaypoints &e&l>&r &cYou need to provide a permission and name to create a new permission waypoint. Example:
         &a/waypoints setPermission ranks.vip.secretHideout Secret Hideout
-      "nameDuplicate": "$prefix$ &cPermission waypoints with duplicate names have been disabled."
+      "nameDuplicate": "&b&lWaypoints &e&l>&r &cPermission waypoints with duplicate names have been disabled."
   "rename":
     "waypoint":
       "private":
-        "nameDuplicate": "$prefix$ &cDuplicate names for waypoints have been disabled."
-        "disabled": "$prefix$ &cRenaming private waypoints has been disabled."
+        "nameDuplicate": "&b&lWaypoints &e&l>&r &cDuplicate names for waypoints have been disabled."
+        "disabled": "&b&lWaypoints &e&l>&r &cRenaming private waypoints has been disabled."
       "public":
-        "nameDuplicate": "$prefix$ &cDuplicate names for public waypoints have been disabled."
-        "disabled": "$prefix$ &cRenaming public waypoints has been disabled."
-      "success": "$prefix$ &7The waypoint has been renamed successfully."
+        "nameDuplicate": "&b&lWaypoints &e&l>&r &cDuplicate names for public waypoints have been disabled."
+        "disabled": "&b&lWaypoints &e&l>&r &cRenaming public waypoints has been disabled."
+      "success": "&b&lWaypoints &e&l>&r &7The waypoint has been renamed successfully."
       "permission":
-        "nameDuplicate": "$prefix$ &cDuplicate names for permission waypoints have been disabled."
-        "disabled": "$prefix$ &cRenaming permission waypoints has been disabled."
+        "nameDuplicate": "&b&lWaypoints &e&l>&r &cDuplicate names for permission waypoints have been disabled."
+        "disabled": "&b&lWaypoints &e&l>&r &cRenaming permission waypoints has been disabled."
     "folder":
-      "success": "$prefix$ &7The folder has been renamed successfully."
-      "nameDuplicate": "$prefix$ &cDuplicate names for folders have been disabled."
-      "disabled": "$prefix$ &cRenaming folders has been disabled."
+      "success": "&b&lWaypoints &e&l>&r &7The folder has been renamed successfully."
+      "nameDuplicate": "&b&lWaypoints &e&l>&r &cDuplicate names for folders have been disabled."
+      "disabled": "&b&lWaypoints &e&l>&r &cRenaming folders has been disabled."
     "wrongUsage": |
-      $prefix$ &cYou need to provide a new name and the type of what you want to rename. Example:
+      &b&lWaypoints &e&l>&r &cYou need to provide a new name and the type of what you want to rename. Example:
       &a/waypoints rename privateWaypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35 Nether Portal No. 2
       &a/waypoints rename folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870 Mines
-    "disabled": "$prefix$ &cRenaming has been disabled."
+    "disabled": "&b&lWaypoints &e&l>&r &cRenaming has been disabled."
   "compass":
-    "setSuccess": "$prefix$ &7The new default compass target has been set."
-    "disabled": "$prefix$ &cThis method to set the default compass target has not been enabled in the config."
-    "locked": "$prefix$ &cThis command has been disabled in the config."
-  "notFound": "$prefix$ &cThe command you entered was not found"
+    "setSuccess": "&b&lWaypoints &e&l>&r &7The new default compass target has been set."
+    "disabled": "&b&lWaypoints &e&l>&r &cThis method to set the default compass target has not been enabled in the config."
+    "locked": "&b&lWaypoints &e&l>&r &cThis command has been disabled in the config."
+  "notFound": "&b&lWaypoints &e&l>&r &cThe command you entered was not found"
   "updateItem":
     "waypoint":
-      "success": "$prefix$ &7The item of the waypoint has been updated successfully."
+      "success": "&b&lWaypoints &e&l>&r &7The item of the waypoint has been updated successfully."
     "folder":
-      "success": "$prefix$ &7The item of the folder has been updated successfully."
+      "success": "&b&lWaypoints &e&l>&r &7The item of the folder has been updated successfully."
     "wrongUsage": |
-      $prefix$ &cTo update the item you need to specify whether its a folder or waypoint and provide the id of it. Example:
+      &b&lWaypoints &e&l>&r &cTo update the item you need to specify whether its a folder or waypoint and provide the id of it. Example:
       &a/waypoints updateItem waypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35
       &a/waypoints updateItem folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870
-    "notAValidItem": "$prefix$ &cThe item you are trying to use is not allowed."
-    "disabled": "$prefix$ &cUpdating items has been disabled."
+    "notAValidItem": "&b&lWaypoints &e&l>&r &cThe item you are trying to use is not allowed."
+    "disabled": "&b&lWaypoints &e&l>&r &cUpdating items has been disabled."
   "createFolder":
-    "success": "$prefix$ &7Folder created successfully."
+    "success": "&b&lWaypoints &e&l>&r &7Folder created successfully."
     "wrongUsage": |
-      $prefix$ &cYou need to provide a name to create a new folder. Example:
+      &b&lWaypoints &e&l>&r &cYou need to provide a name to create a new folder. Example:
       &a/waypoints createFolder Nether portals
-    "nameDuplicate": "$prefix$ &cFolders with duplicate names have been disabled."
-    "limitReached": "$prefix$ &cYou have reached your personal limit of folders you can create."
+    "nameDuplicate": "&b&lWaypoints &e&l>&r &cFolders with duplicate names have been disabled."
+    "limitReached": "&b&lWaypoints &e&l>&r &cYou have reached your personal limit of folders you can create."
 "chatWarning":
-  "worldTranslationsMissing": "$prefix$ &cSome world name translations are missing."
+  "worldTranslationsMissing": "&b&lWaypoints &e&l>&r &cSome world name translations are missing."

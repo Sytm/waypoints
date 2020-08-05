@@ -152,6 +152,8 @@ public class Translations {
                 Map<String, String> translations = ConfigHelper.fileConfigurationToMap(cfg);
 
                 Language lang = new Language(name, translations);
+
+                languages.add(lang);
             }
 
             ls.setLanguages(languages);

@@ -79,6 +79,7 @@ public class InventoryConfig {
         permissionOverviewMenuConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("overviews.permission")));
 
         deathWaypointMenuConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("waypoints.death")));
+        privateWaypointMenuConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("waypoints.private")));
         publicWaypointMenuConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("waypoints.public")));
         permissionWaypointMenuConfig.load(Objects.requireNonNull(cfg.getConfigurationSection("waypoints.permission")));
 

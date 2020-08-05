@@ -19,7 +19,6 @@
 package de.md5lukas.waypoints.data.folder;
 
 import de.md5lukas.i18n.translations.ItemTranslation;
-import de.md5lukas.i18n.translations.ItemTranslationTAR;
 import de.md5lukas.nbt.tags.CompoundTag;
 import de.md5lukas.nbt.tags.ListTag;
 import de.md5lukas.waypoints.Waypoints;
@@ -28,7 +27,6 @@ import de.md5lukas.waypoints.data.waypoint.PublicWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.gui.GUIType;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,11 +59,6 @@ public class PublicFolder extends Folder {
     @Override
     public ItemTranslation getItemTranslation() {
         return Waypoints.getITranslations().FOLDER_PUBLIC;
-    }
-
-    @Override
-    public ItemTranslationTAR getItemTranslationTAR(Player player) {
-        return new ItemTranslationTAR().setDescription("%amount%", Integer.toString(waypoints.size()));
     }
 
     @Override

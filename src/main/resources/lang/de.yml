@@ -1,17 +1,17 @@
 general:
-  notAPlayer: "$prefix$ &cDu musst ein Spieler sein, um diesen Befehl verwenden zu können"
-  folderNotFound: "$prefix$ &cEin Ordner mit dieser ID konnte nicht gefunden werden."
-  noPermission: "$prefix$ &cDu hast nicht die benötigte Berechtigung, um dies zu tun."
-  notAValidUuid: "$prefix$ &cDie angegebene ID ist in einem nicht gültigen Format."
-  waypointNotFound: "$prefix$ &cEin Wegpunkt mit dieser ID konnte nicht gefunden werden."
+  notAPlayer: "&b&lWaypoints &e&l>&r &cDu musst ein Spieler sein, um diesen Befehl verwenden zu können"
+  folderNotFound: "&b&lWaypoints &e&l>&r &cEin Ordner mit dieser ID konnte nicht gefunden werden."
+  noPermission: "&b&lWaypoints &e&l>&r &cDu hast nicht die benötigte Berechtigung, um dies zu tun."
+  notAValidUuid: "&b&lWaypoints &e&l>&r &cDie angegebene ID ist in einem nicht gültigen Format."
+  waypointNotFound: "&b&lWaypoints &e&l>&r &cEin Wegpunkt mit dieser ID konnte nicht gefunden werden."
 chatAction:
   updateItem:
     waypoint:
-      private: "$prefix$ &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
-      public: "$prefix$ &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
-      permission: "$prefix$ &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
+      private: "&b&lWaypoints &e&l>&r &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
+      public: "&b&lWaypoints &e&l>&r &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
+      permission: "&b&lWaypoints &e&l>&r &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Wegpunkt verwenden möchtest."
     folder:
-      private: "$prefix$ &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Ordner verwenden möchtest."
+      private: "&b&lWaypoints &e&l>&r &7Drücke hier drauf, wenn du das Item in der Hand am halten bist, das du als Icon für den Ordner verwenden möchtest."
 chat:
   duration:
     hours: "Stunden"
@@ -23,13 +23,13 @@ chat:
     minute: "Minute"
     second: "Sekunde"
   teleport:
-    standStillNotice: "$prefix$ &7Du musst für &e%timeRequired%&7 stehen bleiben, um dich teleportieren zu können."
-    cancelledMove: "$prefix$ &cDie teleportation wurde abgebrochen, da du dich bewegt hast."
-    onCooldown: "$prefix$ &cDu kannst im Moment dich nicht teleportieren. Dies ist erst in &e%remainingTime%&c möglich."
+    standStillNotice: "&b&lWaypoints &e&l>&r &7Du musst für &e%timeRequired%&7 stehen bleiben, um dich teleportieren zu können."
+    cancelledMove: "&b&lWaypoints &e&l>&r &cDie teleportation wurde abgebrochen, da du dich bewegt hast."
+    onCooldown: "&b&lWaypoints &e&l>&r &cDu kannst im Moment dich nicht teleportieren. Dies ist erst in &e%remainingTime%&c möglich."
     notEnough:
-      xpPoints: "$prefix$ &cDu hast nicht genügend Erfahrungspunkte um diese teleportation durchzuführen."
-      balance: "$prefix$ &cDu hast nicht genügend Guthaben um diese teleportation durchzuführen."
-      xpLevels: "$prefix$ &cDu hast nicht genügend Erfahrungs-Level um diese teleportation durchzuführen."
+      xpPoints: "&b&lWaypoints &e&l>&r &cDu hast nicht genügend Erfahrungspunkte um diese teleportation durchzuführen."
+      balance: "&b&lWaypoints &e&l>&r &cDu hast nicht genügend Guthaben um diese teleportation durchzuführen."
+      xpLevels: "&b&lWaypoints &e&l>&r &cDu hast nicht genügend Erfahrungs-Level um diese teleportation durchzuführen."
 display:
   wrongWorld: "&cDu bist momentan in der Welt &a%currentworld%&c, aber der Wegpunkt ist in &a%correctworld%"
 inventory:
@@ -381,78 +381,78 @@ command:
       permission: "&7 - &e/waypoints setPermission <Berechtigung> <Name> &7&l|&r&7 Setze einen neuen eingeschränkten Wegpunkt"
     compass: "&7 - &e/waypoints compass &7&l|&r&7 Setze das standard Kompass Ziel, wenn in der Config der Modus auf \"ingame\" steht."
     updateItem: "&7 - &e/waypoints updateItem <Waypoint|Folder> <ID> &7&l|&r&7 Dieser Befehl wird verwendet um das Icon eines Wegpunktes oder Ordners zu ändern."
-    title: "$prefix$ &7&nHilfe"
+    title: "&b&lWaypoints &e&l>&r &7&nHilfe"
   other:
-    playerNameNotFound: "$prefix$ &cEin Spieler mit diesem Namen konnte nicht gefunden werden."
+    playerNameNotFound: "&b&lWaypoints &e&l>&r &cEin Spieler mit diesem Namen konnte nicht gefunden werden."
     wrongUsage: |
-      $prefix$ &cUm die Wegpunkte eines anderen Spielers einsehen zu können musst du deren Namen oder UUID angeben. Beispiel:
+      &b&lWaypoints &e&l>&r &cUm die Wegpunkte eines anderen Spielers einsehen zu können musst du deren Namen oder UUID angeben. Beispiel:
       &a/waypoints other Sytm
       &a/waypoints other 68f22021-732e-4afe-9cf5-6906f07a41db
-    uuidNotFound: "$prefix$ &cEin Spieler mit dieser UUID konnte nicht gefunden werden."
-    notAValidUuidOrPlayerName: "$prefix$ &cDie angegebene Identifizierung ist weder ein Name noch eine UUID."
+    uuidNotFound: "&b&lWaypoints &e&l>&r &cEin Spieler mit dieser UUID konnte nicht gefunden werden."
+    notAValidUuidOrPlayerName: "&b&lWaypoints &e&l>&r &cDie angegebene Identifizierung ist weder ein Name noch eine UUID."
   set:
     private:
-      success: "$prefix$ &7Der Wegpunkt wurde erfolgreich gesetzt."
+      success: "&b&lWaypoints &e&l>&r &7Der Wegpunkt wurde erfolgreich gesetzt."
       wrongUsage: |
-        $prefix$ &cUm einen Wegpunkt zu erstellen, muss ein Name angegeben werden. Beispiel:
+        &b&lWaypoints &e&l>&r &cUm einen Wegpunkt zu erstellen, muss ein Name angegeben werden. Beispiel:
         &a/waypoints set Mein Zuhause
-      nameDuplicate: "$prefix$ &cWegpunkte mit doppeltem Namen wurden deaktiviert."
-      limitReached: "$prefix$ &cDu hast das Limit an persönlichen Wegpunkten erreicht."
+      nameDuplicate: "&b&lWaypoints &e&l>&r &cWegpunkte mit doppeltem Namen wurden deaktiviert."
+      limitReached: "&b&lWaypoints &e&l>&r &cDu hast das Limit an persönlichen Wegpunkten erreicht."
     public:
-      success: "$prefix$ &7Der öffentliche Wegpunkt wurde erfolgreich gesetzt."
+      success: "&b&lWaypoints &e&l>&r &7Der öffentliche Wegpunkt wurde erfolgreich gesetzt."
       wrongUsage: |
-        $prefix$ &cUm einen öffentlichen Wegpunkt zu erstellen, muss ein Name angegeben werden. Beispiel:
+        &b&lWaypoints &e&l>&r &cUm einen öffentlichen Wegpunkt zu erstellen, muss ein Name angegeben werden. Beispiel:
         &a/waypoints setPublic Spawn
-      nameDuplicate: "$prefix$ &cÖffentliche Wegpunkte mit doppelten Namen wurden deaktiviert."
+      nameDuplicate: "&b&lWaypoints &e&l>&r &cÖffentliche Wegpunkte mit doppelten Namen wurden deaktiviert."
     permission:
-      success: "$prefix$ &7Der eingeschränkte Wegpunkt wurde erfolgreich gesetzt."
+      success: "&b&lWaypoints &e&l>&r &7Der eingeschränkte Wegpunkt wurde erfolgreich gesetzt."
       wrongUsage: |
-        $prefix$ &cUm einen eingeschränkten Wegpunkt zu erstellen, muss eine Berechtigung und ein Name angegeben werden. Beispiel:
+        &b&lWaypoints &e&l>&r &cUm einen eingeschränkten Wegpunkt zu erstellen, muss eine Berechtigung und ein Name angegeben werden. Beispiel:
         &a/waypoints setPermission vip.secret Geheimversteck
-      nameDuplicate: "$prefix$ &cEingeschränkte Wegpunkte mit doppelten Namen wurden deaktiviert."
+      nameDuplicate: "&b&lWaypoints &e&l>&r &cEingeschränkte Wegpunkte mit doppelten Namen wurden deaktiviert."
   rename:
     waypoint:
       private:
-        nameDuplicate: "$prefix$ &cDoppelte Namen für private Wegpunkte wurden deaktiviert."
-        disabled: "$prefix$ &cDas Umbenennen von privaten Wegpunkten wurde deaktiviert."
+        nameDuplicate: "&b&lWaypoints &e&l>&r &cDoppelte Namen für private Wegpunkte wurden deaktiviert."
+        disabled: "&b&lWaypoints &e&l>&r &cDas Umbenennen von privaten Wegpunkten wurde deaktiviert."
       public:
-        nameDuplicate: "$prefix$ &cDoppelte Namen für öffentliche Wegpunkte wurden deaktiviert."
-        disabled: "$prefix$ &cDas Umbenennen von öffentlichen Wegpunkten wurde deaktiviert."
-      success: "$prefix$ &7Der Wegpunkt wurde erfolgreich umbenannt."
+        nameDuplicate: "&b&lWaypoints &e&l>&r &cDoppelte Namen für öffentliche Wegpunkte wurden deaktiviert."
+        disabled: "&b&lWaypoints &e&l>&r &cDas Umbenennen von öffentlichen Wegpunkten wurde deaktiviert."
+      success: "&b&lWaypoints &e&l>&r &7Der Wegpunkt wurde erfolgreich umbenannt."
       permission:
-        nameDuplicate: "$prefix$ &cDoppelte Namen für eingeschränkte Wegpunkte wurden deaktiviert."
-        disabled: "$prefix$ &cDas Umbenennen von eingeschränkten Wegpunkten wurde deaktiviert."
+        nameDuplicate: "&b&lWaypoints &e&l>&r &cDoppelte Namen für eingeschränkte Wegpunkte wurden deaktiviert."
+        disabled: "&b&lWaypoints &e&l>&r &cDas Umbenennen von eingeschränkten Wegpunkten wurde deaktiviert."
     folder:
-      success: "$prefix$ &7Der Ordner wurde erfolgreich unbenannt."
-      nameDuplicate: "$prefix$ &cDoppelte Namen für Order wurden deaktiviert."
-      disabled: "$prefix$ &cDas Umbenennen von Ordnern wurde deaktiviert."
+      success: "&b&lWaypoints &e&l>&r &7Der Ordner wurde erfolgreich unbenannt."
+      nameDuplicate: "&b&lWaypoints &e&l>&r &cDoppelte Namen für Order wurden deaktiviert."
+      disabled: "&b&lWaypoints &e&l>&r &cDas Umbenennen von Ordnern wurde deaktiviert."
     wrongUsage: |
-      $prefix$ &cUm den Namen zu ändern musst du die Art des Wegpunktes/Ordner, dessen ID und den neuen Namen angeben. Beispiel:
+      &b&lWaypoints &e&l>&r &cUm den Namen zu ändern musst du die Art des Wegpunktes/Ordner, dessen ID und den neuen Namen angeben. Beispiel:
       &a/waypoints rename privateWaypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35 Nether Portal No. 2
       &a/waypoints rename folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870 Mines
-    disabled: "$prefix$ &cUmbenennen wurde deaktiviert."
+    disabled: "&b&lWaypoints &e&l>&r &cUmbenennen wurde deaktiviert."
   compass:
-    setSuccess: "$prefix$ &7Das neue standard Kompass-Ziel wurde gesetzt."
-    disabled: "$prefix$ &cDiese Art das standard Kompass-Ziel zu setzten wurde in der Config deaktiviert"
-    locked: "$prefix$ &cDieser Befehl wurde in der Config deaktiviert."
-  notFound: "$prefix$ &cThe command you entered was not found"
+    setSuccess: "&b&lWaypoints &e&l>&r &7Das neue standard Kompass-Ziel wurde gesetzt."
+    disabled: "&b&lWaypoints &e&l>&r &cDiese Art das standard Kompass-Ziel zu setzten wurde in der Config deaktiviert"
+    locked: "&b&lWaypoints &e&l>&r &cDieser Befehl wurde in der Config deaktiviert."
+  notFound: "&b&lWaypoints &e&l>&r &cThe command you entered was not found"
   updateItem:
     waypoint:
-      success: "$prefix$ &7Das Icon vom Wegpunkt wurde erfolgreich aktualisiert."
+      success: "&b&lWaypoints &e&l>&r &7Das Icon vom Wegpunkt wurde erfolgreich aktualisiert."
     folder:
-      success: "$prefix$ &7Das Icon vom Ordner wurde erfolgreich aktualisiert."
+      success: "&b&lWaypoints &e&l>&r &7Das Icon vom Ordner wurde erfolgreich aktualisiert."
     wrongUsage: |
-      $prefix$ &cUm das Icon zu aktualisieren musst du angeben ob es ein Ordner oder Wegpunkt ist und dessen ID. Beispiele:
+      &b&lWaypoints &e&l>&r &cUm das Icon zu aktualisieren musst du angeben ob es ein Ordner oder Wegpunkt ist und dessen ID. Beispiele:
       &a/waypoints updateItem waypoint 729dad02-6115-46a9-a2a3-ab6cb2c36c35
       &a/waypoints updateItem folder 59bcef04-9d5f-4a05-8fa4-f1f7b5311870
-    notAValidItem: "$prefix$ &cDas Item das du verwenden möchtest, ist nicht erlaubt."
-    disabled: "$prefix$ &cDas aktualisieren von Icons wurde deaktiviert."
+    notAValidItem: "&b&lWaypoints &e&l>&r &cDas Item das du verwenden möchtest, ist nicht erlaubt."
+    disabled: "&b&lWaypoints &e&l>&r &cDas aktualisieren von Icons wurde deaktiviert."
   createFolder:
-    success: "$prefix$ &7Order wurde erfolgreich erstellt."
+    success: "&b&lWaypoints &e&l>&r &7Order wurde erfolgreich erstellt."
     wrongUsage: |
-      $prefix$ &cUm einen Ordner zu erstellen musst du einen Namen angeben. Beispiel:
+      &b&lWaypoints &e&l>&r &cUm einen Ordner zu erstellen musst du einen Namen angeben. Beispiel:
       &a/waypoints createFolder Nether Portale
-    nameDuplicate: "$prefix$ &cOrdner mit doppeltem Namen wurden deaktiviert."
-    limitReached: "$prefix$ &cDu hast das Limit an persönlichen Ordern erreicht."
+    nameDuplicate: "&b&lWaypoints &e&l>&r &cOrdner mit doppeltem Namen wurden deaktiviert."
+    limitReached: "&b&lWaypoints &e&l>&r &cDu hast das Limit an persönlichen Ordern erreicht."
 chatWarning:
-  worldTranslationsMissing: "$prefix$ &cEs fehlen Übersetzungen für Welt-Namen."
+  worldTranslationsMissing: "&b&lWaypoints &e&l>&r &cEs fehlen Übersetzungen für Welt-Namen."
