@@ -25,15 +25,28 @@ import java.util.Map;
 
 public class ConfigHelper {
 
-    public static Map<String, String> fileConfigurationToMap(FileConfiguration cfg) {
-        Map<String, String> result = new HashMap<>();
+    public static Map<String, String> getTranslationsFromConfig(FileConfiguration cfg) {
+        String variablePrefix = "variables.";
+        Map<String, String> variables = new HashMap<>();
+        Map<String, String> translations = new HashMap<>();
 
         for (String path : cfg.getKeys(true)) {
             if (cfg.isString(path)) {
-                result.put(path, cfg.getString(path));
+                if (path.startsWith(variablePrefix)) {
+                    variables.put(path.substring(variablePrefix.length()), cfg.getString(path));
+                } else {
+                    translations.put(path, cfg.getString(path));
+                }
             }
         }
+        for (Map.Entry<String, String> translation : translations.entrySet()) {
+            String string = translation.getValue();
+            for (Map.Entry<String, String> variable : variables.entrySet()) {
+                string = string.replace("$" + variable.getKey() + "$", variable.getValue());
+            }
+            translation.setValue(string);
+        }
 
-        return result;
+        return translations;
     }
 }

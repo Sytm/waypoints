@@ -149,7 +149,7 @@ public class Translations {
 
                 FileConfiguration cfg = YamlConfiguration.loadConfiguration(langFile);
 
-                Map<String, String> translations = ConfigHelper.fileConfigurationToMap(cfg);
+                Map<String, String> translations = ConfigHelper.getTranslationsFromConfig(cfg);
 
                 Language lang = new Language(name, translations);
 
