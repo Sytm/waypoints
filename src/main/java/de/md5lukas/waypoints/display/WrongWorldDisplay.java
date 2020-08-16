@@ -19,6 +19,7 @@
 package de.md5lukas.waypoints.display;
 
 import de.md5lukas.commons.StringHelper;
+import de.md5lukas.waypoints.Waypoints;
 import de.md5lukas.waypoints.config.WPConfig;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
 import de.md5lukas.waypoints.util.PlayerItemCheckRunner;
@@ -44,8 +45,9 @@ public final class WrongWorldDisplay extends WaypointDisplay {
     public void update(Player player, Waypoint waypoint) {
         if (waypoint != null && !player.getWorld().equals(waypoint.getLocation().getWorld()) && PlayerItemCheckRunner.canPlayerUseDisplays(player)) {
             TextComponent component = new TextComponent(StringHelper.multiReplace(getTranslations().DISPLAY_WRONG_WORLD.getAsString(player),
-                    "%currentworld%", WPConfig.getGeneralConfig().translateWorldName(player.getWorld().getName(), player),
-                    "%correctworld%", WPConfig.getGeneralConfig().translateWorldName(waypoint.getLocation().getWorld().getName(), player)));
+                    "%currentworld%", Waypoints.getTranslations().getWorldNameTranslations().getWorldNameTranslation(player, player.getWorld()),
+                    "%correctworld%",
+                    Waypoints.getTranslations().getWorldNameTranslations().getWorldNameTranslation(player, waypoint.getLocation().getWorld())));
             player.spigot().sendMessage(WPConfig.getDisplayConfig().getWrongWorldConfig().isActionBar() ? ChatMessageType.ACTION_BAR : ChatMessageType.CHAT,
                     component);
         }

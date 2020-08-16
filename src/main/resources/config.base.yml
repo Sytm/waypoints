@@ -95,18 +95,6 @@ general:
         - AIR
         - BARRIER
         - BEDROCK
-  # Translate world names into something more readable
-  worldNameAliases:
-    # Specify the language here. Examples for other languages: de, at etc.
-    en:
-      # Here the internal world name is mapped to a readable version
-      world: 'Overworld'
-      world_nether: 'Nether'
-      world_the_end: 'The End'
-    de:
-      world: 'Welt'
-      world_nether: 'Nether'
-      world_the_end: 'Das Ende'
 
 inventory:
   general:

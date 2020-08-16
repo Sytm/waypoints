@@ -36,8 +36,8 @@ import static de.md5lukas.waypoints.config.WPConfig.getDisplayConfig;
 
 public final class ActionBarDisplay extends WaypointDisplay {
 
-    private ConcurrentHashMap<Player, Location> players = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<Player, String> bars = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Player, Location> players = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Player, String> bars = new ConcurrentHashMap<>();
 
     protected ActionBarDisplay(Plugin plugin) {
         super(plugin, getDisplayConfig().getActionBarConfig().getInterval());

@@ -173,7 +173,7 @@
                                     </excludes>
                                 </filter>
                                 <filter>
-                                    <artifact>fr.minuskube.inv:smart-invs</artifact>
+                                    <artifact>de.md5lukas:smart-invs</artifact>
                                     <excludes>
                                         <exclude>plugin.yml</exclude>
                                     </excludes>

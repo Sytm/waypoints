@@ -26,7 +26,7 @@ public enum OpenUsingCompass {
 
     LEFT("left"), RIGHT("right"), FALSE("false");
 
-    private String inConfig;
+    private final String inConfig;
 
     OpenUsingCompass(String inConfig) {
         this.inConfig = inConfig;

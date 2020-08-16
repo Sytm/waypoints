@@ -28,7 +28,7 @@ import org.bukkit.Material;
 
 public class PermissionWaypoint extends Waypoint {
 
-    private String permission;
+    private final String permission;
 
     public PermissionWaypoint(CompoundTag tag) {
         super(tag);

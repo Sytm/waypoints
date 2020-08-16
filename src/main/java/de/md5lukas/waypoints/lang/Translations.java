@@ -36,10 +36,12 @@ public class Translations {
 
     private final LanguageStorage ls;
     private final InventoryTranslations inventoryTranslations;
+    private final WorldNameTranslations worldNameTranslations;
 
     public Translations() {
         ls = new LanguageStorage(WPConfig.getGeneralConfig().getDefaultLanguage());
         inventoryTranslations = new InventoryTranslations(ls);
+        worldNameTranslations = new WorldNameTranslations(ls);
 
         // ---------------------- General ----------------------
         GENERAL_NOT_A_PLAYER = new Translation(ls, "general.notAPlayer");
@@ -128,6 +130,10 @@ public class Translations {
         return inventoryTranslations;
     }
 
+    public WorldNameTranslations getWorldNameTranslations() {
+        return worldNameTranslations;
+    }
+
     public void updateLanguageStore() {
         String fileExtension = ".yml";
 
@@ -159,6 +165,8 @@ public class Translations {
             ls.setLanguages(languages);
             ls.setDefaultLanguage(WPConfig.getGeneralConfig().getDefaultLanguage());
         }
+
+        worldNameTranslations.updateNameToTranslationMap();
     }
 
     public final Translation

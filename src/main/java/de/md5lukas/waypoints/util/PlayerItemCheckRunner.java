@@ -29,8 +29,8 @@ import java.util.function.BiConsumer;
 
 public class PlayerItemCheckRunner implements Runnable {
 
-    private static Map<UUID, Boolean> canPlayerUseDisplays = new HashMap<>();
-    private static List<BiConsumer<Player, Boolean>> updateHooks = new ArrayList<>();
+    private static final Map<UUID, Boolean> canPlayerUseDisplays = new HashMap<>();
+    private static final List<BiConsumer<Player, Boolean>> updateHooks = new ArrayList<>();
 
     public static boolean canPlayerUseDisplays(Player player) {
         if (WPConfig.getDisplayConfig().getDisplaysActiveWhen() == DisplaysActiveWhen.FALSE) {

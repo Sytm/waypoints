@@ -39,7 +39,7 @@ public final class BeaconDisplay extends WaypointDisplay {
 
     private static final BlockData BLOCK_DATA_BEACON = Bukkit.createBlockData(Material.BEACON);
 
-    private Map<UUID, Location> activeBeacons;
+    private final Map<UUID, Location> activeBeacons;
 
     BeaconDisplay(Plugin plugin) {
         super(plugin, getDisplayConfig().getBeaconConfig().getInterval());

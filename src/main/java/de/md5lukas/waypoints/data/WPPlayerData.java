@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 public class WPPlayerData {
 
-    private static Map<UUID, WPPlayerData> cache = new HashMap<>();
+    private static final Map<UUID, WPPlayerData> cache = new HashMap<>();
 
     public static WPPlayerData getPlayerData(UUID uuid) {
         return cache.compute(uuid, (id, value) -> {
@@ -49,12 +49,12 @@ public class WPPlayerData {
         });
     }
 
-    private PlayerStore store;
-    private CompoundTag rootTag;
-    private WPPlayerSettings settings;
+    private final PlayerStore store;
+    private final CompoundTag rootTag;
+    private final WPPlayerSettings settings;
     private DeathWaypoint deathWaypoint;
-    private List<PrivateFolder> folders;
-    private List<PrivateWaypoint> waypoints;
+    private final List<PrivateFolder> folders;
+    private final List<PrivateWaypoint> waypoints;
 
     private long lastTeleportation;
 
@@ -284,7 +284,7 @@ public class WPPlayerData {
         CREATED_DESC(Comparator.comparingLong(GUISortable::createdAt).reversed()),
         TYPE(Comparator.comparing(GUISortable::getType));
 
-        private Comparator<GUISortable> comparator;
+        private final Comparator<GUISortable> comparator;
 
         SortMode(Comparator<GUISortable> comparator) {
             this.comparator = comparator;

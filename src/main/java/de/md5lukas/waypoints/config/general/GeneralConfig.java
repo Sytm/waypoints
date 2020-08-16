@@ -18,22 +18,12 @@
 
 package de.md5lukas.waypoints.config.general;
 
-import de.md5lukas.commons.language.Languages;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static de.md5lukas.waypoints.Waypoints.getTranslations;
 
 public class GeneralConfig {
 
@@ -51,14 +41,11 @@ public class GeneralConfig {
     private boolean customItemFilterIsBlacklist;
     private List<Material> customItemFilter;
 
-    private final Map<String, Map<String, String>> worldNameAliases;
-
     public GeneralConfig(ConfigurationSection cfg) {
         renamingConfig = new RenamingConfig();
         duplicateConfig = new DuplicateNameConfig();
         teleportConfig = new TeleportConfig();
 
-        worldNameAliases = new HashMap<>();
         load(cfg);
     }
 
@@ -79,15 +66,6 @@ public class GeneralConfig {
         customItemFilter =
                 cfg.getStringList("inventory.customItem.filter.list").stream().map(Material::matchMaterial).filter(Objects::nonNull)
                         .collect(Collectors.toList());
-
-        worldNameAliases.clear();
-        for (String lang : Objects.requireNonNull(cfg.getConfigurationSection("worldNameAliases")).getKeys(false)) {
-            Map<String, String> aliases = new HashMap<>();
-            worldNameAliases.put(lang.toLowerCase(), aliases);
-            for (String world : Objects.requireNonNull(cfg.getConfigurationSection("worldNameAliases." + lang)).getKeys(false)) {
-                aliases.put(world, cfg.getString("worldNameAliases." + lang + "." + world));
-            }
-        }
     }
 
     public String getDefaultLanguage() {
@@ -128,44 +106,5 @@ public class GeneralConfig {
 
     public boolean isValidCustomItem(Material material) {
         return customItemEnabled && customItemFilterIsBlacklist != customItemFilter.contains(material);
-    }
-
-    @Deprecated
-    public String translateWorldName(String world, String language) {
-        if (!worldNameAliases.containsKey(language))
-            language = Languages.getDefaultLanguage();
-        if (!worldNameAliases.containsKey(language))
-            return world;
-        String translated = worldNameAliases.get(language).get(world);
-        return translated == null ? world : translated;
-    }
-
-    @Deprecated
-    public String translateWorldName(String world, CommandSender sender) {
-        return translateWorldName(world, Languages.getLanguage(sender));
-    }
-
-    @Deprecated
-    public void checkWorldTranslations() {
-        ConsoleCommandSender console = Bukkit.getConsoleSender();
-        StringBuilder message = new StringBuilder();
-        for (String lang : worldNameAliases.keySet()) {
-            boolean firstLang = true;
-            for (World w : Bukkit.getWorlds()) {
-                if (!worldNameAliases.get(lang).containsKey(w.getName())) {
-                    if (firstLang) {
-                        firstLang = false;
-                        message.append("\n&c").append(lang).append(": &e").append(w.getName());
-                    } else {
-                        message.append(", ").append(w.getName());
-                    }
-                }
-            }
-        }
-        String messageString = message.toString();
-        console.sendMessage(getTranslations().CHAT_WARNING_WORLD_TRANSLATIONS_MISSING.getAsString(console) + messageString);
-        Bukkit.getOnlinePlayers().stream().map(p -> (Player) p).filter(p ->
-                p.hasPermission("waypoints.admin"))
-                .forEach(p -> p.sendMessage(getTranslations().CHAT_WARNING_WORLD_TRANSLATIONS_MISSING.getAsString(p) + messageString));
     }
 }

@@ -84,7 +84,7 @@ public abstract class Waypoint implements GUISortable {
     @Override
     public ItemTranslationTAR getItemTranslationTAR(Player player) {
         return new ItemTranslationTAR().setDisplayName("%name%", getName()).setDescription(
-                "%world%", WPConfig.getGeneralConfig().translateWorldName(location.getWorld().getName(), player),
+                "%world%", Waypoints.getTranslations().getWorldNameTranslations().getWorldNameTranslation(player, location.getWorld()),
                 "%x%", MathHelper.format(location.getX()),
                 "%y%", MathHelper.format(location.getY()),
                 "%z%", MathHelper.format(location.getZ()),

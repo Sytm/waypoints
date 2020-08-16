@@ -34,6 +34,10 @@ chat:
       xpPoints: "$prefix$ &cDu hast nicht genügend Erfahrungspunkte um diese teleportation durchzuführen."
       balance: "$prefix$ &cDu hast nicht genügend Guthaben um diese teleportation durchzuführen."
       xpLevels: "$prefix$ &cDu hast nicht genügend Erfahrungs-Level um diese teleportation durchzuführen."
+worlds:
+  world: 'Welt'
+  world_nether: 'Nether'
+  world_the_end: 'Das Ende'
 display:
   wrongWorld: "&cDu bist momentan in der Welt &a%currentworld%&c, aber der Wegpunkt ist in &a%correctworld%"
 inventory:
