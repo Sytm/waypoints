@@ -177,6 +177,8 @@ public class Waypoints extends JavaPlugin {
             saveResource("lang/messages_en.msg", false);
         if (!new File(getDataFolder(), "lang/messages_de.msg").exists())
             saveResource("lang/messages_de.msg", false);
+        if (!new File(getDataFolder(), "lang/messages_ru.msg").exists())
+            saveResource("lang/messages_ru.msg", false);
         return true;
     }
 
