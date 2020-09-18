@@ -105,6 +105,10 @@ general:
       world: 'Welt'
       world_nether: 'Nether'
       world_the_end: 'Das Ende'
+    ru:
+      world: 'Мир'
+      world_nether: 'Незер'
+      world_the_end: 'Ад'
 
 inventory:
   # Maximum line length of descriptions after a linebreak is inserted automatically
