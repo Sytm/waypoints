@@ -56,6 +56,7 @@ public abstract class WaypointDisplay implements Listener {
         registerDisplay("wrongWorld", () -> displays().isWrongWorldEnabled(), () -> new WrongWorldDisplay(Waypoints.instance()));
         registerDisplay("actionBar", () -> displays().isActionBarEnabled(), () -> new ActionBarDisplay(Waypoints.instance()));
         registerDisplay("particles", () -> displays().isParticlesEnabled(), () -> new ParticleDisplay(Waypoints.instance()));
+        registerDisplay("availabilityChecker", () -> true, () -> new WaypointAvailabilityChecker(Waypoints.instance()));
     }
 
     public static void activateDisplays() {
