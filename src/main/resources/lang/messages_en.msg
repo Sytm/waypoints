@@ -33,6 +33,8 @@ chatAction.rename.waypoint.public=$prefix$ &7Click here to get the command to re
 chatAction.rename.waypoint.permission=$prefix$ &7Click here to get the command to rename the permission waypoint.
 chatAction.rename.folder.private=$prefix$ &7Click here to get the command to rename your folder.
 
+chatAction.getId=$prefix$ &7Click here to get the ID
+
 chatWarning.worldTranslationsMissing=$prefix$ &cSome world name translations are missing.
 
 # %remainingTime% the time that is left until the player can teleport again
@@ -121,6 +123,18 @@ command.rename.waypoint.success=$prefix$ &7The waypoint has been renamed success
 command.rename.folder.nameDuplicate=$prefix$ &cDuplicate names for folders have been disabled.
 command.rename.folder.success=$prefix$ &7The folder has been renamed successfully.
 
+command.scripting.help.title=$prefix$ &7&nScripting-Help
+command.scripting.help.clearWaypoint=&7 - &e/waypointscript clearWaypoint <Name> &7&l|&r&7 Clear the active waypoint of a player
+command.scripting.help.selectWaypoint=&7 - &e/waypointscript selectWaypoint <Name> <ID> &7&l|&r&7 Set the active waypoint of a player
+
+command.scripting.clearWaypoint.wrongUsage|
+|$prefix$ &cYou need to provide the name of the player to clear the waypoint. Example:
+|&a/waypointscript clearWaypoint Sytm
+
+command.scripting.selectWaypoint.wrongUsage|
+|$prefix$ &cYou need to provide the name of the player and the id of the waypoint to set the active waypoint. Example:
+|&a/waypointscript selectWaypoint Sytm 729dad02-6115-46a9-a2a3-ab6cb2c36c35
+
 command.notFound=$prefix$ &cThe command you entered was not found
 
 
@@ -139,6 +153,8 @@ variable.waypoints.teleport.payment.xpLevels.description=&7You need &e%levels%&7
 variable.waypoints.teleport.payment.vault.description=&7You need &e%money%&7€ to perform this teleportation
 variable.waypoints.selectBeaconColor.displayName=&7Change the color of the beacon beam
 variable.waypoints.selectBeaconColor.description=&eChange the color of the beacon beam, if this waypoint has been selected
+variable.waypoints.getId.displayName=&7Get ID of waypoint
+variable.waypoints.getId.description=&eSends a message that contains the id for scripting
 
 inventory.title.own=&eWaypoints
 # %name% = Other players name
@@ -267,6 +283,8 @@ inventory.waypoint.public.teleport.payment.xpLevels.description=$waypoints.telep
 inventory.waypoint.public.teleport.payment.vault.description=$waypoints.teleport.payment.vault.description$
 inventory.waypoint.public.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.public.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
+inventory.waypoint.public.getId.displayName=$waypoints.getId.displayName$
+inventory.waypoint.public.getId.description=$waypoints.getId.description$
 
 # %name% = Name of the waypoint
 inventory.waypoint.permission.displayName=&d%name%
@@ -295,6 +313,9 @@ inventory.waypoint.permission.teleport.payment.xpLevels.description=$waypoints.t
 inventory.waypoint.permission.teleport.payment.vault.description=$waypoints.teleport.payment.vault.description$
 inventory.waypoint.permission.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.permission.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
+inventory.waypoint.permission.getId.displayName=$waypoints.getId.displayName$
+inventory.waypoint.permission.getId.description=$waypoints.getId.description$
+
 
 inventory.selectBeaconColor.background.displayName=$empty$
 inventory.selectBeaconColor.background.description=$empty$

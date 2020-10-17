@@ -341,6 +341,7 @@ public class WPConfig {
         inventory.waypointPublicRenameItem = matchMaterial(cfg.getString("inventory.waypoints.public.renameItem"));
         inventory.waypointPublicTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.public.teleportItem"));
         inventory.waypointPublicSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.public.selectBeaconColorItem"));
+        inventory.waypointPublicGetIdItem = matchMaterial(cfg.getString("inventory.waypoints.public.getIdItem"));
 
         inventory.waypointPermissionItem = matchMaterial(cfg.getString("inventory.waypoints.permission.item"));
         inventory.waypointPermissionBackgroundItem = matchMaterial(cfg.getString("inventory.waypoints.permission.backgroundItem"));
@@ -349,6 +350,7 @@ public class WPConfig {
         inventory.waypointPermissionRenameItem = matchMaterial(cfg.getString("inventory.waypoints.permission.renameItem"));
         inventory.waypointPermissionTeleportItem = matchMaterial(cfg.getString("inventory.waypoints.permission.teleportItem"));
         inventory.waypointPermissionSelectBeaconColorItem = matchMaterial(cfg.getString("inventory.waypoints.permission.selectBeaconColorItem"));
+        inventory.waypointPermissionGetIdItem = matchMaterial(cfg.getString("inventory.waypoints.permission.getIdItem"));
 
         inventory.selectBeaconColorBackgroundItem = matchMaterial(cfg.getString("inventory.selectBeaconColor.backgroundItem"));
         inventory.selectBeaconColorPreviousItem = matchMaterial(cfg.getString("inventory.selectBeaconColor.previousItem"));
@@ -629,6 +631,7 @@ public class WPConfig {
         private Material waypointPublicRenameItem;
         private Material waypointPublicTeleportItem;
         private Material waypointPublicSelectBeaconColorItem;
+        private Material waypointPublicGetIdItem;
 
         private Material waypointPermissionItem;
         private Material waypointPermissionBackgroundItem;
@@ -637,6 +640,7 @@ public class WPConfig {
         private Material waypointPermissionRenameItem;
         private Material waypointPermissionTeleportItem;
         private Material waypointPermissionSelectBeaconColorItem;
+        private Material waypointPermissionGetIdItem;
 
         private Material selectBeaconColorBackgroundItem;
         private Material selectBeaconColorPreviousItem;
@@ -802,6 +806,10 @@ public class WPConfig {
             return waypointPublicSelectBeaconColorItem;
         }
 
+        public Material getWaypointPublicGetIdItem() {
+            return waypointPublicGetIdItem;
+        }
+
         public Material getWaypointPermissionItem() {
             return waypointPermissionItem;
         }
@@ -828,6 +836,10 @@ public class WPConfig {
 
         public Material getWaypointPermissionSelectBeaconColorItem() {
             return waypointPermissionSelectBeaconColorItem;
+        }
+
+        public Material getWaypointPermissionGetIdItem() {
+            return waypointPermissionGetIdItem;
         }
 
         public Material getSelectBeaconColorBackgroundItem() {

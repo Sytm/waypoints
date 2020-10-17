@@ -11,7 +11,12 @@ softdepend:
 
 commands:
   waypoints:
-    aliases: [wp, waypoint]
+    description: Command used to interact with this plugin
+    aliases: [ wp, waypoint ]
+  waypointscript:
+    description: Command used to provide scripting features
+    permission: waypoints.scripting
+
 
 permissions:
   waypoints.*:
@@ -30,6 +35,7 @@ permissions:
       - waypoints.command
       - waypoints.help
       - waypoints.admin
+      - waypoints.scripting
 
 # --- Setting ---
   waypoints.set.*:
@@ -141,3 +147,5 @@ permissions:
     default: true
   waypoints.admin:
     description: Players who have this permission may receive error messages from the plugin
+  waypoints.scripting:
+    description: Players or consoles with this permission can control other players active waypoint

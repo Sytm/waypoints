@@ -1,4 +1,4 @@
-# Waypoints [![Build Status](https://drone.sytm.de/api/badges/Sytm/waypoints2/status.svg?ref=refs/heads/development)](https://drone.sytm.de/Sytm/waypoints2) ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/Sytm/waypoints2) ![Spiget Downloads](https://img.shields.io/spiget/downloads/66647)
+# Waypoints ![Spiget Downloads](https://img.shields.io/spiget/downloads/66647?style=flat-square)
 
 ## Installation:
 1. Download [Md5-Commons] and put it into the plugin folder 
