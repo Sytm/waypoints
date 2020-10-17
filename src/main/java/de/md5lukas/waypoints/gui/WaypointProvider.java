@@ -122,7 +122,7 @@ public class WaypointProvider implements InventoryProvider {
     private static final Pattern<ClickableItem> waypointPattern = new Pattern<>(
             "____w____",
             "_________",
-            "____s___c",
+            "i___s___c",
             "_f_____r_",
             "d___t___b");
     /*
@@ -134,6 +134,7 @@ public class WaypointProvider implements InventoryProvider {
     t = teleport
     b = back
     c = select beacon color
+    i = get unique id (global waypoints only)
      */
     private static final Pattern<ClickableItem> selectFolderPattern = new Pattern<>(
             "#########",
@@ -554,6 +555,7 @@ public class WaypointProvider implements InventoryProvider {
         } else {
             waypointPattern.attach('f', bg);
         }
+        waypointPattern.attach('i', bg);
     }
 
     private void showPublicWaypoint(Waypoint waypoint) {
@@ -642,6 +644,17 @@ public class WaypointProvider implements InventoryProvider {
         }
         waypointPattern.attach('f', bg);
         waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
+        if (viewer.hasPermission("waypoints.scripting")) {
+            waypointPattern.attach('i', ClickableItem.from(ItemStacks.getWaypointPublicGetId(viewer), click -> {
+                BaseComponent[] components = CHAT_ACTION_GET_ID.get(viewer).getComponentsModifiable();
+                ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, waypoint.getID().toString());
+                Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+                viewer.spigot().sendMessage(components);
+                viewer.closeInventory();
+            }));
+        } else {
+            waypointPattern.attach('i', bg);
+        }
     }
 
     private void showPermissionWaypoint(Waypoint waypoint) {
@@ -732,6 +745,17 @@ public class WaypointProvider implements InventoryProvider {
         }
         waypointPattern.attach('f', bg);
         waypointPattern.attach('b', ClickableItem.from(ItemStacks.getBackItem(viewer), click -> showLast()));
+        if (viewer.hasPermission("waypoints.scripting")) {
+            waypointPattern.attach('i', ClickableItem.from(ItemStacks.getWaypointPermissionGetId(viewer), click -> {
+                BaseComponent[] components = CHAT_ACTION_GET_ID.get(viewer).getComponentsModifiable();
+                ClickEvent ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, waypoint.getID().toString());
+                Arrays.stream(components).forEach(component -> component.setClickEvent(ce));
+                viewer.spigot().sendMessage(components);
+                viewer.closeInventory();
+            }));
+        } else {
+            waypointPattern.attach('i', bg);
+        }
     }
 
     private void showDeathWaypoint(Waypoint waypoint) {

@@ -21,6 +21,7 @@ package de.md5lukas.waypoints;
 import de.md5lukas.commons.messages.MessageStore;
 import de.md5lukas.commons.tags.LocationTag;
 import de.md5lukas.nbt.Tags;
+import de.md5lukas.waypoints.command.WaypointScriptCommand;
 import de.md5lukas.waypoints.command.WaypointsCommand;
 import de.md5lukas.waypoints.display.WaypointDisplay;
 import de.md5lukas.waypoints.listener.WaypointsListener;
@@ -134,6 +135,7 @@ public class Waypoints extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new WaypointsListener(), this);
         getCommand("waypoints").setExecutor(new WaypointsCommand());
+        getCommand("waypointscript").setExecutor(new WaypointScriptCommand());
 
         setupMetrics();
     }

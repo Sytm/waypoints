@@ -33,6 +33,8 @@ chatAction.rename.waypoint.public=$prefix$ &7Нажмите здесь, чтоб
 chatAction.rename.waypoint.permission=$prefix$ &7Щелкните здесь, чтобы получить команду для переименования разрешения путевой точки .
 chatAction.rename.folder.private=$prefix$ &7Щелкните здесь, чтобы получить команду для переименования папки.
 
+chatAction.getId=$prefix$ &7Нажмите здесь, чтобы получить ID
+
 chatWarning.worldTranslationsMissing=$prefix$ &cНекоторые переводы мировых названий отсутствуют.
 
 # %remainingTime% В некоторых переводах мировых названий отсутствует время, которое осталось до того, как игрок снова сможет телепортироваться.
@@ -121,6 +123,18 @@ command.rename.waypoint.success=$prefix$ &7Путевая точка была у
 command.rename.folder.nameDuplicate=$prefix$ &cДублирование имен папок отключено.
 command.rename.folder.success=$prefix$ &7Папка была успешно переименована.
 
+command.scripting.help.title=$prefix$ &7&nScripting-Help
+command.scripting.help.clearWaypoint=&7 - &e/waypointscript clearWaypoint <Name> &7&l|&r&7 Clear the active waypoint of a player
+command.scripting.help.selectWaypoint=&7 - &e/waypointscript selectWaypoint <Name> <ID> &7&l|&r&7 Set the active waypoint of a player
+
+command.scripting.clearWaypoint.wrongUsage|
+|$prefix$ &cYou need to provide the name of the player to clear the waypoint. Example:
+|&a/waypointscript clearWaypoint Sytm
+
+command.scripting.selectWaypoint.wrongUsage|
+|$prefix$ &cYou need to provide the name of the player and the id of the waypoint to set the active waypoint. Example:
+|&a/waypointscript selectWaypoint Sytm 729dad02-6115-46a9-a2a3-ab6cb2c36c35
+
 command.notFound=$prefix$ &cПапка успешно переименована. Введенная вами команда не найдена.
 
 
@@ -139,6 +153,8 @@ variable.waypoints.teleport.payment.xpLevels.description=&7Вам нужно &e%
 variable.waypoints.teleport.payment.vault.description=&7Вам нужно &e%money%&7€ для выполнения этой телепортации
 variable.waypoints.selectBeaconColor.displayName=&7Измените цвет луча маяка
 variable.waypoints.selectBeaconColor.description=&eИзмените цвет луча маяка, если эта путевая точка была выбрана
+variable.waypoints.getId.displayName=&7Получить ID путевой точки
+variable.waypoints.getId.description=&eОтправляет сообщение, содержащее идентификатор для программирования
 
 inventory.title.own=&eПутевые точки
 # %name% = Имя других игроков
@@ -267,6 +283,8 @@ inventory.waypoint.public.teleport.payment.xpLevels.description=$waypoints.telep
 inventory.waypoint.public.teleport.payment.vault.description=$waypoints.teleport.payment.vault.description$
 inventory.waypoint.public.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.public.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
+inventory.waypoint.public.getId.displayName=$waypoints.getId.displayName$
+inventory.waypoint.public.getId.description=$waypoints.getId.description$
 
 # %name% = Название путевой точки
 inventory.waypoint.permission.displayName=&d%name%
@@ -295,6 +313,8 @@ inventory.waypoint.permission.teleport.payment.xpLevels.description=$waypoints.t
 inventory.waypoint.permission.teleport.payment.vault.description=$waypoints.teleport.payment.vault.description$
 inventory.waypoint.permission.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.permission.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
+inventory.waypoint.permission.getId.displayName=$waypoints.getId.displayName$
+inventory.waypoint.permission.getId.description=$waypoints.getId.description$
 
 inventory.selectBeaconColor.background.displayName=$empty$
 inventory.selectBeaconColor.background.description=$empty$

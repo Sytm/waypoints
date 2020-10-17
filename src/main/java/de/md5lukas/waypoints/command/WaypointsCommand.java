@@ -54,8 +54,7 @@ public class WaypointsCommand implements CommandExecutor {
      * /wp compass - Compass
      * /wp other <UUID|Name>
      * /wp updateItem <waypoint|folder> <ID>
-     * /wp rename <privatewaypoint|publicwaypoint|permissionwaypoint|folder> <ID> <NewName>
-     *
+     * /wp rename <privatewaypoint|publicwaypoint|permissionwaypoint|folder> <ID> <NewName>     *
      * */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

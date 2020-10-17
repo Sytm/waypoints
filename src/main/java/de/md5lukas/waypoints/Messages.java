@@ -55,6 +55,8 @@ public enum Messages {
     CHAT_ACTION_RENAME_WAYPOINT_PERMISSION("chatAction.rename.waypoint.permission"),
     CHAT_ACTION_RENAME_FOLDER_PRIVATE("chatAction.rename.folder.private"),
 
+    CHAT_ACTION_GET_ID("chatAction.getId"),
+
     CHAT_WARNING_WORLD_TRANSLATIONS_MISSING("chatWarning.worldTranslationsMissing"),
 
     CHAT_TELEPORT_ON_COOLDOWN("chat.teleport.onCooldown"), // %remainingTime%
@@ -124,6 +126,15 @@ public enum Messages {
     COMMAND_RENAME_WAYPOINT_SUCCESS("command.rename.waypoint.success"),
     COMMAND_RENAME_FOLDER_NAME_DUPLICATE("command.rename.folder.nameDuplicate"),
     COMMAND_RENAME_FOLDER_SUCCESS("command.rename.folder.success"),
+
+
+    COMMAND_SCRIPTING_HELP_TITLE("command.scripting.help.title"),
+    COMMAND_SCRIPTING_HELP_CLEAR_WAYPOINT("command.scripting.help.clearWaypoint"),
+    COMMAND_SCRIPTING_HELP_SELECT_WAYPOINT("command.scripting.help.selectWaypoint"),
+
+    COMMAND_SCRIPTING_CLEAR_WAYPOINT_WRONG_USAGE("command.scripting.clearWaypoint.wrongUsage"),
+    COMMAND_SCRIPTING_SELECT_WAYPOINT_WRONG_USAGE("command.scripting.selectWaypoint.wrongUsage"),
+
 
     COMMAND_NOT_FOUND("command.notFound"),
     //</editor-fold>
@@ -224,6 +235,8 @@ public enum Messages {
     INVENTORY_WAYPOINT_PUBLIC_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.public.teleport.payment.vault.description"), // %money%
     INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.public.selectBeaconColor.displayName"),
     INVENTORY_WAYPOINT_PUBLIC_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.public.selectBeaconColor.description"),
+    INVENTORY_WAYPOINT_PUBLIC_GET_ID_DISPLAY_NAME("inventory.waypoint.public.getId.displayName"),
+    INVENTORY_WAYPOINT_PUBLIC_GET_ID_DESCRIPTION("inventory.waypoint.public.getId.description"),
 
     INVENTORY_WAYPOINT_PERMISSION_DISPLAY_NAME("inventory.waypoint.permission.displayName"), // %name%
     INVENTORY_WAYPOINT_PERMISSION_DESCRIPTION("inventory.waypoint.permission.description"), // %world%, %x%, %y%, %z%, %blockX%, %blockY%, %blockZ%, %distance%
@@ -242,6 +255,8 @@ public enum Messages {
     INVENTORY_WAYPOINT_PERMISSION_TELEPORT_PAYMENT_VAULT_DESCRIPTION("inventory.waypoint.permission.teleport.payment.vault.description"), // %money%
     INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DISPLAY_NAME("inventory.waypoint.permission.selectBeaconColor.displayName"),
     INVENTORY_WAYPOINT_PERMISSION_SELECT_BEACON_COLOR_DESCRIPTION("inventory.waypoint.permission.selectBeaconColor.description"),
+    INVENTORY_WAYPOINT_PERMISSION_GET_ID_DISPLAY_NAME("inventory.waypoint.permission.getId.displayName"),
+    INVENTORY_WAYPOINT_PERMISSION_GET_ID_DESCRIPTION("inventory.waypoint.permission.getId.description"),
 
     INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DISPLAY_NAME("inventory.selectBeaconColor.background.displayName"),
     INVENTORY_SELECT_BEACON_COLOR_BACKGROUND_DESCRIPTION("inventory.selectBeaconColor.background.description"),

@@ -33,6 +33,8 @@ chatAction.rename.waypoint.public=$prefix$ &7Drücke hier drauf, um den Befehl z
 chatAction.rename.waypoint.permission=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, den eingeschränkten Wegpunkt umzubenennen.
 chatAction.rename.folder.private=$prefix$ &7Drücke hier drauf, um den Befehl zu erhalten, deinen Ordner umzubenennen.
 
+chatAction.getId=$prefix$ &7Drücke hier drauf um die ID zu erhalten
+
 chatWarning.worldTranslationsMissing=$prefix$ &cEs fehlen Übersetzungen für Welt-Namen.
 
 # %remainingTime% the time that is left until the player can teleport again
@@ -121,6 +123,18 @@ command.rename.waypoint.success=$prefix$ &7Der Wegpunkt wurde erfolgreich umbena
 command.rename.folder.nameDuplicate=$prefix$ &cDoppelte Namen für Order wurden deaktiviert.
 command.rename.folder.success=$prefix$ &7Der Ordner wurde erfolgreich unbenannt.
 
+command.scripting.help.title=$prefix$ &7&nScripting-Hilfe
+command.scripting.help.clearWaypoint=&7 - &e/waypointscript clearWaypoint <Name> &7&l|&r&7 Den aktiven Wegpunkt eines Spielers leeren
+command.scripting.help.selectWaypoint=&7 - &e/waypointscript selectWaypoint <Name> <ID> &7&l|&r&7 Setze den aktiven Wegpunkt eines Spielers zu einem anderen
+
+command.scripting.clearWaypoint.wrongUsage|
+|$prefix$ &cDu musst den Namen von dem Spieler angeben, von welchen der Wegpunkt deaktiviert werden soll. Beispiel:
+|&a/waypointscript clearWaypoint Sytm
+
+command.scripting.selectWaypoint.wrongUsage|Du musst den Namen vom Spieler und die ID vom Wegpunkt angeben um
+|$prefix$ &cYou need to provide the name of the player and the id of the waypoint to set the active waypoint
+|&a/waypointscript selectWaypoint Sytm 729dad02-6115-46a9-a2a3-ab6cb2c36c35
+
 command.notFound=$prefix$ &cThe command you entered was not found
 
 
@@ -139,6 +153,8 @@ variable.waypoints.teleport.payment.xpLevels.description=&7Du benötigst &e%leve
 variable.waypoints.teleport.payment.vault.description=&7Du benötigst &e%money%&7€ um diese teleportation durchführen zu können
 variable.waypoints.selectBeaconColor.displayName=&7Ändere die Farbe des Leuchtfeuer-Strahls
 variable.waypoints.selectBeaconColor.description=&eÄndere die Farbe des Leuchtfeuer-Strahls der zu sehen ist, wenn dieser Wegpunkt aktiv ist
+variable.waypoints.getId.displayName=&7Erhalte die Wegpunkt ID
+variable.waypoints.getId.description=&eSchickt eine Nachricht an dich mit der ID
 
 inventory.title.own=&eWegpunkte
 # %name% = Other players name
@@ -267,6 +283,8 @@ inventory.waypoint.public.teleport.payment.xpLevels.description=$variable.waypoi
 inventory.waypoint.public.teleport.payment.vault.description=$variable.waypoints.teleport.payment.vault.description$
 inventory.waypoint.public.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.public.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
+inventory.waypoint.public.getId.displayName=$waypoints.getId.displayName$
+inventory.waypoint.public.getId.description=$waypoints.getId.description$
 
 # %name% = Name of the waypoint
 inventory.waypoint.permission.displayName=&d%name%
@@ -295,6 +313,8 @@ inventory.waypoint.permission.teleport.payment.xpLevels.description=$variable.wa
 inventory.waypoint.permission.teleport.payment.vault.description=$variable.waypoints.teleport.payment.vault.description$
 inventory.waypoint.permission.selectBeaconColor.displayName=$waypoints.selectBeaconColor.displayName$
 inventory.waypoint.permission.selectBeaconColor.description=$waypoints.selectBeaconColor.description$
+inventory.waypoint.permission.getId.displayName=$waypoints.getId.displayName$
+inventory.waypoint.permission.getId.description=$waypoints.getId.description$
 
 inventory.selectBeaconColor.background.displayName=$empty$
 inventory.selectBeaconColor.background.description=$empty$
