@@ -61,6 +61,8 @@ public class WPConfig {
     private static long teleportStandStillTime;
     private static Map<String, TeleportSettings> teleportSettings;
 
+    private static long deselectRangeSquared;
+
     private static boolean allowDuplicateFolderPrivateNames, allowDuplicateWaypointNamesPrivate, allowDuplicateWaypointNamesPublic, allowDuplicateWaypointNamesPermission;
     private static boolean allowRenamingWaypointsPrivate, allowRenamingWaypointsPublic, allowRenamingWaypointsPermission, allowRenamingFoldersPrivate;
 
@@ -149,6 +151,10 @@ public class WPConfig {
         return teleportSettings.values().stream().anyMatch(settings -> TeleportPaymentMethod.VAULT.equals(settings.getPaymentMethod()));
     }
 
+    public static long getDeselectRangeSquared() {
+        return deselectRangeSquared;
+    }
+
     public static boolean allowDuplicateFolderPrivateNames() {
         return allowDuplicateFolderPrivateNames;
     }
@@ -214,6 +220,8 @@ public class WPConfig {
         teleportSettings.put(PublicWaypoint.class.getSimpleName(), new TeleportSettings(cfg.getConfigurationSection("general.teleport.waypoint.public")));
         teleportSettings
                 .put(PermissionWaypoint.class.getSimpleName(), new TeleportSettings(cfg.getConfigurationSection("general.teleport.waypoint.permission")));
+
+        deselectRangeSquared = square(cfg.getLong("general.deselectRange"));
 
         allowDuplicateFolderPrivateNames = cfg.getBoolean("general.allowDuplicatePrivateFolderNames");
         allowDuplicateWaypointNamesPrivate = cfg.getBoolean("general.allowDuplicateWaypointNames.private");

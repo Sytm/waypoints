@@ -66,6 +66,8 @@ general:
       permission:
         <<: *teleportPayment
 
+  # The range in blocks a player needs to be to get their waypoint deselected, set to 0 or lower to disable
+  deselectRange: 5
 
   # The maximum amount of waypoints a player can have saved, set to 0 or negative for no limit
   waypointLimit: 200
