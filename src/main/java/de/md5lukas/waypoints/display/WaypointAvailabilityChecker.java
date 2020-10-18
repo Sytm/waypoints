@@ -20,13 +20,14 @@ package de.md5lukas.waypoints.display;
 
 import de.md5lukas.waypoints.data.waypoint.PermissionWaypoint;
 import de.md5lukas.waypoints.data.waypoint.Waypoint;
+import de.md5lukas.waypoints.store.WPConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public final class WaypointAvailabilityChecker extends WaypointDisplay {
 
     protected WaypointAvailabilityChecker(Plugin plugin) {
-        super(plugin, 20 * 5 /* 5 seconds */);
+        super(plugin, 20 * 2 /* 2 seconds */);
     }
 
     @Override
@@ -40,7 +41,12 @@ public final class WaypointAvailabilityChecker extends WaypointDisplay {
             PermissionWaypoint pwp = (PermissionWaypoint) waypoint;
             if (!player.hasPermission(pwp.getPermission())) {
                 WaypointDisplay.getAll().disable(player);
+                return;
             }
+        }
+        if (WPConfig.getDeselectRangeSquared() > 0
+                && player.getLocation().distanceSquared(waypoint.getLocation()) <= WPConfig.getDeselectRangeSquared()) {
+            WaypointDisplay.getAll().disable(player);
         }
     }
 
