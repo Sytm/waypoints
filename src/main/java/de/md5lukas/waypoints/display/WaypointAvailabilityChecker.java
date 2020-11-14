@@ -45,6 +45,7 @@ public final class WaypointAvailabilityChecker extends WaypointDisplay {
             }
         }
         if (WPConfig.getDeselectRangeSquared() > 0
+                && player.getLocation().getWorld() == waypoint.getLocation().getWorld()
                 && player.getLocation().distanceSquared(waypoint.getLocation()) <= WPConfig.getDeselectRangeSquared()) {
             WaypointDisplay.getAll().disable(player);
         }
