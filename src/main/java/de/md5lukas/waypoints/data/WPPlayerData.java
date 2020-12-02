@@ -31,12 +31,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class WPPlayerData {
 
-    private static Map<UUID, WPPlayerData> cache = new HashMap<>();
+    private static Map<UUID, WPPlayerData> cache = new ConcurrentHashMap<>();
 
     public static WPPlayerData getPlayerData(UUID uuid) {
         return cache.compute(uuid, (id, value) -> {
