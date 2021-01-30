@@ -8,6 +8,9 @@ depend:
   - Md5Lukas-Commons
 softdepend:
   - Vault
+  - Multiverse-Core
+  - PlotMe
+  - PlotSquared
 
 commands:
   waypoints:
