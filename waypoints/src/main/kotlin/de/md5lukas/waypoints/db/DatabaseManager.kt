@@ -78,6 +78,18 @@ class DatabaseManager(
                   FOREIGN KEY (playerId) REFERENCES player_data(id) ON DELETE CASCADE
                 );
             """)
+            update("""
+               CREATE TABLE IF NOT EXISTS compass_storage (
+                 playerId TEXT NOT NULL PRIMARY KEY,
+                 
+                 world TEXT NOT NULL,
+                 x REAL NOT NULL,
+                 y REAL NOT NULL,
+                 z REAL NOT NULL,
+                 
+                 FOREIGN KEY (playerId) REFERENCES player_data(id) ON DELETE CASCADE
+               );
+            """)
         }
     }
 }
