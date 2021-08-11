@@ -1,6 +1,5 @@
 package de.md5lukas.waypoints
 
-import de.md5lukas.painventories.PainVentoriesAPI
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.config.WaypointsConfig
 import de.md5lukas.waypoints.db.DatabaseManager
@@ -26,17 +25,13 @@ class WaypointsPlugin : JavaPlugin() {
         private set
 
     override fun onEnable() {
-        PainVentoriesAPI.plugin = this
         loadConfiguration()
         initDatabase()
         initPointerManager()
         initTranslations()
     }
 
-    override fun onDisable() {
-        databaseManager.close()
-    }
-
+    //<editor-fold desc="onEnable Methods">
     private fun loadConfiguration() {
         TODO("Load pointer config and set compass storage")
     }
@@ -61,5 +56,10 @@ class WaypointsPlugin : JavaPlugin() {
         translations = Translations(translationLoader)
 
         itemTranslations = ItemTranslations(translationLoader)
+    }
+    //</editor-fold>
+
+    override fun onDisable() {
+        databaseManager.close()
     }
 }
