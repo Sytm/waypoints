@@ -1,7 +1,7 @@
 package de.md5lukas.waypoints.db
 
-import de.md5lukas.jdbc.selectFirst
-import de.md5lukas.jdbc.update
+import de.md5lukas.waypoints.jdbc.selectFirst
+import de.md5lukas.waypoints.jdbc.update
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player

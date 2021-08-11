@@ -15,7 +15,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":waypoints-api"))
-    implementation("de.md5lukas:sqlite-kotlin-helper:1.0.0-SNAPSHOT")
+    implementation(project(":sqlite-kotlin-helper"))
 }
 
 tasks.withType<ProcessResources> {
@@ -36,9 +36,8 @@ tasks.withType<ShadowJar> {
 
         include(project(":waypoints-api"))
 
-        include(dependency("de.md5lukas:sqlite-kotlin-helper"))
+        include(project(":sqlite-kotlin-helper"))
     }
 
     relocate("kotlin", "de.md5lukas.waypoints.lib.kt")
-    relocate("de.md5lukas.jdbc", "de.md5lukas.waypoints.lib.jdbc")
 }
