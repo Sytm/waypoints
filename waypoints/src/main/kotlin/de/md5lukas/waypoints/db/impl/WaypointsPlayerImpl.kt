@@ -1,6 +1,6 @@
 package de.md5lukas.waypoints.db.impl
 
-import de.md5lukas.jdbc.update
+import de.md5lukas.waypoints.jdbc.update
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointsPlayer
