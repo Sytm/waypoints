@@ -6,8 +6,6 @@ import java.util.regex.Pattern
 private val aotVariablePattern = Pattern.compile("\\$\\[(\\w+)]")
 private val runtimeVariablePattern = Pattern.compile("\\$\\{(\\w+)}")
 
-private val newLinePattern = Pattern.compile("\\R")
-
 fun String.translateColorCodes(): String = ChatColor.translateAlternateColorCodes('&', this)
 
 fun String.aotReplace(map: Map<String, String>): String {

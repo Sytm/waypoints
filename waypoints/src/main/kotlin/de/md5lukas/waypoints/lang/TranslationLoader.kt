@@ -13,14 +13,17 @@ class TranslationLoader(
 
     private lateinit var translations: Map<String, String>
 
-    private val bundledLanguages: Sequence<String>
-        get() = plugin.getResource("lang/index")!!.bufferedReader(StandardCharsets.UTF_8).useLines {
-            it
-        }
+    private val bundledLanguages: List<String> = plugin.getResource("lang/index.txt")!!.bufferedReader(StandardCharsets.UTF_8).useLines { seq ->
+        seq.filter {
+            it.isNotBlank()
+        }.toList()
+    }
+
+    private fun getLanguageFilePath(languageKey: String) = "lang/$languageKey.yml"
 
     private fun extractLanguages() {
-        bundledLanguages.forEach { langKey ->
-            plugin.saveResource("lang/$langKey.yml", false)
+        bundledLanguages.forEach { languageKey ->
+            plugin.saveResource(getLanguageFilePath(languageKey), false)
         }
     }
 
@@ -44,10 +47,17 @@ class TranslationLoader(
     fun loadLanguage(languageKey: String) {
         extractLanguages()
 
-        val languageFile = File(plugin.dataFolder, "lang/$languageKey.yml")
+        val languageFile = File(plugin.dataFolder, getLanguageFilePath(languageKey))
+
 
         if (languageFile.exists()) {
-            translations = processConfiguration(YamlConfiguration.loadConfiguration(languageFile))
+            val loadedTranslations = YamlConfiguration.loadConfiguration(languageFile)
+
+            val defaultTranslations = YamlConfiguration.loadConfiguration(plugin.getResource(getLanguageFilePath(bundledLanguages[0]))!!.reader())
+
+            loadedTranslations.setDefaults(defaultTranslations)
+
+            translations = processConfiguration(loadedTranslations)
         } else {
             throw IllegalArgumentException("A language with the key $languageKey (${languageFile.absolutePath}) does not exist")
         }

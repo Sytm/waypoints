@@ -19,9 +19,9 @@ class ItemTranslation(
         get() = getItem(displayName, description)
 
     private fun getItem(displayName: String, description: String) = itemSupplier().also {
-        it.itemMeta = it.itemMeta?.also {
-            it.setDisplayName(displayName)
-            it.lore = description.lines()
+        it.itemMeta = it.itemMeta!!.also { itemMeta ->
+            itemMeta.setDisplayName(displayName)
+            itemMeta.lore = description.lines()
         }
     }
 
