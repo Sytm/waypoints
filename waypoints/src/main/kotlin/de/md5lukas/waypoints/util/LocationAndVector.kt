@@ -12,7 +12,8 @@ fun Vector.divide(d: Int): Vector {
     return this
 }
 
-fun Location.blockEquals(other: Location): Boolean = this.blockX == other.blockX && this.blockY == other.blockY && this.blockZ == other.blockZ
+fun Location.blockEquals(other: Location): Boolean =
+    this.world == other.world && this.blockX == other.blockX && this.blockY == other.blockY && this.blockZ == other.blockZ
 
 
 fun Location.getHighestBlock(): Block = world!!.getHighestBlockAt(this)
