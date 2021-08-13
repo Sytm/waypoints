@@ -7,9 +7,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        jcenter()
 
-        maven(url = "https://repo.sytm.de/repository/maven-hosted/")
         maven(url = "https://repo.codemc.io/repository/maven-public/")
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")

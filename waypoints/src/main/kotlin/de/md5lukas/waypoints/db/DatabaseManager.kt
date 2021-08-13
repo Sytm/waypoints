@@ -1,7 +1,7 @@
 package de.md5lukas.waypoints.db
 
-import de.md5lukas.waypoints.jdbc.SQLiteHelper
-import de.md5lukas.waypoints.jdbc.update
+import de.md5lukas.jdbc.SQLiteHelper
+import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.WaypointsPlugin
 import java.io.File
 
