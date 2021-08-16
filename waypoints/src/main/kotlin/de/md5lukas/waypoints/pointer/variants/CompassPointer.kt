@@ -21,15 +21,9 @@ class CompassPointer(
     }
 
     override fun hide(player: Player, waypoint: Waypoint) {
-        config.resetTarget.let { resetTarget ->
-            if (resetTarget == null) {
-                plugin.runTaskAsync {
-                    config.compassStorage.loadCompassLocation(player)?.let {
-                        player.compassTarget = it
-                    }
-                }
-            } else {
-                player.compassTarget = resetTarget
+        plugin.runTaskAsync {
+            config.compassStorage.loadCompassLocation(player)?.let {
+                player.compassTarget = it
             }
         }
     }

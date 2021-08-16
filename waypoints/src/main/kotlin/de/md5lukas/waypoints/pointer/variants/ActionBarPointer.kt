@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.pointer.variants
 
+import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.ActionBarConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
@@ -12,6 +13,7 @@ import kotlin.math.roundToInt
 
 class ActionBarPointer(
     private val config: ActionBarConfiguration,
+    private val plugin: WaypointsPlugin
 ) : Pointer(config.interval) {
 
     override fun update(player: Player, waypoint: Waypoint) {
@@ -24,6 +26,18 @@ class ActionBarPointer(
                         deltaAngleToTarget(
                             player.location,
                             loc
+                        )
+                    )
+                )
+            )
+        } else {
+            player.spigot().sendMessage(
+                ChatMessageType.ACTION_BAR,
+                *TextComponent.fromLegacyText(
+                    plugin.translations.POINTERS_ACTION_BAR_WRONG_WORLD.withReplacements(
+                        mapOf(
+                            "current" to plugin.worldTranslations.getWorldName(player.world),
+                            "correct" to plugin.worldTranslations.getWorldName(loc.world!!),
                         )
                     )
                 )

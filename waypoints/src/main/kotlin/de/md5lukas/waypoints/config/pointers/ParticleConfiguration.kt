@@ -55,7 +55,7 @@ class ParticleConfiguration {
 
             length = getDouble("length")
 
-            particle = getString("particle")!!.let { Particle.valueOf(it.toUpperCase()) }
+            particle = getString("particle")!!.let { Particle.valueOf(it.uppercase()) }
         }
     }
 }

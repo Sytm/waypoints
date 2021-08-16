@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.db.impl
 
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
+import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
@@ -50,9 +51,13 @@ internal open class WaypointHolderImpl(
         }
 
     override fun createWaypoint(name: String, location: Location): Waypoint {
+        return createWaypointTyped(name, location, type)
+    }
+
+    internal fun createWaypointTyped(name: String, location: Location, type: Type): Waypoint {
         val id = UUID.randomUUID()
-        return dm.connection.selectFirst(
-            "INSERT INTO waypoints(id, type, owner, name, world, x, y, z) VALUES (?, ?, ?, ?, ?, ?, ?, ?); SELECT * FROM waypoints WHERE id = ?;",
+        dm.connection.update(
+            "INSERT INTO waypoints(id, type, owner, name, world, x, y, z) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
             id.toString(),
             type.name,
             owner.toString(),
@@ -60,22 +65,23 @@ internal open class WaypointHolderImpl(
             location.world!!.name,
             location.x,
             location.y,
-            location.z
-        ) {
+            location.z,
+        )
+        return dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?;", id.toString()) {
             WaypointImpl(dm, this)
         }!!
     }
 
     override fun createFolder(name: String): Folder {
         val id = UUID.randomUUID()
-        return dm.connection.selectFirst(
-            "INSERT INTO folders(id, type, owner, name) VALUES (?, ?, ?, ?); SELECT * FROM folders WHERE id = ?",
+        dm.connection.update(
+            "INSERT INTO folders(id, type, owner, name) VALUES (?, ?, ?, ?);",
             id.toString(),
             type.name,
             owner.toString(),
             name,
-            id.toString()
-        ) {
+        )
+        return dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?", id.toString()) {
             FolderImpl(dm, this)
         }!!
     }

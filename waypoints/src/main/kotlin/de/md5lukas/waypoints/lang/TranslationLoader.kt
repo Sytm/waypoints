@@ -2,15 +2,18 @@ package de.md5lukas.waypoints.lang
 
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.util.aotReplace
+import de.md5lukas.waypoints.util.translateColorCodes
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.util.logging.Level
 
 class TranslationLoader(
     private val plugin: WaypointsPlugin,
 ) {
 
+    private lateinit var loadedLanguage: String
     private lateinit var translations: Map<String, String>
 
     private val bundledLanguages: List<String> = plugin.getResource("lang/index.txt")!!.bufferedReader(StandardCharsets.UTF_8).useLines { seq ->
@@ -32,7 +35,7 @@ class TranslationLoader(
 
         languageConfig.getKeys(true).forEach {
             if (languageConfig.isString(it)) {
-                map[it] = languageConfig.getString(it)!!
+                map[it] = languageConfig.getString(it)!!.translateColorCodes()
             }
         }
 
@@ -45,6 +48,7 @@ class TranslationLoader(
     }
 
     fun loadLanguage(languageKey: String) {
+        loadedLanguage = languageKey
         extractLanguages()
 
         val languageFile = File(plugin.dataFolder, getLanguageFilePath(languageKey))
@@ -64,6 +68,14 @@ class TranslationLoader(
     }
 
     operator fun get(key: String): String {
-        return translations[key] ?: throw IllegalArgumentException("The key $key is not present in the translation")
+        return translations[key] ?: throw IllegalArgumentException("The key $key is not present in the translation file for the language $loadedLanguage")
+    }
+
+    operator fun contains(key: String): Boolean {
+        val contains = key in translations
+        if (!contains) {
+            plugin.logger.log(Level.WARNING, "The translation key $key is missing in the translation file for the language $loadedLanguage, but not required")
+        }
+        return contains
     }
 }

@@ -1,0 +1,68 @@
+general:
+  # Set the language for the plugin here
+  language: en
+  uuidCache:
+    # Max size of the internal UUID-Cache
+    maxSize: 100
+    # Set time in hours after saved UUIDs will be removed from the cache
+    expireAfter: 24
+
+  waypointCreation:
+    limit: 200
+
+    allowDuplicateNames:
+      private: true
+      public: false
+      permission: false
+
+pointers:
+  actionBar:
+    enabled: true
+    interval: 20
+    indicatorColor: "&4&l"
+    normalColor: "&7&l"
+    section: "⬛"
+    arrow:
+      left: "<-"
+      right: "->"
+    amountOfSections: 35
+    range: 70
+
+  beacon:
+    enabled: true
+
+    interval: 30
+    minDistance: 50
+    maxDistance: auto
+    baseBlock: IRON_BLOCK
+    defaultColor:
+      private: CLEAR
+      public: GREEN
+      permission: PURPLE
+      death: RED
+
+  blinkingBlock:
+    enabled: true
+
+    # The interval in game ticks when the block should be changed
+    interval: 20
+    # The minimum and maximum distance for the blinking block to be visible
+    # Keep in mind that if you set the min distance to low it could be possible for the player to stand on the client-side block and get kicked for flying
+    minDistance: 10
+    maxDistance: 50
+    # The blocks that will be cycled through
+    blockSequence:
+      - GLASS
+      - GLOWSTONE
+
+  compass:
+    enabled: true
+
+  particle:
+    enabled: true
+    interval: 30
+    heightOffset: 0
+    showVerticalDirection: false
+    amount: 10
+    length: 1
+    particle: FLAME

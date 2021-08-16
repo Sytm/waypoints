@@ -1,0 +1,58 @@
+prefix: "&b&lWaypoints &e&l>&r"
+empty: "&0-"
+
+worlds:
+  world: "Overworld"
+  world_nether: "Nether"
+  world_the_end: "The End"
+
+command:
+  notAPlayer: "$[prefix] &cYou must be a player to use this command."
+  noPermission: "$[prefix] &cYou don't have permission to perform this action."
+  notFound: "$[prefix] &cThe command you entered could not be found."
+
+  help:
+    header: "$[prefix] &7&nHelp"
+    gui: "&7 - &e/${label} &7&l|&r&7 Open the Waypoints GUI"
+    help: "&7 - &e/${label} help &7&l|&r&7 Shows this help message"
+    set:
+      private: "&7 - &e/${label} set <Name> &7&l|&r&7 Create a new waypoint"
+      public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Create a new public waypoint"
+      permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Create a new permission waypoint"
+    other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 View the waypoints of another player"
+
+  set:
+    private:
+      wrongUsage: |
+        $[prefix] &cYou need to provide a name to create a new waypoint. Example:
+        &a/${label} set My Home
+      nameDuplicate: "$[prefix] &cWaypoints with duplicate names are not permitted."
+      limitReached: "$[prefix] &cYou have reached your personal limit of waypoints you can set."
+      success: "$[prefix] &7The waypoint has been set successfully."
+    public:
+      wrongUsage: |
+        $[prefix] &cYou need to provide a name to create a new public waypoint. Example:
+        &a/${label} setPublic Spawn
+      nameDuplicate: "$[prefix] &cPublic waypoints with duplicate names are not permitted."
+      success: "$[prefix] &7The public waypoint has been set successfully."
+    permission:
+      wrongUsage: |
+        $[prefix] &cYou need to provide a permission and a name to create a new permission waypoint. Example:
+        &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
+      nameDuplicate: "$[prefix] &cPermission waypoints with duplicate names are not permitted."
+      success: "$[prefix] &7The permission waypoint has been set successfully."
+
+  other:
+    wrongUsage: |
+      $[prefix] &cTo view the waypoints of another player you need to provide their name or UUID. Example:
+      &a/${label} other Sytm
+      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
+    notFound:
+      uuid: "$[prefix] &cA player with that UUID could not be found"
+      name: "$[prefix] &cA player with that name could not be found"
+    notUuidOrName: "$[prefix] &cThe provided identifier is neither a UUID nor a Minecraft username."
+    playerNoWaypoints: "$[prefix] &cThe provided player has no waypoints."
+
+pointers:
+  actionBar:
+    wrongWorld: "&cYou are currently in the world &a${current}&c, but the waypoint is in &a${correct}"

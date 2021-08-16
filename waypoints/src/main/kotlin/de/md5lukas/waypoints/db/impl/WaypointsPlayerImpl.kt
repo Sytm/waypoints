@@ -1,11 +1,14 @@
 package de.md5lukas.waypoints.db.impl
 
+import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.api.Type
+import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.util.runTaskAsync
+import org.bukkit.Location
 import java.sql.ResultSet
 import java.util.*
 
@@ -34,9 +37,19 @@ internal class WaypointsPlayerImpl private constructor(
             set("sortBy", value.name)
         }
 
+    override fun setDeathLocation(location: Location) {
+        super.createWaypointTyped("Death", location, Type.DEATH)
+    }
+
+    override val deathWaypoint: Waypoint?
+        get() = dm.connection.selectFirst("SELECT * FROM waypoints WHERE type = ? AND owner = ? LIMIT 1;", Type.DEATH, id.toString()) {
+            WaypointImpl(dm, this)
+        }
+
+
     private fun set(column: String, value: Any?) {
         dm.plugin.runTaskAsync {
-            dm.connection.update("UPDATE folders SET $column = ? WHERE id = ?;", value, id)
+            dm.connection.update("UPDATE player_data SET $column = ? WHERE id = ?;", value, id)
         }
     }
 }

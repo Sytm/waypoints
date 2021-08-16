@@ -1,0 +1,23 @@
+name: Waypoints
+author: Md5Lukas
+main: de.md5lukas.waypoints.WaypointsPlugin
+version: ${version}
+
+api-version: 1.13
+
+commands:
+  waypoints:
+    aliases:
+      - wp
+
+permissions:
+  waypoints.command.use:
+    default: true
+  waypoints.command.set.private:
+    default: true
+  waypoints.command.set.public:
+    default: op
+  waypoints.command.set.permission:
+    default: op
+  waypoints.command.other:
+    default: op

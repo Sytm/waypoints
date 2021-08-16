@@ -78,24 +78,29 @@ class WaypointImpl private constructor(
     override var material: Material? = material
         set(value) {
             field = value
-            set("permission", value)
+            set("material", value?.name)
         }
     override var beaconColor: BeaconColor? = beaconColor
         set(value) {
             field = value
-            set("permission", value)
+            set("beaconColor", value?.name)
         }
 
-    override fun getWaypointMeta(owner: UUID): WaypointMeta =
-        dm.connection.selectFirst(
-            "INSERT OR IGNORE INTO waypoint_meta(waypointId, playerId) VALUES (?, ?); SELECT * FROM waypoint_meta WHERE waypointId = ? AND playerId = ?;",
+    override fun getWaypointMeta(owner: UUID): WaypointMeta {
+        dm.connection.update(
+            "INSERT OR IGNORE INTO waypoint_meta(waypointId, playerId) VALUES (?, ?);",
             id.toString(),
             owner.toString(),
+        )
+        return dm.connection.selectFirst(
+            "SELECT * FROM waypoint_meta WHERE waypointId = ? AND playerId = ?;",
             id.toString(),
             owner.toString(),
         ) {
             WaypointMetaImpl(dm, this)
         }!!
+    }
+
 
     private fun set(column: String, value: Any?) {
         dm.plugin.runTaskAsync {

@@ -11,7 +11,5 @@ class WaypointsGUI(
     fun openOverview(player: Player, target: UUID) {
         val isOwner = player.uniqueId == target
 
-
-
     }
 }

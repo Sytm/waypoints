@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.config.pointers
 
 import de.md5lukas.waypoints.api.BeaconColor
+import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.util.getStringNotNull
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -40,7 +41,7 @@ class BeaconConfiguration {
     var baseBlock: BlockData = Material.IRON_BLOCK.createBlockData()
         private set
 
-    var defaultColor: BeaconColor = BeaconColor.CLEAR
+    var defaultColor: Map<Type, BeaconColor> = emptyMap()
         private set
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
@@ -52,7 +53,7 @@ class BeaconConfiguration {
             minDistance = getLong("minDistance")
 
             maxDistance = if (isLong("maxDistance")) {
-                getLong("maxDistance")
+                getLong("maxDistance").let { it * it }
             } else {
                 viewDistance
             }
@@ -60,7 +61,12 @@ class BeaconConfiguration {
             baseBlock = cfg.getStringNotNull("baseBlock").let {
                 Material.matchMaterial(it)?.createBlockData() ?: throw IllegalArgumentException("The material $it could not be found")
             }
-            defaultColor = cfg.getStringNotNull("defaultColor").let { BeaconColor.valueOf(it) }
+
+            val mutableDefaultColor: MutableMap<Type, BeaconColor> = HashMap(Type.values().size)
+            Type.values().forEach {
+                mutableDefaultColor[it] = BeaconColor.valueOf(cfg.getStringNotNull("defaultColor.${it.name.lowercase()}"))
+            }
+            defaultColor = mutableDefaultColor
         }
     }
 

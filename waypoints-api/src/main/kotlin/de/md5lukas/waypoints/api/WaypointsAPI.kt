@@ -4,15 +4,7 @@ import java.util.*
 
 interface WaypointsAPI {
 
-    companion object : WaypointsAPI by WaypointsAPI.instance {
-        private lateinit var instance: WaypointsAPI
-
-        fun setInstance(instance: WaypointsAPI) {
-            if (!this::instance.isInitialized) {
-                this.instance = instance
-            }
-        }
-    }
+    fun waypointsPlayerExists(uuid: UUID): Boolean
 
     fun getWaypointPlayer(uuid: UUID): WaypointsPlayer
 
