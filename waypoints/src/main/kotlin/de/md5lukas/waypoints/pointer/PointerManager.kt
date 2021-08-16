@@ -21,7 +21,7 @@ class PointerManager(
         {
             with(it.actionBarConfiguration) {
                 if (enabled) {
-                    ActionBarPointer(this)
+                    ActionBarPointer(this, plugin)
                 } else {
                     null
                 }

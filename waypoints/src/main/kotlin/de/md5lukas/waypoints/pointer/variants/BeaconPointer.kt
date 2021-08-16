@@ -10,7 +10,6 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import java.util.*
-import kotlin.collections.HashMap
 
 class BeaconPointer(
     private val config: BeaconConfiguration,
@@ -75,7 +74,7 @@ class BeaconPointer(
 
             loc.add(0.0, 1.0, 0.0)
 
-            player.sendBlockChange(loc, (waypoint.beaconColor ?: config.defaultColor).blockData)
+            player.sendBlockChange(loc, (waypoint.beaconColor ?: config.defaultColor[waypoint.type]!!).blockData)
         } else {
             player.sendActualBlock(loc)
 

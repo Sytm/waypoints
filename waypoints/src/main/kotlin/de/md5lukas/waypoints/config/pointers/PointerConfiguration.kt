@@ -2,7 +2,7 @@ package de.md5lukas.waypoints.config.pointers
 
 import org.bukkit.configuration.ConfigurationSection
 
-class PointerConfiguration {
+class PointerConfiguration() {
 
     val actionBarConfiguration = ActionBarConfiguration()
 

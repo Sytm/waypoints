@@ -40,9 +40,9 @@ class BlinkingBlockConfiguration {
 
             interval = getInt("interval")
 
-            minDistance = getLong("minDistance")
+            minDistance = getLong("minDistance").let { it * it }
 
-            maxDistance = getLong("maxDistance")
+            maxDistance = getLong("maxDistance").let { it * it }
 
             blockDataSequence = getStringList("blockSequence").map {
                 val material = Material.matchMaterial(it) ?: throw IllegalArgumentException("The material $it could not be found")

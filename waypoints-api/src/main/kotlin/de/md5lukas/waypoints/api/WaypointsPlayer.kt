@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.api
 
+import org.bukkit.Location
 import java.util.*
 
 interface WaypointsPlayer : WaypointHolder {
@@ -9,4 +10,8 @@ interface WaypointsPlayer : WaypointHolder {
     var showGlobals: Boolean
 
     var sortBy: OverviewSort
+
+    fun setDeathLocation(location: Location)
+
+    val deathWaypoint: Waypoint?
 }

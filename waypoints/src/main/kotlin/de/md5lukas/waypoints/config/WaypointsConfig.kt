@@ -4,7 +4,7 @@ import de.md5lukas.waypoints.config.general.GeneralConfiguration
 import de.md5lukas.waypoints.config.pointers.PointerConfiguration
 import org.bukkit.configuration.ConfigurationSection
 
-class WaypointsConfig {
+class WaypointsConfig() {
 
     val generalConfiguration = GeneralConfiguration()
 

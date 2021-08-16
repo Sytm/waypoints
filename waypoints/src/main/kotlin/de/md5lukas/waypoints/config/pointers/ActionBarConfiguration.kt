@@ -64,9 +64,9 @@ class ActionBarConfiguration {
 
             section = getStringNotNull("section")
 
-            leftArrow = getStringNotNull("leftArrow")
+            leftArrow = getStringNotNull("arrow.left")
 
-            rightArrow = getStringNotNull("rightArrow")
+            rightArrow = getStringNotNull("arrow.right")
 
             amountOfSections = getInt("amountOfSections")
 
