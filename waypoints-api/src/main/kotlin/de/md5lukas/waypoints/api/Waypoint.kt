@@ -1,20 +1,23 @@
 package de.md5lukas.waypoints.api
 
+import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import org.bukkit.Location
 import org.bukkit.Material
 import java.util.*
 
-interface Waypoint {
+interface Waypoint : GUIDisplayable {
 
     val id: UUID
 
-    val type: Type
+    override val createdAt: Long
+
+    override val type: Type
 
     val owner: UUID?
 
     var folder: Folder?
 
-    var name: String
+    override var name: String
 
     var description: String?
 
@@ -27,4 +30,6 @@ interface Waypoint {
     val location: Location
 
     fun getWaypointMeta(owner: UUID): WaypointMeta
+
+    fun delete()
 }

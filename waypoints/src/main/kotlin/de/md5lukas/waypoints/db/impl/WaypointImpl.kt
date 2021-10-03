@@ -1,18 +1,25 @@
 package de.md5lukas.waypoints.db.impl
 
+import de.md5lukas.commons.MathHelper
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
+import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.db.DatabaseManager
+import de.md5lukas.waypoints.util.format
+import de.md5lukas.waypoints.util.formatTimestampToDate
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import java.sql.ResultSet
 import java.util.*
 
 class WaypointImpl private constructor(
     private val dm: DatabaseManager,
     override val id: UUID,
+    override val createdAt: Long,
     override val type: Type,
     override val owner: UUID?,
     override val location: Location,
@@ -27,6 +34,7 @@ class WaypointImpl private constructor(
     constructor(dm: DatabaseManager, row: ResultSet) : this(
         dm = dm,
         id = UUID.fromString(row.getString("id")),
+        createdAt = row.getLong("createdAt"),
         type = Type.valueOf(row.getString("type")),
         owner = row.getString("owner")?.let(UUID::fromString),
         location = Location(
@@ -101,10 +109,57 @@ class WaypointImpl private constructor(
         }!!
     }
 
+    override fun delete() {
+        dm.connection.update(
+            "DELETE FROM waypoints WHERE id = ?",
+            id.toString()
+        )
+    }
 
     private fun set(column: String, value: Any?) {
         dm.plugin.runTaskAsync {
             dm.connection.update("UPDATE waypoints SET $column = ? WHERE id = ?;", value, id)
         }
+    }
+
+    private val itemTranslations = dm.plugin.translations
+
+    override val guiType: GUIType = when (type) {
+        Type.DEATH -> GUIType.DEATH_WAYPOINT
+        else -> GUIType.WAYPOINT
+    }
+
+    override fun getItem(player: Player): ItemStack {
+        val stack = when (type) {
+            Type.DEATH -> itemTranslations.WAYPOINT_ICON_DEATH
+            Type.PRIVATE -> itemTranslations.WAYPOINT_ICON_PRIVATE
+            Type.PUBLIC -> itemTranslations.WAYPOINT_ICON_PUBLIC
+            Type.PERMISSION -> itemTranslations.WAYPOINT_ICON_PERMISSION
+            else -> throw IllegalStateException("An waypoint with the type $type should not exist")
+        }.getItem(
+            mapOf(
+                "name" to name,
+                "description" to (description ?: ""),
+                "createdAt" to createdAt.formatTimestampToDate(),
+                "world" to dm.plugin.worldTranslations.getWorldName(location.world!!),
+                "x" to location.x.format(),
+                "y" to location.y.format(),
+                "z" to location.z.format(),
+                "blockX" to location.blockX.toString(),
+                "blockY" to location.blockY.toString(),
+                "blockZ" to location.blockZ.toString(),
+                "distance" to if (player.world == location.world) {
+                    MathHelper.distance2D(player.location, location).format()
+                } else {
+                    dm.plugin.translations.INVENTORY_LISTING_WAYPOINT_DISTANCE_OTHER_WORLD.text
+                },
+            )
+        )
+
+        material?.also {
+            stack.type = it
+        }
+
+        return stack
     }
 }

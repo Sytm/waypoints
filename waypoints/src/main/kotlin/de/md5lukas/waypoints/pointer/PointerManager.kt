@@ -19,7 +19,7 @@ class PointerManager(
 
     private val availablePointers: List<(PointerConfiguration) -> Pointer?> = listOf(
         {
-            with(it.actionBarConfiguration) {
+            with(it.actionBar) {
                 if (enabled) {
                     ActionBarPointer(this, plugin)
                 } else {
@@ -27,7 +27,7 @@ class PointerManager(
                 }
             }
         }, {
-            with(it.beaconConfiguration) {
+            with(it.beacon) {
                 if (enabled) {
                     BeaconPointer(this)
                 } else {
@@ -35,7 +35,7 @@ class PointerManager(
                 }
             }
         }, {
-            with(it.blinkingBlockConfiguration) {
+            with(it.blinkingBlock) {
                 if (enabled) {
                     BlinkingBlockPointer(this)
                 } else {
@@ -43,7 +43,7 @@ class PointerManager(
                 }
             }
         }, {
-            with(it.compassConfiguration) {
+            with(it.compass) {
                 if (enabled) {
                     CompassPointer(this, plugin)
                 } else {
@@ -51,7 +51,7 @@ class PointerManager(
                 }
             }
         }, {
-            with(it.particleConfiguration) {
+            with(it.particle) {
                 if (enabled) {
                     ParticlePointer(this)
                 } else {
@@ -68,7 +68,7 @@ class PointerManager(
 
     private fun setupPointers() {
         availablePointers.forEach { supplier ->
-            supplier(plugin.waypointsConfig.pointerConfiguration)?.let { pointer ->
+            supplier(plugin.waypointsConfig.pointer)?.let { pointer ->
                 enabledPointers.add(pointer)
 
                 if (pointer.interval > 0) {

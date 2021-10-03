@@ -35,7 +35,7 @@ class BlinkingBlockConfiguration {
     var blockDataSequence: Array<BlockData> = arrayOf(Material.BEACON.createBlockData())
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
-        with (cfg) {
+        with(cfg) {
             enabled = getBoolean("enabled")
 
             interval = getInt("interval")

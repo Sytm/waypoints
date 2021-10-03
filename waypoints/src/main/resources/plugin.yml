@@ -3,7 +3,7 @@ author: Md5Lukas
 main: de.md5lukas.waypoints.WaypointsPlugin
 version: ${version}
 
-api-version: 1.13
+api-version: 1.14
 
 commands:
   waypoints:

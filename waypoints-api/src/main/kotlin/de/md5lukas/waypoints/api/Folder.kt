@@ -1,21 +1,33 @@
 package de.md5lukas.waypoints.api
 
+import de.md5lukas.waypoints.api.gui.GUIFolder
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import java.util.*
 
-interface Folder {
+interface Folder : GUIFolder {
 
     val id: UUID
 
-    val type: Type
+    override val createdAt: Long
+
+    override val type: Type
 
     val owner: UUID?
 
-    var name: String
+    override var name: String
 
     var description: String?
 
     var material: Material?
 
-    val waypoints: List<Waypoint>
+    val amount: Int
+
+    fun getAmountVisibleForPlayer(player: Player): Int
+
+    override val folders: List<Folder>
+
+    override val waypoints: List<Waypoint>
+
+    fun delete()
 }

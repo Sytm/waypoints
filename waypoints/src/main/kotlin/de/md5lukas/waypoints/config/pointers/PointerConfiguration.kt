@@ -4,21 +4,21 @@ import org.bukkit.configuration.ConfigurationSection
 
 class PointerConfiguration() {
 
-    val actionBarConfiguration = ActionBarConfiguration()
+    val actionBar = ActionBarConfiguration()
 
-    val beaconConfiguration = BeaconConfiguration()
+    val beacon = BeaconConfiguration()
 
-    val blinkingBlockConfiguration = BlinkingBlockConfiguration()
+    val blinkingBlock = BlinkingBlockConfiguration()
 
-    val compassConfiguration = CompassConfiguration()
+    val compass = CompassConfiguration()
 
-    val particleConfiguration = ParticleConfiguration()
+    val particle = ParticleConfiguration()
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
-        actionBarConfiguration.loadFromConfiguration(cfg.getConfigurationSection("actionBar")!!)
-        beaconConfiguration.loadFromConfiguration(cfg.getConfigurationSection("beacon")!!)
-        blinkingBlockConfiguration.loadFromConfiguration(cfg.getConfigurationSection("blinkingBlock")!!)
-        compassConfiguration.loadFromConfiguration(cfg.getConfigurationSection("compass")!!)
-        particleConfiguration.loadFromConfiguration(cfg.getConfigurationSection("particle")!!)
+        actionBar.loadFromConfiguration(cfg.getConfigurationSection("actionBar")!!)
+        beacon.loadFromConfiguration(cfg.getConfigurationSection("beacon")!!)
+        blinkingBlock.loadFromConfiguration(cfg.getConfigurationSection("blinkingBlock")!!)
+        compass.loadFromConfiguration(cfg.getConfigurationSection("compass")!!)
+        particle.loadFromConfiguration(cfg.getConfigurationSection("particle")!!)
     }
 }

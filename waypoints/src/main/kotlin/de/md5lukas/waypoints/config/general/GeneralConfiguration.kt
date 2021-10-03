@@ -8,15 +8,27 @@ class GeneralConfiguration {
     var language: String = ""
         private set
 
-    val uuidCacheConfiguration = UUIDCacheConfiguration()
+    val uuidCache = UUIDCacheConfiguration()
 
-    val waypointCreationConfiguration = WaypointCreationConfiguration()
+    val waypoints = LimitConfiguration()
+
+    val folders = LimitConfiguration()
+
+    val customIconFilter = CustomIconFilterConfiguration()
+
+    val teleport = TeleportConfiguration()
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         language = cfg.getStringNotNull("language")
 
-        uuidCacheConfiguration.loadFromConfiguration(cfg.getConfigurationSection("uuidCache")!!)
+        uuidCache.loadFromConfiguration(cfg.getConfigurationSection("uuidCache")!!)
 
-        waypointCreationConfiguration.loadFromConfiguration(cfg.getConfigurationSection("waypointCreation")!!)
+        waypoints.loadFromConfiguration(cfg.getConfigurationSection("waypoints")!!)
+
+        folders.loadFromConfiguration(cfg.getConfigurationSection("folders")!!)
+
+        customIconFilter.loadFromConfiguration(cfg.getConfigurationSection("customIconFilter")!!)
+
+        teleport.loadFromConfiguration(cfg.getConfigurationSection("teleport")!!)
     }
 }

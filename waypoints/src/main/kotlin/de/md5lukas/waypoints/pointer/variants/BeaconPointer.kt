@@ -29,7 +29,7 @@ class BeaconPointer(
                 val beaconBase = loc.getHighestBlock().location
 
                 val lastBeaconPosition = activeBeacons[player.uniqueId]
-                if (lastBeaconPosition != null && !lastBeaconPosition.blockEquals(beaconBase))  {
+                if (lastBeaconPosition != null && !lastBeaconPosition.blockEquals(beaconBase)) {
                     hide(player, waypoint, lastBeaconPosition)
                 }
 

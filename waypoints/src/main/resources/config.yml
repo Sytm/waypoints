@@ -7,13 +7,50 @@ general:
     # Set time in hours after saved UUIDs will be removed from the cache
     expireAfter: 24
 
-  waypointCreation:
+  customIconFilter:
+    type: blacklist
+    materials:
+      - AIR
+      - BARRIER
+      - BEDROCK
+
+  waypoints:
     limit: 200
 
     allowDuplicateNames:
       private: true
       public: false
       permission: false
+
+  folders:
+    limit: 20
+
+    allowDuplicateNames:
+      private: true
+      public: false
+      permission: false
+
+  teleport:
+    cooldown: 5m
+    standStillTime: 3s
+
+    # Available types are: disabled, free, xp (levels), vault (your economy plugins currency)
+    # You can provide a formula to calculate the price. The variable n is how often a player teleported
+    # When using the payment method xp the returned value is rounded to the closest full value
+    private:
+      type: xp
+      maxCost: 10
+      formula: 1 + n
+
+    public:
+      type: xp
+      maxCost: 8
+      formula: 1 + n
+
+    permission:
+      type: free
+      maxCost: 3
+      formula: n
 
 pointers:
   actionBar:

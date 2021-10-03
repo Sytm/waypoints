@@ -42,7 +42,7 @@ class ParticleConfiguration {
         private set
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
-        with (cfg) {
+        with(cfg) {
             enabled = getBoolean("enabled")
 
             interval = getInt("interval")

@@ -11,14 +11,18 @@ version = "3.0.0-SNAPSHOT"
 description = "Waypoints plugin"
 
 dependencies {
-    implementation("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT")
+    implementation("org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT")
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":waypoints-api"))
 
-    implementation("de.md5lukas:painventories:1.0.0-SNAPSHOT")
-    implementation("de.md5lukas:md5-commons:2.0.0")
+    implementation("com.github.MilkBowl:VaultAPI:1.7.1")
+
+    implementation("de.md5lukas:md5-commons:2.0.0-SNAPSHOT")
     implementation("de.md5lukas:sqlite-kotlin-helper:1.0.1")
+    implementation("de.md5lukas:kinvs:1.0.0-SNAPSHOT")
+
+    implementation("net.wesjd:anvilgui:1.5.3-SNAPSHOT")
 
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
@@ -45,15 +49,20 @@ tasks.withType<ShadowJar> {
 
         include(project(":waypoints-api"))
 
-        include(dependency("de.md5lukas:painventories"))
         include(dependency("de.md5lukas:md5-commons"))
         include(dependency("de.md5lukas:sqlite-kotlin-helper"))
+        include(dependency("de.md5lukas:kinvs"))
+
+        include(dependency("net.wesjd:anvilgui"))
     }
 
     relocate("kotlin", "de.md5lukas.waypoints.kt")
-    relocate("de.md5lukas.painventories", "de.md5lukas.waypoints.painventories")
+
     relocate("de.md5lukas.commons", "de.md5lukas.waypoints.commons")
     relocate("de.md5lukas.jdbc", "de.md5lukas.waypoints.jdbc")
+    relocate("de.md5lukas.kinvs", "de.md5lukas.waypoints.kinvs")
+
+    relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
 }
 
 tasks.withType<Test> {
