@@ -2,7 +2,7 @@ package de.md5lukas.waypoints.config.general
 
 import org.bukkit.configuration.ConfigurationSection
 
-class WaypointCreationConfiguration {
+class LimitConfiguration {
 
     var limit: Int = 0
         private set

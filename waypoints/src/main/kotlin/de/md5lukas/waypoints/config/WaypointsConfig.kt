@@ -1,17 +1,21 @@
 package de.md5lukas.waypoints.config
 
 import de.md5lukas.waypoints.config.general.GeneralConfiguration
+import de.md5lukas.waypoints.config.inventory.InventoryConfiguration
 import de.md5lukas.waypoints.config.pointers.PointerConfiguration
 import org.bukkit.configuration.ConfigurationSection
 
 class WaypointsConfig() {
 
-    val generalConfiguration = GeneralConfiguration()
+    val general = GeneralConfiguration()
 
-    val pointerConfiguration = PointerConfiguration()
+    val pointer = PointerConfiguration()
+
+    val inventory = InventoryConfiguration()
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
-        generalConfiguration.loadFromConfiguration(cfg.getConfigurationSection("general")!!)
-        pointerConfiguration.loadFromConfiguration(cfg.getConfigurationSection("pointers")!!)
+        general.loadFromConfiguration(cfg.getConfigurationSection("general")!!)
+        pointer.loadFromConfiguration(cfg.getConfigurationSection("pointers")!!)
+        inventory.loadFromConfiguration(cfg.getConfigurationSection("inventory")!!)
     }
 }

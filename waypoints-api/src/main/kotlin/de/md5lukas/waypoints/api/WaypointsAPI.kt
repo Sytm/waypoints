@@ -4,6 +4,10 @@ import java.util.*
 
 interface WaypointsAPI {
 
+    companion object {
+        lateinit var INSTANCE: WaypointsAPI
+    }
+
     fun waypointsPlayerExists(uuid: UUID): Boolean
 
     fun getWaypointPlayer(uuid: UUID): WaypointsPlayer

@@ -12,7 +12,7 @@ import java.util.*
 internal class WaypointsAPIImpl(private val dm: DatabaseManager) : WaypointsAPI {
 
     override fun getWaypointPlayer(uuid: UUID): WaypointsPlayer {
-        dm.connection.update("INSERT OR IGNORE INTO player_data(id) VALUES(?);", uuid.toString())
+        dm.connection.update("INSERT INTO player_data(id) VALUES(?) ON CONFLICT DO NOTHING;", uuid.toString())
         return dm.connection.selectFirst("SELECT id, showGlobals, sortBy FROM player_data WHERE id = ?;", uuid.toString()) {
             WaypointsPlayerImpl(dm, this)
         } as WaypointsPlayer

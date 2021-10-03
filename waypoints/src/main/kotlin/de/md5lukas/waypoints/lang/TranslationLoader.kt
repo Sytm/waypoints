@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets
 import java.util.logging.Level
 
 class TranslationLoader(
-    private val plugin: WaypointsPlugin,
+    val plugin: WaypointsPlugin,
 ) {
 
     private lateinit var loadedLanguage: String

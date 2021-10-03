@@ -1,12 +1,12 @@
 package de.md5lukas.waypoints.lang
 
 import de.md5lukas.waypoints.util.runtimeReplace
+import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 class ItemTranslation(
     private val translationLoader: TranslationLoader,
     private val key: String,
-    private val itemSupplier: () -> ItemStack
 ) {
 
     val displayName: String
@@ -15,10 +15,13 @@ class ItemTranslation(
     val description: String
         get() = translationLoader["$key.description"]
 
+    val material: Material
+        get() = translationLoader.plugin.waypointsConfig.inventory.getMaterial(key)
+
     val item: ItemStack
         get() = getItem(displayName, description)
 
-    private fun getItem(displayName: String, description: String) = itemSupplier().also {
+    private fun getItem(displayName: String, description: String) = ItemStack(material).also {
         it.itemMeta = it.itemMeta!!.also { itemMeta ->
             itemMeta.setDisplayName(displayName)
             itemMeta.lore = description.lines()

@@ -6,7 +6,6 @@ import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.sendActualBlock
 import org.bukkit.entity.Player
 import java.util.*
-import kotlin.collections.HashMap
 
 class BlinkingBlockPointer(
     private val config: BlinkingBlockConfiguration
@@ -17,7 +16,7 @@ class BlinkingBlockPointer(
     override fun update(player: Player, waypoint: Waypoint) {
         val loc = waypoint.location
         if (player.world == loc.world) {
-           val distance = player.location.distanceSquared(loc)
+            val distance = player.location.distanceSquared(loc)
             if (distance >= config.minDistance && distance < config.maxDistance) {
                 val currentCounter = counters.compute(player.uniqueId) { _, count ->
                     if (count == null) {

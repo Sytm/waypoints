@@ -42,7 +42,7 @@ internal class WaypointsPlayerImpl private constructor(
     }
 
     override val deathWaypoint: Waypoint?
-        get() = dm.connection.selectFirst("SELECT * FROM waypoints WHERE type = ? AND owner = ? LIMIT 1;", Type.DEATH, id.toString()) {
+        get() = dm.connection.selectFirst("SELECT * FROM waypoints WHERE type = ? AND owner = ? LIMIT 1;", Type.DEATH.name, id.toString()) {
             WaypointImpl(dm, this)
         }
 

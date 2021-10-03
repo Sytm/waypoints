@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.21" apply false
+    kotlin("jvm") version "1.5.31" apply false
     id("com.github.johnrengelman.shadow") version "7.0.0" apply false
 }
 
@@ -12,5 +12,6 @@ allprojects {
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
         maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         maven(url = "https://repo.minebench.de/")
+        maven(url = "https://jitpack.io")
     }
 }
