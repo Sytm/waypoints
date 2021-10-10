@@ -31,7 +31,7 @@ class MathParser private constructor(private val str: String, private val variab
     fun parse(): Expression {
         nextChar()
         val x = parseExpression()
-        if (pos < str.length) throw RuntimeException("Unexpected: " + ch.toChar())
+        if (pos < str.length) throw RuntimeException("Unexpected: '$ch'")
         return x
     }
 
@@ -135,7 +135,7 @@ class MathParser private constructor(private val str: String, private val variab
                 }
             }
             else -> {
-                throw RuntimeException("Unexpected: " + ch.toChar())
+                throw RuntimeException("Unexpected: '$ch'")
             }
         }
 

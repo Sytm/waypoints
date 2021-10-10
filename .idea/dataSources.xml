@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="waypoints.db" uuid="7e316879-5f9c-46c1-81e8-d8020e7fca5b">
+    <data-source source="LOCAL" name="waypoints-programming" uuid="7e316879-5f9c-46c1-81e8-d8020e7fca5b">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:waypoints.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="waypoints-live" uuid="dfca86c2-3d8c-4754-8d49-5a17f4fffdfa">
+    <data-source source="LOCAL" name="waypoints-live" uuid="468a5885-f0c2-4852-ae41-ebef5c6aca56">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/../../servers/spigot-17/plugins/Waypoints/waypoints.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/../../servers/spigot-14/plugins/Waypoints/waypoints.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>

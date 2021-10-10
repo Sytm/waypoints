@@ -59,7 +59,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                     createWaypointPrivate(plugin, sender, name)
                 }
             }
-            "setPublic" -> when {
+            "setpublic" -> when {
                 !sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 args.size <= 1 -> translations.COMMAND_SET_WRONG_USAGE_PUBLIC.send(sender, labelMap)
                 else -> {
@@ -68,7 +68,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                     createWaypointPublic(plugin, sender, name)
                 }
             }
-            "setPermission" -> when {
+            "setpermission" -> when {
                 !sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 args.size <= 2 -> translations.COMMAND_SET_WRONG_USAGE_PERMISSION.send(sender, labelMap)
                 else -> {

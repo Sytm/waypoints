@@ -57,7 +57,7 @@ internal class FolderImpl private constructor(
 
     override val amount: Int
         get() = dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE folder = ?;", id.toString()) {
-            getInt(0)
+            getInt(1)
         }!!
 
     override fun getAmountVisibleForPlayer(player: Player): Int =
@@ -110,7 +110,7 @@ internal class FolderImpl private constructor(
             )
         )
 
-        stack.amount = MathHelper.clamp(0, 64, fetchedAmount)
+        stack.amount = MathHelper.clamp(1, 64, fetchedAmount)
 
         material?.also {
             stack.type = it

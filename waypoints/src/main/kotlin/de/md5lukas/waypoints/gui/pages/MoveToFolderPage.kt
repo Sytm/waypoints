@@ -31,7 +31,7 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : Li
     private fun updateControls() {
         applyPattern(
             controlsPattern,
-            5,
+            4,
             0,
             background,
             'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
@@ -51,6 +51,7 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : Li
     }
 
     init {
+        updateListingInInventory()
         updateControls()
     }
 }

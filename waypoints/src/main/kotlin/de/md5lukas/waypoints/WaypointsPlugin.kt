@@ -52,6 +52,7 @@ class WaypointsPlugin : JavaPlugin() {
         initDatabase()
         initPointerManager()
         initTranslations()
+        initTeleportManager()
         initUUIDUtils()
         initDurationFormatter()
         initVaultHook()
@@ -90,6 +91,10 @@ class WaypointsPlugin : JavaPlugin() {
         translations = Translations(translationLoader)
 
         worldTranslations = WorldTranslations(translationLoader)
+    }
+
+    private fun initTeleportManager() {
+        teleportManager = TeleportManager(this)
     }
 
     private fun initUUIDUtils() {

@@ -21,7 +21,7 @@ class BlinkingBlockConfiguration {
             if (value <= 0) {
                 throw IllegalArgumentException("The minDistance must be greater than zero ($value)")
             }
-            field = value * value
+            field = value
         }
 
     var maxDistance: Long = 0

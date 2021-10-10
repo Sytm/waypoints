@@ -117,7 +117,7 @@ inventory:
     private: GREEN_STAINED_GLASS_PANE
     death: RED_STAINED_GLASS_PANE
     public: BLUE_STAINED_GLASS_PANE
-    permission: YELLOW_STAINED_GLASS_PAME
+    permission: YELLOW_STAINED_GLASS_PANE
 
   overview:
     cycleSort: HOPPER
@@ -129,13 +129,13 @@ inventory:
     createFolder: WRITABLE_BOOK
 
   listing:
-    private: BOOK
-    permission: BOOK
+    public: ENCHANTED_BOOK
+    permission: ENCHANTED_BOOK
 
   waypoint:
     icon:
-      private: SKELETON_SKULL
-      death: BEACON
+      private: BEACON
+      death: SKELETON_SKULL
       public: BEACON
       permission: BEACON
 
@@ -150,8 +150,8 @@ inventory:
   folder:
     icon:
       private: BOOK
-      public: ENCHANTED_BOOK
-      permission: ENCHANTED_BOOK
+      public: BOOK
+      permission: BOOK
 
     delete: LAVA_BUCKET
     rename: NAME_TAG
@@ -160,7 +160,7 @@ inventory:
     noFolder: MINECART
 
   confirm:
-    background: LIGHT_GRAY_STAINED_GLASS_PANE
+    background: GRAY_STAINED_GLASS_PANE
 
   delete:
     waypoint:

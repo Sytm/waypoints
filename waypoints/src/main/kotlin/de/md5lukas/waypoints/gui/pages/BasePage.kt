@@ -24,5 +24,7 @@ open class BasePage(
         }.item
     )
 
+    open fun update() {}
+
     protected val background: GUIContent = GUIItem(background)
 }

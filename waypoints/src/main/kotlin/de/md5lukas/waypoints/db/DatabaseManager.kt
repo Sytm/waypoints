@@ -4,6 +4,7 @@ import de.md5lukas.jdbc.SQLiteHelper
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.WaypointsPlugin
+import de.md5lukas.waypoints.api.OverviewSort
 import java.io.File
 import java.sql.Connection
 import java.util.logging.Level
@@ -42,7 +43,7 @@ class DatabaseManager(
                   id TEXT NOT NULL PRIMARY KEY,
                   
                   showGlobals BOOLEAN NOT NULL DEFAULT 1,
-                  sortBy TEXT NOT NULL DEFAULT 'TYPE_ASC'
+                  sortBy TEXT NOT NULL DEFAULT '${OverviewSort.TYPE_ASCENDING.name}'
                 );
             """
             )

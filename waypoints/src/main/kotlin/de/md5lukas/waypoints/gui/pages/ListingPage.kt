@@ -8,13 +8,12 @@ import de.md5lukas.waypoints.gui.WaypointsGUI
 open class ListingPage<T : GUIDisplayable>(
     wpGUI: WaypointsGUI,
     guiDisplayable: GUIDisplayable,
-    contentGetter: () -> PaginationList<T>,
+    private val contentGetter: () -> PaginationList<T>,
     private val displayableConverter: (T) -> GUIContent
-)
-    : BasePage(wpGUI, guiDisplayable) {
+) : BasePage(wpGUI, guiDisplayable) {
 
     companion object Constants {
-        const val PAGINATION_LIST_PAGE_SIZE = 5 * 9
+        const val PAGINATION_LIST_PAGE_SIZE = 4 * 9
     }
 
     protected var listingContent: PaginationList<T> = contentGetter()
@@ -30,9 +29,17 @@ open class ListingPage<T : GUIDisplayable>(
 
     protected fun isValidListingPage(page: Int) = page >= 0 && page < listingContent.pages()
 
+    protected fun updateListingContent() {
+        listingContent = contentGetter()
+
+        checkListingPageBounds()
+
+        updateListingInInventory()
+    }
+
     protected fun updateListingInInventory() {
         val pageContent = listingContent.page(listingPage)
-        for (row in 0..4) {
+        for (row in 0..3) {
             for (column in 0..8) {
                 val content = pageContent.getOrNull(row * 8 + column)
                 if (content == null) {

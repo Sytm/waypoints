@@ -132,7 +132,7 @@ message:
       private: "$[prefix] &cFolders with duplicate names are not permitted."
       public: "$[prefix] &cPublic folders with duplicate names are not permitted."
       permission: "$[prefix] &cPermission folders with duplicate names are not permitted."
-    setSuccess:
+    createSuccess:
       private: "$[prefix] &7The folder has been created successfully."
       public: "$[prefix] &7The public folder has been created successfully."
       permission: "$[prefix] &7The permission folder has been created successfully."
