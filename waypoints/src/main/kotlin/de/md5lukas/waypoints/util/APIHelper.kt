@@ -1,11 +1,21 @@
 package de.md5lukas.waypoints.util
 
 import de.md5lukas.waypoints.WaypointsPlugin
+import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
+import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.config.general.CustomIconFilterConfiguration
 import org.bukkit.Material
 import org.bukkit.entity.Player
+
+sealed class CreateResult
+
+object LimitReached : CreateResult()
+object NameTaken : CreateResult()
+
+class SuccessWaypoint(val waypoint: Waypoint) : CreateResult()
+class SuccessFolder(val folder: Folder) : CreateResult()
 
 fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material): Boolean {
     val filter = plugin.waypointsConfig.general.customIconFilter
@@ -15,94 +25,94 @@ fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material): Boo
     }
 }
 
-fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String): Boolean {
+fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
     val waypointsPlayer = plugin.api.getWaypointPlayer(player.uniqueId)
 
     val waypointLimit = plugin.waypointsConfig.general.waypoints.limit
 
     if (waypointLimit > 0 && waypointsPlayer.waypointsAmount >= waypointLimit) {
         plugin.translations.WAYPOINT_LIMIT_REACHED_PRIVATE.send(player)
-        return false
+        return LimitReached
     }
     if (!checkWaypointName(plugin, waypointsPlayer, name)) {
         plugin.translations.WAYPOINT_NAME_DUPLICATE_PRIVATE.send(player)
-        return false
+        return NameTaken
     }
 
-    waypointsPlayer.createWaypoint(name, player.location)
+    val waypoint = waypointsPlayer.createWaypoint(name, player.location)
     plugin.translations.WAYPOINT_SET_SUCCESS_PRIVATE.send(player)
 
-    return true
+    return SuccessWaypoint(waypoint)
 }
 
-fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String): Boolean {
+fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
     if (!checkWaypointName(plugin, plugin.api.publicWaypoints, name)) {
         plugin.translations.WAYPOINT_NAME_DUPLICATE_PUBLIC.send(player)
-        return false
+        return NameTaken
     }
 
-    plugin.api.publicWaypoints.createWaypoint(name, player.location)
+    val waypoint = plugin.api.publicWaypoints.createWaypoint(name, player.location)
     plugin.translations.WAYPOINT_SET_SUCCESS_PUBLIC.send(player)
 
-    return true
+    return SuccessWaypoint(waypoint)
 }
 
-fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: String, permission: String): Boolean {
+fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: String, permission: String): CreateResult {
     if (!checkWaypointName(plugin, plugin.api.permissionWaypoints, name)) {
         plugin.translations.WAYPOINT_NAME_DUPLICATE_PERMISSION.send(player)
-        return false
+        return NameTaken
     }
 
-    plugin.api.permissionWaypoints.createWaypoint(name, player.location).also {
+    val waypoint = plugin.api.permissionWaypoints.createWaypoint(name, player.location).also {
         it.permission = permission
     }
     plugin.translations.WAYPOINT_SET_SUCCESS_PERMISSION.send(player)
 
-    return true
+    return SuccessWaypoint(waypoint)
 }
 
-fun createFolderPrivate(plugin: WaypointsPlugin, player: Player, name: String): Boolean {
+fun createFolderPrivate(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
     val waypointsPlayer = plugin.api.getWaypointPlayer(player.uniqueId)
 
     val folderLimit = plugin.waypointsConfig.general.folders.limit
 
     if (folderLimit > 0 && waypointsPlayer.foldersAmount >= folderLimit) {
         plugin.translations.FOLDER_LIMIT_REACHED_PRIVATE.send(player)
-        return false
+        return LimitReached
     }
     if (!checkFolderName(plugin, waypointsPlayer, name)) {
         plugin.translations.FOLDER_NAME_DUPLICATE_PRIVATE.send(player)
-        return false
+        return NameTaken
     }
 
-    waypointsPlayer.createFolder(name)
+    val folder = waypointsPlayer.createFolder(name)
     plugin.translations.FOLDER_CREATE_SUCCESS_PRIVATE.send(player)
 
-    return true
+    return SuccessFolder(folder)
 }
 
-fun createFolderPublic(plugin: WaypointsPlugin, player: Player, name: String): Boolean {
+fun createFolderPublic(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
     if (!checkFolderName(plugin, plugin.api.publicWaypoints, name)) {
         plugin.translations.FOLDER_NAME_DUPLICATE_PUBLIC.send(player)
-        return false
+        return NameTaken
     }
 
-    plugin.api.publicWaypoints.createFolder(name)
+    val folder = plugin.api.publicWaypoints.createFolder(name)
     plugin.translations.FOLDER_CREATE_SUCCESS_PUBLIC.send(player)
 
-    return true
+    return SuccessFolder(folder)
 }
 
-fun createFolderPermission(plugin: WaypointsPlugin, player: Player, name: String): Boolean {
+fun createFolderPermission(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
     if (!checkFolderName(plugin, plugin.api.permissionWaypoints, name)) {
         plugin.translations.FOLDER_NAME_DUPLICATE_PERMISSION.send(player)
-        return false
+        return NameTaken
     }
 
-    plugin.api.permissionWaypoints.createFolder(name)
+    val folder = plugin.api.permissionWaypoints.createFolder(name)
     plugin.translations.FOLDER_CREATE_SUCCESS_PERMISSION.send(player)
 
-    return true
+    return SuccessFolder(folder)
 }
 
 fun checkWaypointName(plugin: WaypointsPlugin, holder: WaypointHolder, name: String): Boolean {

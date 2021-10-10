@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitTask
 import java.util.*
 import kotlin.math.ceil
 import kotlin.math.min
+import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 class TeleportManager(private val plugin: WaypointsPlugin) : Listener, Runnable {
@@ -33,11 +34,41 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener, Runnable 
         Type.PERMISSION -> WaypointsPermissions.TELEPORT_PERMISSION
     }
 
-    fun isTeleportEnabled(waypoint: Waypoint) = when (waypoint.type) {
+    private fun getTeleportConfig(waypoint: Waypoint) = when (waypoint.type) {
         Type.PRIVATE, Type.DEATH -> plugin.waypointsConfig.general.teleport.private
         Type.PUBLIC -> plugin.waypointsConfig.general.teleport.public
         Type.PERMISSION -> plugin.waypointsConfig.general.teleport.permission
-    }.type != TeleportPaymentType.DISABLED
+    }
+
+    fun isTeleportEnabled(waypoint: Waypoint) = getTeleportConfig(waypoint).type != TeleportPaymentType.DISABLED
+
+    private fun getTeleportationPrice(player: Player, waypoint: Waypoint): Double {
+        val meta = waypoint.getWaypointMeta(player.uniqueId)
+        val config = getTeleportConfig(waypoint)
+
+        return min(
+            config.maxCost.toDouble(),
+            config.formula.eval(Collections.singletonMap("n", meta.teleportations.toDouble()))
+        )
+    }
+
+    fun getTeleportCostDescription(player: Player, waypoint: Waypoint): String? {
+        val config = getTeleportConfig(waypoint)
+
+        if (player.hasPermission(getTeleportPermission(waypoint))) {
+            return null
+        }
+
+        return when(config.type) {
+            TeleportPaymentType.XP -> plugin.translations.WAYPOINT_TELEPORT_XP_LEVEL.withReplacements(
+                Collections.singletonMap("levels", getTeleportationPrice(player, waypoint).roundToInt().toString())
+            )
+            TeleportPaymentType.VAULT -> plugin.translations.WAYPOINT_TELEPORT_BALANCE.withReplacements(
+                Collections.singletonMap("balance", getTeleportationPrice(player, waypoint).format())
+            )
+            else -> null
+        }
+    }
 
     fun teleportPlayerToWaypoint(player: Player, waypoint: Waypoint) {
         cancelRunningTeleport(player)
@@ -50,20 +81,14 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener, Runnable 
         if (cooldownUntil != null) {
             val remainingCooldown = DurationFormatter.formatDuration(player, cooldownUntil - System.currentTimeMillis())
 
-            plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(player, Collections.singletonMap("cooldownUntil", remainingCooldown))
+            plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(player, Collections.singletonMap("remainingCooldown", remainingCooldown))
 
             return
         }
 
-        val config = when (waypoint.type) {
-            Type.PRIVATE, Type.DEATH -> plugin.waypointsConfig.general.teleport.private
-            Type.PUBLIC -> plugin.waypointsConfig.general.teleport.public
-            Type.PERMISSION -> plugin.waypointsConfig.general.teleport.permission
-        }
+        val config = getTeleportConfig(waypoint)
 
-        val meta = waypoint.getWaypointMeta(player.uniqueId)
-
-        val price = min(config.maxCost.toDouble(), config.formula.eval(Collections.singletonMap("n", meta.teleportations.toDouble())))
+        val price = getTeleportationPrice(player, waypoint)
 
         fun canTeleport() = when (config.type) {
             TeleportPaymentType.DISABLED -> false
@@ -103,9 +128,13 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener, Runnable 
                         TeleportPaymentType.FREE -> true
                         TeleportPaymentType.XP -> {
                             player.giveExpLevels((-price).toInt())
+                            waypoint.getWaypointMeta(player.uniqueId).teleportations++
                             true
                         }
-                        TeleportPaymentType.VAULT -> plugin.vaultHook.withdraw(player, price)
+                        TeleportPaymentType.VAULT -> {
+                            waypoint.getWaypointMeta(player.uniqueId).teleportations++
+                            plugin.vaultHook.withdraw(player, price)
+                        }
                     }
                 ) {
                     player.teleportKeepOrientation(waypoint.location)

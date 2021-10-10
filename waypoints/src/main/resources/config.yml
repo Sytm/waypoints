@@ -53,6 +53,9 @@ general:
       formula: n
 
 pointers:
+  # Automatically deselects the waypoint when the player gets into the defined radius. Set to zero to disable
+  disableWhenReachedRadius: 5
+
   actionBar:
     enabled: true
     interval: 20
@@ -103,3 +106,68 @@ pointers:
     amount: 10
     length: 1
     particle: FLAME
+
+inventory:
+  general:
+    previous: ARROW
+    next: ARROW
+    back: BARRIER
+
+  background:
+    private: GREEN_STAINED_GLASS_PANE
+    death: RED_STAINED_GLASS_PANE
+    public: BLUE_STAINED_GLASS_PANE
+    permission: YELLOW_STAINED_GLASS_PAME
+
+  overview:
+    cycleSort: HOPPER
+    toggleGlobals:
+      visible: CHEST
+      hidden: CHEST
+    deselect: MILK_BUCKET
+    setWaypoint: TORCH
+    createFolder: WRITABLE_BOOK
+
+  listing:
+    private: BOOK
+    permission: BOOK
+
+  waypoint:
+    icon:
+      private: SKELETON_SKULL
+      death: BEACON
+      public: BEACON
+      permission: BEACON
+
+    select: REDSTONE
+    delete: LAVA_BUCKET
+    rename: NAME_TAG
+    moveToFolder: CHEST_MINECART
+    teleport: ENDER_PEARL
+    selectBeaconColor: LIME_STAINED_GLASS
+    getUuid: PAPER
+
+  folder:
+    icon:
+      private: BOOK
+      public: ENCHANTED_BOOK
+      permission: ENCHANTED_BOOK
+
+    delete: LAVA_BUCKET
+    rename: NAME_TAG
+
+  selectFolder:
+    noFolder: MINECART
+
+  confirm:
+    background: LIGHT_GRAY_STAINED_GLASS_PANE
+
+  delete:
+    waypoint:
+      question: OAK_SIGN
+      confirm: LAVA_BUCKET
+      cancel: WATER_BUCKET
+    folder:
+      question: OAK_SIGN
+      confirm: LAVA_BUCKET
+      cancel: WATER_BUCKET

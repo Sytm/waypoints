@@ -8,12 +8,16 @@ import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Folder
+import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.gui.pages.GUIFolderPage
+import de.md5lukas.waypoints.gui.pages.ListingPage
 import de.md5lukas.waypoints.gui.pages.WaypointPage
+import de.md5lukas.waypoints.util.*
+import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -78,14 +82,82 @@ class WaypointsGUI(
         open(GUIFolderPage(this, folder))
     }
 
-    fun openWaypoint(waypoint: Waypoint) {
-        open(WaypointPage(this, waypoint))
+    fun openWaypoint(waypoint: Waypoint, openAction: Int = 0) {
+        open(WaypointPage(this, waypoint), openAction)
     }
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
+        AnvilGUI.Builder().plugin(plugin).text(translations.FOLDER_CREATE_ENTER_NAME.text).onComplete { _, name ->
+            val result = when (waypointHolder.type) {
+                Type.PRIVATE -> createFolderPrivate(plugin, viewer, name)
+                Type.PUBLIC -> createFolderPublic(plugin, viewer, name)
+                Type.PERMISSION -> createFolderPermission(plugin, viewer, name)
+                else -> throw IllegalStateException("Cannot create folders of the type ${waypointHolder.type}")
+            }
+
+            return@onComplete when (result) {
+                NameTaken -> AnvilGUI.Response.text(translations.FOLDER_CREATE_ENTER_NAME.text)
+                LimitReached, is SuccessFolder -> AnvilGUI.Response.close()
+                else -> throw IllegalStateException("Invalid return value $result")
+            }
+        }.onClose {
+            gui.open()
+        }.open(viewer)
     }
 
-    fun openCreateWaypoint(waypointHolder: WaypointHolder, folder: Folder?) {
+    fun openCreateWaypoint(type: Type, folder: Folder?) {
+        var waypoint: Waypoint? = null
+
+        var name: String? = null
+        var permission: String? = null
+        AnvilGUI.Builder().plugin(plugin).text(translations.WAYPOINT_CREATE_ENTER_NAME.text).onComplete { _, enteredText ->
+            if (name == null) {
+                name = enteredText
+
+                if (type == Type.PERMISSION && permission == null) {
+                    return@onComplete AnvilGUI.Response.text(translations.WAYPOINT_CREATE_ENTER_PERMISSION.text)
+                }
+            } else if (type == Type.PERMISSION && permission == null) {
+                permission = enteredText
+            }
+
+            val result = name!!.let { name ->
+                when (type) {
+                    Type.PRIVATE -> createWaypointPrivate(plugin, viewer, name)
+                    Type.PUBLIC -> createWaypointPublic(plugin, viewer, name)
+                    Type.PERMISSION -> createWaypointPermission(plugin, viewer, name, permission!!)
+                    else -> throw IllegalArgumentException("Cannot create waypoints with the gui of the type $type")
+                }
+            }
+
+            return@onComplete when (result) {
+                LimitReached -> AnvilGUI.Response.close()
+                NameTaken -> {
+                    name = null
+                    AnvilGUI.Response.text(translations.WAYPOINT_CREATE_ENTER_NAME.text)
+                }
+                is SuccessWaypoint -> {
+                    folder?.let {
+                        result.waypoint.folder = it
+                        open(GUIFolderPage(this, folder))
+                    }
+
+                    waypoint = result.waypoint
+
+                    AnvilGUI.Response.close()
+                }
+                else -> throw IllegalStateException("Invalid return value $result")
+            }
+        }.onClose {
+            val capturedWaypoint = waypoint
+
+            if (capturedWaypoint == null) {
+                goBack()
+                gui.open()
+            } else {
+                openWaypoint(capturedWaypoint, WaypointsGUI.OPEN_REMOVE_LAST)
+            }
+        }.open(viewer)
     }
 
     internal fun open(page: GUIPage, actions: Int = 0) {
@@ -110,7 +182,7 @@ class WaypointsGUI(
     }
 
     internal fun getListingContent(guiFolder: GUIFolder): PaginationList<GUIDisplayable> {
-        val content = PaginationList<GUIDisplayable>(5 * 9)
+        val content = PaginationList<GUIDisplayable>(ListingPage.PAGINATION_LIST_PAGE_SIZE)
 
         if (isOwner) {
             if (guiFolder === targetData && viewerData.showGlobals) {
@@ -141,6 +213,12 @@ class WaypointsGUI(
                 else -> throw IllegalStateException("The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
             }
         }
+    }
+
+    internal fun getHolderForType(type: Type) = when (type) {
+        Type.PRIVATE, Type.DEATH -> targetData
+        Type.PUBLIC -> plugin.api.publicWaypoints
+        Type.PERMISSION -> plugin.api.permissionWaypoints
     }
 
     init {

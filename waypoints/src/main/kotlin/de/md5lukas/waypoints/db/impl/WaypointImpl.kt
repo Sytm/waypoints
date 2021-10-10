@@ -151,7 +151,7 @@ class WaypointImpl private constructor(
                 "distance" to if (player.world == location.world) {
                     MathHelper.distance2D(player.location, location).format()
                 } else {
-                    dm.plugin.translations.INVENTORY_LISTING_WAYPOINT_DISTANCE_OTHER_WORLD.text
+                    dm.plugin.translations.TEXT_DISTANCE_OTHER_WORLD.text
                 },
             )
         )

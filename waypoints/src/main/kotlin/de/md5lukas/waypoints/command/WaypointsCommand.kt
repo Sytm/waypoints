@@ -33,18 +33,17 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
         val labelMap = Collections.singletonMap("label", label)
         when (args[0].lowercase()) {
             "help" -> {
-
                 translations.COMMAND_HELP_HEADER.send(sender)
                 translations.COMMAND_HELP_GUI.send(sender, labelMap)
                 translations.COMMAND_HELP_HELP.send(sender, labelMap)
 
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
+                if (sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PRIVATE)) {
                     translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
                 }
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+                if (sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC)) {
                     translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelMap)
                 }
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+                if (sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION)) {
                     translations.COMMAND_HELP_SET_PERMISSION.send(sender, labelMap)
                 }
                 if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
@@ -52,7 +51,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 }
             }
             "set" -> when {
-                !sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE) -> translations.COMMAND_NO_PERMISSION.send(sender)
+                !sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PRIVATE) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 args.size <= 1 -> translations.COMMAND_SET_WRONG_USAGE_PRIVATE.send(sender, labelMap)
                 else -> {
                     val name = args.join(1)
@@ -61,7 +60,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 }
             }
             "setPublic" -> when {
-                !sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC) -> translations.COMMAND_NO_PERMISSION.send(sender)
+                !sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 args.size <= 1 -> translations.COMMAND_SET_WRONG_USAGE_PUBLIC.send(sender, labelMap)
                 else -> {
                     val name = args.join(1)
@@ -70,7 +69,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 }
             }
             "setPermission" -> when {
-                !sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION) -> translations.COMMAND_NO_PERMISSION.send(sender)
+                !sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 args.size <= 2 -> translations.COMMAND_SET_WRONG_USAGE_PERMISSION.send(sender, labelMap)
                 else -> {
                     val permission = args[1]
@@ -124,13 +123,13 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
 
             options.add("help")
 
-            if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
+            if (sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PRIVATE)) {
                 options.add("set")
             }
-            if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+            if (sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC)) {
                 options.add("setPublic")
             }
-            if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+            if (sender.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION)) {
                 options.add("setPermission")
             }
             if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {

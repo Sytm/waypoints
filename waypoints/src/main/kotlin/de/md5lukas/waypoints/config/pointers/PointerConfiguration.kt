@@ -4,6 +4,9 @@ import org.bukkit.configuration.ConfigurationSection
 
 class PointerConfiguration() {
 
+    var disableWhenReachedRadius = 0
+        private set
+
     val actionBar = ActionBarConfiguration()
 
     val beacon = BeaconConfiguration()
@@ -15,6 +18,8 @@ class PointerConfiguration() {
     val particle = ParticleConfiguration()
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
+        disableWhenReachedRadius = cfg.getInt("disableWhenReachedRadius").let { it * it }
+
         actionBar.loadFromConfiguration(cfg.getConfigurationSection("actionBar")!!)
         beacon.loadFromConfiguration(cfg.getConfigurationSection("beacon")!!)
         blinkingBlock.loadFromConfiguration(cfg.getConfigurationSection("blinkingBlock")!!)
