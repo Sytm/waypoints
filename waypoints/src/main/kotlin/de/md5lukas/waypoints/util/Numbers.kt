@@ -6,6 +6,6 @@ import java.util.*
 
 private val formatter = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault())
 
-fun Long.formatTimestampToDate() = formatter.format(Date(this))
+fun Long.formatTimestampToDate(): String = formatter.format(Date(this))
 
-fun Double.format() = MathHelper.format(this)
+fun Double.format(): String = MathHelper.format(this)
