@@ -34,38 +34,28 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
          * b = None / Back
          * n = Next
          */
-        val controlsPattern = GUIPattern("pfsditwb")
+        val controlsPattern = GUIPattern("pfsditwbn")
     }
-
 
     private val isOverview = guiFolder is WaypointHolder
     private val isPlayerOverview = guiFolder is WaypointsPlayer
 
-    private val canCreateWaypoint = if (isPlayerOverview) {
-        if (wpGUI.isOwner) {
-            wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PRIVATE)
-        } else {
-            false
-        }
-    } else {
-        when (guiFolder.type) {
-            Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC)
-            Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION)
-            else -> throw IllegalStateException()
-        }
+    private val canCreateWaypoint = when (guiFolder.type) {
+        Type.PRIVATE -> wpGUI.isOwner && wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PRIVATE)
+        Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC)
+        Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION)
+        else -> throw IllegalStateException("There cannot be gui folders of type ${guiFolder.type}")
     }
-    private val canModifyFolder = if (isPlayerOverview) {
-        if (wpGUI.isOwner) {
-            wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PRIVATE)
-        } else {
-            false
-        }
-    } else {
-        when (guiFolder.type) {
-            Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PUBLIC)
-            Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PERMISSION)
-            else -> throw IllegalStateException()
-        }
+    private val canModifyFolder = when (guiFolder.type) {
+        Type.PRIVATE -> wpGUI.isOwner && wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PRIVATE)
+        Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PUBLIC)
+        Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PERMISSION)
+        else -> throw IllegalStateException("There cannot be gui folders of type ${guiFolder.type}")
+    }
+
+    override fun update() {
+        updateListingContent()
+        updateControls()
     }
 
     private fun updateControls(update: Boolean = true) {
@@ -83,7 +73,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
          */
         applyPattern(
             controlsPattern,
-            5,
+            4,
             0,
             background,
             'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
@@ -121,10 +111,11 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                                 if (it) {
                                     (guiFolder as Folder).delete()
                                     wpGUI.goBack()
+                                    wpGUI.goBack()
                                 } else {
-                                    wpGUI.open(this)
+                                    wpGUI.goBack()
                                 }
-                            }, WaypointsGUI.OPEN_REMOVE_LAST or WaypointsGUI.OPEN_NO_PUSH
+                            }
                         )
                     }
                 }
@@ -201,7 +192,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
             } else {
                 background
             },
-            'b' to if (isOverview) {
+            'b' to if (isPlayerOverview) {
                 background
             } else {
                 GUIItem(wpGUI.translations.GENERAL_BACK.item) {
@@ -219,6 +210,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
     }
 
     init {
+        updateListingInInventory()
         updateControls(false)
     }
 }

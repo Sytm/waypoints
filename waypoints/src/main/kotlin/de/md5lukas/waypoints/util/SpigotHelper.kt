@@ -4,6 +4,8 @@ import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.Plugin
 import org.bukkit.util.Vector
 
@@ -39,4 +41,8 @@ fun Player.teleportKeepOrientation(location: Location) {
     target.pitch = this.location.pitch
     target.yaw = this.location.yaw
     this.teleport(target)
+}
+
+inline fun ItemStack.itemMeta(meta: ItemMeta.() -> Unit) {
+    itemMeta = itemMeta!!.also { it.meta() }
 }

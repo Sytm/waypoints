@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.lang
 
 import de.md5lukas.waypoints.util.runtimeReplace
+import de.md5lukas.waypoints.util.splitDescriptionStringToList
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -24,7 +25,7 @@ class ItemTranslation(
     private fun getItem(displayName: String, description: String) = ItemStack(material).also {
         it.itemMeta = it.itemMeta!!.also { itemMeta ->
             itemMeta.setDisplayName(displayName)
-            itemMeta.lore = description.lines()
+            itemMeta.lore = splitDescriptionStringToList(description)
         }
     }
 

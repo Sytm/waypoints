@@ -13,6 +13,7 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
+import de.md5lukas.waypoints.gui.pages.BasePage
 import de.md5lukas.waypoints.gui.pages.GUIFolderPage
 import de.md5lukas.waypoints.gui.pages.ListingPage
 import de.md5lukas.waypoints.gui.pages.WaypointPage
@@ -41,12 +42,9 @@ class WaypointsGUI(
             "_u_____e_",
             "____r___b",
         )
-
-        const val OPEN_REMOVE_LAST = 1
-        const val OPEN_NO_PUSH = 2
     }
 
-    internal val pageStack = ArrayDeque<GUIPage>()
+    private val pageStack = ArrayDeque<BasePage>()
 
     internal val isOwner = viewer.uniqueId == target
 
@@ -67,7 +65,7 @@ class WaypointsGUI(
 
             plugin.translations.INVENTORY_TITLE_OTHER.withReplacements(Collections.singletonMap("name", otherName.get()))
         },
-        6
+        5
     )
 
     fun openOverview() {
@@ -82,8 +80,8 @@ class WaypointsGUI(
         open(GUIFolderPage(this, folder))
     }
 
-    fun openWaypoint(waypoint: Waypoint, openAction: Int = 0) {
-        open(WaypointPage(this, waypoint), openAction)
+    fun openWaypoint(waypoint: Waypoint) {
+        open(WaypointPage(this, waypoint))
     }
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
@@ -101,6 +99,7 @@ class WaypointsGUI(
                 else -> throw IllegalStateException("Invalid return value $result")
             }
         }.onClose {
+            (gui.activePage as BasePage).update()
             gui.open()
         }.open(viewer)
     }
@@ -155,17 +154,18 @@ class WaypointsGUI(
                 goBack()
                 gui.open()
             } else {
-                openWaypoint(capturedWaypoint, WaypointsGUI.OPEN_REMOVE_LAST)
+                openWaypoint(capturedWaypoint)
             }
         }.open(viewer)
     }
 
-    internal fun open(page: GUIPage, actions: Int = 0) {
-        if ((actions and OPEN_REMOVE_LAST) == OPEN_REMOVE_LAST) {
-            pageStack.pop()
-        }
-        if ((actions and OPEN_NO_PUSH) != OPEN_NO_PUSH) {
-            pageStack.push(page)
+    private var firstOpen = true
+
+    internal fun open(page: BasePage) {
+        if (firstOpen) {
+            firstOpen = false
+        } else {
+            pageStack.push(gui.activePage as BasePage)
         }
         gui.activePage = page
         gui.update()
@@ -177,7 +177,10 @@ class WaypointsGUI(
             return
         }
 
-        gui.activePage = pageStack.pop()
+        val page = pageStack.pop()
+        page.update()
+
+        gui.activePage = page
         gui.update()
     }
 
@@ -186,12 +189,8 @@ class WaypointsGUI(
 
         if (isOwner) {
             if (guiFolder === targetData && viewerData.showGlobals) {
-                if (plugin.api.publicWaypoints.waypointsAmount > 0) {
-                    content.add(plugin.api.publicWaypoints)
-                }
-                if (plugin.api.permissionWaypoints.getWaypointsVisibleForPlayer(viewer) > 0) {
-                    content.add(plugin.api.permissionWaypoints)
-                }
+                content.add(plugin.api.publicWaypoints)
+                content.add(plugin.api.permissionWaypoints)
             }
         }
 

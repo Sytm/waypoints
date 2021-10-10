@@ -156,10 +156,11 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                             if (it) {
                                 waypoint.delete()
                                 wpGUI.goBack()
+                                wpGUI.goBack()
                             } else {
-                                wpGUI.open(this)
+                                wpGUI.goBack()
                             }
-                        }, WaypointsGUI.OPEN_REMOVE_LAST or WaypointsGUI.OPEN_NO_PUSH
+                        }
                     )
                 }
             } else {

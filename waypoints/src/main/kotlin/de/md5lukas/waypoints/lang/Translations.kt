@@ -109,7 +109,7 @@ class Translations(
     val OVERVIEW_CYCLE_SORT_ACTIVE_COLOR = Translation(tl, "inventory.overview.cycleSort.activeColor")
     val OVERVIEW_CYCLE_SORT_INACTIVE_COLOR = Translation(tl, "inventory.overview.cycleSort.inactiveColor")
     val OVERVIEW_CYCLE_SORT_OPTIONS = OverviewSort.values().map {
-        it to Translation(tl, "message.sortOptions.${it.name.lowercase()}")
+        it to Translation(tl, "text.sortOptions.${it.name.lowercase()}")
     }
     val OVERVIEW_TOGGLE_GLOBALS_VISIBLE = ItemTranslation(tl, "inventory.overview.toggleGlobals.visible")
     val OVERVIEW_TOGGLE_GLOBALS_HIDDEN = ItemTranslation(tl, "inventory.overview.toggleGlobals.hidden")

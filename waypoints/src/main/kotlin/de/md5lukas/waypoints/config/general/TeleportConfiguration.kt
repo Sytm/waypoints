@@ -45,7 +45,7 @@ class TeleportPaymentConfiguration {
 
         maxCost = cfg.getLong("maxCost")
 
-        formula = MathParser.parse(cfg.getStringNotNull("formula"))
+        formula = MathParser.parse(cfg.getStringNotNull("formula"), "n")
     }
 }
 

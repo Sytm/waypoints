@@ -26,8 +26,8 @@ class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) : GUIC
 
             val builder = StringBuilder()
 
-            OverviewSort.values().forEachIndexed { index, current ->
-                wpGUI.translations.OVERVIEW_CYCLE_SORT_OPTIONS.forEach { translation ->
+            OverviewSort.values().forEach { current ->
+                wpGUI.translations.OVERVIEW_CYCLE_SORT_OPTIONS.forEachIndexed { index, translation ->
                     if (index > 0) {
                         builder.append('\n')
                     }

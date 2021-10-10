@@ -57,22 +57,22 @@ internal open class WaypointHolderImpl(
     override val waypointsAmount: Int
         get() = if (owner == null) {
             dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE type = ?;", type.name) {
-                getInt(0)
+                getInt(1)
             }!!
         } else {
             dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE owner = ?;", owner.toString()) {
-                getInt(0)
+                getInt(1)
             }!!
         }
 
     override val foldersAmount: Int
         get() = if (owner == null) {
             dm.connection.selectFirst("SELECT COUNT(*) FROM folders WHERE type = ?;", type.name) {
-                getInt(0)
+                getInt(1)
             }!!
         } else {
             dm.connection.selectFirst("SELECT COUNT(*) FROM folders WHERE owner = ?;", owner.toString()) {
-                getInt(0)
+                getInt(1)
             }!!
         }
 
@@ -96,7 +96,7 @@ internal open class WaypointHolderImpl(
             id.toString(),
             System.currentTimeMillis(),
             type.name,
-            owner.toString(),
+            owner?.toString(),
             name,
             location.world!!.name,
             location.x,
@@ -115,7 +115,7 @@ internal open class WaypointHolderImpl(
             id.toString(),
             System.currentTimeMillis(),
             type.name,
-            owner.toString(),
+            owner?.toString(),
             name,
         )
         return dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?", id.toString()) {
@@ -132,7 +132,7 @@ internal open class WaypointHolderImpl(
                 type.name,
                 name
             ) {
-                getInt(0) == 1
+                getInt(1) == 1
             } ?: false
         } else {
             dm.connection.selectFirst(
@@ -140,7 +140,7 @@ internal open class WaypointHolderImpl(
                 owner.toString(),
                 name
             ) {
-                getInt(0) == 1
+                getInt(1) == 1
             } ?: false
         }
 
@@ -151,7 +151,7 @@ internal open class WaypointHolderImpl(
                 type.name,
                 name
             ) {
-                getInt(0) == 1
+                getInt(1) == 1
             } ?: false
         } else {
             dm.connection.selectFirst(
@@ -159,7 +159,7 @@ internal open class WaypointHolderImpl(
                 owner.toString(),
                 name
             ) {
-                getInt(0) == 1
+                getInt(1) == 1
             } ?: false
         }
 

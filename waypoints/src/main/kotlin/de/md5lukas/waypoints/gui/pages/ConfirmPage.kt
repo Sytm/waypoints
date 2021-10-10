@@ -8,7 +8,8 @@ import org.bukkit.inventory.ItemStack
 import java.util.*
 
 class ConfirmPage(wpGUI: WaypointsGUI, questionItem: ItemStack, falseItem: ItemStack, trueItem: ItemStack, onClick: (Boolean) -> Unit) :
-    GUIPage(wpGUI.gui) {
+    BasePage(wpGUI, wpGUI.translations.CONFIRM_BACKGROUND.item) {
+
     private companion object {
         /**
          * q = question
@@ -28,7 +29,7 @@ class ConfirmPage(wpGUI: WaypointsGUI, questionItem: ItemStack, falseItem: ItemS
         applyPattern(
             confirmPattern,
             0, 0,
-            GUIItem(wpGUI.translations.CONFIRM_BACKGROUND.item),
+            background,
             'q' to GUIItem(questionItem),
             'f' to GUIItem(falseItem) {
                 onClick(false)

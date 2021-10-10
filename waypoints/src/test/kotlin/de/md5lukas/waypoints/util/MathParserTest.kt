@@ -24,6 +24,14 @@ class MathParserTest {
     }
 
     @Test
+    fun variables2() {
+        val expression = MathParser.parse("1 + n", "n")
+        assertEquals(1.0, expression.eval(mapOf("n" to 0.0)))
+        assertEquals(2.0, expression.eval(mapOf("n" to 1.0)))
+        assertEquals(3.0, expression.eval(mapOf("n" to 2.0)))
+    }
+
+    @Test
     fun onlyVariables() {
         val expression = MathParser.parse("n", "n")
         assertEquals(10.0, expression.eval(mapOf("n" to 10.0)))
