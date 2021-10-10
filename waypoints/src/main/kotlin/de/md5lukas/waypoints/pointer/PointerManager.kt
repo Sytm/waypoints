@@ -7,6 +7,7 @@ import de.md5lukas.waypoints.pointer.variants.*
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
 class PointerManager(
@@ -106,5 +107,24 @@ class PointerManager(
     @EventHandler
     private fun onQuit(e: PlayerQuitEvent) {
         disable(e.player)
+    }
+
+    @EventHandler
+    private fun onMove(e: PlayerMoveEvent) {
+        val disableWhenReachedRadius = plugin.waypointsConfig.pointer.disableWhenReachedRadius
+
+        if (disableWhenReachedRadius == 0) {
+            return
+        }
+
+        val waypoint = activePointers[e.player] ?: return
+
+        if (e.player.location.distanceSquared(waypoint.location) <= disableWhenReachedRadius) {
+            disable(e.player)
+        }
+    }
+
+    init {
+        setupPointers()
     }
 }

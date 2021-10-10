@@ -15,4 +15,6 @@ interface WaypointsAPI {
     val publicWaypoints: WaypointHolder
 
     val permissionWaypoints: WaypointHolder
+
+    fun getWaypointByID(uuid: UUID): Waypoint?
 }

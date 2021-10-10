@@ -5,6 +5,7 @@ import de.md5lukas.commons.uuid.UUIDCacheSettings
 import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.command.WaypointsCommand
+import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfig
 import de.md5lukas.waypoints.db.CompassStorage
 import de.md5lukas.waypoints.db.DatabaseManager
@@ -128,6 +129,7 @@ class WaypointsPlugin : JavaPlugin() {
             waypointsCommand.setExecutor(it)
             waypointsCommand.tabCompleter = it
         }
+        getCommand("waypointsscript")!!.setExecutor(WaypointsScriptCommand(this))
     }
 
     private fun registerEvents() {

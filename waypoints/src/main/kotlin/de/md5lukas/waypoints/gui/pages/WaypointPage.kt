@@ -1,6 +1,5 @@
 package de.md5lukas.waypoints.gui.pages
 
-import de.md5lukas.kinvs.GUIPage
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.WaypointsPermissions
@@ -14,7 +13,7 @@ import net.md_5.bungee.api.chat.TextComponent
 import net.wesjd.anvilgui.AnvilGUI
 import java.util.*
 
-class WaypointPage(private val wpGUI: WaypointsGUI, private val waypoint: Waypoint) : GUIPage(wpGUI.gui) {
+class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePage(wpGUI, waypoint) {
 
     private companion object {
         /**
@@ -37,14 +36,6 @@ class WaypointPage(private val wpGUI: WaypointsGUI, private val waypoint: Waypoi
         )
     }
 
-    private val background = GUIItem(
-        when (waypoint.type) {
-            Type.PRIVATE -> wpGUI.translations.BACKGROUND_PRIVATE
-            Type.PUBLIC -> wpGUI.translations.BACKGROUND_PUBLIC
-            Type.PERMISSION -> wpGUI.translations.BACKGROUND_PERMISSION
-            else -> throw IllegalStateException("An overview of an gui folder of the type ${waypoint.type} is unsupported")
-        }.item
-    )
     private val isNotDeathWaypoint = waypoint.type != Type.DEATH
     private val isGlobalWaypoint = when (waypoint.type) {
         Type.PUBLIC, Type.PERMISSION -> true
@@ -54,8 +45,8 @@ class WaypointPage(private val wpGUI: WaypointsGUI, private val waypoint: Waypoi
     private val canModifyWaypoint =
         when (waypoint.type) {
             Type.PRIVATE, Type.DEATH -> wpGUI.isOwner
-            Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)
-            Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)
+            Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC)
+            Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION)
         }
 
     private fun updatePage(update: Boolean = true) {
@@ -72,13 +63,13 @@ class WaypointPage(private val wpGUI: WaypointsGUI, private val waypoint: Waypoi
 
                         updatePage()
                     } else {
-                        wpGUI.translations.WAYPOINT_NEW_ICON_INVALID.send(wpGUI.viewer)
+                        wpGUI.translations.MESSAGE_WAYPOINT_NEW_ICON_INVALID.send(wpGUI.viewer)
                     }
                 }
             } else null),
             'i' to if (canModifyWaypoint && isGlobalWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_GET_UUID.item) {
-                    val messageString = wpGUI.translations.WAYPOINT_MESSAGE_GET_UUID.withReplacements(Collections.singletonMap("name", waypoint.name))
+                    val messageString = wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements(Collections.singletonMap("name", waypoint.name))
 
                     val clickEvent = ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, waypoint.id.toString())
 
@@ -97,16 +88,16 @@ class WaypointPage(private val wpGUI: WaypointsGUI, private val waypoint: Waypoi
                 wpGUI.viewer.closeInventory()
                 wpGUI.plugin.pointerManager.enable(wpGUI.viewer, waypoint)
             },
-            'c' to if (canModifyWaypoint && isNotDeathWaypoint) {
+            'c' to if (canModifyWaypoint && isNotDeathWaypoint && wpGUI.plugin.waypointsConfig.pointer.beacon.enabled) {
                 GUIItem(wpGUI.translations.WAYPOINT_SELECT_BEACON_COLOR.item) {
-                    TODO()
+                    wpGUI.open(SelectBeaconColorPage(wpGUI, waypoint))
                 }
             } else {
                 background
             },
             'f' to if (canModifyWaypoint && isNotDeathWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_MOVE_TO_FOLDER.item) {
-                    TODO()
+                    wpGUI.open(MoveToFolderPage(wpGUI, waypoint))
                 }
             } else {
                 background
@@ -115,12 +106,7 @@ class WaypointPage(private val wpGUI: WaypointsGUI, private val waypoint: Waypoi
                 GUIItem(wpGUI.translations.WAYPOINT_RENAME.item) {
                     wpGUI.viewer.closeInventory()
                     AnvilGUI.Builder().plugin(wpGUI.plugin).text(waypoint.name).onComplete { _, newName ->
-                        val holder = when (waypoint.type) {
-                            Type.PRIVATE -> wpGUI.targetData
-                            Type.PUBLIC -> wpGUI.plugin.api.publicWaypoints
-                            Type.PERMISSION -> wpGUI.plugin.api.permissionWaypoints
-                            else -> throw IllegalArgumentException("Waypoints of the type ${waypoint.type} have no name")
-                        }
+                        val holder = wpGUI.getHolderForType(waypoint.type)
 
                         if (checkWaypointName(wpGUI.plugin, holder, newName)) {
                             waypoint.name = newName
@@ -148,19 +134,19 @@ class WaypointPage(private val wpGUI: WaypointsGUI, private val waypoint: Waypoi
                     wpGUI.open(
                         ConfirmPage(
                             wpGUI,
-                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_QUESTION.withReplacements(
+                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_QUESTION.getItem(
                                 Collections.singletonMap(
                                     "name",
                                     waypoint.name
                                 )
                             ),
-                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_FALSE.withReplacements(
+                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_FALSE.getItem(
                                 Collections.singletonMap(
                                     "name",
                                     waypoint.name
                                 )
                             ),
-                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_TRUE.withReplacements(
+                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_TRUE.getItem(
                                 Collections.singletonMap(
                                     "name",
                                     waypoint.name
@@ -182,7 +168,9 @@ class WaypointPage(private val wpGUI: WaypointsGUI, private val waypoint: Waypoi
             't' to if (wpGUI.viewer.hasPermission(wpGUI.plugin.teleportManager.getTeleportPermission(waypoint)) ||
                 wpGUI.plugin.teleportManager.isTeleportEnabled(waypoint)
             ) {
-                GUIItem(wpGUI.translations.WAYPOINT_TELEPORT.item) {
+                GUIItem(wpGUI.translations.WAYPOINT_TELEPORT.getItem(
+                    Collections.singletonMap("paymentNotice", wpGUI.plugin.teleportManager.getTeleportCostDescription(wpGUI.viewer, waypoint) ?: "")
+                )) {
                     wpGUI.plugin.teleportManager.teleportPlayerToWaypoint(wpGUI.viewer, waypoint)
                 }
             } else {
