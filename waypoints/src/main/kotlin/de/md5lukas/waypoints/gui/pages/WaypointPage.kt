@@ -45,8 +45,8 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
     private val canModifyWaypoint =
         when (waypoint.type) {
             Type.PRIVATE, Type.DEATH -> wpGUI.isOwner
-            Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC)
-            Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION)
+            Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)
+            Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)
         }
 
     private fun updatePage(update: Boolean = true) {
@@ -67,7 +67,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                     }
                 }
             } else null),
-            'i' to if (canModifyWaypoint && isGlobalWaypoint) {
+            'i' to if (wpGUI.viewer.hasPermission(WaypointsPermissions.GET_WAYPOINT_UUID)) {
                 GUIItem(wpGUI.translations.WAYPOINT_GET_UUID.item) {
                     val messageString = wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements(Collections.singletonMap("name", waypoint.name))
 

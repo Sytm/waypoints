@@ -3,6 +3,8 @@ author: Md5Lukas
 main: de.md5lukas.waypoints.WaypointsPlugin
 version: ${version}
 
+website: https://github.com/Sytm/waypoints
+
 api-version: 1.14
 
 commands:
@@ -21,44 +23,45 @@ permissions:
       - waypoints.command.scripting
       - waypoints.command.use
       - waypoints.command.other
+      - waypoints.command.import
       - waypoints.modify.private
       - waypoints.modify.public
       - waypoints.modify.permission
+      - waypoints.teleport.*
+      - waypoints.getUuid
 
-  waypoints.command.scripting:
+  waypoints.command.*:
     default: op
+    children:
+      - waypoints.command.scripting
+      - waypoints.command.use
+      - waypoints.command.other
+      - waypoints.command.import
 
+  waypoints.command.scripting: {}
   waypoints.command.use:
     default: true
-  waypoints.command.other:
-    default: op
+  waypoints.command.other: {}
+  waypoints.command.import: {}
 
   waypoints.modify.private:
-    default: true
-    children:
-      - waypoints.modify.waypoint.private
-      - waypoints.modify.folder.private
-  waypoints.modify.waypoint.private:
-    default: true
-  waypoints.modify.folder.private:
     default: true
 
   waypoints.modify.public:
     default: op
-    children:
-      - waypoints.modify.waypoint.public
-      - waypoints.modify.folder.public
-  waypoints.modify.waypoint.public:
-    default: op
-  waypoints.modify.folder.public:
-    default: op
 
   waypoints.modify.permission:
     default: op
-    children:
-      - waypoints.modify.waypoint.permission
-      - waypoints.modify.folder.permission
-  waypoints.modify.waypoint.permission:
+
+  waypoints.teleport.*:
     default: op
-  waypoints.modify.folder.permission:
+    children:
+      - waypoints.teleport.private
+      - waypoints.teleport.public
+      - waypoints.teleport.permission
+  waypoints.teleport.private: {}
+  waypoints.teleport.public: {}
+  waypoints.teleport.permission: {}
+
+  waypoints.getUuid:
     default: op

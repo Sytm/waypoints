@@ -15,7 +15,7 @@ command:
     help:
       header: "$[scriptPrefix] &7&nHelp"
       deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remove the waypoint selection of a player"
-      selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-ID> &7&l|&r&7 Set the waypoint selection of a player to that waypoint"
+      selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Set the waypoint selection of a player to that waypoint"
 
     deselectWaypoint:
       wrongUsage: |
@@ -24,7 +24,7 @@ command:
 
     selectWaypoint:
       wrongUsage: |
-        $[scriptPrefix] &cYou need to provide the name of an online player and the ID of an waypoint to set the selection of a player. Example:
+        $[scriptPrefix] &cYou need to provide the name of an online player and the UUID of an waypoint to set the selection of a player. Example:
         &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cCould not find a waypoint with the ID &e${uuid}&c."
@@ -41,6 +41,7 @@ command:
       public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Create a new public waypoint"
       permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Create a new permission waypoint"
     other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 View the waypoints of another player"
+    import: "&7 - &e/${label} import &7&l|&r&7 Import waypoints from Waypoints V2"
 
   set:
     wrongUsage:
@@ -64,6 +65,19 @@ command:
       name: "$[prefix] &cA player with that name could not be found"
     notUuidOrName: "$[prefix] &cThe provided identifier is neither a UUID nor a Minecraft username."
     playerNoWaypoints: "$[prefix] &cThe provided player has no waypoints."
+
+  import:
+    mustConfirm: |
+      $[prefix] &7To import the old waypoints you must confirm your choice.
+      &cKeep in mind that if you already imported old waypoints you will have duplicates after this action.
+      &cAll these duplicates have to be removed manually or you must delete everything by deleting plugins/Waypoints/waypoints.db.
+      &cSo run this command only once and then make sure everything is there and then move the old saves to some place you will find it again, just in case.
+
+      &7Run &a/${label} import confirm&7 to ackknowledge this message.
+    started: "$[prefix] &7The import has started, check the console output for more information"
+    finished:
+      success: "$[prefix] &7The import has finished, make sure the imported waypoints look good to you."
+      error: "$[prefix] &cWhile importing the old waypoints an error occurred. Check the console output for more information"
 
 text:
   duration:

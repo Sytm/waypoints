@@ -17,11 +17,16 @@ import de.md5lukas.waypoints.lang.WorldTranslations
 import de.md5lukas.waypoints.pointer.PointerManager
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.VaultHook
+import org.bstats.bukkit.Metrics
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.concurrent.TimeUnit
+import java.util.logging.Level
 
 class WaypointsPlugin : JavaPlugin() {
+
+    @Suppress("PrivatePropertyName")
+    private val METRICS_PLUGIN_ID = 6864
 
     private lateinit var databaseManager: DatabaseManager
     lateinit var waypointsConfig: WaypointsConfig
@@ -48,6 +53,7 @@ class WaypointsPlugin : JavaPlugin() {
         get() = vaultHook0 ?: throw IllegalStateException("The vault hook is configured to be used, but no vault compatible plugin is installed")
 
     override fun onEnable() {
+        logger.level = Level.FINE
         loadConfiguration()
         initDatabase()
         initPointerManager()
@@ -59,6 +65,8 @@ class WaypointsPlugin : JavaPlugin() {
 
         registerCommands()
         registerEvents()
+
+        startMetrics()
     }
 
     //<editor-fold desc="onEnable Methods">
@@ -141,6 +149,10 @@ class WaypointsPlugin : JavaPlugin() {
         val pluginManager = server.pluginManager
 
         pluginManager.registerEvents(WaypointsListener(this), this)
+    }
+
+    private fun startMetrics() {
+        Metrics(this, METRICS_PLUGIN_ID)
     }
     //</editor-fold>
 
