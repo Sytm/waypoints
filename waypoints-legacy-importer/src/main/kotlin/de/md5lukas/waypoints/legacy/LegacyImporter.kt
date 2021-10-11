@@ -2,10 +2,6 @@ package de.md5lukas.waypoints.legacy
 
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.legacy.internal.*
-import de.md5lukas.waypoints.legacy.internal.LegacyGlobalStore
-import de.md5lukas.waypoints.legacy.internal.LegacyPermissionWaypoint
-import de.md5lukas.waypoints.legacy.internal.LegacyPlayerData
-import de.md5lukas.waypoints.legacy.internal.setupNBT
 import java.io.File
 import java.util.*
 import java.util.logging.Level
@@ -42,6 +38,12 @@ class LegacyImporter(
         playerData.sortBy = legacyPlayerData.settings.sortMode.overviewSort
 
         var count = legacyPlayerData.waypoints.size
+
+        legacyPlayerData.deathWaypoint?.let {
+            logger.log(Level.INFO, "Importing death waypoint")
+            count++
+            playerData.addDeathLocation(it.location)
+        }
 
         legacyPlayerData.waypoints.forEach { legacyWaypoint ->
             logger.log(Level.FINE, "Importing private waypoint ${legacyWaypoint.name}")

@@ -14,6 +14,7 @@ import de.md5lukas.waypoints.gui.items.CycleSortItem
 import de.md5lukas.waypoints.gui.items.ToggleGlobalsItem
 import de.md5lukas.waypoints.util.checkFolderName
 import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
+import de.md5lukas.waypoints.util.runTask
 import net.wesjd.anvilgui.AnvilGUI
 import java.util.*
 
@@ -42,9 +43,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
 
     private val canModify = when (guiFolder.type) {
         Type.PRIVATE -> wpGUI.isOwner && wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)
+        Type.DEATH -> false
         Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)
         Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)
-        else -> throw IllegalStateException("There cannot be gui folders of type ${guiFolder.type}")
     }
 
     override fun update() {
@@ -130,19 +131,19 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
             'i' to if (isOverview) {
                 background
             } else {
-                GUIItem(
-                    (guiFolder as Folder).getItem(wpGUI.viewer)
-                ) {
-                    val newMaterial = wpGUI.viewer.inventory.itemInMainHand.type
+                GUIItem((guiFolder as Folder).getItem(wpGUI.viewer), if (canModify) {
+                    {
+                        val newMaterial = wpGUI.viewer.inventory.itemInMainHand.type
 
-                    if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
-                        guiFolder.material = newMaterial
+                        if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
+                            guiFolder.material = newMaterial
 
-                        updateControls()
-                    } else {
-                        wpGUI.translations.FOLDER_NEW_ICON_INVALID.send(wpGUI.viewer)
+                            updateControls()
+                        } else {
+                            wpGUI.translations.FOLDER_NEW_ICON_INVALID.send(wpGUI.viewer)
+                        }
                     }
-                }
+                } else null)
             },
             't' to if (wpGUI.isOwner && isPlayerOverview) {
                 ToggleGlobalsItem(wpGUI) {
@@ -172,7 +173,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
 
                             return@onComplete AnvilGUI.Response.close()
                         }.onClose {
-                            wpGUI.gui.open()
+                            wpGUI.plugin.runTask {
+                                wpGUI.gui.open()
+                            }
                         }.open(wpGUI.viewer)
                     }
                 } else {

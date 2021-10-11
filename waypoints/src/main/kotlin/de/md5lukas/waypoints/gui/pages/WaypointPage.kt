@@ -8,6 +8,7 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
 import de.md5lukas.waypoints.util.checkWaypointName
+import de.md5lukas.waypoints.util.runTask
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.TextComponent
 import net.wesjd.anvilgui.AnvilGUI
@@ -67,7 +68,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                     }
                 }
             } else null),
-            'i' to if (wpGUI.viewer.hasPermission(WaypointsPermissions.GET_WAYPOINT_UUID)) {
+            'i' to if (wpGUI.viewer.hasPermission(WaypointsPermissions.GET_WAYPOINT_UUID) && isNotDeathWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_GET_UUID.item) {
                     val messageString = wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements(Collections.singletonMap("name", waypoint.name))
 
@@ -123,7 +124,9 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
 
                         return@onComplete AnvilGUI.Response.close()
                     }.onClose {
-                        wpGUI.gui.open()
+                        wpGUI.plugin.runTask {
+                            wpGUI.gui.open()
+                        }
                     }.open(wpGUI.viewer)
                 }
             } else {
@@ -169,9 +172,11 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             't' to if (wpGUI.viewer.hasPermission(wpGUI.plugin.teleportManager.getTeleportPermission(waypoint)) ||
                 wpGUI.plugin.teleportManager.isTeleportEnabled(waypoint)
             ) {
-                GUIItem(wpGUI.translations.WAYPOINT_TELEPORT.getItem(
-                    Collections.singletonMap("paymentNotice", wpGUI.plugin.teleportManager.getTeleportCostDescription(wpGUI.viewer, waypoint) ?: "")
-                )) {
+                GUIItem(
+                    wpGUI.translations.WAYPOINT_TELEPORT.getItem(
+                        Collections.singletonMap("paymentNotice", wpGUI.plugin.teleportManager.getTeleportCostDescription(wpGUI.viewer, waypoint) ?: "")
+                    )
+                ) {
                     wpGUI.plugin.teleportManager.teleportPlayerToWaypoint(wpGUI.viewer, waypoint)
                 }
             } else {

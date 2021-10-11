@@ -20,7 +20,6 @@ open class BasePage(
             Type.DEATH -> wpGUI.translations.BACKGROUND_DEATH
             Type.PUBLIC -> wpGUI.translations.BACKGROUND_PUBLIC
             Type.PERMISSION -> wpGUI.translations.BACKGROUND_PERMISSION
-            else -> throw IllegalStateException("An overview of an gui folder of the type ${guiDisplayable.type} is unsupported")
         }.item
     )
 

@@ -9,18 +9,19 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.db.DatabaseManager
-import de.md5lukas.waypoints.util.formatTimestampToDate
+import de.md5lukas.waypoints.util.Formatters
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.sql.ResultSet
+import java.time.ZonedDateTime
 import java.util.*
 
 internal class FolderImpl private constructor(
     private val dm: DatabaseManager,
     override val id: UUID,
-    override val createdAt: Long,
+    override val createdAt: ZonedDateTime,
     override val type: Type,
     override val owner: UUID?,
     name: String,
@@ -31,7 +32,7 @@ internal class FolderImpl private constructor(
     constructor(dm: DatabaseManager, row: ResultSet) : this(
         dm = dm,
         id = UUID.fromString(row.getString("id")),
-        createdAt = row.getLong("createdAt"),
+        createdAt = ZonedDateTime.parse(row.getString("createdAt")),
         type = Type.valueOf(row.getString("type")),
         owner = row.getString("owner")?.let(UUID::fromString),
         name = row.getString("name"),
@@ -92,21 +93,21 @@ internal class FolderImpl private constructor(
 
     override val guiType: GUIType = GUIType.FOLDER
 
-    private val itemTranslations = dm.plugin.translations
+    private val translations = dm.plugin.translations
 
     override fun getItem(player: Player): ItemStack {
         val fetchedAmount = getAmountVisibleForPlayer(player)
         val stack = when (type) {
-            Type.PRIVATE -> itemTranslations.FOLDER_ICON_PRIVATE
-            Type.PUBLIC -> itemTranslations.FOLDER_ICON_PUBLIC
-            Type.PERMISSION -> itemTranslations.FOLDER_ICON_PERMISSION
+            Type.PRIVATE -> translations.FOLDER_ICON_PRIVATE
+            Type.PUBLIC -> translations.FOLDER_ICON_PUBLIC
+            Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION
             else -> throw IllegalStateException("An folder with the type $type should not exist")
         }.getItem(
             mapOf(
                 "name" to name,
                 "description" to (description ?: ""),
-                "createdAt" to createdAt.formatTimestampToDate(),
-                "amount" to amount.toString()
+                "createdAt" to createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER),
+                "amount" to fetchedAmount.toString()
             )
         )
 

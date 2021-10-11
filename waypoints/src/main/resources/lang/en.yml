@@ -260,7 +260,7 @@ inventory:
         displayName: "&5${name}"
         description: *waypointDescription
       death:
-        displayName: "&cDeathWaypoint"
+        displayName: "&cDeath ${createdAt}"
         description: *waypointDescription
       public:
         displayName: "&b${name}"
@@ -309,6 +309,9 @@ inventory:
     icon:
       private:
         displayName: "&5${name}"
+        description: "&7Waypoints in this folder: &6${amount}"
+      death:
+        displayName: "&cDeaths"
         description: "&7Waypoints in this folder: &6${amount}"
       public:
         displayName: "&b${name}"

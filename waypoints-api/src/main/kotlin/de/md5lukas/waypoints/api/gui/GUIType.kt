@@ -4,6 +4,6 @@ enum class GUIType {
     PERMISSION_HOLDER,
     PUBLIC_HOLDER,
     FOLDER,
-    DEATH_WAYPOINT,
+    DEATH_FOLDER,
     WAYPOINT,
 }

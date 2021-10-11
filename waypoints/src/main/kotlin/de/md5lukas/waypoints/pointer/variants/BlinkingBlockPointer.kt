@@ -34,9 +34,7 @@ class BlinkingBlockPointer(
     }
 
     override fun hide(player: Player, waypoint: Waypoint) {
-        counters.remove(player.uniqueId)
-
-        if (player.world == waypoint.location.world) {
+        if (counters.remove(player.uniqueId) != null && player.world == waypoint.location.world) {
             player.sendActualBlock(waypoint.location)
         }
     }

@@ -1,6 +1,7 @@
 general:
   # Set the language for the plugin here
   language: en
+
   uuidCache:
     # Max size of the internal UUID-Cache
     maxSize: 100
@@ -150,6 +151,7 @@ inventory:
   folder:
     icon:
       private: BOOK
+      death: SKELETON_SKULL
       public: BOOK
       permission: BOOK
 
@@ -158,6 +160,10 @@ inventory:
 
   selectFolder:
     noFolder: MINECART
+
+  selectBeaconColor:
+    moveLeft: ARROW
+    moveRight: ARROW
 
   confirm:
     background: GRAY_STAINED_GLASS_PANE

@@ -1,10 +1,9 @@
 package de.md5lukas.waypoints.db.impl
 
-import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
+import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.util.runTaskAsync
@@ -37,15 +36,11 @@ internal class WaypointsPlayerImpl private constructor(
             set("sortBy", value.name)
         }
 
-    override fun setDeathLocation(location: Location) {
-        super.createWaypointTyped("Death", location, Type.DEATH)
+    override fun addDeathLocation(location: Location) {
+        super.createWaypointTyped("", location, Type.DEATH)
     }
 
-    override val deathWaypoint: Waypoint?
-        get() = dm.connection.selectFirst("SELECT * FROM waypoints WHERE type = ? AND owner = ? LIMIT 1;", Type.DEATH.name, id.toString()) {
-            WaypointImpl(dm, this)
-        }
-
+    override val deathFolder: Folder = DeathFolderImpl(dm, id)
 
     private fun set(column: String, value: Any?) {
         dm.plugin.runTaskAsync {

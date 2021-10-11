@@ -100,7 +100,9 @@ class WaypointsGUI(
             }
         }.onClose {
             (gui.activePage as BasePage).update()
-            gui.open()
+            plugin.runTask {
+                gui.open()
+            }
         }.open(viewer)
     }
 
@@ -152,9 +154,11 @@ class WaypointsGUI(
 
             if (capturedWaypoint == null) {
                 goBack()
-                gui.open()
             } else {
                 openWaypoint(capturedWaypoint)
+            }
+            plugin.runTask {
+                gui.open()
             }
         }.open(viewer)
     }
@@ -187,9 +191,15 @@ class WaypointsGUI(
     internal fun getListingContent(guiFolder: GUIFolder): PaginationList<GUIDisplayable> {
         val content = PaginationList<GUIDisplayable>(ListingPage.PAGINATION_LIST_PAGE_SIZE)
 
-        if (isOwner && guiFolder === targetData && viewerData.showGlobals) {
-            content.add(plugin.api.publicWaypoints)
-            content.add(plugin.api.permissionWaypoints)
+        if (isOwner && guiFolder === targetData) {
+            if (viewerData.showGlobals) {
+                content.add(plugin.api.publicWaypoints)
+                content.add(plugin.api.permissionWaypoints)
+            }
+            val deathFolder = targetData.deathFolder
+            if (deathFolder.amount > 0) {
+                content.add(deathFolder)
+            }
         }
 
         if (guiFolder.type == Type.PERMISSION && !viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
