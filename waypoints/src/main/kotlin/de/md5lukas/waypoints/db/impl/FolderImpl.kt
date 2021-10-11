@@ -75,7 +75,10 @@ internal class FolderImpl private constructor(
 
     override val waypoints: List<Waypoint>
         get() = dm.connection.select("SELECT * FROM waypoints WHERE folder = ?;", id.toString()) {
-            WaypointImpl(dm, this)
+            val id = UUID.fromString(this.getString("id"))
+            dm.instanceCache.waypoints.get(id) {
+                WaypointImpl(dm, this)
+            }
         }
 
     private fun set(column: String, value: Any?) {

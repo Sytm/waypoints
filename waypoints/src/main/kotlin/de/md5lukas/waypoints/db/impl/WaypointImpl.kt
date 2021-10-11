@@ -62,8 +62,10 @@ class WaypointImpl private constructor(
 
     override var folder: Folder?
         get() = folderId?.let {
-            dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?;", it) {
-                FolderImpl(dm, this)
+            dm.instanceCache.folders.get(it) {
+                dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?;", it) {
+                    FolderImpl(dm, this)
+                }
             }
         }
         set(value) {

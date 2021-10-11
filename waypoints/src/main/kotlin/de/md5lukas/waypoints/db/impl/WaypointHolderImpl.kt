@@ -27,17 +27,26 @@ internal open class WaypointHolderImpl(
 
     override val folders: List<Folder>
         get() = dm.connection.select("SELECT * FROM folders WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
-            FolderImpl(dm, this)
+            val id = UUID.fromString(this.getString("id"))
+            dm.instanceCache.folders.get(id) {
+                FolderImpl(dm, this)
+            }
         }
 
     override val waypoints: List<Waypoint>
         get() = dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner IS ? AND folder IS NULL;", type.name, owner?.toString()) {
-            WaypointImpl(dm, this)
+            val id = UUID.fromString(this.getString("id"))
+            dm.instanceCache.waypoints.get(id) {
+                WaypointImpl(dm, this)
+            }
         }
 
     override val allWaypoints: List<Waypoint>
         get() = dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
-            WaypointImpl(dm, this)
+            val id = UUID.fromString(this.getString("id"))
+            dm.instanceCache.waypoints.get(id) {
+                WaypointImpl(dm, this)
+            }
         }
 
     override val waypointsAmount: Int
