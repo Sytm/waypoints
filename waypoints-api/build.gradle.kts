@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "de.md5lukas"
-version = "3.0.0-SNAPSHOT"
+version = parent!!.version
 description = "Waypoints api"
 
 dependencies {

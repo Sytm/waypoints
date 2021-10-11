@@ -2,10 +2,10 @@ package de.md5lukas.waypoints.gui
 
 import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.GUI
-import de.md5lukas.kinvs.GUIPage
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
+import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
@@ -187,16 +187,28 @@ class WaypointsGUI(
     internal fun getListingContent(guiFolder: GUIFolder): PaginationList<GUIDisplayable> {
         val content = PaginationList<GUIDisplayable>(ListingPage.PAGINATION_LIST_PAGE_SIZE)
 
-        if (isOwner) {
-            if (guiFolder === targetData && viewerData.showGlobals) {
-                content.add(plugin.api.publicWaypoints)
-                content.add(plugin.api.permissionWaypoints)
-            }
+        if (isOwner && guiFolder === targetData && viewerData.showGlobals) {
+            content.add(plugin.api.publicWaypoints)
+            content.add(plugin.api.permissionWaypoints)
         }
 
-        content.addAll(guiFolder.waypoints)
+        if (guiFolder.type == Type.PERMISSION && !viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+            guiFolder.waypoints.forEach { waypoint ->
+                if (viewer.hasPermission(waypoint.permission!!)) {
+                    content.add(waypoint)
+                }
+            }
 
-        content.addAll(guiFolder.folders)
+            guiFolder.folders.forEach { folder ->
+                if (folder.getAmountVisibleForPlayer(viewer) > 0) {
+                    content.add(folder)
+                }
+            }
+        } else {
+            content.addAll(guiFolder.waypoints)
+
+            content.addAll(guiFolder.folders)
+        }
 
         content.sortWith(viewerData.sortBy)
 

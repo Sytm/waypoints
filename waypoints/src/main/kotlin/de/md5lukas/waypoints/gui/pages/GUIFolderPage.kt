@@ -40,16 +40,10 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
     private val isOverview = guiFolder is WaypointHolder
     private val isPlayerOverview = guiFolder is WaypointsPlayer
 
-    private val canCreateWaypoint = when (guiFolder.type) {
-        Type.PRIVATE -> wpGUI.isOwner && wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PRIVATE)
-        Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PUBLIC)
-        Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_WAYPOINT_PERMISSION)
-        else -> throw IllegalStateException("There cannot be gui folders of type ${guiFolder.type}")
-    }
-    private val canModifyFolder = when (guiFolder.type) {
-        Type.PRIVATE -> wpGUI.isOwner && wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PRIVATE)
-        Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PUBLIC)
-        Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_FOLDER_PERMISSION)
+    private val canModify = when (guiFolder.type) {
+        Type.PRIVATE -> wpGUI.isOwner && wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)
+        Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)
+        Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)
         else -> throw IllegalStateException("There cannot be gui folders of type ${guiFolder.type}")
     }
 
@@ -79,7 +73,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
             'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
                 previousPage()
             },
-            'f' to if (canModifyFolder) {
+            'f' to if (canModify) {
                 if (isOverview) {
                     GUIItem(wpGUI.translations.OVERVIEW_CREATE_FOLDER.item) {
                         wpGUI.openCreateFolder(guiFolder as WaypointHolder)
@@ -157,7 +151,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                     updateListingInInventory()
                 }
             } else {
-                if (guiFolder is Folder && canModifyFolder) {
+                if (guiFolder is Folder && canModify) {
                     GUIItem(wpGUI.translations.FOLDER_RENAME.item) {
                         wpGUI.viewer.closeInventory()
                         AnvilGUI.Builder().plugin(wpGUI.plugin).text(guiFolder.name).onComplete { _, newName ->
@@ -185,7 +179,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                     background
                 }
             },
-            'w' to if (canCreateWaypoint) {
+            'w' to if (canModify) {
                 GUIItem(wpGUI.translations.OVERVIEW_SET_WAYPOINT.item) {
                     wpGUI.openCreateWaypoint(guiFolder.type, if (guiFolder is Folder) guiFolder else null)
                 }
