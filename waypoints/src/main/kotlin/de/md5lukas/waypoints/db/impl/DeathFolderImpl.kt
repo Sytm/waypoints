@@ -46,7 +46,10 @@ class DeathFolderImpl(
     override val folders: List<Folder> = emptyList()
     override val waypoints: List<Waypoint>
         get() = dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner = ?;", Type.DEATH.name, owner.toString()) {
-            WaypointImpl(dm, this)
+            val id = UUID.fromString(this.getString("id"))
+            dm.instanceCache.waypoints.get(id) {
+                WaypointImpl(dm, this)
+            }
         }
 
     override fun delete() {

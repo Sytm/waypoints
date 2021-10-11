@@ -15,6 +15,7 @@ class DatabaseManager(
 ) : SQLiteHelper(file) {
 
     private val schemaVersion: Int = 0
+    val instanceCache = InstanceCache()
 
     fun initDatabase() {
         initConnection()
