@@ -6,20 +6,21 @@ import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.db.DatabaseManager
+import de.md5lukas.waypoints.util.Formatters
 import de.md5lukas.waypoints.util.format
-import de.md5lukas.waypoints.util.formatTimestampToDate
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.sql.ResultSet
+import java.time.ZonedDateTime
 import java.util.*
 
 class WaypointImpl private constructor(
     private val dm: DatabaseManager,
     override val id: UUID,
-    override val createdAt: Long,
+    override val createdAt: ZonedDateTime,
     override val type: Type,
     override val owner: UUID?,
     override val location: Location,
@@ -34,7 +35,7 @@ class WaypointImpl private constructor(
     constructor(dm: DatabaseManager, row: ResultSet) : this(
         dm = dm,
         id = UUID.fromString(row.getString("id")),
-        createdAt = row.getLong("createdAt"),
+        createdAt = ZonedDateTime.parse(row.getString("createdAt")),
         type = Type.valueOf(row.getString("type")),
         owner = row.getString("owner")?.let(UUID::fromString),
         location = Location(
@@ -124,10 +125,7 @@ class WaypointImpl private constructor(
 
     private val itemTranslations = dm.plugin.translations
 
-    override val guiType: GUIType = when (type) {
-        Type.DEATH -> GUIType.DEATH_WAYPOINT
-        else -> GUIType.WAYPOINT
-    }
+    override val guiType: GUIType = GUIType.WAYPOINT
 
     override fun getItem(player: Player): ItemStack {
         val stack = when (type) {
@@ -140,7 +138,7 @@ class WaypointImpl private constructor(
             mapOf(
                 "name" to name,
                 "description" to (description ?: ""),
-                "createdAt" to createdAt.formatTimestampToDate(),
+                "createdAt" to createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER),
                 "world" to dm.plugin.worldTranslations.getWorldName(location.world!!),
                 "x" to location.x.format(),
                 "y" to location.y.format(),

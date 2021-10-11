@@ -11,6 +11,6 @@ class WaypointsListener(
 
     @EventHandler
     private fun onPlayerDeath(e: PlayerDeathEvent) {
-        plugin.api.getWaypointPlayer(e.entity.uniqueId).setDeathLocation(e.entity.location)
+        plugin.api.getWaypointPlayer(e.entity.uniqueId).addDeathLocation(e.entity.location)
     }
 }

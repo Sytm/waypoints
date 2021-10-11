@@ -5,7 +5,15 @@ import java.util.*
 interface WaypointsAPI {
 
     companion object {
-        lateinit var INSTANCE: WaypointsAPI
+        var INSTANCE: WaypointsAPI
+            set(value) = if (nullableInstance == null) {
+                nullableInstance = value
+            } else {
+                throw IllegalStateException("The instance has already been set")
+            }
+            get() = nullableInstance ?: throw IllegalStateException("There has been no instance set yet")
+
+        private var nullableInstance: WaypointsAPI? = null
     }
 
     fun waypointsPlayerExists(uuid: UUID): Boolean

@@ -21,7 +21,7 @@ class BlinkingBlockConfiguration {
             if (value <= 0) {
                 throw IllegalArgumentException("The minDistance must be greater than zero ($value)")
             }
-            field = value
+            field = value * value
         }
 
     var maxDistance: Long = 0
@@ -29,7 +29,7 @@ class BlinkingBlockConfiguration {
             if (value <= 0) {
                 throw IllegalArgumentException("The maxDistance must be greater than zero ($value)")
             }
-            field = value
+            field = value * value
         }
 
     var blockDataSequence: Array<BlockData> = arrayOf(Material.BEACON.createBlockData())
@@ -40,9 +40,9 @@ class BlinkingBlockConfiguration {
 
             interval = getInt("interval")
 
-            minDistance = getLong("minDistance").let { it * it }
+            minDistance = getLong("minDistance")
 
-            maxDistance = getLong("maxDistance").let { it * it }
+            maxDistance = getLong("maxDistance")
 
             blockDataSequence = getStringList("blockSequence").map {
                 val material = Material.matchMaterial(it) ?: throw IllegalArgumentException("The material $it could not be found")

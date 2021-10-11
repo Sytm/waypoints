@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.util
 
-import de.md5lukas.commons.text.ColorCodeHelper
-import net.md_5.bungee.api.ChatColor
+import org.bukkit.ChatColor
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -38,7 +37,7 @@ fun splitDescriptionStringToList(description: String): List<String> {
             return@forEachIndexed
         }
         lines.add(lastColorCodes + line)
-        lastColorCodes = ColorCodeHelper.getLastChatColor(line)
+        lastColorCodes = ChatColor.getLastColors(line)
     }
 
     return lines

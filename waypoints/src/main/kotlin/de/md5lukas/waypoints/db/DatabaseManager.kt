@@ -52,7 +52,7 @@ class DatabaseManager(
                 CREATE TABLE IF NOT EXISTS folders (
                   id TEXT NOT NULL PRIMARY KEY,
                   
-                  createdAt INTEGER NOT NULL,
+                  createdAt DATE NOT NULL,
                   
                   type TEXT NOT NULL,
                   owner TEXT,
@@ -70,7 +70,7 @@ class DatabaseManager(
                 CREATE TABLE IF NOT EXISTS waypoints (
                   id TEXT NOT NULL PRIMARY KEY,
                   
-                  createdAt INTEGER NOT NULL,
+                  createdAt DATE NOT NULL,
                   
                   type TEXT NOT NULL,
                   owner TEXT,

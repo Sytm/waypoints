@@ -63,7 +63,7 @@ class Translations(
     val TEXT_DISTANCE_OTHER_WORLD = Translation(tl, "text.distance.otherWorld")
 
     val TEXT_BEACON_COLORS = BeaconColor.values().map { it ->
-        it to Translation(tl, "text.beaconColor.${it.name.lowercase()}")
+        it to Translation(tl, "text.beaconColors.${it.name.lowercase()}")
     }
 
     val WAYPOINT_LIMIT_REACHED_PRIVATE = Translation(tl, "message.waypoint.limitReached.private")
@@ -150,6 +150,7 @@ class Translations(
     val WAYPOINT_GET_UUID = ItemTranslation(tl, "inventory.waypoint.getUuid")
 
     val FOLDER_ICON_PRIVATE = ItemTranslation(tl, "inventory.folder.icon.private")
+    val FOLDER_ICON_DEATH = ItemTranslation(tl, "inventory.folder.icon.death")
     val FOLDER_ICON_PUBLIC = ItemTranslation(tl, "inventory.folder.icon.public")
     val FOLDER_ICON_PERMISSION = ItemTranslation(tl, "inventory.folder.icon.permission")
 

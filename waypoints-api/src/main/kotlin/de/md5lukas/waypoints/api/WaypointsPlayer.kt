@@ -11,7 +11,7 @@ interface WaypointsPlayer : WaypointHolder {
 
     var sortBy: OverviewSort
 
-    fun setDeathLocation(location: Location)
+    fun addDeathLocation(location: Location)
 
-    val deathWaypoint: Waypoint?
+    val deathFolder: Folder
 }

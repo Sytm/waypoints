@@ -3,13 +3,14 @@ package de.md5lukas.waypoints.api
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import org.bukkit.Location
 import org.bukkit.Material
+import java.time.ZonedDateTime
 import java.util.*
 
 interface Waypoint : GUIDisplayable {
 
     val id: UUID
 
-    override val createdAt: Long
+    override val createdAt: ZonedDateTime
 
     override val type: Type
 

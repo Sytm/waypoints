@@ -53,7 +53,7 @@ class BeaconConfiguration {
             minDistance = getLong("minDistance")
 
             maxDistance = if (isLong("maxDistance")) {
-                getLong("maxDistance").let { it * it }
+                getLong("maxDistance")
             } else {
                 viewDistance
             }
