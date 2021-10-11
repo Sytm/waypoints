@@ -41,7 +41,11 @@ class ActionBarConfiguration {
             if (value <= 0) {
                 throw IllegalArgumentException("The amountOfSections must be greater than zero ($value)")
             }
-            field = value
+            field = if (value % 2 == 0) {
+                value + 1
+            } else {
+                value
+            }
         }
 
     var range: Int = 0

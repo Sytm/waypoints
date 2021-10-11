@@ -1,11 +1,9 @@
 package de.md5lukas.waypoints.gui.pages
 
-import de.md5lukas.kinvs.GUIPage
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 class ConfirmPage(wpGUI: WaypointsGUI, questionItem: ItemStack, falseItem: ItemStack, trueItem: ItemStack, onClick: (Boolean) -> Unit) :
     BasePage(wpGUI, wpGUI.translations.CONFIRM_BACKGROUND.item) {
