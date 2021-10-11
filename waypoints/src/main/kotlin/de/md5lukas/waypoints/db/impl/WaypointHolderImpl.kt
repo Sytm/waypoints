@@ -26,59 +26,29 @@ internal open class WaypointHolderImpl(
 ) : WaypointHolder {
 
     override val folders: List<Folder>
-        get() = if (owner == null) {
-            dm.connection.select("SELECT * FROM folders WHERE type = ?;", type.name) {
-                FolderImpl(dm, this)
-            }
-        } else {
-            dm.connection.select("SELECT * FROM folders WHERE type = ? AND owner = ?;", type.name, owner.toString()) {
-                FolderImpl(dm, this)
-            }
+        get() = dm.connection.select("SELECT * FROM folders WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
+            FolderImpl(dm, this)
         }
 
     override val waypoints: List<Waypoint>
-        get() = if (owner == null) {
-            dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND folder IS NULL;", type.name) {
-                WaypointImpl(dm, this)
-            }
-        } else {
-            dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner = ? AND folder IS NULL;", type.name, owner.toString()) {
-                WaypointImpl(dm, this)
-            }
+        get() = dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner IS ? AND folder IS NULL;", type.name, owner?.toString()) {
+            WaypointImpl(dm, this)
         }
 
     override val allWaypoints: List<Waypoint>
-        get() = if (owner == null) {
-            dm.connection.select("SELECT * FROM waypoints WHERE type = ?;", type.name) {
-                WaypointImpl(dm, this)
-            }
-        } else {
-            dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner = ?;", type.name, owner.toString()) {
-                WaypointImpl(dm, this)
-            }
+        get() = dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
+            WaypointImpl(dm, this)
         }
 
     override val waypointsAmount: Int
-        get() = if (owner == null) {
-            dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE type = ?;", type.name) {
-                getInt(1)
-            }!!
-        } else {
-            dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE owner = ?;", owner.toString()) {
-                getInt(1)
-            }!!
-        }
+        get() = dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
+            getInt(1)
+        }!!
 
     override val foldersAmount: Int
-        get() = if (owner == null) {
-            dm.connection.selectFirst("SELECT COUNT(*) FROM folders WHERE type = ?;", type.name) {
-                getInt(1)
-            }!!
-        } else {
-            dm.connection.selectFirst("SELECT COUNT(*) FROM folders WHERE owner = ?;", owner.toString()) {
-                getInt(1)
-            }!!
-        }
+        get() = dm.connection.selectFirst("SELECT COUNT(*) FROM folders WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
+            getInt(1)
+        }!!
 
     override fun getWaypointsVisibleForPlayer(player: Player): Int =
         if (type == Type.PERMISSION) {
@@ -129,43 +99,23 @@ internal open class WaypointHolderImpl(
 
     override val createdAt: ZonedDateTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
 
-    override fun isDuplicateWaypointName(name: String): Boolean =
-        if (owner == null) {
-            dm.connection.selectFirst(
-                "SELECT EXISTS(SELECT 1 FROM waypoints WHERE type = ? AND name = ? COLLATE NOCASE);",
-                type.name,
-                name
-            ) {
-                getInt(1) == 1
-            } ?: false
-        } else {
-            dm.connection.selectFirst(
-                "SELECT EXISTS(SELECT 1 FROM waypoints WHERE owner = ? AND name = ? COLLATE NOCASE);",
-                owner.toString(),
-                name
-            ) {
-                getInt(1) == 1
-            } ?: false
-        }
+    override fun isDuplicateWaypointName(name: String): Boolean = dm.connection.selectFirst(
+        "SELECT EXISTS(SELECT 1 FROM waypoints WHERE type = ? AND owner IS ? AND name = ? COLLATE NOCASE);",
+        type.name,
+        owner?.toString(),
+        name,
+    ) {
+        getInt(1) == 1
+    } ?: false
 
-    override fun isDuplicateFolderName(name: String): Boolean =
-        if (owner == null) {
-            dm.connection.selectFirst(
-                "SELECT EXISTS(SELECT 1 FROM folders WHERE type = ? AND name = ? COLLATE NOCASE);",
-                type.name,
-                name
-            ) {
-                getInt(1) == 1
-            } ?: false
-        } else {
-            dm.connection.selectFirst(
-                "SELECT EXISTS(SELECT 1 FROM folders WHERE owner = ? AND name = ? COLLATE NOCASE);",
-                owner.toString(),
-                name
-            ) {
-                getInt(1) == 1
-            } ?: false
-        }
+    override fun isDuplicateFolderName(name: String): Boolean = dm.connection.selectFirst(
+        "SELECT EXISTS(SELECT 1 FROM folders WHERE type = ? AND owner IS ? AND name = ? COLLATE NOCASE);",
+        type.name,
+        owner?.toString(),
+        name,
+    ) {
+        getInt(1) == 1
+    } ?: false
 
     override val guiType: GUIType
         get() = when (type) {
