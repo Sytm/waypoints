@@ -7,9 +7,11 @@ object WaypointsPermissions {
     const val COMMAND_OTHER = "waypoints.command.other"
     const val COMMAND_IMPORT = "waypoints.command.import"
 
-    const val MODIFY_PRIVATE = "waypoints.modify.waypoint.private"
-    const val MODIFY_PUBLIC = "waypoints.modify.waypoint.public"
-    const val MODIFY_PERMISSION = "waypoints.modify.waypoint.permission"
+    const val UNLIMITED = "waypoints.unlimited"
+
+    const val MODIFY_PRIVATE = "waypoints.modify.private"
+    const val MODIFY_PUBLIC = "waypoints.modify.public"
+    const val MODIFY_PERMISSION = "waypoints.modify.permission"
 
     const val TELEPORT_PRIVATE = "waypoints.teleport.private"
     const val TELEPORT_PUBLIC = "waypoints.teleport.public"

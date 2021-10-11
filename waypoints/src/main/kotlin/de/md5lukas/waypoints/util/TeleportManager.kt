@@ -59,7 +59,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener, Runnable 
             return null
         }
 
-        return when(config.type) {
+        return when (config.type) {
             TeleportPaymentType.XP -> plugin.translations.WAYPOINT_TELEPORT_XP_LEVEL.withReplacements(
                 Collections.singletonMap("levels", getTeleportationPrice(player, waypoint).roundToInt().toString())
             )

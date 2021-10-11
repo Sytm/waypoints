@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.util
 
+import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
@@ -18,6 +19,10 @@ class SuccessWaypoint(val waypoint: Waypoint) : CreateResult()
 class SuccessFolder(val folder: Folder) : CreateResult()
 
 fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material): Boolean {
+    if (material == Material.AIR) {
+        return false
+    }
+
     val filter = plugin.waypointsConfig.general.customIconFilter
     return when (filter.type) {
         CustomIconFilterConfiguration.FilterType.WHITELIST -> material in filter.materials
@@ -30,7 +35,7 @@ fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String)
 
     val waypointLimit = plugin.waypointsConfig.general.waypoints.limit
 
-    if (waypointLimit > 0 && waypointsPlayer.waypointsAmount >= waypointLimit) {
+    if (!player.hasPermission(WaypointsPermissions.UNLIMITED) && waypointLimit > 0 && waypointsPlayer.waypointsAmount >= waypointLimit) {
         plugin.translations.WAYPOINT_LIMIT_REACHED_PRIVATE.send(player)
         return LimitReached
     }
@@ -76,7 +81,7 @@ fun createFolderPrivate(plugin: WaypointsPlugin, player: Player, name: String): 
 
     val folderLimit = plugin.waypointsConfig.general.folders.limit
 
-    if (folderLimit > 0 && waypointsPlayer.foldersAmount >= folderLimit) {
+    if (!player.hasPermission(WaypointsPermissions.UNLIMITED) && folderLimit > 0 && waypointsPlayer.foldersAmount >= folderLimit) {
         plugin.translations.FOLDER_LIMIT_REACHED_PRIVATE.send(player)
         return LimitReached
     }

@@ -256,12 +256,19 @@ inventory:
         &7Z: &6${blockZ}
         &7Distance: &6${distance}
 
+        &7Created at: &6${createdAt}
+
       private:
         displayName: "&5${name}"
         description: *waypointDescription
       death:
         displayName: "&cDeath ${createdAt}"
-        description: *waypointDescription
+        description: |
+          &7World: &6${world}
+          &7X: &6${blockX}
+          &7Y: &6${blockY}
+          &7Z: &6${blockZ}
+          &7Distance: &6${distance}
       public:
         displayName: "&b${name}"
         description: *waypointDescription
