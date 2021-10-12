@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.config.general
 
+import de.md5lukas.waypoints.util.getConfigurationSectionNotNull
 import de.md5lukas.waypoints.util.getStringNotNull
 import org.bukkit.configuration.ConfigurationSection
 
@@ -23,16 +24,16 @@ class GeneralConfiguration {
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         language = cfg.getStringNotNull("language")
 
-        uuidCache.loadFromConfiguration(cfg.getConfigurationSection("uuidCache")!!)
+        uuidCache.loadFromConfiguration(cfg.getConfigurationSectionNotNull("uuidCache"))
 
-        waypoints.loadFromConfiguration(cfg.getConfigurationSection("waypoints")!!)
+        waypoints.loadFromConfiguration(cfg.getConfigurationSectionNotNull("waypoints"))
 
-        folders.loadFromConfiguration(cfg.getConfigurationSection("folders")!!)
+        folders.loadFromConfiguration(cfg.getConfigurationSectionNotNull("folders"))
 
-        customIconFilter.loadFromConfiguration(cfg.getConfigurationSection("customIconFilter")!!)
+        customIconFilter.loadFromConfiguration(cfg.getConfigurationSectionNotNull("customIconFilter"))
 
-        openWithItem.loadFromConfiguration(cfg.getConfigurationSection("openWithItem")!!)
+        openWithItem.loadFromConfiguration(cfg.getConfigurationSectionNotNull("openWithItem"))
 
-        teleport.loadFromConfiguration(cfg.getConfigurationSection("teleport")!!)
+        teleport.loadFromConfiguration(cfg.getConfigurationSectionNotNull("teleport"))
     }
 }

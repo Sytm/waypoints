@@ -13,8 +13,8 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.time.Instant
+import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.util.*
 
 class DeathFolderImpl(
@@ -24,7 +24,7 @@ class DeathFolderImpl(
 
     override val id: UUID
         get() = owner
-    override val createdAt: ZonedDateTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
+    override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
     override val type: Type
         get() = Type.DEATH
     override var name: String

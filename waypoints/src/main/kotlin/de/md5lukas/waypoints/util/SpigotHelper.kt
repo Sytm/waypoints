@@ -18,7 +18,17 @@ fun Plugin.runTaskAsync(block: () -> Unit) {
 }
 
 fun ConfigurationSection.getStringNotNull(path: String): String =
-    getString(path) ?: throw IllegalArgumentException("The configuration key $path is not present")
+    getString(path) ?: throw IllegalArgumentException("The configuration key ${getFullPath(path)} is not present")
+
+fun ConfigurationSection.getConfigurationSectionNotNull(path: String): ConfigurationSection =
+    getConfigurationSection(path) ?: throw IllegalArgumentException("The configuration section ${getFullPath(path)} is not present")
+
+private fun ConfigurationSection.getFullPath(path: String): String =
+    if (currentPath!!.isEmpty()) {
+        path
+    } else {
+        "$currentPath.$path"
+    }
 
 fun Vector.divide(d: Int): Vector {
     this.x /= d

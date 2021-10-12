@@ -51,28 +51,40 @@ general:
       permission: false
 
   teleport:
-    # The cooldown between each teleportation for a player. This cooldown is not persistent between startups
-    # Set to 0s to disable
-    cooldown: 5m
     # When a player clicks the teleport button he has to stand still for at least x amount of time before getting teleported.
     # Set to 0s to disable
     standStillTime: 3s
 
+    # The cooldown between each teleportation for a player
+    # Set to 0s to disable
     # Available types are: disabled, free, xp (levels), vault (your economy plugins currency)
     # You can provide a formula to calculate the price. The variable n is how often a player teleported
     # When using the payment method xp the returned value is rounded to the closest full value
     private:
-      type: xp
+      cooldown: 24h
+
+      paymentType: xp
       maxCost: 10
       formula: 1 + n
 
+    death:
+      cooldown: 24h
+
+      paymentType: xp
+      maxCost: 10
+      formula: 1 + n * 2
+
     public:
-      type: xp
+      cooldown: 1h
+
+      paymentType: xp
       maxCost: 8
       formula: 1 + n
 
     permission:
-      type: free
+      cooldown: 15m
+
+      paymentType: free
       maxCost: 3
       formula: n
 

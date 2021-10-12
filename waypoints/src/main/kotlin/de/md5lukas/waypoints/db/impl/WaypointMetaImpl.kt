@@ -17,7 +17,7 @@ class WaypointMetaImpl private constructor(
     constructor(dm: DatabaseManager, row: ResultSet) : this(
         dm = dm,
         waypoint = UUID.fromString(row.getString("waypointId")),
-        owner = UUID.fromString(row.getString("playerIdq")),
+        owner = UUID.fromString(row.getString("playerId")),
         teleportations = row.getInt("teleportations"),
     )
 
