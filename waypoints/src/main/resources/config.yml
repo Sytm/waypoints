@@ -8,6 +8,20 @@ general:
     # Set time in hours after saved UUIDs will be removed from the cache
     expireAfter: 24
 
+  openWithItem:
+    enabled: true
+
+    # Available options are RIGHT (right-click) and LEFT (left-click)
+    click: RIGHT
+
+    # If set to true the player must sneak and then use the item to open the inventory
+    # Otherwise it doesn't matter if the player is sneaking
+    mustSneak: true
+
+    # Any of the following item can be used to open the GUI
+    items:
+      - COMPASS
+
   customIconFilter:
     # Available options:
     # blacklist: Items in the list are forbidden

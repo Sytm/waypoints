@@ -16,6 +16,8 @@ class GeneralConfiguration {
 
     val customIconFilter = CustomIconFilterConfiguration()
 
+    val openWithItem = OpenWithItemConfig()
+
     val teleport = TeleportConfiguration()
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
@@ -28,6 +30,8 @@ class GeneralConfiguration {
         folders.loadFromConfiguration(cfg.getConfigurationSection("folders")!!)
 
         customIconFilter.loadFromConfiguration(cfg.getConfigurationSection("customIconFilter")!!)
+
+        openWithItem.loadFromConfiguration(cfg.getConfigurationSection("openWithItem")!!)
 
         teleport.loadFromConfiguration(cfg.getConfigurationSection("teleport")!!)
     }

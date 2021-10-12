@@ -20,6 +20,6 @@ class CustomIconFilterConfiguration {
         type = if (cfg.getStringNotNull("type").equals("blacklist", true)) FilterType.BLACKLIST else FilterType.WHITELIST
 
         materials = cfg.getStringList("materials")
-            .map { Material.matchMaterial(it) ?: throw IllegalStateException("The material $it at ${cfg.currentPath}.materials is not valid") }
+            .map { Material.matchMaterial(it) ?: throw IllegalArgumentException("The material $it at ${cfg.currentPath}.materials is not valid") }
     }
 }

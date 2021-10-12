@@ -22,7 +22,7 @@ class InventoryConfiguration {
         }
 
         val materialString = rootConfig.getStringNotNull(path)
-        val material = Material.matchMaterial(materialString) ?: throw IllegalStateException("The material $materialString at $path is not valid")
+        val material = Material.matchMaterial(materialString) ?: throw IllegalArgumentException("The material $materialString at $path is not valid")
 
         materialCache[path] = material
 
