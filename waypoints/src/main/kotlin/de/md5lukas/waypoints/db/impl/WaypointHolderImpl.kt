@@ -14,9 +14,8 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.time.Instant
+import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 internal open class WaypointHolderImpl(
@@ -77,7 +76,7 @@ internal open class WaypointHolderImpl(
         dm.connection.update(
             "INSERT INTO waypoints(id, createdAt, type, owner, name, world, x, y, z) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
             id.toString(),
-            ZonedDateTime.now().format(DateTimeFormatter.ISO_ZONED_DATE_TIME),
+            OffsetDateTime.now().toString(),
             type.name,
             owner?.toString(),
             name,
@@ -96,7 +95,7 @@ internal open class WaypointHolderImpl(
         dm.connection.update(
             "INSERT INTO folders(id, createdAt, type, owner, name) VALUES (?, ?, ?, ?, ?);",
             id.toString(),
-            ZonedDateTime.now().format(DateTimeFormatter.ISO_ZONED_DATE_TIME),
+            OffsetDateTime.now().toString(),
             type.name,
             owner?.toString(),
             name,
@@ -106,7 +105,7 @@ internal open class WaypointHolderImpl(
         }!!
     }
 
-    override val createdAt: ZonedDateTime = ZonedDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
+    override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
 
     override fun isDuplicateWaypointName(name: String): Boolean = dm.connection.selectFirst(
         "SELECT EXISTS(SELECT 1 FROM waypoints WHERE type = ? AND owner IS ? AND name = ? COLLATE NOCASE);",

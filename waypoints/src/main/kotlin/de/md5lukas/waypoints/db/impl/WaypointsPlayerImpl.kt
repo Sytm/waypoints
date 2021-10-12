@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.db.impl
 
+import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.OverviewSort
@@ -9,6 +10,7 @@ import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
 import java.sql.ResultSet
+import java.time.OffsetDateTime
 import java.util.*
 
 internal class WaypointsPlayerImpl private constructor(
@@ -35,6 +37,25 @@ internal class WaypointsPlayerImpl private constructor(
             field = value
             set("sortBy", value.name)
         }
+
+    override fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime) {
+        val until = cooldownUntil.toString()
+        dm.connection.update(
+            "INSERT INTO player_cooldown(playerId, type, cooldownUntil) VALUES (?, ?, ?) ON CONFLICT(playerId, type) DO UPDATE SET cooldownUntil = ?;",
+            id.toString(),
+            type.name,
+            until,
+            until,
+        )
+    }
+
+    override fun getCooldownUntil(type: Type): OffsetDateTime? = dm.connection.selectFirst(
+        "SELECT cooldownUntil FROM player_cooldown WHERE playerId = ? AND type = ?;",
+        id.toString(),
+        type.name,
+    ) {
+        OffsetDateTime.parse(getString("cooldownUntil"))
+    }
 
     override fun addDeathLocation(location: Location) {
         super.createWaypointTyped("", location, Type.DEATH)

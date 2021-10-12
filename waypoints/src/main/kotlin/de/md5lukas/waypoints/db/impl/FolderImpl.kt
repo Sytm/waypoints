@@ -15,13 +15,13 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.sql.ResultSet
-import java.time.ZonedDateTime
+import java.time.OffsetDateTime
 import java.util.*
 
 internal class FolderImpl private constructor(
     private val dm: DatabaseManager,
     override val id: UUID,
-    override val createdAt: ZonedDateTime,
+    override val createdAt: OffsetDateTime,
     override val type: Type,
     override val owner: UUID?,
     name: String,
@@ -32,7 +32,7 @@ internal class FolderImpl private constructor(
     constructor(dm: DatabaseManager, row: ResultSet) : this(
         dm = dm,
         id = UUID.fromString(row.getString("id")),
-        createdAt = ZonedDateTime.parse(row.getString("createdAt")),
+        createdAt = OffsetDateTime.parse(row.getString("createdAt")),
         type = Type.valueOf(row.getString("type")),
         owner = row.getString("owner")?.let(UUID::fromString),
         name = row.getString("name"),

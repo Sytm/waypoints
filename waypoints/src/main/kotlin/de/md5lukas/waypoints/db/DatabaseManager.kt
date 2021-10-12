@@ -7,6 +7,7 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.OverviewSort
 import java.io.File
 import java.sql.Connection
+import java.time.OffsetDateTime
 import java.util.logging.Level
 
 class DatabaseManager(
@@ -21,6 +22,7 @@ class DatabaseManager(
         initConnection()
         createTables()
         upgradeDatabase()
+        cleanDB()
     }
 
     private fun initConnection() {
@@ -47,6 +49,19 @@ class DatabaseManager(
                   sortBy TEXT NOT NULL DEFAULT '${OverviewSort.TYPE_ASCENDING.name}'
                 );
             """
+            )
+            update(
+                """
+                CREATE TABLE IF NOT EXISTS player_cooldown (
+                  playerId TEXT NOT NULL,
+                  type TEXT NOT NULL,
+                  
+                  cooldownUntil TEXT NOT NULL,
+                  
+                  PRIMARY KEY (playerId, type),
+                  FOREIGN KEY (playerId) REFERENCES player_data(id) ON DELETE CASCADE
+                );
+                """
             )
             update(
                 """
@@ -122,6 +137,10 @@ class DatabaseManager(
             """
             )
         }
+    }
+
+    private fun cleanDB() {
+        connection.update("DELETE FROM player_cooldown WHERE datetime(cooldownUntil) <= datetime(?)", OffsetDateTime.now().toString())
     }
 
     private val databaseUpgrades: LinkedHashMap<Int, Connection.() -> Unit> = LinkedHashMap()

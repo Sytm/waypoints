@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.config.pointers
 
+import de.md5lukas.waypoints.util.getConfigurationSectionNotNull
 import org.bukkit.configuration.ConfigurationSection
 
 class PointerConfiguration() {
@@ -20,10 +21,10 @@ class PointerConfiguration() {
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         disableWhenReachedRadius = cfg.getInt("disableWhenReachedRadius").let { it * it }
 
-        actionBar.loadFromConfiguration(cfg.getConfigurationSection("actionBar")!!)
-        beacon.loadFromConfiguration(cfg.getConfigurationSection("beacon")!!)
-        blinkingBlock.loadFromConfiguration(cfg.getConfigurationSection("blinkingBlock")!!)
-        compass.loadFromConfiguration(cfg.getConfigurationSection("compass")!!)
-        particle.loadFromConfiguration(cfg.getConfigurationSection("particle")!!)
+        actionBar.loadFromConfiguration(cfg.getConfigurationSectionNotNull("actionBar"))
+        beacon.loadFromConfiguration(cfg.getConfigurationSectionNotNull("beacon"))
+        blinkingBlock.loadFromConfiguration(cfg.getConfigurationSectionNotNull("blinkingBlock"))
+        compass.loadFromConfiguration(cfg.getConfigurationSectionNotNull("compass"))
+        particle.loadFromConfiguration(cfg.getConfigurationSectionNotNull("particle"))
     }
 }
