@@ -68,7 +68,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                     }
                 }
             } else null),
-            'i' to if (wpGUI.viewer.hasPermission(WaypointsPermissions.GET_WAYPOINT_UUID) && isNotDeathWaypoint) {
+            'i' to if (wpGUI.viewer.hasPermission(WaypointsPermissions.COMMAND_SCRIPTING) && isNotDeathWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_GET_UUID.item) {
                     val messageString = wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements(Collections.singletonMap("name", waypoint.name))
 
