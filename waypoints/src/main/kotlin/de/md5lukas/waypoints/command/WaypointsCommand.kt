@@ -51,6 +51,9 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
                     translations.COMMAND_HELP_OTHER.send(sender, labelMap)
                 }
+                if (sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS)) {
+                    translations.COMMAND_HELP_STATISTICS.send(sender, labelMap)
+                }
                 if (sender.hasPermission(WaypointsPermissions.COMMAND_IMPORT)) {
                     translations.COMMAND_HELP_IMPORT.send(sender, labelMap)
                 }
@@ -113,6 +116,30 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                     WaypointsGUI(plugin, sender, otherUUID)
                 }
             }
+            "statistics" -> when {
+                !sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS) -> translations.COMMAND_NO_PERMISSION.send(sender)
+                else -> {
+                    with(plugin.statistics) {
+                        translations.COMMAND_STATISTICS_MESSAGE.send(
+                            sender,
+                            mapOf(
+                                "dbFileSize" to databaseSize.humanReadableByteCountBin(),
+
+                                "totalWaypoints" to totalWaypoints.toString(),
+                                "privateWaypoints" to privateWaypoints.toString(),
+                                "deathWaypoints" to deathWaypoints.toString(),
+                                "publicWaypoints" to publicWaypoints.toString(),
+                                "permissionWaypoints" to permissionWaypoints.toString(),
+
+                                "totalFolders" to totalFolders.toString(),
+                                "privateFolders" to privateFolders.toString(),
+                                "publicFolders" to publicFolders.toString(),
+                                "permissionFolders" to permissionFolders.toString(),
+                            )
+                        )
+                    }
+                }
+            }
             "import" -> when {
                 !sender.hasPermission(WaypointsPermissions.COMMAND_IMPORT) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 args.size <= 1 || !args[1].equals("confirm", true) -> translations.COMMAND_IMPORT_MUST_CONFIRM.send(sender, labelMap)
@@ -159,6 +186,9 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
             }
             if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
                 options.add("other")
+            }
+            if (sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS)) {
+                options.add("statistics")
             }
             if (sender.hasPermission(WaypointsPermissions.COMMAND_IMPORT)) {
                 options.add("import")

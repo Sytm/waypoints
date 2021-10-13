@@ -23,6 +23,7 @@ permissions:
       - waypoints.command.scripting
       - waypoints.command.use
       - waypoints.command.other
+      - waypoints.command.statistics
       - waypoints.command.import
       - waypoints.unlimited
       - waypoints.modify.private
@@ -43,6 +44,7 @@ permissions:
   waypoints.command.use:
     default: true
   waypoints.command.other: { }
+  waypoints.command.statistics: { }
   waypoints.command.import: { }
 
   waypoints.unlimited:

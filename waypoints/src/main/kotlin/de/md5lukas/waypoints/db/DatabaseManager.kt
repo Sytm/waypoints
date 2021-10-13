@@ -12,11 +12,12 @@ import java.util.logging.Level
 
 class DatabaseManager(
     val plugin: WaypointsPlugin,
-    file: File
+    val file: File
 ) : SQLiteHelper(file) {
 
     private val schemaVersion: Int = 0
     val instanceCache = InstanceCache()
+    val statistics = Statistics(this)
 
     fun initDatabase() {
         initConnection()

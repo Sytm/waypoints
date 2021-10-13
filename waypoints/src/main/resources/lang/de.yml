@@ -41,6 +41,7 @@ command:
       public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Erstelle einen neuen öffentlichen Wegpunkt"
       permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Erstelle einen neuen eingeschränkten Wegpunkt"
     other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 Sieh dir die Wegpunkte von einem anderen Spieler an"
+    statistics: "&7 - &e/${label} statistics &7&l|&r&7 Sieh dir die Statistik der Datenbank an"
     import: "&7 - &e/${label} import &7&l|&r&7 Importiere Wegpunkte von Waypoints V2"
 
   set:
@@ -65,6 +66,32 @@ command:
       name: "$[prefix] &cEin Spieler mit diesem Namen konnte nicht gefunden werden."
     notUuidOrName: "$[prefix] &cDer angegebene Identifikator ist weder eine Minecraft Name noch eine UUID."
     playerNoWaypoints: "$[prefix] &cDer angegebene Spieler besitzt keine Wegpunkte."
+
+  statistics:
+    # dbFileSize: Size of the database in SI Units
+    # totalWaypoints: Total amount of waypoints
+    # privateWaypoints: Amount of private waypoints
+    # deathWaypoints: Amount of death waypoints
+    # publicWaypoints: Amount of public waypoints
+    # permissionWaypoints: Amount of permission waypoints
+    # totalFolders: Total amount of folders
+    # privateFolders: Amount of private folders
+    # publicFolders: Amount of public folders
+    # permissionFolders: Amount of permission folders
+    message: |
+      $[prefix] &7Datenbank-Statistiken
+      &7Dateigröße: &e${dbFileSize}
+
+      &7Wegpunkte insgesamt: &e${totalWaypoints}
+      &7Private Wegpunkte: &e${privateWaypoints}
+      &7Todes Wegpunkte: &e${deathWaypoints}
+      &7Öffentliche Wegpunkte: &e${publicWaypoints}
+      &7Eingeschränkte Wegpunkte: &e${permissionWaypoints}
+
+      &7Ordner insgesamt: &e${totalFolders}
+      &7Private Ordner: &e${privateFolders}
+      &7Öffentliche Ordner: &e${publicFolders}
+      &7Eingeschränkte Ordner: &e${permissionFolders}
 
   import:
     mustConfirm: |

@@ -9,6 +9,7 @@ import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfig
 import de.md5lukas.waypoints.db.CompassStorage
 import de.md5lukas.waypoints.db.DatabaseManager
+import de.md5lukas.waypoints.db.Statistics
 import de.md5lukas.waypoints.db.impl.WaypointsAPIImpl
 import de.md5lukas.waypoints.events.WaypointsListener
 import de.md5lukas.waypoints.lang.TranslationLoader
@@ -18,9 +19,13 @@ import de.md5lukas.waypoints.pointer.PointerManager
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.VaultHook
 import org.bstats.bukkit.Metrics
+import org.bstats.charts.AdvancedPie
+import org.bstats.charts.MultiLineChart
+import org.bstats.charts.SingleLineChart
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.concurrent.TimeUnit
+import java.util.function.LongSupplier
 import java.util.logging.Level
 
 class WaypointsPlugin : JavaPlugin() {
@@ -29,6 +34,8 @@ class WaypointsPlugin : JavaPlugin() {
     private val METRICS_PLUGIN_ID = 6864
 
     private lateinit var databaseManager: DatabaseManager
+    val statistics: Statistics
+        get() = databaseManager.statistics
     lateinit var waypointsConfig: WaypointsConfig
         private set
 
@@ -152,7 +159,16 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun startMetrics() {
-        Metrics(this, METRICS_PLUGIN_ID)
+        val metrics = Metrics(this, METRICS_PLUGIN_ID)
+
+        with(databaseManager.statistics) {
+            metrics.addCustomChart(SingleLineChart("total_waypoints") {
+                totalWaypoints
+            })
+            metrics.addCustomChart(SingleLineChart("total_folders") {
+                totalFolders
+            })
+        }
     }
     //</editor-fold>
 

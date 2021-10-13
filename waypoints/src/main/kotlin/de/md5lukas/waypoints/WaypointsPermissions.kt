@@ -5,6 +5,7 @@ object WaypointsPermissions {
     const val COMMAND_SCRIPTING = "waypoints.command.scripting"
     const val COMMAND_PERMISSION = "waypoints.command.use"
     const val COMMAND_OTHER = "waypoints.command.other"
+    const val COMMAND_STATISTICS = "waypoints.command.statistics"
     const val COMMAND_IMPORT = "waypoints.command.import"
 
     const val UNLIMITED = "waypoints.unlimited"

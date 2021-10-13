@@ -30,6 +30,7 @@ class Translations(
     val COMMAND_HELP_SET_PUBLIC = Translation(tl, "command.help.set.public")
     val COMMAND_HELP_SET_PERMISSION = Translation(tl, "command.help.set.permission")
     val COMMAND_HELP_OTHER = Translation(tl, "command.help.other")
+    val COMMAND_HELP_STATISTICS = Translation(tl, "command.help.statistics")
     val COMMAND_HELP_IMPORT = Translation(tl, "command.help.import")
 
     val COMMAND_SET_WRONG_USAGE_PRIVATE = Translation(tl, "command.set.wrongUsage.private")
@@ -41,6 +42,8 @@ class Translations(
     val COMMAND_OTHER_NOT_FOUND_NAME = Translation(tl, "command.other.notFound.name")
     val COMMAND_OTHER_NOT_UUID_OR_NAME = Translation(tl, "command.other.notUuidOrName")
     val COMMAND_OTHER_PLAYER_NO_WAYPOINTS = Translation(tl, "command.other.playerNoWaypoints")
+
+    val COMMAND_STATISTICS_MESSAGE = Translation(tl, "command.statistics.message")
 
     val COMMAND_IMPORT_MUST_CONFIRM = Translation(tl, "command.import.mustConfirm")
     val COMMAND_IMPORT_STARTED = Translation(tl, "command.import.started")
