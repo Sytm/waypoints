@@ -36,7 +36,6 @@ permissions:
       - waypoints.modify.public
       - waypoints.modify.permission
       - waypoints.teleport.*
-      - waypoints.getUuid
 
   waypoints.command.*:
     default: op
@@ -72,6 +71,3 @@ permissions:
   waypoints.teleport.private: { }
   waypoints.teleport.public: { }
   waypoints.teleport.permission: { }
-
-  waypoints.getUuid:
-    default: op

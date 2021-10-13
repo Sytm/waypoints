@@ -17,6 +17,4 @@ object WaypointsPermissions {
     const val TELEPORT_PRIVATE = "waypoints.teleport.private"
     const val TELEPORT_PUBLIC = "waypoints.teleport.public"
     const val TELEPORT_PERMISSION = "waypoints.teleport.permission"
-
-    const val GET_WAYPOINT_UUID = "waypoints.getUuid"
 }
