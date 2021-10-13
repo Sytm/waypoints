@@ -27,6 +27,9 @@ to make it easier to pinpoint the location of the waypoint.
 When the player is closer to the waypoint, the beacon will be replaced with a block sequence that will repeat.
 This is to help him get to the exact location.
 
+### Particles
+Particles appear at the feet of the player pointing into the direction of the waypoint
+
 ## Other notable features
 - Open the GUI by sneaking and right-clicking with a compass (by default)
 - Set custom icons for waypoints and folders by clicking on their icon. The item in your main hand will be used
@@ -94,15 +97,15 @@ Also, you can change every piece of text to other languages or just change the c
 ### Migrating from v2.X.X
 
 - Shutdown the server
+- Make backups of
+  - `plugins/Waypoints/`
+  - `plugins/Md5Lukas-Commons/`
 - Delete
   - The old plugin jar (for example `waypoints-2.9.2.jar`)
   - `plugins/Waypoints/config.yml`
   - `plugins/Waypoints/config.base.yml`
   - `plugins/Waypoints/lang/`
   - md5-commons (for example `md5-commons-1.2-SNAPSHOT.jar`)
-- Make backups of
-  - `plugins/Waypoints/globalstore.nbt`
-  - `plugins/Md5Lukas-Commons/playerdata/`
 - Put the new plugin jar into place
 - Start the server
 - Run `/waypoints import` **ONLY ONCE**
@@ -112,7 +115,7 @@ Also, you can change every piece of text to other languages or just change the c
   - `plugins/Md5Lukas-Commons/`
 
 ### Metrics
-This plugin uses b[Stats](https://bstats.org/) to collect basic metrics about the usage of this plugin.
+This plugin uses [bStats](https://bstats.org/) to collect basic metrics about the usage of this plugin.
 You can, of course, opt-out of this if you wish. For further information have a look at "What data is collected?"
 and "Disabling bStats" over [here](https://bstats.org/getting-started).
 

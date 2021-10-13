@@ -63,28 +63,28 @@ general:
     private:
       cooldown: 24h
 
-      paymentType: xp
+      paymentType: disabled
       maxCost: 10
       formula: 1 + n
 
     death:
       cooldown: 24h
 
-      paymentType: xp
+      paymentType: disabled
       maxCost: 10
       formula: 1 + n * 2
 
     public:
-      cooldown: 1h
+      cooldown: 24h
 
-      paymentType: xp
+      paymentType: disabled
       maxCost: 8
-      formula: 1 + n
+      formula: 2 + n
 
     permission:
-      cooldown: 15m
+      cooldown: 4h
 
-      paymentType: free
+      paymentType: disabled
       maxCost: 3
       formula: n
 
