@@ -41,6 +41,7 @@ command:
       public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Create a new public waypoint"
       permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Create a new permission waypoint"
     other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 View the waypoints of another player"
+    statistics: "&7 - &e/${label} statistics &7&l|&r&7 View the statistics of the database"
     import: "&7 - &e/${label} import &7&l|&r&7 Import waypoints from Waypoints V2"
 
   set:
@@ -65,6 +66,32 @@ command:
       name: "$[prefix] &cA player with that name could not be found."
     notUuidOrName: "$[prefix] &cThe provided identifier is neither a UUID nor a Minecraft username."
     playerNoWaypoints: "$[prefix] &cThe provided player has no waypoints."
+
+  statistics:
+    # dbFileSize: Size of the database in SI Units
+    # totalWaypoints: Total amount of waypoints
+    # privateWaypoints: Amount of private waypoints
+    # deathWaypoints: Amount of death waypoints
+    # publicWaypoints: Amount of public waypoints
+    # permissionWaypoints: Amount of permission waypoints
+    # totalFolders: Total amount of folders
+    # privateFolders: Amount of private folders
+    # publicFolders: Amount of public folders
+    # permissionFolders: Amount of permission folders
+    message: |
+      $[prefix] &7Database-Statistics
+      &7Filesize: &e${dbFileSize}
+
+      &7Total waypoints: &e${totalWaypoints}
+      &7Private waypoints: &e${privateWaypoints}
+      &7Death waypoints: &e${deathWaypoints}
+      &7Public waypoints: &e${publicWaypoints}
+      &7Permission waypoints: &e${permissionWaypoints}
+
+      &7Total folders: &e${totalFolders}
+      &7Private folders: &e${privateFolders}
+      &7Public folders: &e${publicFolders}
+      &7Permission folders: &e${permissionFolders}
 
   import:
     mustConfirm: |
