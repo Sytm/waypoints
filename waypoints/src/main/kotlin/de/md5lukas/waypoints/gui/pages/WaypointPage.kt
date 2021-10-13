@@ -177,6 +177,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                         Collections.singletonMap("paymentNotice", wpGUI.plugin.teleportManager.getTeleportCostDescription(wpGUI.viewer, waypoint) ?: "")
                     )
                 ) {
+                    wpGUI.viewer.closeInventory()
                     wpGUI.plugin.teleportManager.teleportPlayerToWaypoint(wpGUI.viewer, waypoint)
                 }
             } else {

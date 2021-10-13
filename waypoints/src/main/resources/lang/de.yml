@@ -1,0 +1,382 @@
+prefix: "&b&lWaypoints &e&l>&r"
+scriptPrefix: "&b&lWaypoints&aScript &e&l>&r"
+
+worlds:
+  world: "Welt"
+  world_nether: "Nether"
+  world_the_end: "Das Ende"
+
+command:
+  notAPlayer: "$[prefix] &cDu musst ein Spieler sein um diesen Befehl benutzen zu können."
+  noPermission: "$[prefix] &cDu hast nicht die Berechtigung diese Aktion auszuführen."
+  notFound: "$[prefix] &cDer eingegebene Befehl konnte nicht gefunden werden."
+
+  script:
+    help:
+      header: "$[scriptPrefix] &7&nHilfe"
+      deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Spieler-Name> &7&l|&r&7 Entferne die Wegpunkt-Auswahl von einem Spieler"
+      selectWaypoint: "&7 - &e/${label} selectWaypoint <Spieler-Name> <Wegpunkt-UUID> &7&l|&r&7 Setzte die Wegpunkt-Auswahl von einem Spieler auf diesen Wegpunkt"
+
+    deselectWaypoint:
+      wrongUsage: |
+        $[scriptPrefix] &cDu musst den Namen von dem Spieler von dem du die Wegpunkt-Auswahl entfernen willst angeben. Beispiel:
+        &a/${label} deselectWaypoint Sytm
+
+    selectWaypoint:
+      wrongUsage: |
+        $[scriptPrefix] &cDu musst den Namen von dem Spieler und die UUID von einem Wegpunkt angeben um die Wegpunkt-Auswahl setzten zu können. Beispiel:
+        &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
+      # uuid: ID of the waypoint that could not be found
+      waypointNotFound: "$[scriptPrefix] &cKonnte keinen Wegpunkt mit der UUID &e${uuid}&c finden."
+
+    playerNotFound: "$[scriptPrefix] &cKonnte keinen Spieler der Online ist mit dem Namen &e${name}&c finden."
+    invalidUuid: "$[scriptPrefix] &cDie UUID &e${uuid}&c ist in einem nicht gültigen Format."
+
+  help:
+    header: "$[prefix] &7&nHilfe"
+    gui: "&7 - &e/${label} &7&l|&r&7 Öffne die Wegpunkt GUI"
+    help: "&7 - &e/${label} help &7&l|&r&7 Zeigt diese Hilfe Nachricht"
+    set:
+      private: "&7 - &e/${label} set <Name> &7&l|&r&7 Erstelle einen neuen Wegpunkt"
+      public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Erstelle einen neuen öffentlichen Wegpunkt"
+      permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Erstelle einen neuen eingeschränkten Wegpunkt"
+    other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 Sieh dir die Wegpunkte von einem anderen Spieler an"
+    import: "&7 - &e/${label} import &7&l|&r&7 Importiere Wegpunkte von Waypoints V2"
+
+  set:
+    wrongUsage:
+      private: |
+        $[prefix] &cDu musst einen Namen angeben um einen Wegpunkt zu erstellen. Beispiel:
+        &a/${label} set Mein Zuhause
+      public: |
+        $[prefix] &cDu musst einen Namen angeben um einen öffentlichen Wegpunkt zu erstellen. Beispiel:
+        &a/${label} setPublic Spawn
+      permission: |
+        $[prefix] &cDu musst eine Berechtigung und Namen angeben um einen eingeschränkten Wegpunkt zu erstellen. Beispiel:
+        &a/${label} setPermission ranks.vip.geheimVersteck Geheimes Versteck
+
+  other:
+    wrongUsage: |
+      $[prefix] &cUm die Wegpunkte von jemand Anderem anzusehen musst du entweder seinen Namen oder seine UUID angeben. Beispiel:
+      &a/${label} other Sytm
+      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
+    notFound:
+      uuid: "$[prefix] &cEin Spieler mit dieser UUID konnte nicht gefunden werden."
+      name: "$[prefix] &cEin Spieler mit diesem Namen konnte nicht gefunden werden."
+    notUuidOrName: "$[prefix] &cDer angegebene Identifikator ist weder eine Minecraft Name noch eine UUID."
+    playerNoWaypoints: "$[prefix] &cDer angegebene Spieler besitzt keine Wegpunkte."
+
+  import:
+    mustConfirm: |
+      $[prefix] &7Um die alten Wegpunkte zu importieren musst du deine Entscheidung bestätigen.
+      &cWenn du schon einmal alte Wegpunkte importiert hast und dies jetzt wieder tust wirst du Duplikate haben.
+      &cDie Duplikate müssen entweder manuell entfernt werden oder du löschst alles indem du plugins/Waypoints/waypoints.db löschst.
+      &cAlso führen diesen Befehl nur einmal aus, stelle sicher alles ist da und dann entferne die alten Daten damit sie nicht ausversehen ein zweites mal importiert werden.
+
+      &7Führe &a/${label} import confirm&7 aus um diese Nachricht zu bestätigen.
+    started: "$[prefix] &7Die Importierung wurde gestartet. Prüfe die Ausgabe der Konsole für mehr Informationen."
+    finished:
+      success: "$[prefix] &7Die Importierung wurde abgeschlossen. Stelle sicher das die importierten Wegpunkte alle da sind."
+      error: "$[prefix] &cBeim Importieren der alten Wegpunkte ist ein Fehler aufgetreten. Prüfe die Ausgabe der Konsole für mehr Informationen."
+
+text:
+  duration:
+    second: "Sekunde"
+    seconds: "Sekunden"
+
+    minute: "Minute"
+    minutes: "Minuten"
+
+    hour: "Stunde"
+    hours: "Stunden"
+
+    day: "Tag"
+    days: "Tage"
+
+  distance:
+    otherWorld: "?"
+
+  sortOptions:
+    type_ascending: "Typ"
+    type_descending: "Typ (Absteigend)"
+    name_ascending: "Name"
+    name_descending: "Name (Absteigend)"
+    created_ascending: "Erstellungszeitpunkt"
+    created_descending: "Erstellungszeitpunkt (Absteigend)"
+
+  beaconColors:
+    clear: "&7Keine Farbe"
+    light_gray: "&7Hellgrau"
+    gray: "&7Grau"
+    pink: "&7Rosa"
+    lime: "&7Hellgrün"
+    yellow: "&7Gelb"
+    light_blue: "&7Hellblau"
+    magenta: "&7Magenta"
+    orange: "&7Orange"
+    white: "&7Weiß"
+    black: "&7Schwarz"
+    red: "&7Rot"
+    green: "&7Grün"
+    brown: "&7Braun"
+    blue: "&7Blau"
+    cyan: "&7Türkis"
+    purple: "&7Violett"
+
+message:
+  waypoint:
+    limitReached:
+      private: "$[prefix] &cDu hast die maximale Anzahl an Wegpunkten erreicht die du erstellen kannst."
+    nameDuplicate:
+      private: "$[prefix] &cWegpunkte mit bereits vorhandenen Namen sind nicht erlaubt."
+      public: "$[prefix] &cÖffentliche Wegpunkte mit bereits vorhandenen Namen sind nicht erlaubt."
+      permission: "$[prefix] &cEingeschränkte Wegpunkte mit bereits vorhandenen Namen sind nicht erlaubt."
+    setSuccess:
+      private: "$[prefix] &7Der Wegpunkt wurde erfolgreich erstellt."
+      public: "$[prefix] &7Der öffentliche Wegpunkt wurde erfolgreich erstellt."
+      permission: "$[prefix] &7Der eingeschränkte Wegpunkt wurde erfolgreich erstellt."
+    # name: Name of the waypoint
+    getUuid: "$[prefix] &7Drücke auf diese Nachricht um die UUID von dem Wegpunkt &e${name}&7 zu erhalten."
+    newIconInvalid: "$[prefix] &cDas Item das du als Icon für den Wegpunkt verwenden möchtest ist nicht erlaubt."
+
+  folder:
+    limitReached:
+      private: "$[prefix] &cDu hast die maximale Anzahl an Ordnern erreicht die du erstellen kannst."
+    nameDuplicate:
+      private: "$[prefix] &cOrdner mit bereits vorhandenen Namen sind nicht erlaubt."
+      public: "$[prefix] &cÖffentliche Ordner mit bereits vorhandenen Namen sind nicht erlaubt."
+      permission: "$[prefix] &cEingeschränkte Ordner mit bereits vorhandenen Namen sind nicht erlaubt."
+    createSuccess:
+      private: "$[prefix] &7Der Ordner wurde erfolgreich erstellt."
+      public: "$[prefix] &7Der öffentliche Ordner wurde erfolgreich erstellt."
+      permission: "$[prefix] &7Der eingeschränkte Ordner wurde erfolgreich erstellt."
+    newIconInvalid: "$[prefix] &cDas Item das du als Icon für den Ordner verwenden möchtest ist nicht erlaubt."
+
+  teleport:
+    # remainingCooldown: Time left until player can teleport again
+    onCooldown: "$[prefix] &cDu kannst für &e${remainingCooldown}&c nicht teleportieren."
+    notEnough:
+      # currentLevel: Level of the player
+      # requiredLevel: Level required for teleportation
+      xp: |
+        $[prefix] &cDu hast nicht genügend Erfahrungs-Level für eine Teleportation.
+        &cBenötigtes Level: &e${requiredLevel}
+      # currentBalance: Vault balance of the player
+      # requiredBalance: Vault balance required for teleportation
+      balance: |
+        $[prefix] &cDein Kontostand ist zu niedrig für eine Teleportation.
+        &cBenötiger Kontostand: ${requiredBalance}
+    standStill:
+      # duration: Amount of time the player needs to stand still
+      notice: "$[prefix] &7Du darfst dich für &e${duration}&7 nicht Bewegen."
+      moved: "$[prefix] &cDeine eingereihte Teleportation wurde abgebrochen da du dich bewegt hast."
+
+pointers:
+  actionBar:
+    # current: Translated name of the world the player is in
+    # correct: Translated name of the world the waypoint is in
+    wrongWorld: "&cDu bist momentan in der Welt &a${current}&c, der Wegpunkt befindet sich in der Welt &a${correct}"
+
+inventory:
+  title:
+    self: "&8Deine Wegpunkte"
+    # name: Name of the other player
+    other: "&8Wegpunkte von &9${name}"
+
+  general:
+    previous:
+      displayName: "&eVorherige Seite"
+      description: ""
+    next:
+      displayName: "&eNächste Seite"
+      description: ""
+    back:
+      displayName: "&eZurück"
+      description: ""
+
+  background:
+    private:
+      displayName: "&0-"
+      description: ""
+    death:
+      displayName: "&0-"
+      description: ""
+    public:
+      displayName: "&0-"
+      description: ""
+    permission:
+      displayName: "&0-"
+      description: ""
+
+  overview:
+    # selectionList: The list showing available and the active options
+    cycleSort:
+      displayName: "&eSortiere nach"
+      description: "\n${selectionList}"
+      activeColor: "&6"
+      inactiveColor: "&7"
+
+    toggleGlobals:
+      visible:
+        displayName: "&eGlobal Wegpunkte sind sichtbar"
+        description: "&7Drücke hier drauf um sie zu verstecken"
+      hidden:
+        displayName: "&eGlobal Wegpunkte sind versteckt"
+        description: "&7Drücke hier drauf um sie zu zeigen"
+
+    deselect:
+      displayName: "&eWegpunkte-Auswahl entfernen"
+      description: "&7Die Richtungsindikatoren werden nicht mehr angezeigt"
+    setWaypoint:
+      displayName: "&eNeuen Wegpunkt erstellen"
+      description: "&7Der Wegpunkt wird im aktuellen Ordner erstellt"
+    createFolder:
+      displayName: "&eNeunen Ordner erstellen"
+      description: ""
+
+  # amount: Amount of waypoints in this global folder visible for the player
+  listing:
+    public:
+      displayName: "&bÖffentliche Wegpunkte"
+      description: "&7Anzahl: &6${amount}"
+    permission:
+      displayName: "&dEingeschränkte Wegpunkte"
+      description: "&7Für dich verfügbar: &6${amount}"
+
+  waypoint:
+    # name: Name of the waypoint
+    # createdAt: Date at which the waypoint was created
+    # world: World where the waypoint is located at
+    # x, y, z: Coordinates of the waypoint
+    # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
+    # distance: Distance in blocks to the player
+    icon:
+      description: &waypointDescription |
+        &7Welt: &6${world}
+        &7X: &6${blockX}
+        &7Y: &6${blockY}
+        &7Z: &6${blockZ}
+        &7Entfernung: &6${distance}
+
+        &7Erstellt am: &6${createdAt}
+
+      private:
+        displayName: "&5${name}"
+        description: *waypointDescription
+      death:
+        displayName: "&cTot am ${createdAt}"
+        description: |
+          &7Welt: &6${world}
+          &7X: &6${blockX}
+          &7Y: &6${blockY}
+          &7Z: &6${blockZ}
+          &7Entfernung: &6${distance}
+      public:
+        displayName: "&b${name}"
+        description: *waypointDescription
+      permission:
+        displayName: "&d${name}"
+        description: *waypointDescription
+
+    select:
+      displayName: "&eWegpunkte auswählen"
+      description: "&7Drücke hier drauf um für diesen Wegpunkt Richtungsindikatoren zu erhalten"
+    delete:
+      displayName: "&4Wegpunkt löschen"
+      description: ""
+    rename:
+      displayName: "&eWegpunkt umbenennen"
+      description: ""
+    moveToFolder:
+      displayName: "&eWegpunkt in einen Ordner verschieben"
+      description: |
+        &7Stecke den Wegpunkt in einen Ordner um ihn zu Gruppieren,
+        oder entferne ihn vom momentanen Ordner
+    teleport:
+      displayName: "&eZum Wegpunkt teleportieren"
+      # paymentNotice: A payment notice informing the player how much the teleportation will cost him, or if it is free nothing
+      description: "${paymentNotice}"
+      # levels: The amount of levels required for teleportation
+      xpLevel: "&7Du benötigst &e${levels}&7 Erfahrungs-Level um diese Teleportation durchzuführen."
+      # balance: The amount of balance required for teleportation
+      balance: "&7Du benötigst &e${balance}&7 auf deinem Konto um diese Teleportation durchzuführen."
+    selectBeaconColor:
+      displayName: "&eFarbe vom Leuchtfeuer ändern"
+      description: ""
+    getUuid:
+      displayName: "&eUUID vom Wegpunkt erhalten"
+      description: "&7Schickt eine klickbare Nachricht die die UUID in das Textfeld kopiert"
+
+    create:
+      enterName: "Name hier eingeben"
+      enterPermission: "Berechtigung hier eingeben"
+
+  folder:
+    # name: Name of the folder
+    # createdAt: Date at which the folder was created
+    # amount: Amount of waypoints visible to the player
+    icon:
+      private:
+        displayName: "&5${name}"
+        description: "&7Wegpunkte in diesem Ordner: &6${amount}"
+      death:
+        displayName: "&cTode"
+        description: "&7Wegpunkte in diesem Ordner: &6${amount}"
+      public:
+        displayName: "&b${name}"
+        description: "&7Wegpunkte in diesem Ordner: &6${amount}"
+      permission:
+        displayName: "&d${name}"
+        description: "&7Wegpunkte in diesem Ordner: &6${amount}"
+
+    delete:
+      displayName: "&4Ordner löschen"
+      description: ""
+    rename:
+      displayName: "&eOrdner umbenennen"
+      description: ""
+
+    create:
+      enterName: "Name hier eingeben"
+
+  selectFolder:
+    noFolder:
+      displayName: "&eKein Ordner"
+      description: "&7Den Wegpunkt zurück zur Übersicht verschieben"
+
+  selectBeaconColor:
+    moveLeft:
+      displayName: "&eNach links verschieben"
+      description: ""
+    moveRight:
+      displayName: "&eNach rechts verschieben"
+      description: ""
+
+  confirm:
+    background:
+      displayName: "&0-"
+      description: ""
+
+  delete:
+    # name: Name of the waypoint to delete
+    waypoint:
+      question:
+        displayName: "&7Möchtest du wirklich den Wegpunkt &e${name}&7 löschen?"
+        description: ""
+      confirm:
+        displayName: "&cJa, den Wegpunkt &e${name}&c löschen!"
+        description: ""
+      cancel:
+        displayName: "&aNein, den Wegpunkt nicht &e${name}&a löschen."
+        description: ""
+    # name: Name of the folder to delete
+    folder:
+      question:
+        displayName: "&7Möchtest du wirklich den Ordner &e${name}&7 löschen?"
+        description: ""
+      confirm:
+        displayName: "&cJa, den Ordner &e${name}&c löschen!"
+        description: ""
+      cancel:
+        displayName: "&aNein, den Ordner nicht &e${name}&a löschen."
+        description: ""

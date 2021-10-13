@@ -27,7 +27,7 @@ command:
         $[scriptPrefix] &cYou need to provide the name of an online player and the UUID of an waypoint to set the selection of a player. Example:
         &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
-      waypointNotFound: "$[scriptPrefix] &cCould not find a waypoint with the ID &e${uuid}&c."
+      waypointNotFound: "$[scriptPrefix] &cCould not find a waypoint with the UUID &e${uuid}&c."
 
     playerNotFound: "$[scriptPrefix] &cCould not find an online player with the name &e${name}&c."
     invalidUuid: "$[scriptPrefix] &cThe uuid &e${uuid}&c is not in a valid format."
@@ -61,8 +61,8 @@ command:
       &a/${label} other Sytm
       &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
     notFound:
-      uuid: "$[prefix] &cA player with that UUID could not be found"
-      name: "$[prefix] &cA player with that name could not be found"
+      uuid: "$[prefix] &cA player with that UUID could not be found."
+      name: "$[prefix] &cA player with that name could not be found."
     notUuidOrName: "$[prefix] &cThe provided identifier is neither a UUID nor a Minecraft username."
     playerNoWaypoints: "$[prefix] &cThe provided player has no waypoints."
 
@@ -71,13 +71,13 @@ command:
       $[prefix] &7To import the old waypoints you must confirm your choice.
       &cKeep in mind that if you already imported old waypoints you will have duplicates after this action.
       &cAll these duplicates have to be removed manually or you must delete everything by deleting plugins/Waypoints/waypoints.db.
-      &cSo run this command only once and then make sure everything is there and then move the old saves to some place you will find it again, just in case.
+      &cSo run this command only once and then make sure everything is there and then remove the old saves so they can't be imported a second time by accident.
 
       &7Run &a/${label} import confirm&7 to ackknowledge this message.
-    started: "$[prefix] &7The import has started, check the console output for more information"
+    started: "$[prefix] &7The import has started, check the console output for more information."
     finished:
       success: "$[prefix] &7The import has finished, make sure the imported waypoints look good to you."
-      error: "$[prefix] &cWhile importing the old waypoints an error occurred. Check the console output for more information"
+      error: "$[prefix] &cWhile importing the old waypoints an error occurred. Check the console output for more information."
 
 text:
   duration:
@@ -126,15 +126,15 @@ text:
 message:
   waypoint:
     limitReached:
-      private: "$[prefix] &cYou have reached your personal limit of waypoints you can set."
+      private: "$[prefix] &cYou have reached your personal limit of waypoints you can create."
     nameDuplicate:
       private: "$[prefix] &cWaypoints with duplicate names are not permitted."
       public: "$[prefix] &cPublic waypoints with duplicate names are not permitted."
       permission: "$[prefix] &cPermission waypoints with duplicate names are not permitted."
     setSuccess:
-      private: "$[prefix] &7The waypoint has been set successfully."
-      public: "$[prefix] &7The public waypoint has been set successfully."
-      permission: "$[prefix] &7The permission waypoint has been set successfully."
+      private: "$[prefix] &7The waypoint has been created successfully."
+      public: "$[prefix] &7The public waypoint has been created successfully."
+      permission: "$[prefix] &7The permission waypoint has been created successfully."
     # name: Name of the waypoint
     getUuid: "$[prefix] &7Click on this message to get the UUID of the waypoint &e${name}&7."
     newIconInvalid: "$[prefix] &cThe item you are trying to use as a new icon for the waypoint is not allowed."
@@ -159,13 +159,13 @@ message:
       # currentLevel: Level of the player
       # requiredLevel: Level required for teleportation
       xp: |
-        $[prefix] &cYou don't have enough experience points for teleportation.
-        Required level: ${requiredLevel}
+        $[prefix] &cYou don't have enough experience levels for teleportation.
+        &cRequired level: &e${requiredLevel}
       # currentBalance: Vault balance of the player
       # requiredBalance: Vault balance required for teleportation
       balance: |
         $[prefix] &cYou don't have enough balance for teleportation.
-        Required balance: ${requiredBalance}
+        &cRequired balance: &a${requiredBalance}
     standStill:
       # duration: Amount of time the player needs to stand still
       notice: "$[prefix] &7You need to stand still for &e${duration}&7."
@@ -173,13 +173,15 @@ message:
 
 pointers:
   actionBar:
+    # current: Translated name of the world the player is in
+    # correct: Translated name of the world the waypoint is in
     wrongWorld: "&cYou are currently in the world &a${current}&c, but the waypoint is in &a${correct}"
 
 inventory:
   title:
-    self: "&6Your waypoints"
+    self: "&8Your waypoints"
     # name: Name of the other player
-    other: "&6${name}&7's waypoints"
+    other: "&8Waypoints of &9${name}"
 
   general:
     previous:
@@ -209,9 +211,9 @@ inventory:
   overview:
     # selectionList: The list showing available and the active options
     cycleSort:
-      displayName: "&eSorting"
-      description: "&7Available sorting options:&r\n\n${selectionList}"
-      activeColor: "&e"
+      displayName: "&eSort by"
+      description: "\n${selectionList}"
+      activeColor: "&6"
       inactiveColor: "&7"
 
     toggleGlobals:
@@ -235,11 +237,11 @@ inventory:
   # amount: Amount of waypoints in this global folder visible for the player
   listing:
     public:
-      displayName: "&bGlobal waypoints"
-      description: "&7Global waypoints: &6${amount}"
+      displayName: "&bPublic waypoints"
+      description: "&7Amount: &6${amount}"
     permission:
       displayName: "&dRestricted waypoints"
-      description: "&7Restricted waypoints available to you: &6${amount}"
+      description: "&7Available for you: &6${amount}"
 
   waypoint:
     # name: Name of the waypoint
@@ -302,7 +304,7 @@ inventory:
       displayName: "&eChange the color of the beacon beam"
       description: ""
     getUuid:
-      displayName: "&eGet the ID of the waypoint"
+      displayName: "&eGet the UUID of the waypoint"
       description: "&7Sends a clickable message that enters the UUID into the chat"
 
     create:
