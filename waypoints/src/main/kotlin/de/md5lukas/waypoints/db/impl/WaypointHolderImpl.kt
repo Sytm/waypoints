@@ -4,6 +4,7 @@ import de.md5lukas.commons.MathHelper
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
+import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
@@ -59,7 +60,7 @@ internal open class WaypointHolderImpl(
         }!!
 
     override fun getWaypointsVisibleForPlayer(player: Player): Int =
-        if (type == Type.PERMISSION) {
+        if (type == Type.PERMISSION && !player.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
             dm.connection.select("SELECT permission FROM waypoints WHERE type = ?;", type.name) {
                 getString("permission")
             }.count { player.hasPermission(it) }
