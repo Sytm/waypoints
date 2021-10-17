@@ -40,16 +40,24 @@ class LegacyImporter(
         var count = legacyPlayerData.waypoints.size
 
         legacyPlayerData.deathWaypoint?.let {
-            logger.log(Level.INFO, "Importing death waypoint")
-            count++
-            playerData.addDeathLocation(it.location)
+            if (it.location.world == null) {
+                logger.log(Level.WARNING, "Skipping death waypoint because the world no longer exists")
+            } else {
+                logger.log(Level.INFO, "Importing death waypoint")
+                count++
+                playerData.addDeathLocation(it.location)
+            }
         }
 
         legacyPlayerData.waypoints.forEach { legacyWaypoint ->
-            logger.log(Level.FINE, "Importing private waypoint ${legacyWaypoint.name}")
-            playerData.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
-                it.material = legacyWaypoint.material
-                it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+            if (legacyWaypoint.location.world == null) {
+                logger.log(Level.WARNING, "Skipping waypoint ${legacyWaypoint.name} because the world no longer exists")
+            } else {
+                logger.log(Level.FINE, "Importing private waypoint ${legacyWaypoint.name}")
+                playerData.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
+                    it.material = legacyWaypoint.material
+                    it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                }
             }
         }
 
@@ -62,11 +70,15 @@ class LegacyImporter(
 
 
             legacyFolder.waypoints.forEach { legacyWaypoint ->
-                logger.log(Level.FINE, "Importing private waypoint ${legacyWaypoint.name}")
-                playerData.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
-                    it.material = legacyWaypoint.material
-                    it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
-                    it.folder = folder
+                if (legacyWaypoint.location.world == null) {
+                    logger.log(Level.WARNING, "Skipping waypoint ${legacyWaypoint.name} because the world no longer exists")
+                } else {
+                    logger.log(Level.FINE, "Importing private waypoint ${legacyWaypoint.name}")
+                    playerData.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
+                        it.material = legacyWaypoint.material
+                        it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                        it.folder = folder
+                    }
                 }
             }
         }
@@ -84,10 +96,14 @@ class LegacyImporter(
         legacyGlobalStore.publicFolder?.also { legacyPublicFolder ->
             logger.log(Level.INFO, "Importing ${legacyPublicFolder.waypoints.size} public waypoints")
             legacyPublicFolder.waypoints.forEach { legacyWaypoint ->
-                logger.log(Level.FINE, "Importing public waypoint ${legacyWaypoint.name}")
-                api.publicWaypoints.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
-                    it.material = legacyWaypoint.material
-                    it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                if (legacyWaypoint.location.world == null) {
+                    logger.log(Level.WARNING, "Skipping public waypoint ${legacyWaypoint.name} because the world no longer exists")
+                } else {
+                    logger.log(Level.FINE, "Importing public waypoint ${legacyWaypoint.name}")
+                    api.publicWaypoints.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
+                        it.material = legacyWaypoint.material
+                        it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                    }
                 }
             }
         }
@@ -95,11 +111,15 @@ class LegacyImporter(
         legacyGlobalStore.permissionFolder?.also { legacyPermissionFolder ->
             logger.log(Level.INFO, "Importing ${legacyPermissionFolder.waypoints.size} permission waypoints")
             legacyPermissionFolder.waypoints.forEach { legacyWaypoint ->
-                logger.log(Level.FINE, "Importing permission waypoint ${legacyWaypoint.name}")
-                api.permissionWaypoints.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
-                    it.permission = (legacyWaypoint as LegacyPermissionWaypoint).permission
-                    it.material = legacyWaypoint.material
-                    it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                if (legacyWaypoint.location.world == null) {
+                    logger.log(Level.WARNING, "Skipping permission waypoint ${legacyWaypoint.name} because the world no longer exists")
+                } else {
+                    logger.log(Level.FINE, "Importing permission waypoint ${legacyWaypoint.name}")
+                    api.permissionWaypoints.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
+                        it.permission = (legacyWaypoint as LegacyPermissionWaypoint).permission
+                        it.material = legacyWaypoint.material
+                        it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                    }
                 }
             }
         }
