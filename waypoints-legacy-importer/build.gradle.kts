@@ -22,12 +22,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-tasks.withType<JavaCompile> {
-    options.encoding = "UTF-8"
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
-}
-
 tasks.withType<ShadowJar> {
     archiveClassifier.set("")
 

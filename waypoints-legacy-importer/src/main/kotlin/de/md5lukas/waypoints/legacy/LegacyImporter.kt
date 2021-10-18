@@ -1,7 +1,7 @@
 package de.md5lukas.waypoints.legacy
 
+import de.md5lukas.nbt.Tags
 import de.md5lukas.waypoints.api.WaypointsAPI
-import de.md5lukas.waypoints.legacy.internal.*
 import java.io.File
 import java.util.*
 import java.util.logging.Level
@@ -13,7 +13,8 @@ class LegacyImporter(
 ) {
 
     init {
-        setupNBT()
+        Tags.registerExtendedTags()
+        Tags.registerTag(::LocationTag)
     }
 
     fun performImport() {
@@ -28,12 +29,23 @@ class LegacyImporter(
 
     private fun importPlayer(file: File) {
         val uuid = UUID.fromString(file.nameWithoutExtension)
-        logger.log(Level.INFO, "Importing player data for player $uuid")
+
+        if (file.length() == 0L) {
+            logger.log(Level.WARNING, "Skipping empty data file for player $uuid")
+            return
+        } else {
+            logger.log(Level.INFO, "Importing player data for player $uuid")
+        }
 
         val playerData = api.getWaypointPlayer(uuid)
 
-        val legacyPlayerData = LegacyPlayerData(BasicPlayerStore.getPlayerStore(file))
-
+        val legacyPlayerData: LegacyPlayerData
+        try {
+            legacyPlayerData = LegacyPlayerData(BasicPlayerStore.getPlayerStore(file))
+        } catch (t: Throwable) {
+            logger.log(Level.WARNING, "Could not load legacy player data. Skipping", t)
+            return
+        }
         playerData.showGlobals = legacyPlayerData.settings.showGlobals
         playerData.sortBy = legacyPlayerData.settings.sortMode.overviewSort
 
