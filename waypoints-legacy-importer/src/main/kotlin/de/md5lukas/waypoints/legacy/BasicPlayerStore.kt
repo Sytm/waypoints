@@ -1,4 +1,4 @@
-package de.md5lukas.waypoints.legacy.internal
+package de.md5lukas.waypoints.legacy
 
 import de.md5lukas.nbt.NbtIo
 import de.md5lukas.nbt.tags.CompoundTag
