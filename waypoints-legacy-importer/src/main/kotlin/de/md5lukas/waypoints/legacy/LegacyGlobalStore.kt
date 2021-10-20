@@ -17,16 +17,21 @@ internal class LegacyGlobalStore(
     var permissionFolder: LegacyPermissionFolder? = null
         private set
 
-    fun load() = if (globalStoreFile.exists()) {
-        val tag: CompoundTag = NbtIo.readCompressed(globalStoreFile)
+    fun load() = if (globalStoreFile.exists() && globalStoreFile.length() > 0L) {
+        try {
+            val tag: CompoundTag = NbtIo.readCompressed(globalStoreFile)
 
-        if ("publicWaypoints" in tag) {
-            publicFolder = LegacyPublicFolder(tag.getCompound("publicWaypoints"))
+            if ("publicWaypoints" in tag) {
+                publicFolder = LegacyPublicFolder(tag.getCompound("publicWaypoints"))
+            }
+            if ("permissionWaypoints" in tag) {
+                permissionFolder = LegacyPermissionFolder(tag.getCompound("permissionWaypoints"))
+            }
+            true
+        } catch (t: Throwable) {
+            logger.log(Level.WARNING, "Could not load legacy global store file", t)
+            false
         }
-        if ("permissionWaypoints" in tag) {
-            permissionFolder = LegacyPermissionFolder(tag.getCompound("permissionWaypoints"))
-        }
-        true
     } else {
         logger.log(Level.INFO, "Could not find globalstore at ${globalStoreFile.absolutePath}")
         false
