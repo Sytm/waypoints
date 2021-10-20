@@ -4,13 +4,12 @@ import de.md5lukas.commons.MathHelper
 import java.text.CharacterIterator
 import java.text.StringCharacterIterator
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import kotlin.math.abs
 
 fun Double.format(): String = MathHelper.format(this)
 
 object Formatters {
-    val SHORT_DATE_TIME_FORMATTER = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)!!
+    val SHORT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.uuuu kk:mm")!!
 }
 
 // Based on https://stackoverflow.com/a/3758880

@@ -7,7 +7,7 @@ import java.io.DataInput
 import java.io.DataOutput
 
 internal class LocationTag(
-    name: String,
+    name: String?,
     private var location: Location? = null
 ) : Tag(name) {
 

@@ -14,7 +14,9 @@ class LegacyImporter(
 
     init {
         Tags.registerExtendedTags()
-        Tags.registerTag(::LocationTag)
+        Tags.registerTag {
+            LocationTag(it)
+        }
     }
 
     fun performImport() {
