@@ -193,8 +193,14 @@ class WaypointsGUI(
 
         if (isOwner && guiFolder === targetData) {
             if (viewerData.showGlobals) {
-                content.add(plugin.api.publicWaypoints)
-                content.add(plugin.api.permissionWaypoints)
+                val public = plugin.api.publicWaypoints
+                if (public.waypointsAmount > 0 || viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+                    content.add(public);
+                }
+                val permission = plugin.api.permissionWaypoints;
+                if (permission.getWaypointsVisibleForPlayer(viewer) > 0 || viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+                    content.add(permission)
+                }
             }
             val deathFolder = targetData.deathFolder
             if (deathFolder.amount > 0) {
