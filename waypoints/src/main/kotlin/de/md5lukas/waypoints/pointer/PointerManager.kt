@@ -46,7 +46,7 @@ class PointerManager(
         }, {
             with(it.compass) {
                 if (enabled) {
-                    CompassPointer(this, plugin)
+                    CompassPointer(plugin)
                 } else {
                     null
                 }
