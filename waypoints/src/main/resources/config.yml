@@ -173,7 +173,7 @@ inventory:
   overview:
     cycleSort: HOPPER
     toggleGlobals:
-      visible: CHEST
+      visible: ENDER_CHEST
       hidden: CHEST
     deselect: MILK_BUCKET
     setWaypoint: TORCH
