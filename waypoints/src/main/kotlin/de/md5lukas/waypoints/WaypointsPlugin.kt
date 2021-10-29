@@ -19,13 +19,10 @@ import de.md5lukas.waypoints.pointer.PointerManager
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.VaultHook
 import org.bstats.bukkit.Metrics
-import org.bstats.charts.AdvancedPie
-import org.bstats.charts.MultiLineChart
 import org.bstats.charts.SingleLineChart
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.concurrent.TimeUnit
-import java.util.function.LongSupplier
 import java.util.logging.Level
 
 class WaypointsPlugin : JavaPlugin() {
@@ -40,6 +37,8 @@ class WaypointsPlugin : JavaPlugin() {
         private set
 
     lateinit var api: WaypointsAPI
+        private set
+    lateinit var compassStorage: CompassStorage
         private set
 
     private lateinit var translationLoader: TranslationLoader
@@ -91,7 +90,7 @@ class WaypointsPlugin : JavaPlugin() {
         api = WaypointsAPIImpl(databaseManager)
         WaypointsAPI.INSTANCE = api
 
-        waypointsConfig.pointer.compass.compassStorage = CompassStorage(databaseManager)
+        this.compassStorage = CompassStorage(databaseManager)
     }
 
     private fun initPointerManager() {

@@ -12,8 +12,12 @@ class CompassStorage(
 
     fun saveCompassLocation(player: Player, location: Location) {
         dm.connection.update(
-            "INSERT OR IGNORE INTO compass_storage(playerId, world, x, y, z) VALUES (?, ?, ?, ?, ?);",
+            "INSERT INTO compass_storage(playerId, world, x, y, z) VALUES (?, ?, ?, ?, ?) ON CONFLICT(playerId) DO UPDATE SET world = ?, x = ?, y = ?, z = ?;",
             player.uniqueId.toString(),
+            location.world!!.name,
+            location.x,
+            location.y,
+            location.z,
             location.world!!.name,
             location.x,
             location.y,
