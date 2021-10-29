@@ -42,10 +42,10 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
                     translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
                 }
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+                if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC) && plugin.waypointsConfig.general.features.globalWaypoints) {
                     translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelMap)
                 }
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+                if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION) && plugin.waypointsConfig.general.features.globalWaypoints) {
                     translations.COMMAND_HELP_SET_PERMISSION.send(sender, labelMap)
                 }
                 if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
@@ -68,6 +68,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 }
             }
             "setpublic" -> when {
+                !plugin.waypointsConfig.general.features.globalWaypoints -> translations.MESSAGE_FEATURE_DISABLED.send(sender)
                 !sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 args.size <= 1 -> translations.COMMAND_SET_WRONG_USAGE_PUBLIC.send(sender, labelMap)
                 else -> {
@@ -77,6 +78,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 }
             }
             "setpermission" -> when {
+                !plugin.waypointsConfig.general.features.globalWaypoints -> translations.MESSAGE_FEATURE_DISABLED.send(sender)
                 !sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 args.size <= 2 -> translations.COMMAND_SET_WRONG_USAGE_PERMISSION.send(sender, labelMap)
                 else -> {
@@ -178,10 +180,10 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
             if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
                 options.add("set")
             }
-            if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+            if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC) && plugin.waypointsConfig.general.features.globalWaypoints) {
                 options.add("setPublic")
             }
-            if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+            if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION) && plugin.waypointsConfig.general.features.globalWaypoints) {
                 options.add("setPermission")
             }
             if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {

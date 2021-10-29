@@ -11,6 +11,8 @@ class GeneralConfiguration {
 
     val uuidCache = UUIDCacheConfiguration()
 
+    val features = FeaturesConfiguration()
+
     val waypoints = LimitConfiguration()
 
     val folders = LimitConfiguration()
@@ -25,6 +27,8 @@ class GeneralConfiguration {
         language = cfg.getStringNotNull("language")
 
         uuidCache.loadFromConfiguration(cfg.getConfigurationSectionNotNull("uuidCache"))
+
+        features.loadFromConfiguration(cfg.getConfigurationSectionNotNull("features"))
 
         waypoints.loadFromConfiguration(cfg.getConfigurationSectionNotNull("waypoints"))
 

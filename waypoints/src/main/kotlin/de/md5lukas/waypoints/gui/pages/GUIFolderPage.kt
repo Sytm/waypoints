@@ -146,10 +146,14 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                 } else null)
             },
             't' to if (wpGUI.isOwner && isPlayerOverview) {
-                ToggleGlobalsItem(wpGUI) {
-                    listingContent = wpGUI.getListingContent(guiFolder)
-                    checkListingPageBounds()
-                    updateListingInInventory()
+                if (wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
+                    ToggleGlobalsItem(wpGUI) {
+                        listingContent = wpGUI.getListingContent(guiFolder)
+                        checkListingPageBounds()
+                        updateListingInInventory()
+                    }
+                } else {
+                    background
                 }
             } else {
                 if (guiFolder is Folder && canModify) {

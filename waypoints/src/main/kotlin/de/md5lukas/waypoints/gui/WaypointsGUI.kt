@@ -192,7 +192,7 @@ class WaypointsGUI(
         val content = PaginationList<GUIDisplayable>(ListingPage.PAGINATION_LIST_PAGE_SIZE)
 
         if (isOwner && guiFolder === targetData) {
-            if (viewerData.showGlobals) {
+            if (viewerData.showGlobals && plugin.waypointsConfig.general.features.globalWaypoints) {
                 val public = plugin.api.publicWaypoints
                 if (public.waypointsAmount > 0 || viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
                     content.add(public);
