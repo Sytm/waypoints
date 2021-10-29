@@ -57,9 +57,18 @@ class TranslationLoader(
         if (languageFile.exists()) {
             val loadedTranslations = YamlConfiguration.loadConfiguration(languageFile)
 
-            val defaultTranslations = YamlConfiguration.loadConfiguration(plugin.getResource(getLanguageFilePath(bundledLanguages[0]))!!.reader())
+            val fallbackReader = plugin.getResource(
+                if (languageKey in bundledLanguages) {
+                    getLanguageFilePath(languageKey)
+                } else {
+                    getLanguageFilePath(bundledLanguages[0])
+                }
+            )!!.reader()
+
+            val defaultTranslations = YamlConfiguration.loadConfiguration(fallbackReader)
 
             loadedTranslations.setDefaults(defaultTranslations)
+            loadedTranslations.options().copyDefaults(true)
 
             translations = processConfiguration(loadedTranslations)
         } else {
