@@ -151,6 +151,8 @@ text:
     purple: "&7Violett"
 
 message:
+  featureDisabled: "$[prefix] &cDie Funktion die du benutzten möchtest wurden deaktiviert."
+
   waypoint:
     limitReached:
       private: "$[prefix] &cDu hast die maximale Anzahl an Wegpunkten erreicht die du erstellen kannst."

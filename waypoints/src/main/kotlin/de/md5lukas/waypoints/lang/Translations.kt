@@ -69,6 +69,8 @@ class Translations(
         it to Translation(tl, "text.beaconColors.${it.name.lowercase()}")
     }
 
+    val MESSAGE_FEATURE_DISABLED = Translation(tl, "message.featureDisabled")
+
     val WAYPOINT_LIMIT_REACHED_PRIVATE = Translation(tl, "message.waypoint.limitReached.private")
     val WAYPOINT_NAME_DUPLICATE_PRIVATE = Translation(tl, "message.waypoint.nameDuplicate.private")
     val WAYPOINT_SET_SUCCESS_PRIVATE = Translation(tl, "message.waypoint.setSuccess.private")

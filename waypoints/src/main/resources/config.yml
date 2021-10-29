@@ -8,6 +8,10 @@ general:
     # Set time in hours after saved UUIDs will be removed from the cache
     expireAfter: 24
 
+  features:
+    # Set to "false" to disable global waypoints
+    globalWaypoints: true
+
   openWithItem:
     enabled: true
 

@@ -151,6 +151,8 @@ text:
     purple: "&7Purple"
 
 message:
+  featureDisabled: "$[prefix] &cThe feature you are trying to use is disabled."
+
   waypoint:
     limitReached:
       private: "$[prefix] &cYou have reached your personal limit of waypoints you can create."
