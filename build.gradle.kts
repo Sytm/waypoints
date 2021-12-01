@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.dokka") version "1.5.31" apply false
 }
 
-version = "3.1.0"
+version = "3.1.1"
 
 allprojects {
     repositories {
