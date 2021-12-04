@@ -4,6 +4,8 @@ plugins {
     id("org.jetbrains.dokka") version "1.5.31" apply false
 }
 
+ext["spigotVersion"] = "1.16.5-R0.1-SNAPSHOT"
+
 version = "3.1.1"
 
 allprojects {
