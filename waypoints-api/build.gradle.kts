@@ -11,7 +11,8 @@ version = parent!!.version
 description = "Waypoints api"
 
 dependencies {
-    api("org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT")
+    api("org.spigotmc:spigot-api:${parent!!.ext["spigotVersion"]}")
+
     api(kotlin("stdlib-jdk8"))
 }
 

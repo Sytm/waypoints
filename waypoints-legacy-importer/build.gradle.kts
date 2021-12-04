@@ -10,9 +10,9 @@ group = "de.md5lukas"
 version = parent!!.version
 
 dependencies {
-    implementation("org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT")
-    implementation(kotlin("stdlib-jdk8"))
+    api("org.spigotmc:spigot-api:${parent!!.ext["spigotVersion"]}")
 
+    implementation(kotlin("stdlib-jdk8"))
     implementation(project(":waypoints-api"))
 
     implementation("de.md5lukas:nbt:1.2.2")
