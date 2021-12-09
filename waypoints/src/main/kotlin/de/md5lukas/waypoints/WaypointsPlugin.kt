@@ -12,14 +12,16 @@ import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.db.Statistics
 import de.md5lukas.waypoints.db.impl.WaypointsAPIImpl
 import de.md5lukas.waypoints.events.WaypointsListener
+import de.md5lukas.waypoints.integrations.DynMapIntegration
+import de.md5lukas.waypoints.integrations.VaultIntegration
 import de.md5lukas.waypoints.lang.TranslationLoader
 import de.md5lukas.waypoints.lang.Translations
 import de.md5lukas.waypoints.lang.WorldTranslations
 import de.md5lukas.waypoints.pointer.PointerManager
 import de.md5lukas.waypoints.util.TeleportManager
-import de.md5lukas.waypoints.util.VaultHook
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SingleLineChart
+import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -62,6 +64,8 @@ class WaypointsPlugin : JavaPlugin() {
         logger.level = Level.FINE
         loadConfiguration()
         initDatabase()
+        initApiServiceProvider()
+
         initPointerManager()
         initTranslations()
         initTeleportManager()
@@ -91,6 +95,10 @@ class WaypointsPlugin : JavaPlugin() {
         WaypointsAPI.INSTANCE = api
 
         this.compassStorage = CompassStorage(databaseManager)
+    }
+
+    private fun initApiServiceProvider() {
+        server.servicesManager.register(WaypointsAPI::class.java, api, this, ServicePriority.Normal);
     }
 
     private fun initPointerManager() {
