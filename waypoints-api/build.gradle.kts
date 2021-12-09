@@ -10,14 +10,24 @@ group = "de.md5lukas"
 version = parent!!.version
 description = "Waypoints api"
 
+val spigotVersion: String by project
+val jvmTarget: String by project
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+    maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+}
+
 dependencies {
-    api("org.spigotmc:spigot-api:${parent!!.ext["spigotVersion"]}")
+    api("org.spigotmc:spigot-api:${spigotVersion}")
 
     api(kotlin("stdlib-jdk8"))
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = jvmTarget
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
