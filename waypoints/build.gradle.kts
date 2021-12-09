@@ -11,20 +11,39 @@ group = "de.md5lukas"
 version = parent!!.version
 description = "Waypoints plugin"
 
+val spigotVersion: String by project
+val jvmTarget: String by project
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+    maven(url = "https://repo.codemc.io/repository/maven-public/")
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
+    maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven(url = "https://repo.minebench.de/")
+    maven(url = "https://jitpack.io")
+
+    maven(url = "https://repo.mikeprimm.com/")
+}
+
 dependencies {
-    api("org.spigotmc:spigot-api:${parent!!.ext["spigotVersion"]}")
+    api("org.spigotmc:spigot-api:${spigotVersion}")
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":waypoints-api"))
     implementation(project(":waypoints-legacy-importer", "shadow"))
 
-
+    // Dependencies on own projects
     implementation("de.md5lukas:md5-commons:2.0.0-SNAPSHOT")
     implementation("de.md5lukas:sqlite-kotlin-helper:1.0.1")
     implementation("de.md5lukas:kinvs:1.0.0-SNAPSHOT")
 
+    // Required dependencies
     implementation("net.wesjd:anvilgui:1.5.3-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:2.2.1")
+
+    // Optional dependencies
     implementation("com.github.MilkBowl:VaultAPI:1.7.1")
 
     testImplementation(kotlin("test-junit5"))
@@ -41,7 +60,7 @@ tasks.withType<ProcessResources> {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = jvmTarget
 }
 
 tasks.withType<ShadowJar> {

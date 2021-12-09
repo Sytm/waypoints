@@ -4,19 +4,4 @@ plugins {
     id("org.jetbrains.dokka") version "1.5.31" apply false
 }
 
-ext["spigotVersion"] = "1.16.5-R0.1-SNAPSHOT"
-
 version = "3.1.1"
-
-allprojects {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-
-        maven(url = "https://repo.codemc.io/repository/maven-public/")
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
-        maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-        maven(url = "https://repo.minebench.de/")
-        maven(url = "https://jitpack.io")
-    }
-}
