@@ -112,7 +112,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                 canTeleport
             }
             TeleportPaymentType.VAULT -> {
-                val balance = plugin.vaultHook.getBalance(player)
+                val balance = plugin.vaultIntegration.getBalance(player)
                 val canTeleport = balance >= price
                 if (!canTeleport) {
                     plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE.send(
@@ -140,7 +140,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                         }
                         TeleportPaymentType.VAULT -> {
                             waypoint.getWaypointMeta(player.uniqueId).teleportations++
-                            plugin.vaultHook.withdraw(player, price)
+                            plugin.vaultIntegration.withdraw(player, price)
                         }
                     }
                 ) {
