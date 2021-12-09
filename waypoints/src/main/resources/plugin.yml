@@ -12,6 +12,7 @@ libraries:
 
 softdepend:
   - Vault
+  - dynmap
 
 commands:
   waypoints:

@@ -56,9 +56,9 @@ class WaypointsPlugin : JavaPlugin() {
 
     lateinit var uuidUtils: UUIDUtils
         private set
-    private var vaultHook0: VaultHook? = null
-    val vaultHook: VaultHook
-        get() = vaultHook0 ?: throw IllegalStateException("The vault hook is configured to be used, but no vault compatible plugin is installed")
+    private var vaultIntegration0: VaultIntegration? = null
+    val vaultIntegration: VaultIntegration
+        get() = vaultIntegration0 ?: throw IllegalStateException("The vault integration is configured to be used, but no vault compatible plugin is installed")
 
     override fun onEnable() {
         logger.level = Level.FINE
@@ -71,7 +71,8 @@ class WaypointsPlugin : JavaPlugin() {
         initTeleportManager()
         initUUIDUtils()
         initDurationFormatter()
-        initVaultHook()
+        initIntegrations()
+
 
         registerCommands()
         registerEvents()
@@ -143,10 +144,14 @@ class WaypointsPlugin : JavaPlugin() {
         }
     }
 
-    private fun initVaultHook() {
-        val hook = VaultHook()
-        if (hook.setupEconomy()) {
-            vaultHook0 = hook
+    private fun initIntegrations() {
+        val integration = VaultIntegration()
+        if (integration.setupEconomy()) {
+            vaultIntegration0 = integration
+        }
+
+        if (waypointsConfig.general.features.globalWaypoints) {
+            DynMapIntegration(this).setupDynMap()
         }
     }
 

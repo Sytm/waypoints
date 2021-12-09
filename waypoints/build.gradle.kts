@@ -46,6 +46,13 @@ dependencies {
     // Optional dependencies
     implementation("com.github.MilkBowl:VaultAPI:1.7.1")
 
+    implementation("us.dynmap:DynmapCoreAPI:3.1:all")
+    implementation("us.dynmap:dynmap-api:3.1:unshaded")
+    implementation("us.dynmap:spigot:3.1:unshaded") {
+        isTransitive = false
+    }
+
+    // Test dependencies
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
