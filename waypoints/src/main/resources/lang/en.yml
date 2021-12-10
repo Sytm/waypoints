@@ -319,13 +319,13 @@ inventory:
       displayName: "&4Delete waypoint"
       description: ""
       question:
-        displayName: "&7Do you really want to delete the waypoint &e${name}&7?"
+        displayName: "&7Do you really want to delete &e${name}&7?"
         description: ""
       confirm:
-        displayName: "&cYes, delete the waypoint &e${name}&c!"
+        displayName: "&cYes, delete &e${name}&c!"
         description: ""
       cancel:
-        displayName: "&aNo, do not delete the waypoint &e${name}&a."
+        displayName: "&aNo, do not delete &e${name}&a."
         description: ""
     rename:
       displayName: "&eRename waypoint"
@@ -349,6 +349,32 @@ inventory:
     getUuid:
       displayName: "&eGet the UUID of the waypoint"
       description: "&7Sends a clickable message that enters the UUID into the chat"
+    make:
+      public:
+        displayName: "&eMake waypoint public"
+        description: ""
+        question:
+          displayName: "&7Do you really want to make &e${name}&7 public?"
+          description: ""
+        confirm:
+          displayName: "&cYes, make &e${name}&c public!"
+          description: ""
+        cancel:
+          displayName: "&aNo, do not make &e${name}&a public."
+          description: ""
+      permission:
+        displayName: "&eMake waypoint a permission waypoint"
+        description: ""
+        question:
+          displayName: "&7Do you really want to make &e${name}&7 a permission waypoint?"
+          description: ""
+        confirm:
+          displayName: "&cYes, make &e${name}&c a permission waypoint!"
+          description: ""
+        cancel:
+          displayName: "&aNo, do not make &e${name}&a a permission waypoint."
+          description: ""
+
 
     create:
       enterName: "Enter name here"

@@ -7,6 +7,7 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.config.general.CustomIconFilterConfiguration
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -30,7 +31,7 @@ fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material): Boo
     }
 }
 
-fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
+fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
     val waypointsPlayer = plugin.api.getWaypointPlayer(player.uniqueId)
 
     val waypointLimit = plugin.waypointsConfig.general.waypoints.limit
@@ -44,31 +45,31 @@ fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String)
         return NameTaken
     }
 
-    val waypoint = waypointsPlayer.createWaypoint(name, player.location)
+    val waypoint = waypointsPlayer.createWaypoint(name, location)
     plugin.translations.WAYPOINT_SET_SUCCESS_PRIVATE.send(player)
 
     return SuccessWaypoint(waypoint)
 }
 
-fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
+fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
     if (!checkWaypointName(plugin, plugin.api.publicWaypoints, name)) {
         plugin.translations.WAYPOINT_NAME_DUPLICATE_PUBLIC.send(player)
         return NameTaken
     }
 
-    val waypoint = plugin.api.publicWaypoints.createWaypoint(name, player.location)
+    val waypoint = plugin.api.publicWaypoints.createWaypoint(name, location)
     plugin.translations.WAYPOINT_SET_SUCCESS_PUBLIC.send(player)
 
     return SuccessWaypoint(waypoint)
 }
 
-fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: String, permission: String): CreateResult {
+fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: String, permission: String, location: Location = player.location): CreateResult {
     if (!checkWaypointName(plugin, plugin.api.permissionWaypoints, name)) {
         plugin.translations.WAYPOINT_NAME_DUPLICATE_PERMISSION.send(player)
         return NameTaken
     }
 
-    val waypoint = plugin.api.permissionWaypoints.createWaypoint(name, player.location).also {
+    val waypoint = plugin.api.permissionWaypoints.createWaypoint(name, location).also {
         it.permission = permission
     }
     plugin.translations.WAYPOINT_SET_SUCCESS_PERMISSION.send(player)
@@ -146,5 +147,12 @@ fun checkFolderName(plugin: WaypointsPlugin, holder: WaypointHolder, name: Strin
     }
 
     return !holder.isDuplicateFolderName(name)
+}
+
+fun Waypoint.copyFieldsTo(waypoint: Waypoint) {
+    waypoint.description = this.description
+    waypoint.material = this.material
+    waypoint.beaconColor = this.beaconColor
+    waypoint.description = this.description
 }
 
