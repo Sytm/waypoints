@@ -318,6 +318,15 @@ inventory:
     delete:
       displayName: "&4Wegpunkt löschen"
       description: ""
+      question:
+        displayName: "&7Möchtest du wirklich den Wegpunkt &e${name}&7 löschen?"
+        description: ""
+      confirm:
+        displayName: "&cJa, den Wegpunkt &e${name}&c löschen!"
+        description: ""
+      cancel:
+        displayName: "&aNein, den Wegpunkt nicht &e${name}&a löschen."
+        description: ""
     rename:
       displayName: "&eWegpunkt umbenennen"
       description: ""
@@ -366,6 +375,15 @@ inventory:
     delete:
       displayName: "&4Ordner löschen"
       description: ""
+      question:
+        displayName: "&7Möchtest du wirklich den Ordner &e${name}&7 löschen?"
+        description: ""
+      confirm:
+        displayName: "&cJa, den Ordner &e${name}&c löschen!"
+        description: ""
+      cancel:
+        displayName: "&aNein, den Ordner nicht &e${name}&a löschen."
+        description: ""
     rename:
       displayName: "&eOrdner umbenennen"
       description: ""
@@ -390,27 +408,3 @@ inventory:
     background:
       displayName: "&0-"
       description: ""
-
-  delete:
-    # name: Name of the waypoint to delete
-    waypoint:
-      question:
-        displayName: "&7Möchtest du wirklich den Wegpunkt &e${name}&7 löschen?"
-        description: ""
-      confirm:
-        displayName: "&cJa, den Wegpunkt &e${name}&c löschen!"
-        description: ""
-      cancel:
-        displayName: "&aNein, den Wegpunkt nicht &e${name}&a löschen."
-        description: ""
-    # name: Name of the folder to delete
-    folder:
-      question:
-        displayName: "&7Möchtest du wirklich den Ordner &e${name}&7 löschen?"
-        description: ""
-      confirm:
-        displayName: "&cJa, den Ordner &e${name}&c löschen!"
-        description: ""
-      cancel:
-        displayName: "&aNein, den Ordner nicht &e${name}&a löschen."
-        description: ""

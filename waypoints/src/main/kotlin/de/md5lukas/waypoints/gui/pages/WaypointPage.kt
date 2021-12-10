@@ -38,10 +38,6 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
     }
 
     private val isNotDeathWaypoint = waypoint.type != Type.DEATH
-    private val isGlobalWaypoint = when (waypoint.type) {
-        Type.PUBLIC, Type.PERMISSION -> true
-        else -> false
-    }
 
     private val canModifyWaypoint =
         when (waypoint.type) {
@@ -134,27 +130,16 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             },
             'd' to if (canModifyWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_DELETE.item) {
+                    val nameMap = Collections.singletonMap(
+                        "name",
+                        waypoint.name
+                    )
                     wpGUI.open(
                         ConfirmPage(
                             wpGUI,
-                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_QUESTION.getItem(
-                                Collections.singletonMap(
-                                    "name",
-                                    waypoint.name
-                                )
-                            ),
-                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_FALSE.getItem(
-                                Collections.singletonMap(
-                                    "name",
-                                    waypoint.name
-                                )
-                            ),
-                            wpGUI.translations.WAYPOINT_CONFIRM_DELETE_TRUE.getItem(
-                                Collections.singletonMap(
-                                    "name",
-                                    waypoint.name
-                                )
-                            ),
+                            wpGUI.translations.WAYPOINT_DELETE_CONFIRM_QUESTION.getItem(nameMap),
+                            wpGUI.translations.WAYPOINT_DELETE_CONFIRM_FALSE.getItem(nameMap),
+                            wpGUI.translations.WAYPOINT_DELETE_CONFIRM_TRUE.getItem(nameMap),
                         ) {
                             if (it) {
                                 waypoint.delete()

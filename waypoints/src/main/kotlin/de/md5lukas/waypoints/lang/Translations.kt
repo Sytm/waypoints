@@ -65,7 +65,7 @@ class Translations(
 
     val TEXT_DISTANCE_OTHER_WORLD = Translation(tl, "text.distance.otherWorld")
 
-    val TEXT_BEACON_COLORS = BeaconColor.values().map { it ->
+    val TEXT_BEACON_COLORS = BeaconColor.values().map {
         it to Translation(tl, "text.beaconColors.${it.name.lowercase()}")
     }
 
@@ -128,13 +128,6 @@ class Translations(
     val OVERVIEW_SET_WAYPOINT = ItemTranslation(tl, "inventory.overview.setWaypoint")
     val OVERVIEW_CREATE_FOLDER = ItemTranslation(tl, "inventory.overview.createFolder")
 
-    val WAYPOINT_CONFIRM_DELETE_QUESTION = ItemTranslation(tl, "inventory.delete.waypoint.question")
-    val WAYPOINT_CONFIRM_DELETE_TRUE = ItemTranslation(tl, "inventory.delete.waypoint.confirm")
-    val WAYPOINT_CONFIRM_DELETE_FALSE = ItemTranslation(tl, "inventory.delete.waypoint.cancel")
-
-    val FOLDER_CONFIRM_DELETE_QUESTION = ItemTranslation(tl, "inventory.delete.folder.question")
-    val FOLDER_CONFIRM_DELETE_TRUE = ItemTranslation(tl, "inventory.delete.folder.confirm")
-    val FOLDER_CONFIRM_DELETE_FALSE = ItemTranslation(tl, "inventory.delete.folder.cancel")
 
     val ICON_PUBLIC = ItemTranslation(tl, "inventory.listing.public")
     val ICON_PERMISSION = ItemTranslation(tl, "inventory.listing.permission")
@@ -145,7 +138,10 @@ class Translations(
     val WAYPOINT_ICON_PERMISSION = ItemTranslation(tl, "inventory.waypoint.icon.permission")
 
     val WAYPOINT_SELECT = ItemTranslation(tl, "inventory.waypoint.select")
-    val WAYPOINT_DELETE = ItemTranslation(tl, "inventory.waypoint.delete")
+    val WAYPOINT_DELETE = ItemTranslation(tl, "inventory.waypoint.delete", true)
+    val WAYPOINT_DELETE_CONFIRM_QUESTION = ItemTranslation(tl, "inventory.waypoint.delete.question")
+    val WAYPOINT_DELETE_CONFIRM_TRUE = ItemTranslation(tl, "inventory.waypoint.delete.confirm")
+    val WAYPOINT_DELETE_CONFIRM_FALSE = ItemTranslation(tl, "inventory.waypoint.delete.cancel")
     val WAYPOINT_RENAME = ItemTranslation(tl, "inventory.waypoint.rename")
     val WAYPOINT_MOVE_TO_FOLDER = ItemTranslation(tl, "inventory.waypoint.moveToFolder")
     val WAYPOINT_TELEPORT = ItemTranslation(tl, "inventory.waypoint.teleport")
@@ -159,7 +155,10 @@ class Translations(
     val FOLDER_ICON_PUBLIC = ItemTranslation(tl, "inventory.folder.icon.public")
     val FOLDER_ICON_PERMISSION = ItemTranslation(tl, "inventory.folder.icon.permission")
 
-    val FOLDER_DELETE = ItemTranslation(tl, "inventory.folder.delete")
+    val FOLDER_DELETE = ItemTranslation(tl, "inventory.folder.delete", true)
+    val FOLDER_DELETE_CONFIRM_QUESTION = ItemTranslation(tl, "inventory.folder.delete.question")
+    val FOLDER_DELETE_CONFIRM_TRUE = ItemTranslation(tl, "inventory.folder.delete.confirm")
+    val FOLDER_DELETE_CONFIRM_FALSE = ItemTranslation(tl, "inventory.folder.delete.cancel")
     val FOLDER_RENAME = ItemTranslation(tl, "inventory.folder.rename")
 
     val SELECT_FOLDER_NO_FOLDER = ItemTranslation(tl, "inventory.selectFolder.noFolder")
