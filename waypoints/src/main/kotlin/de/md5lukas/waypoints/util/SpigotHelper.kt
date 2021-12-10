@@ -4,6 +4,7 @@ import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
+import org.bukkit.event.Event
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.Plugin
@@ -15,6 +16,10 @@ fun Plugin.runTask(block: () -> Unit) {
 
 fun Plugin.runTaskAsync(block: () -> Unit) {
     server.scheduler.runTaskAsynchronously(this, block)
+}
+
+fun Plugin.callEvent(event: Event) {
+    server.pluginManager.callEvent(event)
 }
 
 fun ConfigurationSection.getStringNotNull(path: String): String =
