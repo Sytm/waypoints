@@ -1,17 +1,28 @@
 package de.md5lukas.waypoints.integrations
 
 import de.md5lukas.waypoints.WaypointsPlugin
-import org.dynmap.DynmapAPI
+import de.md5lukas.waypoints.api.Type
+import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.event.WaypointCreateEvent
+import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.dynmap.bukkit.DynmapPlugin
+import org.dynmap.markers.MarkerAPI
 import org.dynmap.markers.MarkerIcon
 import org.dynmap.markers.MarkerSet
 import java.util.logging.Level
 
+/**
+ * For docs see:
+ * https://github.com/webbukkit/dynmap/blob/v3.0/DynmapCoreAPI/src/main/java/org/dynmap/markers/MarkerAPI.java
+ * https://github.com/webbukkit/dynmap/blob/v3.0/DynmapCoreAPI/src/main/java/org/dynmap/markers/MarkerSet.java
+ */
 class DynMapIntegration(
     private val plugin: WaypointsPlugin
-) : Runnable {
+) : Listener {
 
-    private var dynMapApi: DynmapAPI? = null
+    private lateinit var markerApi: MarkerAPI
     private lateinit var markerSet: MarkerSet
     private lateinit var markerIcon: MarkerIcon
 
@@ -22,40 +33,52 @@ class DynMapIntegration(
 
         plugin.logger.log(Level.INFO, "Found DynMap plugin")
         try {
-            val dynMapApi = DynmapPlugin.plugin
-            this.dynMapApi = dynMapApi
+            markerApi = DynmapPlugin.plugin.markerAPI
+            markerIcon = markerApi.getMarkerIcon(plugin.waypointsConfig.integrations.dynmap.icon)
 
-            val markerApi = dynMapApi.markerAPI
-            markerSet = markerApi.createMarkerSet("waypoints_public", "Public Waypoints", null, false); // id, label, iconlimit, persistent
-            markerIcon = markerApi.getMarkerIcon(MarkerIcon.DEFAULT)
+            markerSet = markerApi.createMarkerSet(
+                "waypoints_public",
+                plugin.translations.INTEGRATIONS_DYNMAP_MARKER_SET_LABEL.text,
+                null,
+                false
+            ); // id, label, iconlimit, persistent
 
-            plugin.server.scheduler.runTaskTimerAsynchronously(plugin, this, 0, 5 * 60 * 20);
+            plugin.api.publicWaypoints.allWaypoints.forEach {
+                createMarker(it)
+            }
+
+            plugin.server.pluginManager.registerEvents(this, plugin)
         } catch (_: ClassNotFoundException) {
-            plugin.logger.log(Level.WARNING, "The dynmap plugin has been found, but plugin instance class could not be found")
+            plugin.logger.log(Level.WARNING, "The DynMap plugin has been found, but plugin instance class could not be found")
         }
     }
 
-    /**
-     * For docs see:
-     * https://github.com/webbukkit/dynmap/blob/v3.0/DynmapCoreAPI/src/main/java/org/dynmap/markers/MarkerAPI.java
-     * https://github.com/webbukkit/dynmap/blob/v3.0/DynmapCoreAPI/src/main/java/org/dynmap/markers/MarkerSet.java
-     */
-    override fun run() {
-        plugin.api.publicWaypoints.allWaypoints.forEach {
-            if (markerSet.findMarker(it.id.toString()) === null) {
-                with(it.location) {
-                    markerSet.createMarker(
-                        it.id.toString(), // ID
-                        it.name, // Label
-                        world!!.name, // World ID
-                        x, // X
-                        y, // Y
-                        z, // z
-                        markerIcon, // Marker icon
-                        false // is persistent
-                    )
-                }
-            }
+    @EventHandler
+    private fun onCreate(e: WaypointCreateEvent) {
+        if (e.waypoint.type === Type.PUBLIC) {
+            createMarker(e.waypoint)
+        }
+    }
+
+    @EventHandler
+    private fun onDelete(e: WaypointPostDeleteEvent) {
+        if (e.waypoint.type === Type.PUBLIC) {
+            markerSet.findMarker(e.waypoint.id.toString())?.deleteMarker()
+        }
+    }
+
+    private fun createMarker(waypoint: Waypoint) {
+        with(waypoint.location) {
+            markerSet.createMarker(
+                waypoint.id.toString(), // ID
+                waypoint.name, // Label
+                world!!.name, // World ID
+                x, // X
+                y, // Y
+                z, // z
+                markerIcon, // Marker icon
+                false // is persistent
+            )
         }
     }
 }

@@ -206,6 +206,11 @@ pointers:
     # correct: Translated name of the world the waypoint is in
     wrongWorld: "&cYou are currently in the world &a${current}&c, but the waypoint is in &a${correct}"
 
+integrations:
+  dynmap:
+    markerSet:
+      label: "Public waypoints"
+
 inventory:
   title:
     self: "&8Your waypoints"

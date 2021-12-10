@@ -173,4 +173,6 @@ class Translations(
     val FOLDER_CREATE_ENTER_NAME = Translation(tl, "inventory.folder.create.enterName")
 
     val CONFIRM_BACKGROUND = ItemTranslation(tl, "inventory.confirm.background")
+
+    val INTEGRATIONS_DYNMAP_MARKER_SET_LABEL = Translation(tl, "integrations.dynmap.markerSet.label")
 }

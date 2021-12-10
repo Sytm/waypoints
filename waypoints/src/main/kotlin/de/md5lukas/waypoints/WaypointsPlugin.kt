@@ -6,7 +6,7 @@ import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
-import de.md5lukas.waypoints.config.WaypointsConfig
+import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.db.CompassStorage
 import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.db.Statistics
@@ -35,7 +35,7 @@ class WaypointsPlugin : JavaPlugin() {
     private lateinit var databaseManager: DatabaseManager
     val statistics: Statistics
         get() = databaseManager.statistics
-    lateinit var waypointsConfig: WaypointsConfig
+    lateinit var waypointsConfig: WaypointsConfiguration
         private set
 
     lateinit var api: WaypointsAPI
@@ -83,7 +83,7 @@ class WaypointsPlugin : JavaPlugin() {
     //<editor-fold desc="onEnable Methods">
     private fun loadConfiguration() {
         saveDefaultConfig()
-        waypointsConfig = WaypointsConfig()
+        waypointsConfig = WaypointsConfiguration()
         waypointsConfig.loadFromConfiguration(config)
     }
 
@@ -145,7 +145,7 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun initIntegrations() {
-        val integration = VaultIntegration()
+        val integration = VaultIntegration(this)
         if (integration.setupEconomy()) {
             vaultIntegration0 = integration
         }
