@@ -19,7 +19,7 @@ class GeneralConfiguration {
 
     val customIconFilter = CustomIconFilterConfiguration()
 
-    val openWithItem = OpenWithItemConfig()
+    val openWithItem = OpenWithItemConfiguration()
 
     val teleport = TeleportConfiguration()
 

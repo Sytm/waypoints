@@ -5,7 +5,7 @@ import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.event.block.Action
 
-class OpenWithItemConfig {
+class OpenWithItemConfiguration {
 
     var enabled: Boolean = false
         private set

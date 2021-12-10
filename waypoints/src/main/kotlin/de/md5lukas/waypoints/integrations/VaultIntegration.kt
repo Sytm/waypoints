@@ -1,18 +1,20 @@
 package de.md5lukas.waypoints.integrations
 
+import de.md5lukas.waypoints.WaypointsPlugin
 import net.milkbowl.vault.economy.Economy
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-class VaultIntegration {
+class VaultIntegration(
+    private val plugin: WaypointsPlugin
+) {
 
     private var economy: Economy? = null
 
     fun setupEconomy(): Boolean {
-        if (Bukkit.getPluginManager().getPlugin("Vault") === null) {
+        if (plugin.server.pluginManager.getPlugin("Vault") === null) {
             return false
         }
-        val rsp = Bukkit.getServicesManager().getRegistration(Economy::class.java) ?: return false
+        val rsp = plugin.server.servicesManager.getRegistration(Economy::class.java) ?: return false
 
         economy = rsp.provider
         return true

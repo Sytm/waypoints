@@ -92,6 +92,11 @@ general:
       maxCost: 3
       formula: n
 
+integrations:
+  dynmap:
+    # See https://github.com/webbukkit/dynmap/wiki/Using-Markers#marker-icons for more information
+    icon: default
+
 pointers:
   # Automatically deselects the waypoint when the player gets into the defined radius. Set to zero to disable
   disableWhenReachedRadius: 5
