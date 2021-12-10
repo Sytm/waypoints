@@ -318,6 +318,15 @@ inventory:
     delete:
       displayName: "&4Delete waypoint"
       description: ""
+      question:
+        displayName: "&7Do you really want to delete the waypoint &e${name}&7?"
+        description: ""
+      confirm:
+        displayName: "&cYes, delete the waypoint &e${name}&c!"
+        description: ""
+      cancel:
+        displayName: "&aNo, do not delete the waypoint &e${name}&a."
+        description: ""
     rename:
       displayName: "&eRename waypoint"
       description: ""
@@ -366,6 +375,15 @@ inventory:
     delete:
       displayName: "&4Delete folder"
       description: ""
+      question:
+        displayName: "&7Do you really want to delete the folder &e${name}&7?"
+        description: ""
+      confirm:
+        displayName: "&cYes, delete the folder &e${name}&c!"
+        description: ""
+      cancel:
+        displayName: "&aNo, do not delete the folder &e${name}&a."
+        description: ""
     rename:
       displayName: "&eRename folder"
       description: ""
@@ -390,27 +408,3 @@ inventory:
     background:
       displayName: "&0-"
       description: ""
-
-  delete:
-    # name: Name of the waypoint to delete
-    waypoint:
-      question:
-        displayName: "&7Do you really want to delete the waypoint &e${name}&7?"
-        description: ""
-      confirm:
-        displayName: "&cYes, delete the waypoint &e${name}&c!"
-        description: ""
-      cancel:
-        displayName: "&aNo, do not delete the waypoint &e${name}&a."
-        description: ""
-    # name: Name of the folder to delete
-    folder:
-      question:
-        displayName: "&7Do you really want to delete the folder &e${name}&7?"
-        description: ""
-      confirm:
-        displayName: "&cYes, delete the folder &e${name}&c!"
-        description: ""
-      cancel:
-        displayName: "&aNo, do not delete the folder &e${name}&a."
-        description: ""

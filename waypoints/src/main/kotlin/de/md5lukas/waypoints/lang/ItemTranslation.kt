@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack
 class ItemTranslation(
     private val translationLoader: TranslationLoader,
     private val key: String,
+    private val appendItemSuffix: Boolean = false
 ) {
 
     val displayName: String
@@ -17,7 +18,7 @@ class ItemTranslation(
         get() = translationLoader["$key.description"]
 
     val material: Material
-        get() = translationLoader.plugin.waypointsConfig.inventory.getMaterial(key)
+        get() = translationLoader.plugin.waypointsConfig.inventory.getMaterial(key + if (appendItemSuffix) ".item" else "")
 
     val item: ItemStack
         get() = getItem(displayName, description)

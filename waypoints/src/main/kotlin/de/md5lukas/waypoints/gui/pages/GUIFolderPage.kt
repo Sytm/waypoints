@@ -81,27 +81,16 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                     }
                 } else {
                     GUIItem(wpGUI.translations.FOLDER_DELETE.item) {
+                        val nameMap = Collections.singletonMap(
+                            "name",
+                            guiFolder.name
+                        )
                         wpGUI.open(
                             ConfirmPage(
                                 wpGUI,
-                                wpGUI.translations.FOLDER_CONFIRM_DELETE_QUESTION.getItem(
-                                    Collections.singletonMap(
-                                        "name",
-                                        guiFolder.name
-                                    )
-                                ),
-                                wpGUI.translations.FOLDER_CONFIRM_DELETE_FALSE.getItem(
-                                    Collections.singletonMap(
-                                        "name",
-                                        guiFolder.name
-                                    )
-                                ),
-                                wpGUI.translations.FOLDER_CONFIRM_DELETE_TRUE.getItem(
-                                    Collections.singletonMap(
-                                        "name",
-                                        guiFolder.name
-                                    )
-                                ),
+                                wpGUI.translations.FOLDER_DELETE_CONFIRM_QUESTION.getItem(nameMap),
+                                wpGUI.translations.FOLDER_DELETE_CONFIRM_FALSE.getItem(nameMap),
+                                wpGUI.translations.FOLDER_DELETE_CONFIRM_TRUE.getItem(nameMap),
                             ) {
                                 if (it) {
                                     (guiFolder as Folder).delete()
