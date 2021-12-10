@@ -210,6 +210,17 @@ inventory:
     teleport: ENDER_PEARL
     selectBeaconColor: LIME_STAINED_GLASS
     getUuid: PAPER
+    make:
+      public:
+        item: ENCHANTED_BOOK
+        question: OAK_SIGN
+        confirm: ENCHANTED_BOOK
+        cancel: BARRIER
+      permission:
+        item: ENCHANTED_BOOK
+        question: OAK_SIGN
+        confirm: ENCHANTED_BOOK
+        cancel: BARRIER
 
   folder:
     icon:

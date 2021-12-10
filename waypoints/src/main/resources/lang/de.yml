@@ -319,13 +319,13 @@ inventory:
       displayName: "&4Wegpunkt löschen"
       description: ""
       question:
-        displayName: "&7Möchtest du wirklich den Wegpunkt &e${name}&7 löschen?"
+        displayName: "&7Möchtest du wirklich &e${name}&7 löschen?"
         description: ""
       confirm:
-        displayName: "&cJa, den Wegpunkt &e${name}&c löschen!"
+        displayName: "&cJa, &e${name}&c löschen!"
         description: ""
       cancel:
-        displayName: "&aNein, den Wegpunkt nicht &e${name}&a löschen."
+        displayName: "&aNein, &e${name}&a nicht löschen."
         description: ""
     rename:
       displayName: "&eWegpunkt umbenennen"
@@ -349,6 +349,31 @@ inventory:
     getUuid:
       displayName: "&eUUID vom Wegpunkt erhalten"
       description: "&7Schickt eine klickbare Nachricht die die UUID in das Textfeld kopiert"
+    make:
+      public:
+        displayName: "&4Wegpunkt öffentlich machen"
+        description: ""
+        question:
+          displayName: "&7Möchtest du wirklich &e${name}&7 öffentlich machen?"
+          description: ""
+        confirm:
+          displayName: "&cJa, &e${name}&c öffentlich machen!"
+          description: ""
+        cancel:
+          displayName: "&aNein, &e${name}&a nicht öffentlich machen."
+          description: ""
+      permission:
+        displayName: "&4Wegpunkt eingeschränkt machen"
+        description: ""
+        question:
+          displayName: "&7Möchtest du wirklich &e${name}&7 eingeschränkt machen?"
+          description: ""
+        confirm:
+          displayName: "&cJa, &e${name}&c eingeschränkt machen!"
+          description: ""
+        cancel:
+          displayName: "&aNein, &e${name}&a nicht eingeschränkt machen."
+          description: ""
 
     create:
       enterName: "Name hier eingeben"
