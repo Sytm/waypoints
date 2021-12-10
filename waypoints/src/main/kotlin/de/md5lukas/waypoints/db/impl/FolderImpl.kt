@@ -8,9 +8,12 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
+import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.util.Formatters
+import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -89,10 +92,12 @@ internal class FolderImpl private constructor(
     }
 
     override fun delete() {
+        dm.plugin.callEvent(FolderPreDeleteEvent(this))
         dm.connection.update(
             "DELETE FROM folders WHERE id = ?",
             id.toString()
         )
+        dm.plugin.callEvent(FolderPostDeleteEvent(this))
     }
 
     override val guiType: GUIType = GUIType.FOLDER

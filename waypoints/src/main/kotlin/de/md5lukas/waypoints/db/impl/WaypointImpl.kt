@@ -4,9 +4,12 @@ import de.md5lukas.commons.MathHelper
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
+import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
+import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.util.Formatters
+import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.format
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
@@ -113,10 +116,12 @@ class WaypointImpl private constructor(
     }
 
     override fun delete() {
+        dm.plugin.callEvent(WaypointPreDeleteEvent(this))
         dm.connection.update(
             "DELETE FROM waypoints WHERE id = ?",
             id.toString()
         )
+        dm.plugin.callEvent(WaypointPostDeleteEvent(this))
     }
 
     private fun set(column: String, value: Any?) {

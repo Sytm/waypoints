@@ -9,8 +9,11 @@ import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
+import de.md5lukas.waypoints.api.event.FolderCreateEvent
+import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.db.DatabaseManager
+import de.md5lukas.waypoints.util.callEvent
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -88,7 +91,9 @@ internal open class WaypointHolderImpl(
         )
         return dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?;", id.toString()) {
             WaypointImpl(dm, this)
-        }!!
+        }!!.also {
+            dm.plugin.callEvent(WaypointCreateEvent(it))
+        }
     }
 
     override fun createFolder(name: String): Folder {
@@ -103,7 +108,9 @@ internal open class WaypointHolderImpl(
         )
         return dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?", id.toString()) {
             FolderImpl(dm, this)
-        }!!
+        }!!.also {
+            dm.plugin.callEvent(FolderCreateEvent(it))
+        }
     }
 
     override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
