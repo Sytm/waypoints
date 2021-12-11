@@ -20,6 +20,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
          * i = Get UUID (Global waypoints only)
          * u = Move to public folder
          * e = Move to permission folder
+         * p = Change permission
          * s = Select
          * c = Select beacon color
          * f = Move to folder
@@ -32,7 +33,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             "____w____",
             "_________",
             "i_u_s___c",
-            "_f_e___r_",
+            "_f_e_p_r_",
             "d___t___b",
         )
     }
@@ -157,6 +158,21 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                             }
                         }
                     )
+                }
+            } else {
+                background
+            },
+            'p' to if (waypoint.type === Type.PERMISSION && canModifyWaypoint) {
+                GUIItem(wpGUI.translations.WAYPOINT_EDIT_PERMISSION.getItem(Collections.singletonMap("permission", waypoint.permission ?: ""))) {
+                    AnvilGUI.Builder().plugin(wpGUI.plugin).text(waypoint.permission).onComplete { _, permission ->
+                        waypoint.permission = permission
+                        return@onComplete AnvilGUI.Response.close()
+                    }.onClose {
+                        updatePage()
+                        wpGUI.plugin.runTask {
+                            wpGUI.gui.open()
+                        }
+                    }.open(wpGUI.viewer)
                 }
             } else {
                 background
