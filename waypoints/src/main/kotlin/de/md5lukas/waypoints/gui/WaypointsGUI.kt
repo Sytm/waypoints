@@ -19,6 +19,7 @@ import de.md5lukas.waypoints.gui.pages.ListingPage
 import de.md5lukas.waypoints.gui.pages.WaypointPage
 import de.md5lukas.waypoints.util.*
 import net.wesjd.anvilgui.AnvilGUI
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -106,7 +107,7 @@ class WaypointsGUI(
         }.open(viewer)
     }
 
-    fun openCreateWaypoint(type: Type, folder: Folder?) {
+    fun openCreateWaypoint(type: Type, folder: Folder?, location: Location = viewer.location) {
         var waypoint: Waypoint? = null
 
         var name: String? = null
@@ -124,9 +125,9 @@ class WaypointsGUI(
 
             val result = name!!.let { name ->
                 when (type) {
-                    Type.PRIVATE -> createWaypointPrivate(plugin, viewer, name)
-                    Type.PUBLIC -> createWaypointPublic(plugin, viewer, name)
-                    Type.PERMISSION -> createWaypointPermission(plugin, viewer, name, permission!!)
+                    Type.PRIVATE -> createWaypointPrivate(plugin, viewer, name, location)
+                    Type.PUBLIC -> createWaypointPublic(plugin, viewer, name, location)
+                    Type.PERMISSION -> createWaypointPermission(plugin, viewer, name, permission!!, location)
                     else -> throw IllegalArgumentException("Cannot create waypoints with the gui of the type $type")
                 }
             }

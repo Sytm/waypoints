@@ -154,6 +154,11 @@ message:
   featureDisabled: "$[prefix] &cDie Funktion die du benutzten möchtest wurden deaktiviert."
 
   waypoint:
+    create:
+      coordinates:
+        invalidFormat: |
+          $[prefix] &cDie Koordinaten müssen im folgenden Format angegeben werden:
+          &a102/35/-238
     limitReached:
       private: "$[prefix] &cDu hast die maximale Anzahl an Wegpunkten erreicht die du erstellen kannst."
     nameDuplicate:
@@ -263,7 +268,12 @@ inventory:
       description: "&7Die Richtungsindikatoren werden nicht mehr angezeigt"
     setWaypoint:
       displayName: "&eNeuen Wegpunkt erstellen"
-      description: "&7Der Wegpunkt wird im aktuellen Ordner erstellt"
+      description: |
+        &7Der Wegpunkt wird im aktuellen Ordner erstellt
+        
+        &7Wenn du &eShift-Klickst&7, kannst du einen Wegpunkt
+        &7erstellen indem du Koordinaten so angibst:
+        &a102/35/-238
     createFolder:
       displayName: "&eNeunen Ordner erstellen"
       description: ""
@@ -377,6 +387,7 @@ inventory:
 
     create:
       enterName: "Name hier eingeben"
+      enterCoordinates: "Koordinaten hier eingeben"
       enterPermission: "Berechtigung hier eingeben"
 
   folder:

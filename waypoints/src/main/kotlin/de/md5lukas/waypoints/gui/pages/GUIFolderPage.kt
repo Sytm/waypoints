@@ -14,8 +14,10 @@ import de.md5lukas.waypoints.gui.items.CycleSortItem
 import de.md5lukas.waypoints.gui.items.ToggleGlobalsItem
 import de.md5lukas.waypoints.util.checkFolderName
 import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
+import de.md5lukas.waypoints.util.parseLocationString
 import de.md5lukas.waypoints.util.runTask
 import net.wesjd.anvilgui.AnvilGUI
+import org.bukkit.Location
 import java.util.*
 
 class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : ListingPage<GUIDisplayable>(wpGUI, guiFolder, {
@@ -177,7 +179,31 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
             },
             'w' to if (canModify) {
                 GUIItem(wpGUI.translations.OVERVIEW_SET_WAYPOINT.item) {
-                    wpGUI.openCreateWaypoint(guiFolder.type, if (guiFolder is Folder) guiFolder else null)
+                    if (it.isShiftClick) {
+                        var parsedLocation: Location? = null
+                        AnvilGUI.Builder().plugin(wpGUI.plugin).text(wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.text).onComplete { _, coordinates ->
+                            parsedLocation = parseLocationString(wpGUI.plugin, wpGUI.viewer, coordinates)
+
+                            return@onComplete if (parsedLocation === null) {
+                                AnvilGUI.Response.text(coordinates)
+                            } else {
+                                AnvilGUI.Response.close()
+                            }
+                        }.onClose {
+                            parsedLocation.let { location ->
+                                if (location === null) {
+                                    wpGUI.goBack()
+                                    wpGUI.plugin.runTask {
+                                        wpGUI.gui.open()
+                                    }
+                                } else {
+                                    wpGUI.openCreateWaypoint(guiFolder.type, if (guiFolder is Folder) guiFolder else null, location)
+                                }
+                            }
+                        }.open(wpGUI.viewer)
+                    } else {
+                        wpGUI.openCreateWaypoint(guiFolder.type, if (guiFolder is Folder) guiFolder else null)
+                    }
                 }
             } else {
                 background

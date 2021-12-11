@@ -71,6 +71,8 @@ class Translations(
 
     val MESSAGE_FEATURE_DISABLED = Translation(tl, "message.featureDisabled")
 
+    val WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT = Translation(tl, "message.waypoint.create.coordinates.invalidFormat")
+
     val WAYPOINT_LIMIT_REACHED_PRIVATE = Translation(tl, "message.waypoint.limitReached.private")
     val WAYPOINT_NAME_DUPLICATE_PRIVATE = Translation(tl, "message.waypoint.nameDuplicate.private")
     val WAYPOINT_SET_SUCCESS_PRIVATE = Translation(tl, "message.waypoint.setSuccess.private")
@@ -175,6 +177,7 @@ class Translations(
     val SELECT_BEACON_COLOR_MOVE_RIGHT = ItemTranslation(tl, "inventory.selectBeaconColor.moveRight")
 
     val WAYPOINT_CREATE_ENTER_NAME = Translation(tl, "inventory.waypoint.create.enterName")
+    val WAYPOINT_CREATE_ENTER_COORDINATES = Translation(tl, "inventory.waypoint.create.enterCoordinates")
     val WAYPOINT_CREATE_ENTER_PERMISSION = Translation(tl, "inventory.waypoint.create.enterPermission")
 
     val FOLDER_CREATE_ENTER_NAME = Translation(tl, "inventory.folder.create.enterName")
