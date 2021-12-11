@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import de.md5lukas.resourceindex.ResourceIndexTask
 import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -57,7 +58,11 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
+tasks.register("createResourceIndex", ResourceIndexTask::class.java) {
+}
+
 tasks.withType<ProcessResources> {
+    dependsOn("createResourceIndex")
     // Force refresh, because gradle does not detect changes in the variables used by expand
     this.outputs.upToDateWhen { false }
 
