@@ -67,7 +67,17 @@ tasks.withType<ProcessResources> {
     this.outputs.upToDateWhen { false }
 
     filesMatching("**/plugin.yml") {
-        expand("version" to project.version, "kotlinVersion" to getKotlinPluginVersion())
+        // 1.16.5-R0.1-SNAPSHOT
+        var apiVersion = spigotVersion.substringBefore('-')
+        if (apiVersion.count { it == '.' } > 1) {
+            apiVersion = apiVersion.substringBeforeLast('.')
+        }
+
+        expand(
+            "version" to project.version,
+            "kotlinVersion" to getKotlinPluginVersion(),
+            "apiVersion" to apiVersion
+        )
     }
 }
 

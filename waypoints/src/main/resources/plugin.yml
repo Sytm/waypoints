@@ -5,7 +5,7 @@ version: ${version}
 
 website: https://github.com/Sytm/waypoints
 
-api-version: 1.16
+api-version: ${apiVersion}
 
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
