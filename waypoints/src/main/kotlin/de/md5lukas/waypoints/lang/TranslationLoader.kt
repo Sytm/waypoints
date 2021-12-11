@@ -16,10 +16,10 @@ class TranslationLoader(
     private lateinit var loadedLanguage: String
     private lateinit var translations: Map<String, String>
 
-    private val bundledLanguages: List<String> = plugin.getResource("lang/index.txt")!!.bufferedReader(StandardCharsets.UTF_8).useLines { seq ->
+    private val bundledLanguages: List<String> = plugin.getResource("resourceIndex")!!.bufferedReader(StandardCharsets.UTF_8).useLines { seq ->
         seq.filter {
-            it.isNotBlank()
-        }.toList()
+            it.isNotBlank() && it.startsWith("lang/")
+        }.map { it.removeSurrounding("lang/", ".yml") }.toList()
     }
 
     private fun getLanguageFilePath(languageKey: String) = "lang/$languageKey.yml"
