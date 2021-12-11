@@ -359,6 +359,9 @@ inventory:
     getUuid:
       displayName: "&eGet the UUID of the waypoint"
       description: "&7Sends a clickable message that enters the UUID into the chat"
+    editPermission:
+      displayName: "&eChange required permission"
+      description: "&7Current permission is &e${permission}"
     make:
       public:
         displayName: "&eMake waypoint public"

@@ -359,6 +359,9 @@ inventory:
     getUuid:
       displayName: "&eUUID vom Wegpunkt erhalten"
       description: "&7Schickt eine klickbare Nachricht die die UUID in das Textfeld kopiert"
+    editPermission:
+      displayName: "&eBenötigte Berechtigung ändern"
+      description: "&7Aktuell benötigte Berechtigung ist &e${permission}"
     make:
       public:
         displayName: "&4Wegpunkt öffentlich machen"

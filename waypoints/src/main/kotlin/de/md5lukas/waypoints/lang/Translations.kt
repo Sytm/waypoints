@@ -151,6 +151,7 @@ class Translations(
     val WAYPOINT_TELEPORT_BALANCE = Translation(tl, "inventory.waypoint.teleport.balance")
     val WAYPOINT_SELECT_BEACON_COLOR = ItemTranslation(tl, "inventory.waypoint.selectBeaconColor")
     val WAYPOINT_GET_UUID = ItemTranslation(tl, "inventory.waypoint.getUuid")
+    val WAYPOINT_EDIT_PERMISSION = ItemTranslation(tl, "inventory.waypoint.editPermission")
     val WAYPOINT_MAKE_PUBLIC = ItemTranslation(tl, "inventory.waypoint.make.public", true)
     val WAYPOINT_MAKE_PUBLIC_CONFIRM_QUESTION = ItemTranslation(tl, "inventory.waypoint.make.public.question")
     val WAYPOINT_MAKE_PUBLIC_CONFIRM_TRUE = ItemTranslation(tl, "inventory.waypoint.make.public.confirm")
