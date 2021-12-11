@@ -81,6 +81,8 @@ tasks.withType<ShadowJar> {
         exclude(project(":waypoints-legacy-importer"))
     }
 
+    exclude("META-INF/")
+
     dependencies {
 
         include(project(":waypoints-api"))

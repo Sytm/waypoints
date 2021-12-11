@@ -154,6 +154,11 @@ message:
   featureDisabled: "$[prefix] &cThe feature you are trying to use is disabled."
 
   waypoint:
+    create:
+      coordinates:
+        invalidFormat: |
+          $[prefix] &cThe coordinates must be provided in the following format:
+          &a102/35/-238
     limitReached:
       private: "$[prefix] &cYou have reached your personal limit of waypoints you can create."
     nameDuplicate:
@@ -263,7 +268,12 @@ inventory:
       description: "&7The direction indicators are no longer shown to you"
     setWaypoint:
       displayName: "&eCreate a new waypoint"
-      description: "&7The waypoint will be created in the current folder"
+      description: |
+        &7The waypoint will be created in the current folder
+        
+        &7If you &eshift-click&7, you can create a waypoint
+        &7by providing coordinates like this:
+        &a102/35/-238
     createFolder:
       displayName: "&eCreate new folder"
       description: ""
@@ -378,6 +388,7 @@ inventory:
 
     create:
       enterName: "Enter name here"
+      enterCoordinates: "Enter coordinates here"
       enterPermission: "Enter permission here"
 
   folder:
