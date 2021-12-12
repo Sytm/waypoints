@@ -21,6 +21,6 @@ class WaypointsConfiguration() {
         general.loadFromConfiguration(cfg.getConfigurationSectionNotNull("general"))
         pointer.loadFromConfiguration(cfg.getConfigurationSectionNotNull("pointers"))
         inventory.loadFromConfiguration(cfg.getConfigurationSectionNotNull("inventory"))
-        inventory.loadFromConfiguration(cfg.getConfigurationSectionNotNull("integrations"))
+        integrations.loadFromConfiguration(cfg.getConfigurationSectionNotNull("integrations"))
     }
 }
