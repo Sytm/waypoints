@@ -4,6 +4,7 @@ import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.db.DatabaseManager
+import de.md5lukas.waypoints.db.StatisticsImpl
 import java.util.*
 
 internal class WaypointsAPIImpl(private val dm: DatabaseManager) : WaypointsAPI {
@@ -26,4 +27,6 @@ internal class WaypointsAPIImpl(private val dm: DatabaseManager) : WaypointsAPI 
     override fun getWaypointByID(uuid: UUID): Waypoint? = dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?", uuid.toString()) {
         WaypointImpl(dm, this)
     }
+
+    override val statistics: Statistics = StatisticsImpl(dm)
 }

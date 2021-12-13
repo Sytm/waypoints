@@ -17,7 +17,6 @@ class DatabaseManager(
 
     private val schemaVersion: Int = 0
     val instanceCache = InstanceCache()
-    val statistics = Statistics(this)
 
     fun initDatabase() {
         initConnection()
