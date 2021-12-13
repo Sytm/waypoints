@@ -13,14 +13,14 @@ class CompassPointer(
     override fun show(player: Player, waypoint: Waypoint) {
         val currentCompassTarget = player.compassTarget
         plugin.runTaskAsync {
-            plugin.compassStorage.saveCompassLocation(player, currentCompassTarget)
+            plugin.api.getWaypointPlayer(player.uniqueId).setCompassTarget(currentCompassTarget)
         }
         player.compassTarget = waypoint.location
     }
 
     override fun hide(player: Player, waypoint: Waypoint) {
         plugin.runTaskAsync {
-            plugin.compassStorage.loadCompassLocation(player)?.let {
+            plugin.api.getWaypointPlayer(player.uniqueId).getCompassTarget()?.let {
                 player.compassTarget = it
             }
         }

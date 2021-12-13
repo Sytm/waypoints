@@ -7,7 +7,6 @@ import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfiguration
-import de.md5lukas.waypoints.db.CompassStorage
 import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.db.impl.WaypointsAPIImpl
 import de.md5lukas.waypoints.events.WaypointsListener
@@ -36,8 +35,6 @@ class WaypointsPlugin : JavaPlugin() {
         private set
 
     lateinit var api: WaypointsAPI
-        private set
-    lateinit var compassStorage: CompassStorage
         private set
 
     private lateinit var translationLoader: TranslationLoader
@@ -91,8 +88,6 @@ class WaypointsPlugin : JavaPlugin() {
 
         api = WaypointsAPIImpl(databaseManager)
         WaypointsAPI.INSTANCE = api
-
-        this.compassStorage = CompassStorage(databaseManager)
     }
 
     private fun initApiServiceProvider() {
