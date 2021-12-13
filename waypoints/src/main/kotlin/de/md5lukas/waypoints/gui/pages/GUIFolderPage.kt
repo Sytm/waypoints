@@ -182,9 +182,10 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                     if (it.isShiftClick) {
                         var parsedLocation: Location? = null
                         AnvilGUI.Builder().plugin(wpGUI.plugin).text(wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.text).onComplete { _, coordinates ->
-                            parsedLocation = parseLocationString(wpGUI.plugin, wpGUI.viewer, coordinates)
+                            parsedLocation = parseLocationString(wpGUI.viewer, coordinates)
 
                             return@onComplete if (parsedLocation === null) {
+                                wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(wpGUI.viewer)
                                 AnvilGUI.Response.text(coordinates)
                             } else {
                                 AnvilGUI.Response.close()
