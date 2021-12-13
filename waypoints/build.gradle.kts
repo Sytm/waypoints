@@ -32,8 +32,9 @@ dependencies {
     api("org.spigotmc:spigot-api:${spigotVersion}")
     implementation(kotlin("stdlib-jdk8"))
 
+    implementation(project(":utils"))
     implementation(project(":waypoints-api"))
-    implementation(project(":waypoints-legacy-importer", "shadow"))
+    implementation(project(":legacy-importer", "shadow"))
 
     // Dependencies on own projects
     implementation("de.md5lukas:md5-commons:2.0.0-SNAPSHOT")
@@ -93,15 +94,16 @@ tasks.withType<ShadowJar> {
         exclude(dependency("net.wesjd:anvilgui"))
 
         exclude(project(":waypoints-api"))
-        exclude(project(":waypoints-legacy-importer"))
+        exclude(project(":legacy-importer"))
     }
 
     exclude("META-INF/")
 
     dependencies {
 
+        include(project(":utils"))
         include(project(":waypoints-api"))
-        include(project(":waypoints-legacy-importer"))
+        include(project(":legacy-importer"))
 
         include(dependency("de.md5lukas:md5-commons"))
         include(dependency("de.md5lukas:sqlite-kotlin-helper"))

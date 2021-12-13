@@ -1,13 +1,10 @@
 package de.md5lukas.waypoints.util
 
-import de.md5lukas.waypoints.WaypointsPlugin
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
-import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.Plugin
 import org.bukkit.util.Vector
 
@@ -59,22 +56,16 @@ fun Player.teleportKeepOrientation(location: Location) {
     this.teleport(target)
 }
 
-inline fun ItemStack.itemMeta(meta: ItemMeta.() -> Unit) {
-    itemMeta = itemMeta!!.also { it.meta() }
-}
-
-fun parseLocationString(plugin: WaypointsPlugin, player: Player, input: String): Location? {
+fun parseLocationString(player: Player, input: String): Location? {
     val parts = input.split("/")
 
     if (parts.size != 3) {
-        plugin.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(player)
         return null
     }
 
     return try {
         Location(player.world, parts[0].toDouble(), parts[1].toDouble(), parts[2].toDouble())
     } catch (_: NumberFormatException) {
-        plugin.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(player)
         null
     }
 }

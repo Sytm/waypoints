@@ -1,3 +1,3 @@
 [submodule "nbt"]
-	path = waypoints-legacy-importer/deps/nbt
+	path = legacy-importer/deps/nbt
 	url = https://github.com/Sytm-Archive/nbt.git
