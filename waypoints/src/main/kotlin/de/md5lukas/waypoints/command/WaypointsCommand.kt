@@ -121,7 +121,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
             "statistics" -> when {
                 !sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 else -> {
-                    with(plugin.statistics) {
+                    with(plugin.api.statistics) {
                         translations.COMMAND_STATISTICS_MESSAGE.send(
                             sender,
                             mapOf(

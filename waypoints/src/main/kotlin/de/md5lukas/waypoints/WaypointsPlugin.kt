@@ -9,7 +9,6 @@ import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.db.CompassStorage
 import de.md5lukas.waypoints.db.DatabaseManager
-import de.md5lukas.waypoints.db.Statistics
 import de.md5lukas.waypoints.db.impl.WaypointsAPIImpl
 import de.md5lukas.waypoints.events.WaypointsListener
 import de.md5lukas.waypoints.integrations.DynMapIntegration
@@ -33,8 +32,6 @@ class WaypointsPlugin : JavaPlugin() {
     private val METRICS_PLUGIN_ID = 6864
 
     private lateinit var databaseManager: DatabaseManager
-    val statistics: Statistics
-        get() = databaseManager.statistics
     lateinit var waypointsConfig: WaypointsConfiguration
         private set
 
@@ -99,7 +96,7 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun initApiServiceProvider() {
-        server.servicesManager.register(WaypointsAPI::class.java, api, this, ServicePriority.Normal);
+        server.servicesManager.register(WaypointsAPI::class.java, api, this, ServicePriority.Normal)
     }
 
     private fun initPointerManager() {
@@ -173,7 +170,7 @@ class WaypointsPlugin : JavaPlugin() {
     private fun startMetrics() {
         val metrics = Metrics(this, METRICS_PLUGIN_ID)
 
-        with(databaseManager.statistics) {
+        with(api.statistics) {
             metrics.addCustomChart(SingleLineChart("total_waypoints") {
                 totalWaypoints
             })
