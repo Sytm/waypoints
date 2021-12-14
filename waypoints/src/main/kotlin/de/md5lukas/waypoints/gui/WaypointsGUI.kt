@@ -47,6 +47,10 @@ class WaypointsGUI(
 
     private val pageStack = ArrayDeque<BasePage>()
 
+    internal val apiExtensions = APIExtensions(plugin)
+
+    internal inline fun <T> extendApi(block: APIExtensions.() -> T) = apiExtensions.block()
+
     internal val isOwner = viewer.uniqueId == target
 
     internal val viewerData = plugin.api.getWaypointPlayer(viewer.uniqueId)
@@ -233,12 +237,14 @@ class WaypointsGUI(
     }
 
     internal fun toGUIContent(guiDisplayable: GUIDisplayable): GUIContent {
-        return GUIItem(guiDisplayable.getItem(viewer)) {
-            when (guiDisplayable) {
-                is WaypointHolder -> openHolder(guiDisplayable)
-                is Folder -> openFolder(guiDisplayable)
-                is Waypoint -> openWaypoint(guiDisplayable)
-                else -> throw IllegalStateException("The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
+        return extendApi {
+            GUIItem(guiDisplayable.getItem(viewer)) {
+                when (guiDisplayable) {
+                    is WaypointHolder -> openHolder(guiDisplayable)
+                    is Folder -> openFolder(guiDisplayable)
+                    is Waypoint -> openWaypoint(guiDisplayable)
+                    else -> throw IllegalStateException("The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
+                }
             }
         }
     }

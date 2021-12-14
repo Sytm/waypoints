@@ -1,11 +1,12 @@
-package de.md5lukas.waypoints.db
+package de.md5lukas.waypoints.api.sqlite
 
 import de.md5lukas.jdbc.selectFirst
+import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.Statistics
 import de.md5lukas.waypoints.api.Type
 
 class StatisticsImpl(
-    private val dm: DatabaseManager
+    private val dm: SQLiteManager
 ) : Statistics {
 
     override val totalWaypoints: Int

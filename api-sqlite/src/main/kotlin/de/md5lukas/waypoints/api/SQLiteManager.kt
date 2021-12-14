@@ -1,35 +1,36 @@
-package de.md5lukas.waypoints.db
+package de.md5lukas.waypoints.api
 
 import de.md5lukas.jdbc.SQLiteHelper
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.OverviewSort
+import de.md5lukas.waypoints.api.base.DatabaseManager
+import de.md5lukas.waypoints.api.sqlite.WaypointsAPIImpl
+import org.bukkit.plugin.Plugin
 import java.io.File
 import java.sql.Connection
 import java.time.OffsetDateTime
 import java.util.logging.Level
 
-class DatabaseManager(
-    val plugin: WaypointsPlugin,
+class SQLiteManager(
+    plugin: Plugin,
     val file: File
-) : SQLiteHelper(file) {
+) : DatabaseManager(plugin) {
 
     private val schemaVersion: Int = 0
-    val instanceCache = InstanceCache()
+    private val sqliteHelper = SQLiteHelper(file)
 
-    fun initDatabase() {
-        initConnection()
-        createTables()
-        upgradeDatabase()
-        cleanDB()
+    override val api: WaypointsAPI by lazy {
+        WaypointsAPIImpl(this)
     }
 
-    private fun initConnection() {
+    override val connection: Connection
+        get() = sqliteHelper.connection
+
+    override fun initConnection() {
         connection.update("PRAGMA foreign_keys = ON;")
     }
 
-    private fun createTables() {
+    override fun createTables() {
         with(connection) {
             update(
                 """
@@ -139,13 +140,13 @@ class DatabaseManager(
         }
     }
 
-    private fun cleanDB() {
+    override fun cleanDatabase() {
         connection.update("DELETE FROM player_cooldown WHERE datetime(cooldownUntil) <= datetime(?)", OffsetDateTime.now().toString())
     }
 
     private val databaseUpgrades: LinkedHashMap<Int, Connection.() -> Unit> = LinkedHashMap()
 
-    private fun upgradeDatabase() {
+    override fun upgradeDatabase() {
         with(connection) {
             val currentSchemaVersion = selectFirst("SELECT schemaVersion FROM database_meta WHERE id = ?", 0) {
                 getInt("schemaVersion")
@@ -164,5 +165,9 @@ class DatabaseManager(
                 }
             }
         }
+    }
+
+    override fun close() {
+        sqliteHelper.close()
     }
 }

@@ -12,9 +12,11 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : Li
         it.addAll(wpGUI.getHolderForType(waypoint.type).folders)
     }
 }, { folder ->
-    GUIItem(folder.getItem(wpGUI.viewer)) {
-        waypoint.folder = folder
-        wpGUI.goBack()
+    wpGUI.extendApi {
+        GUIItem(folder.getItem(wpGUI.viewer)) {
+            waypoint.folder = folder
+            wpGUI.goBack()
+        }
     }
 }) {
 

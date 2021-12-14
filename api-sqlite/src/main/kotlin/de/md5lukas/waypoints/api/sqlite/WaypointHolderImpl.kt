@@ -1,22 +1,19 @@
-package de.md5lukas.waypoints.db.impl
+package de.md5lukas.waypoints.api.sqlite
 
-import de.md5lukas.commons.MathHelper
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
+import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.event.FolderCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.gui.GUIType
-import de.md5lukas.waypoints.db.DatabaseManager
 import de.md5lukas.waypoints.util.callEvent
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -63,7 +60,7 @@ internal open class WaypointHolderImpl(
         }!!
 
     override fun getWaypointsVisibleForPlayer(player: Player): Int =
-        if (type == Type.PERMISSION && !player.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+        if (type == Type.PERMISSION) {
             dm.connection.select("SELECT permission FROM waypoints WHERE type = ?;", type.name) {
                 getString("permission")
             }.count { player.hasPermission(it) }
@@ -141,23 +138,5 @@ internal open class WaypointHolderImpl(
         }
 
     override val name: String
-        get() = when (type) {
-            Type.PUBLIC -> dm.plugin.translations.ICON_PUBLIC.displayName
-            Type.PERMISSION -> dm.plugin.translations.ICON_PERMISSION.displayName
-            else -> throw IllegalStateException("A waypoint holder for a player cannot be a GUI item")
-        }
-
-    override fun getItem(player: Player): ItemStack {
-        val amountVisibleToPlayer = getWaypointsVisibleForPlayer(player)
-
-        val itemStack = when (type) {
-            Type.PUBLIC -> dm.plugin.translations.ICON_PUBLIC.getItem(Collections.singletonMap("amount", amountVisibleToPlayer.toString()))
-            Type.PERMISSION -> dm.plugin.translations.ICON_PERMISSION.getItem(Collections.singletonMap("amount", amountVisibleToPlayer.toString()))
-            else -> throw IllegalStateException("A waypoint holder for a player cannot be a GUI item")
-        }
-
-        itemStack.amount = MathHelper.clamp(1, 64, amountVisibleToPlayer)
-
-        return itemStack
-    }
+        get() = guiType.name
 }

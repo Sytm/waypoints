@@ -1,4 +1,4 @@
-package de.md5lukas.waypoints.db.impl
+package de.md5lukas.waypoints.api.sqlite
 
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
@@ -6,7 +6,7 @@ import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointsPlayer
-import de.md5lukas.waypoints.db.DatabaseManager
+import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
 import java.sql.ResultSet

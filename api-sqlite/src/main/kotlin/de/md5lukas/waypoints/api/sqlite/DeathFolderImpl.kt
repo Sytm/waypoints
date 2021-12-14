@@ -1,17 +1,14 @@
-package de.md5lukas.waypoints.db.impl
+package de.md5lukas.waypoints.api.sqlite
 
-import de.md5lukas.commons.MathHelper
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.gui.GUIType
-import de.md5lukas.waypoints.db.DatabaseManager
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -28,7 +25,7 @@ class DeathFolderImpl(
     override val type: Type
         get() = Type.DEATH
     override var name: String
-        get() = ChatColor.stripColor(dm.plugin.translations.FOLDER_ICON_DEATH.displayName)!!
+        get() = guiType.name
         set(_) = throw UnsupportedOperationException("Changing the name of the death folder is not supported")
     override var description: String?
         get() = null
@@ -57,13 +54,4 @@ class DeathFolderImpl(
     }
 
     override val guiType: GUIType = GUIType.DEATH_FOLDER
-
-    override fun getItem(player: Player): ItemStack {
-        val fetchedAmount = amount
-        val stack = dm.plugin.translations.FOLDER_ICON_DEATH.getItem(Collections.singletonMap("amount", fetchedAmount.toString()))
-
-        stack.amount = MathHelper.clamp(1, 64, fetchedAmount)
-
-        return stack
-    }
 }

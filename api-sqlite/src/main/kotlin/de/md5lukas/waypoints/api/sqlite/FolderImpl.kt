@@ -1,23 +1,19 @@
-package de.md5lukas.waypoints.db.impl
+package de.md5lukas.waypoints.api.sqlite
 
-import de.md5lukas.commons.MathHelper
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
-import de.md5lukas.waypoints.db.DatabaseManager
-import de.md5lukas.waypoints.util.Formatters
 import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.*
@@ -66,7 +62,7 @@ internal class FolderImpl private constructor(
         }!!
 
     override fun getAmountVisibleForPlayer(player: Player): Int =
-        if (type == Type.PERMISSION && !player.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+        if (type == Type.PERMISSION) {
             dm.connection.select("SELECT permission FROM main.waypoints WHERE folder = ?;", id.toString()) {
                 getString("permission")
             }.count { player.hasPermission(it) }
@@ -101,31 +97,4 @@ internal class FolderImpl private constructor(
     }
 
     override val guiType: GUIType = GUIType.FOLDER
-
-    private val translations = dm.plugin.translations
-
-    override fun getItem(player: Player): ItemStack {
-        val fetchedAmount = getAmountVisibleForPlayer(player)
-        val stack = when (type) {
-            Type.PRIVATE -> translations.FOLDER_ICON_PRIVATE
-            Type.PUBLIC -> translations.FOLDER_ICON_PUBLIC
-            Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION
-            else -> throw IllegalStateException("An folder with the type $type should not exist")
-        }.getItem(
-            mapOf(
-                "name" to name,
-                "description" to (description ?: ""),
-                "createdAt" to createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER),
-                "amount" to fetchedAmount.toString()
-            )
-        )
-
-        stack.amount = MathHelper.clamp(1, 64, fetchedAmount)
-
-        material?.also {
-            stack.type = it
-        }
-
-        return stack
-    }
 }

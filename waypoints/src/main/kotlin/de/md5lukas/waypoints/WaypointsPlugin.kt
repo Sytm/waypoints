@@ -3,12 +3,12 @@ package de.md5lukas.waypoints
 import de.md5lukas.commons.time.DurationFormatter
 import de.md5lukas.commons.uuid.UUIDCacheSettings
 import de.md5lukas.commons.uuid.UUIDUtils
+import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.WaypointsAPI
+import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfiguration
-import de.md5lukas.waypoints.db.DatabaseManager
-import de.md5lukas.waypoints.db.impl.WaypointsAPIImpl
 import de.md5lukas.waypoints.events.WaypointsListener
 import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.VaultIntegration
@@ -82,12 +82,11 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun initDatabase() {
-        databaseManager = DatabaseManager(this, File(dataFolder, "waypoints.db"))
+        databaseManager = SQLiteManager(this, File(dataFolder, "waypoints.db"))
 
         databaseManager.initDatabase()
 
-        api = WaypointsAPIImpl(databaseManager)
-        WaypointsAPI.INSTANCE = api
+        api = databaseManager.api
     }
 
     private fun initApiServiceProvider() {
