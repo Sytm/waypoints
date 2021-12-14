@@ -1,13 +1,11 @@
-package de.md5lukas.waypoints.db.impl
+package de.md5lukas.waypoints.api.sqlite
 
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
-import de.md5lukas.waypoints.db.DatabaseManager
-import de.md5lukas.waypoints.db.StatisticsImpl
 import java.util.*
 
-internal class WaypointsAPIImpl(private val dm: DatabaseManager) : WaypointsAPI {
+internal class WaypointsAPIImpl(private val dm: SQLiteManager) : WaypointsAPI {
 
     override fun getWaypointPlayer(uuid: UUID): WaypointsPlayer = dm.instanceCache.playerData.get(uuid) {
         dm.connection.update("INSERT INTO player_data(id) VALUES(?) ON CONFLICT DO NOTHING;", uuid.toString())

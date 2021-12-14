@@ -34,6 +34,8 @@ dependencies {
 
     implementation(project(":utils"))
     implementation(project(":waypoints-api"))
+    implementation(project(":api-base"))
+    implementation(project(":api-sqlite"))
     implementation(project(":legacy-importer", "shadow"))
 
     // Dependencies on own projects
@@ -103,6 +105,8 @@ tasks.withType<ShadowJar> {
 
         include(project(":utils"))
         include(project(":waypoints-api"))
+        include(project(":api-base"))
+        include(project(":api-sqlite"))
         include(project(":legacy-importer"))
 
         include(dependency("de.md5lukas:md5-commons"))

@@ -1,4 +1,4 @@
-package de.md5lukas.waypoints.db
+package de.md5lukas.waypoints.api.base
 
 import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder

@@ -1,21 +1,16 @@
-package de.md5lukas.waypoints.db.impl
+package de.md5lukas.waypoints.api.sqlite
 
-import de.md5lukas.commons.MathHelper
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
+import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
-import de.md5lukas.waypoints.db.DatabaseManager
-import de.md5lukas.waypoints.util.Formatters
 import de.md5lukas.waypoints.util.callEvent
-import de.md5lukas.waypoints.util.format
 import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.*
@@ -130,41 +125,5 @@ class WaypointImpl private constructor(
         }
     }
 
-    private val itemTranslations = dm.plugin.translations
-
     override val guiType: GUIType = GUIType.WAYPOINT
-
-    override fun getItem(player: Player): ItemStack {
-        val stack = when (type) {
-            Type.DEATH -> itemTranslations.WAYPOINT_ICON_DEATH
-            Type.PRIVATE -> itemTranslations.WAYPOINT_ICON_PRIVATE
-            Type.PUBLIC -> itemTranslations.WAYPOINT_ICON_PUBLIC
-            Type.PERMISSION -> itemTranslations.WAYPOINT_ICON_PERMISSION
-            else -> throw IllegalStateException("An waypoint with the type $type should not exist")
-        }.getItem(
-            mapOf(
-                "name" to name,
-                "description" to (description ?: ""),
-                "createdAt" to createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER),
-                "world" to dm.plugin.worldTranslations.getWorldName(location.world!!),
-                "x" to location.x.format(),
-                "y" to location.y.format(),
-                "z" to location.z.format(),
-                "blockX" to location.blockX.toString(),
-                "blockY" to location.blockY.toString(),
-                "blockZ" to location.blockZ.toString(),
-                "distance" to if (player.world == location.world) {
-                    MathHelper.distance2D(player.location, location).format()
-                } else {
-                    dm.plugin.translations.TEXT_DISTANCE_OTHER_WORLD.text
-                },
-            )
-        )
-
-        material?.also {
-            stack.type = it
-        }
-
-        return stack
-    }
 }

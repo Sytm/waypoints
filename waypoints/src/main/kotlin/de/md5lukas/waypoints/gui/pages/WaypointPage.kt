@@ -52,19 +52,21 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             waypointPattern,
             0, 0,
             background,
-            'w' to GUIItem(waypoint.getItem(wpGUI.viewer), if (canModifyWaypoint) {
-                {
-                    val newMaterial = wpGUI.viewer.inventory.itemInMainHand.type
+            'w' to wpGUI.extendApi {
+                GUIItem(waypoint.getItem(wpGUI.viewer), if (canModifyWaypoint) {
+                    {
+                        val newMaterial = wpGUI.viewer.inventory.itemInMainHand.type
 
-                    if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
-                        waypoint.material = newMaterial
+                        if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
+                            waypoint.material = newMaterial
 
-                        updatePage()
-                    } else {
-                        wpGUI.translations.MESSAGE_WAYPOINT_NEW_ICON_INVALID.send(wpGUI.viewer)
+                            updatePage()
+                        } else {
+                            wpGUI.translations.MESSAGE_WAYPOINT_NEW_ICON_INVALID.send(wpGUI.viewer)
+                        }
                     }
-                }
-            } else null),
+                } else null)
+            },
             'i' to if (wpGUI.viewer.hasPermission(WaypointsPermissions.COMMAND_SCRIPTING) && isNotDeathWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_GET_UUID.item) {
                     val messageString = wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements(Collections.singletonMap("name", waypoint.name))

@@ -122,19 +122,21 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
             'i' to if (isOverview) {
                 background
             } else {
-                GUIItem((guiFolder as Folder).getItem(wpGUI.viewer), if (canModify) {
-                    {
-                        val newMaterial = wpGUI.viewer.inventory.itemInMainHand.type
+                wpGUI.extendApi {
+                    GUIItem((guiFolder as Folder).getItem(wpGUI.viewer), if (canModify) {
+                        {
+                            val newMaterial = wpGUI.viewer.inventory.itemInMainHand.type
 
-                        if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
-                            guiFolder.material = newMaterial
+                            if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
+                                guiFolder.material = newMaterial
 
-                            updateControls()
-                        } else {
-                            wpGUI.translations.FOLDER_NEW_ICON_INVALID.send(wpGUI.viewer)
+                                updateControls()
+                            } else {
+                                wpGUI.translations.FOLDER_NEW_ICON_INVALID.send(wpGUI.viewer)
+                            }
                         }
-                    }
-                } else null)
+                    } else null)
+                }
             },
             't' to if (wpGUI.isOwner && isPlayerOverview) {
                 if (wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
