@@ -7,7 +7,6 @@ import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.api.base.DatabaseManager
-import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
 import java.sql.ResultSet
 import java.time.OffsetDateTime
@@ -64,9 +63,7 @@ internal class WaypointsPlayerImpl private constructor(
     override val deathFolder: Folder = DeathFolderImpl(dm, id)
 
     private fun set(column: String, value: Any?) {
-        dm.plugin.runTaskAsync {
-            dm.connection.update("UPDATE player_data SET $column = ? WHERE id = ?;", value, id)
-        }
+        dm.connection.update("UPDATE player_data SET $column = ? WHERE id = ?;", value, id)
     }
 
     override fun setCompassTarget(location: Location) {
