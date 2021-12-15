@@ -11,7 +11,6 @@ import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.util.callEvent
-import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import java.sql.ResultSet
@@ -82,9 +81,7 @@ internal class FolderImpl private constructor(
         }
 
     private fun set(column: String, value: Any?) {
-        dm.plugin.runTaskAsync {
-            dm.connection.update("UPDATE folders SET $column = ? WHERE id = ?;", value, id.toString())
-        }
+        dm.connection.update("UPDATE folders SET $column = ? WHERE id = ?;", value, id.toString())
     }
 
     override fun delete() {

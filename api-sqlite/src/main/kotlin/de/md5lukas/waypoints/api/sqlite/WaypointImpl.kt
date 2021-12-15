@@ -8,7 +8,6 @@ import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.util.callEvent
-import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
 import org.bukkit.Material
 import java.sql.ResultSet
@@ -120,9 +119,7 @@ class WaypointImpl private constructor(
     }
 
     private fun set(column: String, value: Any?) {
-        dm.plugin.runTaskAsync {
-            dm.connection.update("UPDATE waypoints SET $column = ? WHERE id = ?;", value, id)
-        }
+        dm.connection.update("UPDATE waypoints SET $column = ? WHERE id = ?;", value, id)
     }
 
     override val guiType: GUIType = GUIType.WAYPOINT

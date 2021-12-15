@@ -35,12 +35,11 @@ dependencies {
     implementation(project(":utils"))
     implementation(project(":waypoints-api"))
     implementation(project(":api-base"))
-    implementation(project(":api-sqlite"))
+    implementation(project(":api-sqlite", "shadow"))
     implementation(project(":legacy-importer", "shadow"))
 
     // Dependencies on own projects
     implementation("de.md5lukas:md5-commons:2.0.0-SNAPSHOT")
-    implementation("de.md5lukas:sqlite-kotlin-helper:1.0.1")
     implementation("de.md5lukas:kinvs:1.0.0-SNAPSHOT")
 
     // Required dependencies
@@ -102,7 +101,6 @@ tasks.withType<ShadowJar> {
     exclude("META-INF/")
 
     dependencies {
-
         include(project(":utils"))
         include(project(":waypoints-api"))
         include(project(":api-base"))
@@ -110,7 +108,6 @@ tasks.withType<ShadowJar> {
         include(project(":legacy-importer"))
 
         include(dependency("de.md5lukas:md5-commons"))
-        include(dependency("de.md5lukas:sqlite-kotlin-helper"))
         include(dependency("de.md5lukas:kinvs"))
 
         include(dependency("net.wesjd:anvilgui"))
@@ -118,7 +115,6 @@ tasks.withType<ShadowJar> {
     }
 
     relocate("de.md5lukas.commons", "de.md5lukas.waypoints.commons")
-    relocate("de.md5lukas.jdbc", "de.md5lukas.waypoints.jdbc")
     relocate("de.md5lukas.kinvs", "de.md5lukas.waypoints.kinvs")
 
     relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
