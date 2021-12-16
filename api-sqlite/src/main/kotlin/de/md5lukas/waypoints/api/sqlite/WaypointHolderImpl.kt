@@ -139,4 +139,19 @@ internal open class WaypointHolderImpl(
 
     override val name: String
         get() = guiType.name
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as WaypointHolder
+
+        if (type != other.type) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return type.hashCode()
+    }
 }

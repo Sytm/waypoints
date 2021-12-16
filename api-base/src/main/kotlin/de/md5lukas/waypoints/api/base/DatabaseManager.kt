@@ -5,9 +5,10 @@ import org.bukkit.plugin.Plugin
 import java.sql.Connection
 
 abstract class DatabaseManager(
-    val plugin: Plugin
+    val plugin: Plugin,
+    disableInstanceCache: Boolean
 ) {
-    val instanceCache: InstanceCache = InstanceCache()
+    val instanceCache: InstanceCache = InstanceCache(disableInstanceCache)
 
     abstract val api: WaypointsAPI
 

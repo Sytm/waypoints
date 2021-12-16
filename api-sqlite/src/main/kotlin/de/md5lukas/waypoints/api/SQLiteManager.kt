@@ -13,11 +13,17 @@ import java.util.logging.Level
 
 class SQLiteManager(
     plugin: Plugin,
-    val file: File
-) : DatabaseManager(plugin) {
+    val file: File?,
+    disableInstanceCache: Boolean = false
+) : DatabaseManager(plugin, disableInstanceCache) {
+
 
     private val schemaVersion: Int = 0
-    private val sqliteHelper = SQLiteHelper(file)
+    private val sqliteHelper = if (file === null) {
+        SQLiteHelper()
+    } else {
+        SQLiteHelper(file)
+    }
 
     override val api: WaypointsAPI by lazy {
         WaypointsAPIImpl(this)

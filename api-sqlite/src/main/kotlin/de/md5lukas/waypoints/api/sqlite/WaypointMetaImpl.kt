@@ -29,4 +29,22 @@ class WaypointMetaImpl private constructor(
     private fun set(column: String, value: Any?) {
         dm.connection.update("UPDATE waypoint_meta SET $column = ? WHERE waypointId = ? AND playerId = ?;", value, waypoint.toString(), owner.toString())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as WaypointMeta
+
+        if (waypoint != other.waypoint) return false
+        if (owner != other.owner) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = waypoint.hashCode()
+        result = 31 * result + owner.hashCode()
+        return result
+    }
 }
