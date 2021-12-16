@@ -23,5 +23,7 @@ enum class BeaconColor(val material: Material) {
     PURPLE(Material.PURPLE_STAINED_GLASS),
     ;
 
-    val blockData = material.createBlockData()
+    val blockData by lazy {
+        material.createBlockData()
+    }
 }

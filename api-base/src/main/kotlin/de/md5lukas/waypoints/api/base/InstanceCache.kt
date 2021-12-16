@@ -7,9 +7,23 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import java.util.*
 
-class InstanceCache {
+class InstanceCache(
+    disable: Boolean
+) {
 
-    val playerData: Cache<UUID, WaypointsPlayer> = CacheBuilder.newBuilder().weakValues().build()
-    val waypoints: Cache<UUID, Waypoint> = CacheBuilder.newBuilder().weakValues().build()
-    val folders: Cache<UUID, Folder> = CacheBuilder.newBuilder().weakValues().build()
+    val playerData: Cache<UUID, WaypointsPlayer> = if (disable) {
+        CacheBuilder.newBuilder().maximumSize(0).build()
+    } else {
+        CacheBuilder.newBuilder().weakValues().build()
+    }
+    val waypoints: Cache<UUID, Waypoint> = if (disable) {
+        CacheBuilder.newBuilder().maximumSize(0).build()
+    } else {
+        CacheBuilder.newBuilder().weakValues().build()
+    }
+    val folders: Cache<UUID, Folder> = if (disable) {
+        CacheBuilder.newBuilder().maximumSize(0).build()
+    } else {
+        CacheBuilder.newBuilder().weakValues().build()
+    }
 }

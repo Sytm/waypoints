@@ -60,5 +60,5 @@ class StatisticsImpl(
     } ?: 0
 
     override val databaseSize: Long
-        get() = dm.file.length()
+        get() = dm.file?.length() ?: 0
 }
