@@ -5,10 +5,6 @@ plugins {
 }
 
 group = "de.md5lukas"
-version = parent!!.version
-
-val spigotVersion: String by project
-val jvmTarget: String by project
 
 repositories {
     mavenLocal()
@@ -18,12 +14,15 @@ repositories {
 }
 
 dependencies {
-    api("org.spigotmc:spigot-api:${spigotVersion}")
+    val spigotVersion: String by project
+    api("org.spigotmc:spigot-api:$spigotVersion")
 
     implementation(kotlin("stdlib-jdk8"))
     api(project(":waypoints-api"))
 }
 
 tasks.withType<KotlinCompile> {
+    val jvmTarget: String by project
+
     kotlinOptions.jvmTarget = jvmTarget
 }
