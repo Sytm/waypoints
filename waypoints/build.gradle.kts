@@ -9,11 +9,7 @@ plugins {
 }
 
 group = "de.md5lukas"
-version = parent!!.version
 description = "Waypoints plugin"
-
-val spigotVersion: String by project
-val jvmTarget: String by project
 
 repositories {
     mavenLocal()
@@ -28,8 +24,17 @@ repositories {
     maven(url = "https://repo.mikeprimm.com/")
 }
 
+val spigotVersion: String by project
+
 dependencies {
-    api("org.spigotmc:spigot-api:${spigotVersion}")
+    val md5CommonsVersion: String by project
+    val kinvsVersion: String by project
+    val anvilGUIVersion: String by project
+    val bstatsVersion: String by project
+    val vaultVersion: String by project
+    val dynmapVersion: String by project
+
+    api("org.spigotmc:spigot-api:$spigotVersion")
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":utils"))
@@ -39,25 +44,21 @@ dependencies {
     implementation(project(":legacy-importer", "shadow"))
 
     // Dependencies on own projects
-    implementation("de.md5lukas:md5-commons:2.0.0-SNAPSHOT")
-    implementation("de.md5lukas:kinvs:1.0.0-SNAPSHOT")
+    implementation("de.md5lukas:md5-commons:$md5CommonsVersion")
+    implementation("de.md5lukas:kinvs:$kinvsVersion")
 
     // Required dependencies
-    implementation("net.wesjd:anvilgui:1.5.3-SNAPSHOT")
-    implementation("org.bstats:bstats-bukkit:2.2.1")
+    implementation("net.wesjd:anvilgui:$anvilGUIVersion")
+    implementation("org.bstats:bstats-bukkit:$bstatsVersion")
 
     // Optional dependencies
-    implementation("com.github.MilkBowl:VaultAPI:1.7.1")
+    implementation("com.github.MilkBowl:VaultAPI:$vaultVersion")
 
-    implementation("us.dynmap:DynmapCoreAPI:3.1:all")
-    implementation("us.dynmap:dynmap-api:3.1:unshaded")
-    implementation("us.dynmap:spigot:3.1:unshaded") {
+    implementation("us.dynmap:DynmapCoreAPI:$dynmapVersion:all")
+    implementation("us.dynmap:dynmap-api:$dynmapVersion:unshaded")
+    implementation("us.dynmap:spigot:$dynmapVersion:unshaded") {
         isTransitive = false
     }
-
-    // Test dependencies
-    testImplementation(kotlin("test-junit5"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
 tasks.register("createResourceIndex", ResourceIndexTask::class.java) {
@@ -84,6 +85,8 @@ tasks.withType<ProcessResources> {
 }
 
 tasks.withType<KotlinCompile> {
+    val jvmTarget: String by project
+
     kotlinOptions.jvmTarget = jvmTarget
 }
 
@@ -119,12 +122,4 @@ tasks.withType<ShadowJar> {
 
     relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
     relocate("org.bstats", "de.md5lukas.waypoints.bstats")
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
 }

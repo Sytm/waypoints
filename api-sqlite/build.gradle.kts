@@ -7,10 +7,6 @@ plugins {
 }
 
 group = "de.md5lukas"
-version = parent!!.version
-
-val spigotVersion: String by project
-val jvmTarget: String by project
 
 repositories {
     mavenLocal()
@@ -20,22 +16,33 @@ repositories {
 }
 
 dependencies {
-    api("org.spigotmc:spigot-api:${spigotVersion}")
+    val spigotVersion: String by project
 
-    implementation("de.md5lukas:sqlite-kotlin-helper:1.1.0")
+    val md5CommonsVersion: String by project
+    val sqliteHelperVersion: String by project
+
+    val junitVersion: String by project
+    val mockBukkitVersion: String by project
+    val sqliteDriverVersion: String by project
+
+    api("org.spigotmc:spigot-api:$spigotVersion")
+
+    implementation("de.md5lukas:sqlite-kotlin-helper:$sqliteHelperVersion")
 
     api(kotlin("stdlib-jdk8"))
     api(project(":api-base"))
     implementation(project(":utils"))
-    implementation("de.md5lukas:md5-commons:2.0.0-SNAPSHOT")
+    implementation("de.md5lukas:md5-commons:$md5CommonsVersion")
 
     testImplementation(kotlin("test-junit5"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.17:1.13.0")
-    testRuntimeOnly("org.xerial:sqlite-jdbc:3.36.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.17:$mockBukkitVersion")
+    testRuntimeOnly("org.xerial:sqlite-jdbc:$sqliteDriverVersion")
 }
 
 tasks.withType<KotlinCompile> {
+    val jvmTarget: String by project
+
     kotlinOptions.jvmTarget = jvmTarget
 }
 

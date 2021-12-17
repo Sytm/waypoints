@@ -5,10 +5,6 @@ plugins {
 }
 
 group = "de.md5lukas"
-version = parent!!.version
-
-val spigotVersion: String by project
-val jvmTarget: String by project
 
 repositories {
     mavenLocal()
@@ -17,17 +13,24 @@ repositories {
     maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 }
 
+
 dependencies {
-    api("org.spigotmc:spigot-api:${spigotVersion}")
+    val spigotVersion: String by project
+    val md5CommonsVersion: String by project
+    val junitVersion: String by project
+
+    api("org.spigotmc:spigot-api:$spigotVersion")
     api(kotlin("stdlib-jdk8"))
-    implementation("de.md5lukas:md5-commons:2.0.0-SNAPSHOT")
+    implementation("de.md5lukas:md5-commons:$md5CommonsVersion")
 
     // Test dependencies
     testImplementation(kotlin("test-junit5"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
 }
 
 tasks.withType<KotlinCompile> {
+    val jvmTarget: String by project
+
     kotlinOptions.jvmTarget = jvmTarget
 }
 
