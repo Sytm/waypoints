@@ -8,7 +8,6 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-group = "de.md5lukas"
 description = "Waypoints plugin"
 
 repositories {
@@ -66,11 +65,14 @@ tasks.register("createResourceIndex", ResourceIndexTask::class.java) {
 
 tasks.withType<ProcessResources> {
     dependsOn("createResourceIndex")
-    // Force refresh, because gradle does not detect changes in the variables used by expand
-    this.outputs.upToDateWhen { false }
 
-    filesMatching("**/plugin.yml") {
-        // 1.16.5-R0.1-SNAPSHOT
+    inputs.property("version", project.version)
+    inputs.property("spigotVersion", spigotVersion)
+    inputs.property("kotlinVersion", getKotlinPluginVersion())
+
+    filteringCharset = "UTF-8"
+
+    filesMatching("plugin.yml") {
         var apiVersion = spigotVersion.substringBefore('-')
         if (apiVersion.count { it == '.' } > 1) {
             apiVersion = apiVersion.substringBeforeLast('.')

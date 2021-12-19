@@ -6,7 +6,6 @@ plugins {
     `maven-publish`
 }
 
-group = "de.md5lukas"
 description = "Waypoints api"
 
 repositories {
