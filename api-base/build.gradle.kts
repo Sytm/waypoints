@@ -4,8 +4,6 @@ plugins {
     kotlin("jvm")
 }
 
-group = "de.md5lukas"
-
 repositories {
     mavenLocal()
     mavenCentral()

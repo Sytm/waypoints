@@ -6,8 +6,6 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-group = "de.md5lukas"
-
 repositories {
     mavenLocal()
     mavenCentral()
