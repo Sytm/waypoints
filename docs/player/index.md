@@ -14,7 +14,7 @@ Now you should see something similar to this:
 2. Public waypoints: In this folder are waypoints that are available to everyone on the server [^2]
 3. [Custom folder](folder): This is a folder created by you
 4. [Death folder](deathfolder): In here are the locations you have died [^3]
-5. Waypoint: This is a waypoint you have created
+5. [Waypoint](waypoint): This is a waypoint you have created
 6. Previous page: If the 4 rows would be filled completely, you can change the page
 7. [Create a custom folder](createfolder)
 8. Sorting: Hover your mouse over the item and see the possible sorting options
