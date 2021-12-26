@@ -210,6 +210,9 @@ pointers:
     # current: Translated name of the world the player is in
     # correct: Translated name of the world the waypoint is in
     wrongWorld: "&cYou are currently in the world &a${current}&c, but the waypoint is in &a${correct}"
+    # distance3D: Distance to the waypoint in blocks
+    # heightDifference: Height difference between player and waypoint. Positive when to high, negative when to low
+    distance: "&7You are &e${distance3D}&7 blocks away from your target"
 
 integrations:
   dynmap:

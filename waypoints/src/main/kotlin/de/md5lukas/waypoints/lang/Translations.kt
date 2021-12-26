@@ -53,6 +53,8 @@ class Translations(
 
     val POINTERS_ACTION_BAR_WRONG_WORLD = Translation(tl, "pointers.actionBar.wrongWorld")
 
+    val POINTERS_ACTION_BAR_DISTANCE = Translation(tl, "pointers.actionBar.distance")
+
 
     val TEXT_DURATION_SECOND = Translation(tl, "text.duration.second")
     val TEXT_DURATION_SECONDS = Translation(tl, "text.duration.seconds")
