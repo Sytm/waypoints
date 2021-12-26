@@ -56,6 +56,9 @@ class ActionBarConfiguration {
             field = value
         }
 
+    var showDistanceEnabled: Boolean = false
+        private set
+
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         with(cfg) {
             enabled = getBoolean("enabled")
@@ -75,6 +78,8 @@ class ActionBarConfiguration {
             amountOfSections = getInt("amountOfSections")
 
             range = getInt("range")
+
+            showDistanceEnabled = getBoolean("showDistance.enabled")
         }
     }
 }

@@ -4,6 +4,7 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.ActionBarConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
+import de.md5lukas.waypoints.util.format
 import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Location
@@ -18,31 +19,35 @@ class ActionBarPointer(
 
     override fun update(player: Player, waypoint: Waypoint) {
         val loc = waypoint.location
-        if (player.world == loc.world) {
-            player.spigot().sendMessage(
-                ChatMessageType.ACTION_BAR,
-                *TextComponent.fromLegacyText(
-                    generateDirectionIndicator(
-                        deltaAngleToTarget(
-                            player.location,
-                            loc
+        player.spigot().sendMessage(
+            ChatMessageType.ACTION_BAR,
+            *TextComponent.fromLegacyText(
+                if (player.world == loc.world) {
+                    if (config.showDistanceEnabled && player.isSneaking) {
+                        plugin.translations.POINTERS_ACTION_BAR_DISTANCE.withReplacements(
+                            mapOf(
+                                "distance3D" to player.location.distance(waypoint.location).format(),
+                                "heightDifference" to (player.location.y - waypoint.location.y).format()
+                            )
                         )
-                    )
-                )
-            )
-        } else {
-            player.spigot().sendMessage(
-                ChatMessageType.ACTION_BAR,
-                *TextComponent.fromLegacyText(
+                    } else {
+                        generateDirectionIndicator(
+                            deltaAngleToTarget(
+                                player.location,
+                                loc
+                            )
+                        )
+                    }
+                } else {
                     plugin.translations.POINTERS_ACTION_BAR_WRONG_WORLD.withReplacements(
                         mapOf(
                             "current" to plugin.worldTranslations.getWorldName(player.world),
                             "correct" to plugin.worldTranslations.getWorldName(loc.world!!),
                         )
                     )
-                )
+                }
             )
-        }
+        )
     }
 
     private fun generateDirectionIndicator(angle: Double): String {

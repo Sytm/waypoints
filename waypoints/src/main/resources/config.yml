@@ -103,6 +103,7 @@ pointers:
 
   actionBar:
     enabled: true
+
     interval: 20
     # The indicator color is used to show where the waypoint is by changing the color of one of the sections
     indicatorColor: "&4&l"
@@ -118,6 +119,9 @@ pointers:
     amountOfSections: 35
     # The range of between the center section and most outer section in degrees. So the field of view of the action bar indicator is range x 2
     range: 70
+    # Show the distance to the waypoint instead of the direction indicator when the player is sneaking
+    showDistance:
+      enabled: true
 
   beacon:
     enabled: true
