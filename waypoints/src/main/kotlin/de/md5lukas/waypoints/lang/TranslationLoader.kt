@@ -24,9 +24,13 @@ class TranslationLoader(
 
     private fun getLanguageFilePath(languageKey: String) = "lang/$languageKey.yml"
 
+    private fun getLanguageFile(languageKey: String) = File(plugin.dataFolder, getLanguageFilePath(languageKey))
+
     private fun extractLanguages() {
         bundledLanguages.forEach { languageKey ->
-            plugin.saveResource(getLanguageFilePath(languageKey), false)
+            if (!getLanguageFile(languageKey).exists()) {
+                plugin.saveResource(getLanguageFilePath(languageKey), false)
+            }
         }
     }
 
@@ -51,7 +55,7 @@ class TranslationLoader(
         loadedLanguage = languageKey
         extractLanguages()
 
-        val languageFile = File(plugin.dataFolder, getLanguageFilePath(languageKey))
+        val languageFile = getLanguageFile(languageKey)
 
 
         if (languageFile.exists()) {
