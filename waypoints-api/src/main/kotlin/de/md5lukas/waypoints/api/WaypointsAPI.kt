@@ -15,4 +15,6 @@ interface WaypointsAPI {
     fun getWaypointByID(uuid: UUID): Waypoint?
 
     val statistics: Statistics
+
+    val pointerManager: PointerManager
 }
