@@ -24,7 +24,7 @@ class WaypointPlayerTest {
     @BeforeTest
     fun createAPI() {
         server = MockBukkit.mock()
-        val manager = SQLiteManager(MockBukkit.createMockPlugin(), null, true)
+        val manager = SQLiteManager(MockBukkit.createMockPlugin(), null, DummyPointerManager(), true)
         manager.initDatabase()
         api = manager.api
     }

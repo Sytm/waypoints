@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.pointer
 
 import de.md5lukas.waypoints.WaypointsPlugin
+import de.md5lukas.waypoints.api.PointerManager
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.event.WaypointDeselectEvent
 import de.md5lukas.waypoints.api.event.WaypointSelectEvent
@@ -13,9 +14,9 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
-class PointerManager(
+class PointerManagerImpl(
     private val plugin: WaypointsPlugin
-) : Listener {
+) : PointerManager, Listener {
 
     init {
         plugin.server.pluginManager.registerEvents(this, plugin)
@@ -82,14 +83,14 @@ class PointerManager(
         }
     }
 
-    fun enable(player: Player, waypoint: Waypoint) {
+    override fun enable(player: Player, waypoint: Waypoint) {
         activePointers.put(player, waypoint)?.let {
             hide(player, it)
         }
         show(player, waypoint)
     }
 
-    fun disable(player: Player) {
+    override fun disable(player: Player) {
         activePointers.remove(player)?.let {
             hide(player, it)
         }

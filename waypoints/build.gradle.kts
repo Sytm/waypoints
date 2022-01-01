@@ -33,7 +33,7 @@ dependencies {
     val vaultVersion: String by project
     val dynmapVersion: String by project
 
-    api("org.spigotmc:spigot-api:$spigotVersion")
+    implementation("org.spigotmc:spigot-api:$spigotVersion")
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":utils"))
@@ -81,7 +81,7 @@ tasks.withType<ProcessResources> {
         expand(
             "version" to project.version,
             "kotlinVersion" to getKotlinPluginVersion(),
-            "apiVersion" to apiVersion
+            "apiVersion" to apiVersion,
         )
     }
 }

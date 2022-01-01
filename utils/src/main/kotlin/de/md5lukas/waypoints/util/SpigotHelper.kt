@@ -69,3 +69,6 @@ fun parseLocationString(player: Player, input: String): Location? {
         null
     }
 }
+
+fun test() {
+}

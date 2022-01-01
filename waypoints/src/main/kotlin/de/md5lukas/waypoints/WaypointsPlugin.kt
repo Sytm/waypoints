@@ -15,7 +15,7 @@ import de.md5lukas.waypoints.integrations.VaultIntegration
 import de.md5lukas.waypoints.lang.TranslationLoader
 import de.md5lukas.waypoints.lang.Translations
 import de.md5lukas.waypoints.lang.WorldTranslations
-import de.md5lukas.waypoints.pointer.PointerManager
+import de.md5lukas.waypoints.pointer.PointerManagerImpl
 import de.md5lukas.waypoints.util.TeleportManager
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SingleLineChart
@@ -43,8 +43,6 @@ class WaypointsPlugin : JavaPlugin() {
     lateinit var worldTranslations: WorldTranslations
         private set
 
-    lateinit var pointerManager: PointerManager
-        private set
     lateinit var teleportManager: TeleportManager
         private set
 
@@ -60,7 +58,6 @@ class WaypointsPlugin : JavaPlugin() {
         initDatabase()
         initApiServiceProvider()
 
-        initPointerManager()
         initTranslations()
         initTeleportManager()
         initUUIDUtils()
@@ -82,7 +79,7 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun initDatabase() {
-        databaseManager = SQLiteManager(this, File(dataFolder, "waypoints.db"))
+        databaseManager = SQLiteManager(this, File(dataFolder, "waypoints.db"), PointerManagerImpl(this))
 
         databaseManager.initDatabase()
 
@@ -91,10 +88,6 @@ class WaypointsPlugin : JavaPlugin() {
 
     private fun initApiServiceProvider() {
         server.servicesManager.register(WaypointsAPI::class.java, api, this, ServicePriority.Normal)
-    }
-
-    private fun initPointerManager() {
-        pointerManager = PointerManager(this)
     }
 
     private fun initTranslations() {

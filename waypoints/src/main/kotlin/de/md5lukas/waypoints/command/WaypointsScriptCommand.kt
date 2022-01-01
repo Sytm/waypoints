@@ -35,7 +35,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) : CommandExecu
                         return true
                     }
 
-                    plugin.pointerManager.disable(player)
+                    plugin.api.pointerManager.disable(player)
                 }
             }
             "selectwaypoint" -> when {
@@ -61,7 +61,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) : CommandExecu
                         return true
                     }
 
-                    plugin.pointerManager.enable(player, waypoint)
+                    plugin.api.pointerManager.enable(player, waypoint)
                 }
             }
             else -> translations.COMMAND_NOT_FOUND.send(sender)

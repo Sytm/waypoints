@@ -181,7 +181,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             },
             's' to GUIItem(wpGUI.translations.WAYPOINT_SELECT.item) {
                 wpGUI.viewer.closeInventory()
-                wpGUI.plugin.pointerManager.enable(wpGUI.viewer, waypoint)
+                wpGUI.plugin.api.pointerManager.enable(wpGUI.viewer, waypoint)
             },
             'c' to if (canModifyWaypoint && isNotDeathWaypoint && wpGUI.plugin.waypointsConfig.pointer.beacon.enabled) {
                 GUIItem(wpGUI.translations.WAYPOINT_SELECT_BEACON_COLOR.item) {

@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.api.sqlite
 
 import be.seeseemelk.mockbukkit.MockBukkit
 import be.seeseemelk.mockbukkit.ServerMock
+import de.md5lukas.waypoints.api.DummyPointerManager
 import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.createLocation
@@ -16,7 +17,7 @@ class WaypointsAPITest {
     @BeforeTest
     fun createAPI() {
         server = MockBukkit.mock()
-        val manager = SQLiteManager(MockBukkit.createMockPlugin(), null, true)
+        val manager = SQLiteManager(MockBukkit.createMockPlugin(), null, DummyPointerManager(), true)
         manager.initDatabase()
         api = manager.api
     }

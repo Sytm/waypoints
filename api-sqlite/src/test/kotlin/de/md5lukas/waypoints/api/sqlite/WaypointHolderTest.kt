@@ -20,7 +20,7 @@ class WaypointHolderTest {
     fun createAPI() {
         server = MockBukkit.mock()
         plugin = MockBukkit.createMockPlugin()
-        val manager = SQLiteManager(plugin, null, true)
+        val manager = SQLiteManager(plugin, null, DummyPointerManager(), true)
         manager.initDatabase()
         api = manager.api
     }

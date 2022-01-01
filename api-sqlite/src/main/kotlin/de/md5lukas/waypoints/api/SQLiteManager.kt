@@ -14,7 +14,8 @@ import java.util.logging.Level
 class SQLiteManager(
     plugin: Plugin,
     val file: File?,
-    disableInstanceCache: Boolean = false
+    pointerManager: PointerManager,
+    disableInstanceCache: Boolean = false,
 ) : DatabaseManager(plugin, disableInstanceCache) {
 
 
@@ -26,7 +27,7 @@ class SQLiteManager(
     }
 
     override val api: WaypointsAPI by lazy {
-        WaypointsAPIImpl(this)
+        WaypointsAPIImpl(this, pointerManager)
     }
 
     override val connection: Connection
