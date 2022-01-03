@@ -26,6 +26,10 @@ fun ConfigurationSection.getStringNotNull(path: String): String =
 fun ConfigurationSection.getConfigurationSectionNotNull(path: String): ConfigurationSection =
     getConfigurationSection(path) ?: throw IllegalArgumentException("The configuration section ${getFullPath(path)} is not present")
 
+@Suppress("UNCHECKED_CAST")
+fun <T> ConfigurationSection.getListNotNull(path: String): List<T> =
+    getList(path) as List<T>? ?: throw IllegalArgumentException("The list at ${getFullPath(path)} is not present")
+
 private fun ConfigurationSection.getFullPath(path: String): String =
     if (currentPath!!.isEmpty()) {
         path

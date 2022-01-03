@@ -13,20 +13,19 @@ import kotlin.math.atan2
 import kotlin.math.roundToInt
 
 class ActionBarPointer(
+    plugin: WaypointsPlugin,
     private val config: ActionBarConfiguration,
-    private val plugin: WaypointsPlugin
-) : Pointer(config.interval) {
+) : Pointer(plugin, config.interval) {
 
-    override fun update(player: Player, waypoint: Waypoint) {
-        val loc = waypoint.location
+    override fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
         player.spigot().sendMessage(
             ChatMessageType.ACTION_BAR,
             *TextComponent.fromLegacyText(
-                if (player.world == loc.world) {
+                if (translatedTarget !== null) {
                     if (config.showDistanceEnabled && player.isSneaking) {
                         plugin.translations.POINTERS_ACTION_BAR_DISTANCE.withReplacements(
                             mapOf(
-                                "distance3D" to player.location.distance(waypoint.location).format(),
+                                "distance3D" to player.location.distance(translatedTarget).format(),
                                 "heightDifference" to (player.location.y - waypoint.location.y).format()
                             )
                         )
@@ -34,7 +33,7 @@ class ActionBarPointer(
                         generateDirectionIndicator(
                             deltaAngleToTarget(
                                 player.location,
-                                loc
+                                translatedTarget
                             )
                         )
                     }
@@ -42,7 +41,7 @@ class ActionBarPointer(
                     plugin.translations.POINTERS_ACTION_BAR_WRONG_WORLD.withReplacements(
                         mapOf(
                             "current" to plugin.worldTranslations.getWorldName(player.world),
-                            "correct" to plugin.worldTranslations.getWorldName(loc.world!!),
+                            "correct" to plugin.worldTranslations.getWorldName(waypoint.location.world!!),
                         )
                     )
                 }

@@ -1,22 +1,25 @@
 package de.md5lukas.waypoints.pointer.variants
 
+import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.BlinkingBlockConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.sendActualBlock
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
 
 class BlinkingBlockPointer(
+    plugin: WaypointsPlugin,
     private val config: BlinkingBlockConfiguration
-) : Pointer(config.interval) {
+) : Pointer(plugin, config.interval) {
 
     private val counters: MutableMap<UUID, Int> = HashMap()
+    private val lastLocations: MutableMap<UUID, Location> = HashMap()
 
-    override fun update(player: Player, waypoint: Waypoint) {
-        val loc = waypoint.location
-        if (player.world == loc.world) {
-            val distance = player.location.distanceSquared(loc)
+    override fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
+        if (translatedTarget !== null) {
+            val distance = player.location.distanceSquared(translatedTarget)
             if (distance >= config.minDistance && distance < config.maxDistance) {
                 val currentCounter = counters.compute(player.uniqueId) { _, count ->
                     if (count == null) {
@@ -26,16 +29,20 @@ class BlinkingBlockPointer(
                     }
                 }!!
 
-                player.sendBlockChange(loc, config.blockDataSequence[currentCounter])
+                lastLocations[player.uniqueId] = translatedTarget
+                player.sendBlockChange(translatedTarget, config.blockDataSequence[currentCounter])
             } else {
-                hide(player, waypoint)
+                hide(player, waypoint, translatedTarget)
             }
+        } else {
+            hide(player, waypoint, null)
         }
     }
 
-    override fun hide(player: Player, waypoint: Waypoint) {
-        if (counters.remove(player.uniqueId) != null && player.world == waypoint.location.world) {
-            player.sendActualBlock(waypoint.location)
+    override fun hide(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
+        val lastLocation = lastLocations.remove(player.uniqueId)
+        if (counters.remove(player.uniqueId) !== null && lastLocation !== null) {
+            player.sendActualBlock(lastLocation)
         }
     }
 }
