@@ -1,16 +1,15 @@
 package de.md5lukas.waypoints.pointer
 
-import de.md5lukas.waypoints.api.Waypoint
 import org.bukkit.entity.Player
 
 class PointerTask(
     private val pointer: Pointer,
-    private val activePointers: MutableMap<Player, Waypoint>,
+    private val activePointers: Map<Player, ActivePointer>,
 ) : Runnable {
 
     override fun run() {
-        activePointers.forEach { (player, targetData) ->
-            pointer.update(player, targetData)
+        activePointers.forEach { (player, pointerData) ->
+            pointer.update(player, pointerData.waypoint, pointerData.translatedTarget)
         }
     }
 }

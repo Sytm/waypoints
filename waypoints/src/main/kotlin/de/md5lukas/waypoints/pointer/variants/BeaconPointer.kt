@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.pointer.variants
 
+import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.BeaconConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
@@ -12,41 +13,40 @@ import org.bukkit.entity.Player
 import java.util.*
 
 class BeaconPointer(
+    plugin: WaypointsPlugin,
     private val config: BeaconConfiguration,
-) : Pointer(config.interval) {
+) : Pointer(plugin, config.interval) {
 
     private val BEACON = Material.BEACON.createBlockData()
 
     private val activeBeacons: MutableMap<UUID, Location> = HashMap()
 
-    override fun update(player: Player, waypoint: Waypoint) {
-        val loc = waypoint.location
-
-        if (player.world == loc.world) {
-            val distance = player.location.distanceSquared(loc)
+    override fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
+        if (translatedTarget !== null) {
+            val distance = player.location.distanceSquared(translatedTarget)
 
             if (distance >= config.minDistance && distance < config.maxDistance) {
-                val beaconBase = loc.getHighestBlock().location
+                val beaconBase = translatedTarget.getHighestBlock().location
 
                 val lastBeaconPosition = activeBeacons[player.uniqueId]
                 if (lastBeaconPosition != null && !lastBeaconPosition.blockEquals(beaconBase)) {
-                    hide(player, waypoint, lastBeaconPosition)
+                    hide0(player, waypoint, lastBeaconPosition)
                 }
 
                 activeBeacons[player.uniqueId] = beaconBase
 
                 sendBeacon(player, beaconBase, waypoint, true)
             } else {
-                hide(player, waypoint)
+                hide(player, waypoint, translatedTarget)
             }
         }
     }
 
-    override fun hide(player: Player, waypoint: Waypoint) {
-        hide(player, waypoint, activeBeacons.remove(player.uniqueId))
+    override fun hide(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
+        hide0(player, waypoint, activeBeacons.remove(player.uniqueId))
     }
 
-    private fun hide(player: Player, waypoint: Waypoint, lastBeaconPosition: Location?) {
+    private fun hide0(player: Player, waypoint: Waypoint, lastBeaconPosition: Location?) {
         if (lastBeaconPosition != null && player.world == lastBeaconPosition.world) {
             sendBeacon(player, lastBeaconPosition, waypoint, false)
         }

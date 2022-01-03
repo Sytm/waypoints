@@ -8,11 +8,14 @@ import de.md5lukas.waypoints.api.event.WaypointSelectEvent
 import de.md5lukas.waypoints.config.pointers.PointerConfiguration
 import de.md5lukas.waypoints.pointer.variants.*
 import de.md5lukas.waypoints.util.callEvent
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import kotlin.math.floor
 
 class PointerManagerImpl(
     private val plugin: WaypointsPlugin
@@ -26,7 +29,7 @@ class PointerManagerImpl(
         {
             with(it.actionBar) {
                 if (enabled) {
-                    ActionBarPointer(this, plugin)
+                    ActionBarPointer(plugin, this)
                 } else {
                     null
                 }
@@ -34,7 +37,7 @@ class PointerManagerImpl(
         }, {
             with(it.beacon) {
                 if (enabled) {
-                    BeaconPointer(this)
+                    BeaconPointer(plugin, this)
                 } else {
                     null
                 }
@@ -42,7 +45,7 @@ class PointerManagerImpl(
         }, {
             with(it.blinkingBlock) {
                 if (enabled) {
-                    BlinkingBlockPointer(this)
+                    BlinkingBlockPointer(plugin, this)
                 } else {
                     null
                 }
@@ -58,7 +61,7 @@ class PointerManagerImpl(
         }, {
             with(it.particle) {
                 if (enabled) {
-                    ParticlePointer(this)
+                    ParticlePointer(plugin, this)
                 } else {
                     null
                 }
@@ -68,7 +71,7 @@ class PointerManagerImpl(
 
     private val enabledPointers: MutableList<Pointer> = ArrayList()
 
-    private val activePointers: MutableMap<Player, Waypoint> = HashMap()
+    private val activePointers: MutableMap<Player, ActivePointer> = HashMap()
 
 
     private fun setupPointers() {
@@ -84,10 +87,11 @@ class PointerManagerImpl(
     }
 
     override fun enable(player: Player, waypoint: Waypoint) {
-        activePointers.put(player, waypoint)?.let {
-            hide(player, it)
+        val newPointer = ActivePointer(waypoint, translateTargetLocation(player, waypoint))
+        activePointers.put(player, newPointer)?.let { oldPointer ->
+            hide(player, oldPointer)
         }
-        show(player, waypoint)
+        show(player, newPointer)
     }
 
     override fun disable(player: Player) {
@@ -96,17 +100,17 @@ class PointerManagerImpl(
         }
     }
 
-    private fun show(player: Player, target: Waypoint) {
-        plugin.callEvent(WaypointSelectEvent(player, target))
+    private fun show(player: Player, pointer: ActivePointer) {
+        plugin.callEvent(WaypointSelectEvent(player, pointer.waypoint))
         enabledPointers.forEach {
-            it.show(player, target)
+            it.show(player, pointer.waypoint, pointer.translatedTarget)
         }
     }
 
-    private fun hide(player: Player, target: Waypoint) {
-        plugin.callEvent(WaypointDeselectEvent(player, target))
+    private fun hide(player: Player, pointer: ActivePointer) {
+        plugin.callEvent(WaypointDeselectEvent(player, pointer.waypoint))
         enabledPointers.forEach {
-            it.hide(player, target)
+            it.hide(player, pointer.waypoint, pointer.translatedTarget)
         }
     }
 
@@ -123,11 +127,47 @@ class PointerManagerImpl(
             return
         }
 
-        val waypoint = activePointers[e.player] ?: return
+        val pointer = activePointers[e.player] ?: return
 
-        if (e.player.location.distanceSquared(waypoint.location) <= disableWhenReachedRadius) {
+        if (e.player.world === pointer.waypoint.location.world &&
+            e.player.location.distanceSquared(pointer.waypoint.location) <= disableWhenReachedRadius
+        ) {
             disable(e.player)
         }
+    }
+
+    @EventHandler
+    private fun onWorldChange(e: PlayerChangedWorldEvent) {
+        activePointers[e.player]?.let {
+            it.translatedTarget = translateTargetLocation(e.player, it.waypoint)
+        }
+    }
+
+    private fun translateTargetLocation(player: Player, waypoint: Waypoint): Location? {
+        if (player.world === waypoint.location.world) {
+            return waypoint.location
+        }
+
+        plugin.waypointsConfig.general.connectedWorlds.worlds.forEach {
+            if (it.primary == player.world.name || it.secondary == waypoint.location.world!!.name
+                && it.secondary == player.world.name || it.primary == waypoint.location.world!!.name
+            ) {
+                val target = waypoint.location.clone()
+                target.world = player.world
+
+                if (player.world.name == it.primary) {
+                    target.x *= 8
+                    target.z *= 8
+                } else {
+                    target.x = floor(target.x / 8)
+                    target.z = floor(target.z / 8)
+                }
+
+                return target
+            }
+        }
+
+        return null
     }
 
     init {

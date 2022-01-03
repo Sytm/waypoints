@@ -1,20 +1,22 @@
 package de.md5lukas.waypoints.pointer.variants
 
+import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.ParticleConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.divide
+import org.bukkit.Location
 import org.bukkit.entity.Player
 
 class ParticlePointer(
+    plugin: WaypointsPlugin,
     private val config: ParticleConfiguration,
-) : Pointer(config.interval) {
+) : Pointer(plugin, config.interval) {
 
-    override fun update(player: Player, waypoint: Waypoint) {
-        val loc = waypoint.location
-        if (player.world == loc.world) {
+    override fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
+        if (translatedTarget !== null) {
             val pLoc = player.location
-            val dir = loc.toVector().subtract(pLoc.toVector()).normalize().multiply(config.length)
+            val dir = translatedTarget.toVector().subtract(pLoc.toVector()).normalize().multiply(config.length)
 
             dir.divide(config.amount)
 
