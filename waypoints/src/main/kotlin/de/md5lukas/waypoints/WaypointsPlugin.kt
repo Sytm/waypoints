@@ -10,6 +10,7 @@ import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.events.WaypointsListener
+import de.md5lukas.waypoints.gui.APIExtensions
 import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.VaultIntegration
 import de.md5lukas.waypoints.lang.TranslationLoader
@@ -36,6 +37,9 @@ class WaypointsPlugin : JavaPlugin() {
 
     lateinit var api: WaypointsAPI
         private set
+    val apiExtensions: APIExtensions by lazy {
+        APIExtensions(this)
+    }
 
     private lateinit var translationLoader: TranslationLoader
     lateinit var translations: Translations

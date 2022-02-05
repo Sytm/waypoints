@@ -21,6 +21,8 @@ repositories {
     maven(url = "https://jitpack.io")
 
     maven(url = "https://repo.mikeprimm.com/")
+
+    maven(url = "https://repo.dmulloy2.net/repository/public/")
 }
 
 val spigotVersion: String by project
@@ -54,10 +56,14 @@ dependencies {
     implementation("com.github.MilkBowl:VaultAPI:$vaultVersion")
 
     implementation("us.dynmap:DynmapCoreAPI:$dynmapVersion:all")
-    implementation("us.dynmap:dynmap-api:$dynmapVersion:unshaded")
+    implementation("us.dynmap:dynmap-api:$dynmapVersion:unshaded") {
+        isTransitive = false
+    }
     implementation("us.dynmap:spigot:$dynmapVersion:unshaded") {
         isTransitive = false
     }
+
+    implementation("com.comphenix.protocol:ProtocolLib:4.7.0")
 }
 
 tasks.register("createResourceIndex", ResourceIndexTask::class.java) {

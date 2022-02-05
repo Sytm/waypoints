@@ -16,7 +16,13 @@ class ParticlePointer(
     override fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
         if (translatedTarget !== null) {
             val pLoc = player.location
-            val dir = translatedTarget.toVector().subtract(pLoc.toVector()).normalize().multiply(config.length)
+            var dir = translatedTarget.toVector().subtract(pLoc.toVector())
+
+            if (!config.showVerticalDirection) {
+                dir.y = 0.0
+            }
+
+            dir = dir.normalize().multiply(config.length)
 
             dir.divide(config.amount)
 

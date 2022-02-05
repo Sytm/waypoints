@@ -73,3 +73,10 @@ fun parseLocationString(player: Player, input: String): Location? {
         null
     }
 }
+
+fun isMinecraftVersionEqualOrLaterThan(plugin: Plugin, major: Int, minor: Int = 0): Boolean {
+    val version = plugin.server.bukkitVersion.substringBefore('-') // 1.16.5-R0.1-SNAPSHOT -> 1.16.5
+    val parts = version.split('.')
+
+    return parts[1].toInt() >= major && parts[2].toInt() >= minor
+}

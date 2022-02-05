@@ -18,6 +18,8 @@ class PointerConfiguration() {
 
     val particle = ParticleConfiguration()
 
+    val hologram = HologramConfiguration()
+
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         disableWhenReachedRadius = cfg.getInt("disableWhenReachedRadius").let { it * it }
 
@@ -26,5 +28,6 @@ class PointerConfiguration() {
         blinkingBlock.loadFromConfiguration(cfg.getConfigurationSectionNotNull("blinkingBlock"))
         compass.loadFromConfiguration(cfg.getConfigurationSectionNotNull("compass"))
         particle.loadFromConfiguration(cfg.getConfigurationSectionNotNull("particle"))
+        hologram.loadFromConfiguration(cfg.getConfigurationSectionNotNull("hologram"))
     }
 }

@@ -47,7 +47,7 @@ class WaypointsGUI(
 
     private val pageStack = ArrayDeque<BasePage>()
 
-    internal val apiExtensions = APIExtensions(plugin)
+    internal val apiExtensions = plugin.apiExtensions
 
     internal inline fun <T> extendApi(block: APIExtensions.() -> T) = apiExtensions.block()
 

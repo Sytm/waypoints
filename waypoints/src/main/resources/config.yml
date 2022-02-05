@@ -176,6 +176,15 @@ pointers:
     # See here for different particles https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
     particle: FLAME
 
+
+  hologram:
+    # Requires ProtocolLib to be actually available
+    enabled: true
+
+    interval: 30
+
+    maxDistance: 50
+
 inventory:
   general:
     previous: ARROW

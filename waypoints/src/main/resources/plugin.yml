@@ -13,6 +13,7 @@ libraries:
 softdepend:
   - Vault
   - dynmap
+  - ProtocolLib
 
 commands:
   waypoints:
