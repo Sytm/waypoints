@@ -207,9 +207,11 @@ class WaypointsGUI(
                     content.add(permission)
                 }
             }
-            val deathFolder = targetData.deathFolder
-            if (deathFolder.amount > 0) {
-                content.add(deathFolder)
+            if (plugin.waypointsConfig.general.features.deathWaypoints) {
+                val deathFolder = targetData.deathFolder
+                if (deathFolder.amount > 0) {
+                    content.add(deathFolder)
+                }
             }
         }
 
