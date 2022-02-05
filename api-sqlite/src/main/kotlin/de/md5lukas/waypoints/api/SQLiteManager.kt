@@ -3,6 +3,7 @@ package de.md5lukas.waypoints.api
 import de.md5lukas.jdbc.SQLiteHelper
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
+import de.md5lukas.waypoints.api.base.DatabaseConfiguration
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.sqlite.WaypointsAPIImpl
 import org.bukkit.plugin.Plugin
@@ -13,10 +14,11 @@ import java.util.logging.Level
 
 class SQLiteManager(
     plugin: Plugin,
+    databaseConfiguration: DatabaseConfiguration,
     val file: File?,
     pointerManager: PointerManager,
     disableInstanceCache: Boolean = false,
-) : DatabaseManager(plugin, disableInstanceCache) {
+) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache) {
 
 
     private val schemaVersion: Int = 0
@@ -149,6 +151,15 @@ class SQLiteManager(
 
     override fun cleanDatabase() {
         connection.update("DELETE FROM player_cooldown WHERE datetime(cooldownUntil) <= datetime(?)", OffsetDateTime.now().toString())
+
+        // Remove death waypoints older than the specified amount of time, if the amount is non-zero
+        if (!databaseConfiguration.deathWaypointRetentionPeriod.isZero) {
+            connection.update(
+                "DELETE FROM waypoints WHERE type = ? AND datetime(createdAt) <= datetime(?)",
+                Type.DEATH.name,
+                OffsetDateTime.now().minus(databaseConfiguration.deathWaypointRetentionPeriod).toString()
+            )
+        }
     }
 
     private val databaseUpgrades: LinkedHashMap<Int, Connection.() -> Unit> = LinkedHashMap()

@@ -17,6 +17,7 @@ import de.md5lukas.waypoints.lang.TranslationLoader
 import de.md5lukas.waypoints.lang.Translations
 import de.md5lukas.waypoints.lang.WorldTranslations
 import de.md5lukas.waypoints.pointer.PointerManagerImpl
+import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.TeleportManager
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SingleLineChart
@@ -31,7 +32,7 @@ class WaypointsPlugin : JavaPlugin() {
     @Suppress("PrivatePropertyName")
     private val METRICS_PLUGIN_ID = 6864
 
-    private lateinit var databaseManager: DatabaseManager
+    internal lateinit var databaseManager: DatabaseManager
     lateinit var waypointsConfig: WaypointsConfiguration
         private set
 
@@ -73,6 +74,7 @@ class WaypointsPlugin : JavaPlugin() {
         registerEvents()
 
         startMetrics()
+        startBackgroundTasks()
     }
 
     //<editor-fold desc="onEnable Methods">
@@ -83,7 +85,7 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun initDatabase() {
-        databaseManager = SQLiteManager(this, File(dataFolder, "waypoints.db"), PointerManagerImpl(this))
+        databaseManager = SQLiteManager(this, waypointsConfig.database, File(dataFolder, "waypoints.db"), PointerManagerImpl(this))
 
         databaseManager.initDatabase()
 
@@ -169,6 +171,12 @@ class WaypointsPlugin : JavaPlugin() {
                 totalFolders
             })
         }
+    }
+
+    private fun startBackgroundTasks() {
+        val scheduler = server.scheduler
+        // Run once every day
+        scheduler.runTaskTimerAsynchronously(this, CleanDatabaseTask(this), 20 * 60 * 60 * 24, 20 * 60 * 60 * 24)
     }
     //</editor-fold>
 
