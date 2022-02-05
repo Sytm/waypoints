@@ -66,6 +66,14 @@ class PointerManagerImpl(
                     null
                 }
             }
+        }, {
+            with(it.hologram) {
+                if (enabled && plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
+                    HologramPointer(plugin, this)
+                } else {
+                    null
+                }
+            }
         }
     )
 

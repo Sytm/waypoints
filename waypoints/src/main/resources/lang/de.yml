@@ -214,6 +214,18 @@ pointers:
     # heightDifference: Height difference between player and waypoint. Positive when to high, negative when to low
     distance: "&7Du bist &e${distance3D}&7 Blöcke von deinem Ziel entfernt"
 
+  hologram:
+    # Set the text of the floating hologram here.
+    # name: Name of the waypoint
+    # createdAt: Date at which the waypoint was created
+    # world: World where the waypoint is located at
+    # x, y, z: Coordinates of the waypoint
+    # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
+    private: "&5${name}"
+    death: "&cTot am ${createdAt}"
+    public: "&b${name}"
+    permission: "&d${name}"
+
 integrations:
   dynmap:
     markerSet:

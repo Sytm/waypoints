@@ -60,6 +60,26 @@ class APIExtensions(
         return stack
     }
 
+    fun Waypoint.getHologramName() = when (type) {
+        Type.PRIVATE -> plugin.translations.POINTERS_HOLOGRAM_PRIVATE
+        Type.DEATH -> plugin.translations.POINTERS_HOLOGRAM_DEATH
+        Type.PUBLIC -> plugin.translations.POINTERS_HOLOGRAM_PUBLIC
+        Type.PERMISSION -> plugin.translations.POINTERS_HOLOGRAM_PERMISSION
+    }.withReplacements(
+        mapOf(
+            "name" to name,
+            "description" to (description ?: ""),
+            "createdAt" to createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER),
+            "world" to worldTranslations.getWorldName(location.world!!),
+            "x" to location.x.format(),
+            "y" to location.y.format(),
+            "z" to location.z.format(),
+            "blockX" to location.blockX.toString(),
+            "blockY" to location.blockY.toString(),
+            "blockZ" to location.blockZ.toString(),
+        )
+    )
+
     fun GUIFolder.getItem(player: Player) = when (this) {
         is WaypointHolder -> getItem(player)
         is Folder -> getItem(player)

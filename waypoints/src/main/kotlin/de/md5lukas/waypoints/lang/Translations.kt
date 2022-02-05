@@ -55,6 +55,10 @@ class Translations(
 
     val POINTERS_ACTION_BAR_DISTANCE = Translation(tl, "pointers.actionBar.distance")
 
+    val POINTERS_HOLOGRAM_PRIVATE = Translation(tl, "pointers.hologram.private")
+    val POINTERS_HOLOGRAM_DEATH = Translation(tl, "pointers.hologram.death")
+    val POINTERS_HOLOGRAM_PUBLIC = Translation(tl, "pointers.hologram.public")
+    val POINTERS_HOLOGRAM_PERMISSION = Translation(tl, "pointers.hologram.permission")
 
     val TEXT_DURATION_SECOND = Translation(tl, "text.duration.second")
     val TEXT_DURATION_SECONDS = Translation(tl, "text.duration.seconds")
