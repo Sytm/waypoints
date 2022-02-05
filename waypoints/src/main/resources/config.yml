@@ -18,6 +18,8 @@ general:
   features:
     # Set to "false" to disable global waypoints
     globalWaypoints: true
+    # Set to "false" to disable death waypoints
+    deathWaypoints: true
 
   # Connected worlds in this list allow the translation of the coordinates 1:8, so you can for example navigate in the nether to a waypoint in the overworld
   connectedWorlds:
