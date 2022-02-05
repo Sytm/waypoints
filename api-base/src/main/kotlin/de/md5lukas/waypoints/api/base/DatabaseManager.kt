@@ -6,7 +6,8 @@ import java.sql.Connection
 
 abstract class DatabaseManager(
     val plugin: Plugin,
-    disableInstanceCache: Boolean
+    val databaseConfiguration: DatabaseConfiguration,
+    disableInstanceCache: Boolean,
 ) {
     val instanceCache: InstanceCache = InstanceCache(disableInstanceCache)
 
@@ -27,7 +28,7 @@ abstract class DatabaseManager(
 
     protected open fun upgradeDatabase() {}
 
-    protected open fun cleanDatabase() {}
+    open fun cleanDatabase() {}
 
     open fun close() {}
 }

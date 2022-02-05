@@ -1,3 +1,10 @@
+database:
+  # Time period after which death waypoints are deleted. Set all values to zero to disable
+  deathWaypointRetentionPeriod:
+    years: 0
+    months: 0
+    days: 7
+
 general:
   # Set the language for the plugin here
   language: en
