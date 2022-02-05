@@ -19,7 +19,7 @@ class FolderTest {
     @BeforeTest
     fun createAPI() {
         server = MockBukkit.mock()
-        val manager = SQLiteManager(MockBukkit.createMockPlugin(), null, DummyPointerManager(), true)
+        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, DummyPointerManager, true)
         manager.initDatabase()
         api = manager.api
     }
