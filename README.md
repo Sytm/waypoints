@@ -20,22 +20,29 @@ It will show the rough direction with small sections in the action bar of the pl
 If the player is too far left, the sections in the right will light up and vice versa.
 
 ### Beacon
-When the waypoint is in render distance, a beacon beam will appear at the location of the waypoint
-to make it easier to pinpoint the location of the waypoint.
+
+When the waypoint is in render distance, a beacon beam will appear at the location of the waypoint to make it easier to pinpoint the location of the waypoint.
 
 ### Blinking Block
-When the player is closer to the waypoint, the beacon will be replaced with a block sequence that will repeat.
-This is to help him get to the exact location.
+
+When the player is closer to the waypoint, the beacon will be replaced with a block sequence that will repeat. This is to help him get to the exact location.
+
+### Hologram
+
+As an alternative to the Blinking Block you can use Holograms to get the exact position of a Waypoint. This feature is optional but
+requires [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) if wanted
 
 ### Particles
+
 Particles appear at the feet of the player pointing into the direction of the waypoint
 
 ## Other notable features
+
 - Open the GUI by sneaking and right-clicking with a compass (by default)
 - Set custom icons for waypoints and folders by clicking on their icon. The item in your main hand will be used
 - Limit the amount of waypoints and folders a player can have
 - Customizable teleport prices and price increases the more the player teleports (With Vault support)
-- Direction indicators customizable 
+- Direction indicators customizable
 - Items in GUI fully customizable
 - Fully translatable
 - SQLite data storage
@@ -115,12 +122,20 @@ Also, you can change every piece of text to other languages or just change the c
   - `plugins/Md5Lukas-Commons/`
 
 ### Metrics
-This plugin uses [bStats](https://bstats.org/) to collect basic metrics about the usage of this plugin.
-You can, of course, opt-out of this if you wish. For further information have a look at "What data is collected?"
+
+This plugin uses [bStats](https://bstats.org/) to collect basic metrics about the usage of this plugin. You can, of course, opt-out of this if you wish. For
+further information have a look at "What data is collected?"
 and "Disabling bStats" over [here](https://bstats.org/getting-started).
 
 To view the metrics of this plugin, go [here](https://bstats.org/plugin/bukkit/waypoints2/6864).
 
 ### License
-This plugin is licensed under the MIT license.
-For more information on it, you can read [this](https://choosealicense.com/licenses/mit/).
+
+This plugin is licensed under the MIT license. For more information on it, you can read [this](https://choosealicense.com/licenses/mit/).
+
+### Supported Minecraft versions
+
+Because I don't have the time or motivation to support a lot of versions, and it is generally advised to update to the latest Minecraft/Spigot versions only the
+last 3 major updates with the latest builds are supported.
+
+At the time of writing this would be 1.18.1, 1.17.1 and 1.16.5, but not 1.18, 1.16.4 or 1.15.2. 
