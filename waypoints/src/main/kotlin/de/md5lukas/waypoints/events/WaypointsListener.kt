@@ -24,7 +24,8 @@ class WaypointsListener(
         if (config.enabled &&
             (!config.mustSneak || e.player.isSneaking) &&
             e.action in config.validClicks &&
-            e.material in config.items) {
+            e.material in config.items
+        ) {
             WaypointsGUI(plugin, e.player, e.player.uniqueId)
         }
     }

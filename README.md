@@ -1,23 +1,23 @@
 # Waypoints
+
 Ever had the problem, that you were on a long trip and don't find your base?
 
-You could set a warp with a conventional plugin at your home and simply teleport back.
-But if you want to keep the survival experience of not being able to teleport like that,
-this plugin could be just what your server needs!
+You could set a warp with a conventional plugin at your home and simply teleport back. But if you want to keep the survival experience of not being able to
+teleport like that, this plugin could be just what your server needs!
 
 ## Direction Indicators
-So, instead of just bringing the player back where he started,
-this plugin shows him the direction he has to walk, so he can explore the world even more.
-To show the player the direction you can configure multiple direction indicators to guide the player to his destination.
+
+So, instead of just bringing the player back where he started, this plugin shows him the direction he has to walk, so he can explore the world even more. To
+show the player the direction you can configure multiple direction indicators to guide the player to his destination.
 
 ### Compass
-It won't get any simpler than that if the player owns a compass.
-It will have the waypoint as it's target and points into that direction.
+
+It won't get any simpler than that if the player owns a compass. It will have the waypoint as it's target and points into that direction.
 
 ### Action Bar Indicator
-This is comparable to the compass but doesn't require one.
-It will show the rough direction with small sections in the action bar of the player.
-If the player is too far left, the sections in the right will light up and vice versa.
+
+This is comparable to the compass but doesn't require one. It will show the rough direction with small sections in the action bar of the player. If the player
+is too far left, the sections in the right will light up and vice versa.
 
 ### Beacon
 
@@ -48,6 +48,7 @@ Particles appear at the feet of the player pointing into the direction of the wa
 - SQLite data storage
 
 ## Commands
+
 `/waypoints` - Opens the GUI
 
 `/waypoints set <Name>` - Create a waypoint only the player himself can see
@@ -63,11 +64,13 @@ Particles appear at the feet of the player pointing into the direction of the wa
 `/waypoints import` - Import waypoints from Waypoints v2.X.X
 
 ### Scripting
+
 `/waypointsscript deselectWaypoint <Player-Name>` - Deselect the current waypoint of a player with a command
 
 `/waypointsscript selectWaypoint <Player-Name> <Waypoint-UUID>` - Set the waypoint selection of a player with a command
 
 ## Permissions
+
 `waypoints.command.use` - Allows the player to use the `/waypoints` command and open the GUI
 
 `waypoints.command.other` - Allows the player to use the `/waypoints other` command
@@ -94,7 +97,8 @@ Particles appear at the feet of the player pointing into the direction of the wa
 
 ## Configuration
 
-Almost everything is configurable. To have a look at the current configuration file click [here](https://github.com/Sytm/waypoints/blob/v3/master/waypoints/src/main/resources/config.yml)
+Almost everything is configurable. To have a look at the current configuration file
+click [here](https://github.com/Sytm/waypoints/blob/v3/master/waypoints/src/main/resources/config.yml)
 
 Also, you can change every piece of text to other languages or just change the colors.
 [English Translation File](https://github.com/Sytm/waypoints/blob/v3/master/waypoints/src/main/resources/lang/en.yml)
