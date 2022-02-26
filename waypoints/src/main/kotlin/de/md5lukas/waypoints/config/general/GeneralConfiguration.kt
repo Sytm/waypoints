@@ -10,6 +10,9 @@ class GeneralConfiguration {
     var language: String = ""
         private set
 
+    var worldNotFound: WorldNotFoundAction = WorldNotFoundAction.SHOW
+        private set
+
     val uuidCache = UUIDCacheConfiguration()
 
     val features = FeaturesConfiguration()
@@ -28,6 +31,8 @@ class GeneralConfiguration {
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         language = cfg.getStringNotNull("language")
+
+        worldNotFound = WorldNotFoundAction.valueOf(cfg.getStringNotNull("worldNotFound"))
 
         uuidCache.loadFromConfiguration(cfg.getConfigurationSectionNotNull("uuidCache"))
 
