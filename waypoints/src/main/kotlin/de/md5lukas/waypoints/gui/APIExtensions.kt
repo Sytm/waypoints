@@ -38,7 +38,7 @@ class APIExtensions(
                 "name" to name,
                 "description" to (description ?: ""),
                 "createdAt" to createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER),
-                "world" to worldTranslations.getWorldName(location.world!!),
+                "world" to (location.world?.let { worldTranslations.getWorldName(it) } ?: translations.TEXT_WORLD_NOT_FOUND.text),
                 "x" to location.x.format(),
                 "y" to location.y.format(),
                 "z" to location.z.format(),

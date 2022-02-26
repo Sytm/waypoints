@@ -69,6 +69,8 @@ class Translations(
     val TEXT_DURATION_DAY = Translation(tl, "text.duration.day")
     val TEXT_DURATION_DAYS = Translation(tl, "text.duration.days")
 
+    val TEXT_WORLD_NOT_FOUND = Translation(tl, "text.worldNotFound")
+
     val TEXT_DISTANCE_OTHER_WORLD = Translation(tl, "text.distance.otherWorld")
 
     val TEXT_BEACON_COLORS = BeaconColor.values().map {
