@@ -22,7 +22,7 @@ class OpenWithItemConfiguration {
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         enabled = cfg.getBoolean("enabled")
 
-        validClicks = when(val click = cfg.getStringNotNull("click").lowercase()) {
+        validClicks = when (val click = cfg.getStringNotNull("click").lowercase()) {
             "right" -> listOf(Action.RIGHT_CLICK_AIR, Action.RIGHT_CLICK_BLOCK)
             "left" -> listOf(Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK)
             else -> throw IllegalArgumentException("The click type $click is at ${cfg.currentPath}.click invalid")
