@@ -179,9 +179,13 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             } else {
                 background
             },
-            's' to GUIItem(wpGUI.translations.WAYPOINT_SELECT.item) {
-                wpGUI.viewer.closeInventory()
-                wpGUI.plugin.api.pointerManager.enable(wpGUI.viewer, waypoint)
+            's' to if (waypoint.location.world !== null) {
+                GUIItem(wpGUI.translations.WAYPOINT_SELECT.item) {
+                    wpGUI.viewer.closeInventory()
+                    wpGUI.plugin.api.pointerManager.enable(wpGUI.viewer, waypoint)
+                }
+            } else {
+                background
             },
             'c' to if (canModifyWaypoint && isNotDeathWaypoint && wpGUI.plugin.waypointsConfig.pointer.beacon.enabled) {
                 GUIItem(wpGUI.translations.WAYPOINT_SELECT_BEACON_COLOR.item) {
@@ -252,8 +256,8 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             } else {
                 background
             },
-            't' to if (wpGUI.viewer.hasPermission(wpGUI.plugin.teleportManager.getTeleportPermission(waypoint)) ||
-                wpGUI.plugin.teleportManager.isTeleportEnabled(waypoint)
+            't' to if ((wpGUI.viewer.hasPermission(wpGUI.plugin.teleportManager.getTeleportPermission(waypoint)) ||
+                        wpGUI.plugin.teleportManager.isTeleportEnabled(waypoint)) && waypoint.location.world !== null
             ) {
                 GUIItem(
                     wpGUI.translations.WAYPOINT_TELEPORT.getItem(

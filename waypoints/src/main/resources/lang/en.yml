@@ -120,6 +120,8 @@ text:
     day: "day"
     days: "days"
 
+  worldNotFound: "?"
+
   distance:
     otherWorld: "?"
 

@@ -95,6 +95,10 @@ class PointerManagerImpl(
     }
 
     override fun enable(player: Player, waypoint: Waypoint) {
+        if (waypoint.location.world === null) {
+            throw IllegalStateException("The waypoint to activate the pointers to has no world available")
+        }
+
         val newPointer = ActivePointer(waypoint, translateTargetLocation(player, waypoint))
         activePointers.put(player, newPointer)?.let { oldPointer ->
             hide(player, oldPointer)
@@ -157,8 +161,8 @@ class PointerManagerImpl(
         }
 
         plugin.waypointsConfig.general.connectedWorlds.worlds.forEach {
-            if (it.primary == player.world.name || it.secondary == waypoint.location.world!!.name
-                && it.secondary == player.world.name || it.primary == waypoint.location.world!!.name
+            if (it.primary == player.world.name || it.secondary == waypoint.location.world?.name
+                && it.secondary == player.world.name || it.primary == waypoint.location.world?.name
             ) {
                 val target = waypoint.location.clone()
                 target.world = player.world

@@ -69,10 +69,11 @@ class DynMapIntegration(
 
     private fun createMarker(waypoint: Waypoint) {
         with(waypoint.location) {
+            val worldNotNull = world ?: return
             markerSet.createMarker(
                 waypoint.id.toString(), // ID
                 waypoint.name, // Label
-                world!!.name, // World ID
+                worldNotNull.name, // World ID
                 x, // X
                 y, // Y
                 z, // z
