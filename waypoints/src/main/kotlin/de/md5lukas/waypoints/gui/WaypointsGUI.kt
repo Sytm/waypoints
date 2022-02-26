@@ -13,6 +13,7 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
+import de.md5lukas.waypoints.config.general.WorldNotFoundAction
 import de.md5lukas.waypoints.gui.pages.BasePage
 import de.md5lukas.waypoints.gui.pages.GUIFolderPage
 import de.md5lukas.waypoints.gui.pages.ListingPage
@@ -231,6 +232,19 @@ class WaypointsGUI(
             content.addAll(guiFolder.waypoints)
 
             content.addAll(guiFolder.folders)
+        }
+
+        if (plugin.waypointsConfig.general.worldNotFound !== WorldNotFoundAction.SHOW) {
+            content.removeAll {
+                if (it is Waypoint && it.location.world === null) {
+                    if (plugin.waypointsConfig.general.worldNotFound === WorldNotFoundAction.DELETE) {
+                        it.delete()
+                    }
+                    true
+                } else {
+                    false
+                }
+            }
         }
 
         content.sortWith(viewerData.sortBy)

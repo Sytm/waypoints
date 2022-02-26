@@ -9,6 +9,12 @@ general:
   # Set the language for the plugin here
   language: en
 
+  # What to do when a waypoint is loaded that is in a world that has been deleted / renamed. Available options:
+  # SHOW: Shows the waypoint normally, but cannot be selected or teleported to
+  # HIDE: The waypoint will be hidden in the GUI, but will reappear once the world is back
+  # DELETE: The waypoint will be permanently deleted
+  worldNotFound: HIDE
+
   uuidCache:
     # Max size of the internal UUID-Cache
     maxSize: 100
