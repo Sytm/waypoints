@@ -49,24 +49,24 @@ class HologramManager(internal val plugin: WaypointsPlugin) {
         )
 
         // Accessor to get the minecraft key / namespaced key of the resource key
-        val resourceKeyGetMinecraftKey = Accessors.getMethodAccessor(
-            FuzzyReflection.fromClass(resourceKeyClass).getMethod(
-                FuzzyMethodContract.newBuilder()
-                    .returnTypeExact(minecraftKeyClass)
-                    .parameterCount(0)
-                    .build()
-            )
-        )
+        val resourceKeyGetMinecraftKey = FuzzyReflection.fromClass(resourceKeyClass).getMethodList(
+            FuzzyMethodContract.newBuilder()
+                .returnTypeExact(minecraftKeyClass)
+                .parameterCount(0)
+                .build()
+        ).map {
+            Accessors.getMethodAccessor(it)
+        }
 
-        val entityTypeRegistry = Accessors.getFieldAccessor(allRegistryFields.first {
-            val accessor = Accessors.getFieldAccessor(it)
+        val entityTypeRegistry = Accessors.getFieldAccessor(allRegistryFields.first { registryInstanceField ->
+            val accessor = Accessors.getFieldAccessor(registryInstanceField)
             val registryInstance = accessor.get(null)
 
             val resourceKey = registryGetResourceKey.invoke(registryInstance)
 
-            val registryName = resourceKeyGetMinecraftKey.invoke(resourceKey).toString()
+            val registryNames = resourceKeyGetMinecraftKey.map { it.invoke(resourceKey).toString() }
 
-            registryName == "minecraft:entity_type"
+            "minecraft:entity_type" in registryNames
         }).get(null)
 
         val registryGetId = Accessors.getMethodAccessor(
