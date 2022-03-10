@@ -68,7 +68,8 @@ class PointerManagerImpl(
             }
         }, {
             with(it.hologram) {
-                if (enabled && plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
+                @Suppress("SimplifyBooleanWithConstants") // TODO Remove when ProtocolLib issue is resolved
+                if (false && enabled && plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
                     HologramPointer(plugin, this)
                 } else {
                     null

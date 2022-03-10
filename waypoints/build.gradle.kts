@@ -34,6 +34,7 @@ dependencies {
     val bstatsVersion: String by project
     val vaultVersion: String by project
     val dynmapVersion: String by project
+    val protocolLibVersion: String by project
 
     implementation("org.spigotmc:spigot-api:$spigotVersion")
     implementation(kotlin("stdlib-jdk8"))
@@ -59,11 +60,11 @@ dependencies {
     implementation("us.dynmap:dynmap-api:$dynmapVersion:unshaded") {
         isTransitive = false
     }
-    implementation("us.dynmap:spigot:$dynmapVersion:unshaded") {
+    /*implementation("us.dynmap:spigot:$dynmapVersion:unshaded") {
         isTransitive = false
-    }
+    }*/
 
-    implementation("com.comphenix.protocol:ProtocolLib:4.7.0")
+    implementation("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")
 }
 
 tasks.register("createResourceIndex", ResourceIndexTask::class.java) {

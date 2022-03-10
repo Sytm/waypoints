@@ -73,7 +73,7 @@ class HologramManager(internal val plugin: WaypointsPlugin) {
             registry.getMethod(
                 FuzzyMethodContract.newBuilder()
                     .parameterCount(1)
-                    .returnTypeExact(Int::class.java /* primitve int type */)
+                    .returnTypeExact(Int::class.java /* primitive int type */)
                     .build()
             )
         )
