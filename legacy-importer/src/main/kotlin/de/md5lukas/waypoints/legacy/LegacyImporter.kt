@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.legacy
 
 import de.md5lukas.nbt.Tags
 import de.md5lukas.waypoints.api.WaypointsAPI
+import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.*
 import java.util.logging.Level
@@ -12,6 +13,8 @@ class LegacyImporter(
     private val api: WaypointsAPI,
 ) {
 
+    private val uuidMappings: MutableMap<UUID, UUID> = HashMap()
+
     init {
         Tags.registerExtendedTags()
         Tags.registerTag {
@@ -20,12 +23,22 @@ class LegacyImporter(
     }
 
     fun performImport() {
+        uuidMappings.clear()
         importGlobals()
 
         if (BasicPlayerStore.PLAYER_DATA_FOLDER.exists()) {
             BasicPlayerStore.PLAYER_DATA_FOLDER.listFiles()!!.forEach(::importPlayer)
         } else {
             logger.log(Level.INFO, "Could not find any player data in ${BasicPlayerStore.PLAYER_DATA_FOLDER.absolutePath}")
+        }
+
+        File(JavaPlugin.getProvidingPlugin(LegacyImporter::class.java).dataFolder, "imported-uuid-mappings.txt").writer().use {
+            uuidMappings.forEach { entry ->
+                it.write(entry.key.toString())
+                it.write(" -> ")
+                it.write(entry.value.toString())
+                it.write(System.lineSeparator())
+            }
         }
     }
 
@@ -71,6 +84,7 @@ class LegacyImporter(
                 playerData.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
                     it.material = legacyWaypoint.material
                     it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                    uuidMappings[legacyWaypoint.id] = it.id
                 }
             }
         }
@@ -92,6 +106,7 @@ class LegacyImporter(
                         it.material = legacyWaypoint.material
                         it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
                         it.folder = folder
+                        uuidMappings[legacyWaypoint.id] = it.id
                     }
                 }
             }
@@ -117,6 +132,7 @@ class LegacyImporter(
                     api.publicWaypoints.createWaypoint(legacyWaypoint.name, legacyWaypoint.location).also {
                         it.material = legacyWaypoint.material
                         it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                        uuidMappings[legacyWaypoint.id] = it.id
                     }
                 }
             }
@@ -133,6 +149,7 @@ class LegacyImporter(
                         it.permission = (legacyWaypoint as LegacyPermissionWaypoint).permission
                         it.material = legacyWaypoint.material
                         it.beaconColor = legacyWaypoint.beaconColor?.beaconColor
+                        uuidMappings[legacyWaypoint.id] = it.id
                     }
                 }
             }
