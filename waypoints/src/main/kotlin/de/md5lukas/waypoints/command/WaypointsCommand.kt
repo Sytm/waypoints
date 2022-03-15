@@ -147,18 +147,12 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 args.size <= 1 || !args[1].equals("confirm", true) -> translations.COMMAND_IMPORT_MUST_CONFIRM.send(sender, labelMap)
                 else -> {
                     translations.COMMAND_IMPORT_STARTED.send(sender)
-                    plugin.runTaskAsync {
-                        try {
-                            LegacyImporter(plugin.logger, plugin.api).performImport()
-                            plugin.runTask {
-                                translations.COMMAND_IMPORT_FINISHED_SUCCESS.send(sender)
-                            }
-                        } catch (e: Throwable) {
-                            plugin.runTask {
-                                translations.COMMAND_IMPORT_FINISHED_ERROR.send(sender)
-                            }
-                            plugin.logger.log(Level.SEVERE, "An error occurred while importing old waypoint data", e)
-                        }
+                    try {
+                        LegacyImporter(plugin.logger, plugin.api).performImport()
+                        translations.COMMAND_IMPORT_FINISHED_SUCCESS.send(sender)
+                    } catch (e: Throwable) {
+                        translations.COMMAND_IMPORT_FINISHED_ERROR.send(sender)
+                        plugin.logger.log(Level.SEVERE, "An error occurred while importing old waypoint data", e)
                     }
                 }
             }
