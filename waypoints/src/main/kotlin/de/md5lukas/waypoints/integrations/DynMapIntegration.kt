@@ -7,6 +7,7 @@ import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.dynmap.DynmapAPI
 import org.dynmap.markers.MarkerAPI
 import org.dynmap.markers.MarkerIcon
 import org.dynmap.markers.MarkerSet
@@ -25,16 +26,15 @@ class DynMapIntegration(
     private lateinit var markerSet: MarkerSet
     private lateinit var markerIcon: MarkerIcon
 
-    @Suppress("UNREACHABLE_CODE")
     fun setupDynMap() {
-        return // TODO Remove when webbukkit/dynmap#3701 is resolved
-        if (plugin.server.pluginManager.getPlugin("dynmap") === null) {
+        val dynmapPluginInstance = plugin.server.pluginManager.getPlugin("dynmap")
+        if (dynmapPluginInstance === null) {
             return
         }
 
         plugin.logger.log(Level.INFO, "Found DynMap plugin")
         try {
-            //markerApi = DynmapPlugin.plugin.markerAPI
+            markerApi = (dynmapPluginInstance as DynmapAPI).markerAPI
             markerIcon = markerApi.getMarkerIcon(plugin.waypointsConfig.integrations.dynmap.icon)
 
             markerSet = markerApi.createMarkerSet(
