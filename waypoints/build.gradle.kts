@@ -60,9 +60,6 @@ dependencies {
     implementation("us.dynmap:dynmap-api:$dynmapVersion:unshaded") {
         isTransitive = false
     }
-    /*implementation("us.dynmap:spigot:$dynmapVersion:unshaded") {
-        isTransitive = false
-    }*/
 
     implementation("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")
 }

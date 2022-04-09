@@ -8,11 +8,13 @@ import de.md5lukas.waypoints.api.event.WaypointSelectEvent
 import de.md5lukas.waypoints.config.pointers.PointerConfiguration
 import de.md5lukas.waypoints.pointer.variants.*
 import de.md5lukas.waypoints.util.callEvent
+import de.md5lukas.waypoints.util.runTask
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerChangedWorldEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import kotlin.math.floor
@@ -104,11 +106,17 @@ class PointerManagerImpl(
             hide(player, oldPointer)
         }
         show(player, newPointer)
+        plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = waypoint
     }
 
-    override fun disable(player: Player) {
+    override fun disable(player: Player) = disable(player, true)
+
+    private fun disable(player: Player, save: Boolean) {
         activePointers.remove(player)?.let {
             hide(player, it)
+        }
+        if (save) {
+            plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = null
         }
     }
 
@@ -127,8 +135,18 @@ class PointerManagerImpl(
     }
 
     @EventHandler
+    private fun onPlayerJoin(e: PlayerJoinEvent) {
+        plugin.runTask { // Run this in the next tick, because otherwise the compass pointer errors because the player doesn't have a current compass target yet
+            val waypoint = plugin.api.getWaypointPlayer(e.player.uniqueId).lastSelectedWaypoint
+            if (waypoint != null) {
+                enable(e.player, waypoint)
+            }
+        }
+    }
+
+    @EventHandler
     private fun onQuit(e: PlayerQuitEvent) {
-        disable(e.player)
+        disable(e.player, false)
     }
 
     @EventHandler
