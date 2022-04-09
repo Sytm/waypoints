@@ -21,7 +21,7 @@ class SQLiteManager(
 ) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache) {
 
 
-    private val schemaVersion: Int = 0
+    private val schemaVersion: Int = 1
     private val sqliteHelper = if (file === null) {
         SQLiteHelper()
     } else {
@@ -56,7 +56,10 @@ class SQLiteManager(
                   id TEXT NOT NULL PRIMARY KEY,
                   
                   showGlobals BOOLEAN NOT NULL DEFAULT 1,
-                  sortBy TEXT NOT NULL DEFAULT '${OverviewSort.TYPE_ASCENDING.name}'
+                  sortBy TEXT NOT NULL DEFAULT '${OverviewSort.TYPE_ASCENDING.name}',
+                  lastSelectedWaypoint TEXT,
+                  
+                  FOREIGN KEY (lastSelectedWaypoint) REFERENCES waypoints(id) ON DELETE SET NULL
                 );
             """
             )
@@ -162,7 +165,15 @@ class SQLiteManager(
         }
     }
 
-    private val databaseUpgrades: LinkedHashMap<Int, Connection.() -> Unit> = LinkedHashMap()
+    private val databaseUpgrades = LinkedHashMap<Int, Connection.() -> Unit>().also {
+        it[1] = {
+            update(
+                """
+                ALTER TABLE player_data ADD COLUMN lastSelectedWaypoint TEXT REFERENCES waypoints (id) ON DELETE SET NULL;
+            """.trimIndent()
+            )
+        }
+    }
 
     override fun upgradeDatabase() {
         with(connection) {

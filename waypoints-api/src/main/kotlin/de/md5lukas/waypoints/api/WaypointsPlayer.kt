@@ -20,6 +20,8 @@ interface WaypointsPlayer : WaypointHolder {
 
     val deathFolder: Folder
 
+    var lastSelectedWaypoint: Waypoint?
+
     fun setCompassTarget(location: Location)
 
     fun getCompassTarget(): Location?

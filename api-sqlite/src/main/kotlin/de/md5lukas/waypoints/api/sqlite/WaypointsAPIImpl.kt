@@ -12,7 +12,7 @@ internal class WaypointsAPIImpl(
 
     override fun getWaypointPlayer(uuid: UUID): WaypointsPlayer = dm.instanceCache.playerData.get(uuid) {
         dm.connection.update("INSERT INTO player_data(id) VALUES(?) ON CONFLICT DO NOTHING;", uuid.toString())
-        dm.connection.selectFirst("SELECT id, showGlobals, sortBy FROM player_data WHERE id = ?;", uuid.toString()) {
+        dm.connection.selectFirst("SELECT * FROM player_data WHERE id = ?;", uuid.toString()) {
             WaypointsPlayerImpl(dm, this)
         }!!
     }

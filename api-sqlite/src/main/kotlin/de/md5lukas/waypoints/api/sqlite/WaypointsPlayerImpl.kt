@@ -2,10 +2,7 @@ package de.md5lukas.waypoints.api.sqlite
 
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.api.Folder
-import de.md5lukas.waypoints.api.OverviewSort
-import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.WaypointsPlayer
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import org.bukkit.Location
 import java.sql.ResultSet
@@ -17,6 +14,7 @@ internal class WaypointsPlayerImpl private constructor(
     override val id: UUID,
     showGlobals: Boolean,
     sortBy: OverviewSort,
+    lastSelectedWaypoint: UUID?
 ) : WaypointHolderImpl(dm, Type.PRIVATE, id), WaypointsPlayer {
 
     constructor(dm: DatabaseManager, row: ResultSet) : this(
@@ -24,6 +22,7 @@ internal class WaypointsPlayerImpl private constructor(
         id = UUID.fromString(row.getString("id")),
         showGlobals = row.getBoolean("showGlobals"),
         sortBy = OverviewSort.valueOf(row.getString("sortBy")),
+        lastSelectedWaypoint = row.getString("lastSelectedWaypoint")?.let(UUID::fromString)
     )
 
     override var showGlobals: Boolean = showGlobals
@@ -62,10 +61,6 @@ internal class WaypointsPlayerImpl private constructor(
 
     override val deathFolder: Folder = DeathFolderImpl(dm, id)
 
-    private fun set(column: String, value: Any?) {
-        dm.connection.update("UPDATE player_data SET $column = ? WHERE id = ?;", value, id)
-    }
-
     override fun setCompassTarget(location: Location) {
         dm.connection.update(
             "INSERT INTO compass_storage(playerId, world, x, y, z) VALUES (?, ?, ?, ?, ?) ON CONFLICT(playerId) DO UPDATE SET world = ?, x = ?, y = ?, z = ?;",
@@ -88,6 +83,26 @@ internal class WaypointsPlayerImpl private constructor(
             getDouble("y"),
             getDouble("z"),
         )
+    }
+
+    private var lastSelectedWaypointID = lastSelectedWaypoint
+        set(value) {
+            field = value
+            set("lastSelectedWaypoint", value?.toString())
+        }
+
+    override var lastSelectedWaypoint: Waypoint?
+        get() = lastSelectedWaypointID?.let { uuid ->
+            dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?;", uuid.toString()) {
+                WaypointImpl(dm, this)
+            }
+        }
+        set(value) {
+            lastSelectedWaypointID = value?.id
+        }
+
+    private fun set(column: String, value: Any?) {
+        dm.connection.update("UPDATE player_data SET $column = ? WHERE id = ?;", value, id)
     }
 
     override fun equals(other: Any?): Boolean {
