@@ -14,7 +14,7 @@ show the player the direction you can configure multiple direction indicators to
 
 It won't get any simpler than that if the player owns a compass. It will have the waypoint as it's target and points into that direction.
 
-### Action Bar Indicator
+### Actionbar Indicator
 
 This is comparable to the compass but doesn't require one. It will show the rough direction with small sections in the action bar of the player. If the player
 is too far left, the sections in the right will light up and vice versa.
@@ -36,6 +36,17 @@ requires [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) if 
 
 Particles appear at the feet of the player pointing into the direction of the waypoint
 
+## Player tracking
+
+Although disabled by
+default, [when enabled](https://github.com/Sytm/waypoints/blob/616d2f6db741d656edb8f5d98bb2d18f32cbe2ca/waypoints/src/main/resources/config.yml#L120) adds a
+menu to the GUI where the player can choose another player to track. Now the compass, actionbar indicator and particles will help guide the player to the
+tracked player.
+
+- Players can choose to hide themselves in the menu to others (if enabled)
+- Players must show themselves to others in order to track a player (if enabled)
+- The player that gets tracked receives a notification who started tracking him (if enabled)
+
 ## Other notable features
 
 - Open the GUI by sneaking and right-clicking with a compass (by default)
@@ -46,6 +57,10 @@ Particles appear at the feet of the player pointing into the direction of the wa
 - Items in GUI fully customizable
 - Fully translatable
 - SQLite data storage
+
+## Integrations
+
+- Public waypoints are added to [Dynmap](https://www.spigotmc.org/resources/dynmap%C2%AE.274/)
 
 ## Commands
 
@@ -94,6 +109,10 @@ Particles appear at the feet of the player pointing into the direction of the wa
 `waypoints.teleport.public` - Allows the player to teleport to public waypoints
 
 `waypoints.teleport.permission` - Allows the player to teleport to permission waypoints
+
+`waypoints.tracking.enabled` - Allows the player to use the player tracking feature
+
+`waypoints.tracking.trackAll` - Allows the player to track players that are hidden
 
 ## Configuration
 
