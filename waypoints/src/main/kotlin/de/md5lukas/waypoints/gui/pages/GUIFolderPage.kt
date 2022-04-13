@@ -20,9 +20,14 @@ import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import java.util.*
 
-class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : ListingPage<GUIDisplayable>(wpGUI, guiFolder, {
-    wpGUI.getListingContent(guiFolder)
-}, wpGUI::toGUIContent) {
+class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : ListingPage<GUIDisplayable>(
+    wpGUI,
+    wpGUI.extendApi { guiFolder.type.getBackgroundItem() },
+    {
+        wpGUI.getListingContent(guiFolder)
+    },
+    wpGUI::toGUIContent
+) {
 
     private companion object {
         /**

@@ -2,22 +2,22 @@ package de.md5lukas.waypoints.pointer
 
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.PointerManager
+import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.event.WaypointDeselectEvent
+import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointSelectEvent
 import de.md5lukas.waypoints.config.pointers.PointerConfiguration
 import de.md5lukas.waypoints.pointer.variants.*
 import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.runTask
-import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import kotlin.math.floor
+import java.util.*
 
 class PointerManagerImpl(
     private val plugin: WaypointsPlugin
@@ -55,7 +55,7 @@ class PointerManagerImpl(
         }, {
             with(it.compass) {
                 if (enabled) {
-                    CompassPointer(plugin)
+                    CompassPointer(plugin, this)
                 } else {
                     null
                 }
@@ -96,17 +96,21 @@ class PointerManagerImpl(
         }
     }
 
-    override fun enable(player: Player, waypoint: Waypoint) {
-        if (waypoint.location.world === null) {
+    override fun enable(player: Player, trackable: Trackable) {
+        if (trackable.location.world === null) {
             throw IllegalStateException("The waypoint to activate the pointers to has no world available")
         }
 
-        val newPointer = ActivePointer(waypoint, translateTargetLocation(player, waypoint))
+        val newPointer = ActivePointer(plugin, player, trackable)
         activePointers.put(player, newPointer)?.let { oldPointer ->
             hide(player, oldPointer)
         }
         show(player, newPointer)
-        plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = waypoint
+        plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = if (trackable is Waypoint) {
+            trackable
+        } else {
+            null
+        }
     }
 
     override fun disable(player: Player) = disable(player, true)
@@ -120,17 +124,33 @@ class PointerManagerImpl(
         }
     }
 
+    override fun disableAll(id: UUID) {
+        activePointers.filter { it.value.trackable.id == id }.forEach {
+            disable(it.key)
+        }
+    }
+
+    override fun trackableOf(player: Player) = PlayerTrackableImpl(player)
+
+    override fun getCurrentTarget(player: Player): Trackable? = activePointers[player]?.trackable
+
     private fun show(player: Player, pointer: ActivePointer) {
-        plugin.callEvent(WaypointSelectEvent(player, pointer.waypoint))
+        val trackable = pointer.trackable
+        if (trackable is Waypoint) {
+            plugin.callEvent(WaypointSelectEvent(player, trackable))
+        }
         enabledPointers.forEach {
-            it.show(player, pointer.waypoint, pointer.translatedTarget)
+            it.show(player, pointer.trackable, pointer.translatedTarget)
         }
     }
 
     private fun hide(player: Player, pointer: ActivePointer) {
-        plugin.callEvent(WaypointDeselectEvent(player, pointer.waypoint))
+        val trackable = pointer.trackable
+        if (trackable is Waypoint) {
+            plugin.callEvent(WaypointDeselectEvent(player, trackable))
+        }
         enabledPointers.forEach {
-            it.hide(player, pointer.waypoint, pointer.translatedTarget)
+            it.hide(player, pointer.trackable, pointer.translatedTarget)
         }
     }
 
@@ -159,45 +179,16 @@ class PointerManagerImpl(
 
         val pointer = activePointers[e.player] ?: return
 
-        if (e.player.world === pointer.waypoint.location.world &&
-            e.player.location.distanceSquared(pointer.waypoint.location) <= disableWhenReachedRadius
+        if (e.player.world === pointer.trackable.location.world &&
+            e.player.location.distanceSquared(pointer.trackable.location) <= disableWhenReachedRadius
         ) {
             disable(e.player)
         }
     }
 
     @EventHandler
-    private fun onWorldChange(e: PlayerChangedWorldEvent) {
-        activePointers[e.player]?.let {
-            it.translatedTarget = translateTargetLocation(e.player, it.waypoint)
-        }
-    }
-
-    private fun translateTargetLocation(player: Player, waypoint: Waypoint): Location? {
-        if (player.world === waypoint.location.world) {
-            return waypoint.location
-        }
-
-        plugin.waypointsConfig.general.connectedWorlds.worlds.forEach {
-            if (it.primary == player.world.name || it.secondary == waypoint.location.world?.name
-                && it.secondary == player.world.name || it.primary == waypoint.location.world?.name
-            ) {
-                val target = waypoint.location.clone()
-                target.world = player.world
-
-                if (player.world.name == it.primary) {
-                    target.x *= 8
-                    target.z *= 8
-                } else {
-                    target.x = floor(target.x / 8)
-                    target.z = floor(target.z / 8)
-                }
-
-                return target
-            }
-        }
-
-        return null
+    private fun onWaypointDelete(e: WaypointPostDeleteEvent) {
+        disableAll(e.waypoint.id)
     }
 
     init {

@@ -9,7 +9,7 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import org.bukkit.inventory.ItemStack
 
-class SelectBeaconColorPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePage(wpGUI, waypoint) {
+class SelectBeaconColorPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePage(wpGUI, wpGUI.extendApi { waypoint.type.getBackgroundItem() }) {
 
     private companion object {
         /**

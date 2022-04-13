@@ -207,6 +207,11 @@ message:
       notice: "$[prefix] &7You need to stand still for &e${duration}&7."
       moved: "$[prefix] &cYou have moved and the scheduled teleport has been canceled."
 
+  tracking:
+    playerNoLongerOnline: "$[prefix] &cThe player you are trying to track is no longer online."
+    trackableRequired: "$[prefix] &cTo track other players you must make yourself visible."
+    notification: "$[prefix] &7The player &e${name}&7 is tracking you."
+
 pointers:
   actionBar:
     # current: Translated name of the world the player is in
@@ -303,6 +308,9 @@ inventory:
     permission:
       displayName: "&dRestricted waypoints"
       description: "&7Available for you: &6${amount}"
+    tracking:
+      displayName: "&aPlayers"
+      description: "&7Track other players"
 
   waypoint:
     # name: Name of the waypoint
@@ -465,3 +473,29 @@ inventory:
     background:
       displayName: "&0-"
       description: ""
+
+  tracking:
+    background:
+      displayName: "&0-"
+      description: ""
+    trackable:
+      enabled:
+        displayName: "&7You are visible"
+        description: "&7Other players can track you"
+      disabled:
+        displayName: "&7You are hidden"
+        description: "&7Other players cannot track you"
+    refresh:
+      displayName: "&7Update the player list"
+      description: ""
+
+    # name: Name of the player
+    # world: World where the player is located at
+    # x, y, z: Coordinates of the player
+    # blockX, blockY, blockZ: Coordinates of the block nearest to the player
+    # distance: Distance in blocks to the player
+    player:
+      displayName: "&a${name}"
+      description: |
+        &7World: &6${world}
+        &7Distance: &6${distance}

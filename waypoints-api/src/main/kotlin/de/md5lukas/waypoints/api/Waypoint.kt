@@ -5,9 +5,9 @@ import org.bukkit.Location
 import org.bukkit.Material
 import java.util.*
 
-interface Waypoint : GUIDisplayable {
+interface Waypoint : GUIDisplayable, Trackable {
 
-    val id: UUID
+    override val id: UUID
 
     val owner: UUID?
 
@@ -21,9 +21,9 @@ interface Waypoint : GUIDisplayable {
 
     var material: Material?
 
-    var beaconColor: BeaconColor?
+    override var beaconColor: BeaconColor?
 
-    val location: Location
+    override val location: Location
 
     fun getWaypointMeta(owner: UUID): WaypointMeta
 

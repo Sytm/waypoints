@@ -14,6 +14,7 @@ internal class WaypointsPlayerImpl private constructor(
     override val id: UUID,
     showGlobals: Boolean,
     sortBy: OverviewSort,
+    canBeTracked: Boolean,
     lastSelectedWaypoint: UUID?
 ) : WaypointHolderImpl(dm, Type.PRIVATE, id), WaypointsPlayer {
 
@@ -22,7 +23,8 @@ internal class WaypointsPlayerImpl private constructor(
         id = UUID.fromString(row.getString("id")),
         showGlobals = row.getBoolean("showGlobals"),
         sortBy = OverviewSort.valueOf(row.getString("sortBy")),
-        lastSelectedWaypoint = row.getString("lastSelectedWaypoint")?.let(UUID::fromString)
+        canBeTracked = row.getBoolean("canBeTracked"),
+        lastSelectedWaypoint = row.getString("lastSelectedWaypoint")?.let(UUID::fromString),
     )
 
     override var showGlobals: Boolean = showGlobals
@@ -34,6 +36,11 @@ internal class WaypointsPlayerImpl private constructor(
         set(value) {
             field = value
             set("sortBy", value.name)
+        }
+    override var canBeTracked: Boolean = canBeTracked
+        set(value) {
+            field = value
+            set("canBeTracked", value)
         }
 
     override fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime) {

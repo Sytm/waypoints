@@ -12,6 +12,8 @@ interface WaypointsPlayer : WaypointHolder {
 
     var sortBy: OverviewSort
 
+    var canBeTracked: Boolean
+
     fun getCooldownUntil(type: Type): OffsetDateTime?
 
     fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime)

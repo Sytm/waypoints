@@ -14,10 +14,7 @@ import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.config.general.WorldNotFoundAction
-import de.md5lukas.waypoints.gui.pages.BasePage
-import de.md5lukas.waypoints.gui.pages.GUIFolderPage
-import de.md5lukas.waypoints.gui.pages.ListingPage
-import de.md5lukas.waypoints.gui.pages.WaypointPage
+import de.md5lukas.waypoints.gui.pages.*
 import de.md5lukas.waypoints.util.*
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
@@ -88,6 +85,10 @@ class WaypointsGUI(
 
     fun openWaypoint(waypoint: Waypoint) {
         open(WaypointPage(this, waypoint))
+    }
+
+    fun openPlayerTracking() {
+        open(PlayerTrackingPage(this))
     }
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
@@ -214,6 +215,9 @@ class WaypointsGUI(
                     content.add(deathFolder)
                 }
             }
+            if (plugin.waypointsConfig.playerTracking.enabled) {
+                content.add(PlayerTrackingDisplayable)
+            }
         }
 
         if (guiFolder.type == Type.PERMISSION && !viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
@@ -259,6 +263,7 @@ class WaypointsGUI(
                     is WaypointHolder -> openHolder(guiDisplayable)
                     is Folder -> openFolder(guiDisplayable)
                     is Waypoint -> openWaypoint(guiDisplayable)
+                    is PlayerTrackingDisplayable -> openPlayerTracking()
                     else -> throw IllegalStateException("The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
                 }
             }

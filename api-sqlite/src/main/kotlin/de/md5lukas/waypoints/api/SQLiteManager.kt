@@ -21,7 +21,7 @@ class SQLiteManager(
 ) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache) {
 
 
-    private val schemaVersion: Int = 1
+    private val schemaVersion: Int = 2
     private val sqliteHelper = if (file === null) {
         SQLiteHelper()
     } else {
@@ -57,6 +57,7 @@ class SQLiteManager(
                   
                   showGlobals BOOLEAN NOT NULL DEFAULT 1,
                   sortBy TEXT NOT NULL DEFAULT '${OverviewSort.TYPE_ASCENDING.name}',
+                  canBeTracked BOOLEAN NOT NULL DEFAULT 1,
                   lastSelectedWaypoint TEXT,
                   
                   FOREIGN KEY (lastSelectedWaypoint) REFERENCES waypoints(id) ON DELETE SET NULL
@@ -170,6 +171,13 @@ class SQLiteManager(
             update(
                 """
                 ALTER TABLE player_data ADD COLUMN lastSelectedWaypoint TEXT REFERENCES waypoints (id) ON DELETE SET NULL;
+            """.trimIndent()
+            )
+        }
+        it[2] = {
+            update(
+                """
+                ALTER TABLE player_data ADD COLUMN canBeTracked BOOLEAN NOT NULL DEFAULT 1;
             """.trimIndent()
             )
         }

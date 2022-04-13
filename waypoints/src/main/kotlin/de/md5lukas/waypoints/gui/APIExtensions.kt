@@ -24,6 +24,7 @@ class APIExtensions(
     fun GUIDisplayable.getItem(player: Player) = when (this) {
         is GUIFolder -> getItem(player)
         is Waypoint -> getItem(player)
+        is PlayerTrackingDisplayable -> translations.ICON_TRACKING.item
         else -> throw IllegalStateException("Unknown GUIDisplayable subclass")
     }
 
@@ -137,6 +138,13 @@ class APIExtensions(
 
         return stack
     }
+
+    fun Type.getBackgroundItem() = when (this) {
+        Type.PRIVATE -> plugin.translations.BACKGROUND_PRIVATE
+        Type.DEATH -> plugin.translations.BACKGROUND_DEATH
+        Type.PUBLIC -> plugin.translations.BACKGROUND_PUBLIC
+        Type.PERMISSION -> plugin.translations.BACKGROUND_PERMISSION
+    }.item
 
     private fun Folder.getItemDeath(): ItemStack {
         val fetchedAmount = amount

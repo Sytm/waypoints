@@ -1,7 +1,7 @@
 package de.md5lukas.waypoints.pointer
 
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.Trackable
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
@@ -10,11 +10,11 @@ abstract class Pointer(
     val interval: Int,
 ) {
 
-    open fun show(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
-        update(player, waypoint, translatedTarget)
+    open fun show(player: Player, trackable: Trackable, translatedTarget: Location?) {
+        update(player, trackable, translatedTarget)
     }
 
-    open fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {}
+    open fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {}
 
-    open fun hide(player: Player, waypoint: Waypoint, translatedTarget: Location?) {}
+    open fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {}
 }

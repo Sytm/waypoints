@@ -37,15 +37,11 @@ permissions:
       - waypoints.modify.private
       - waypoints.modify.public
       - waypoints.modify.permission
-      - waypoints.teleport.*
-
-  waypoints.command.*:
-    default: op
-    children:
-      - waypoints.command.scripting
-      - waypoints.command.use
-      - waypoints.command.other
-      - waypoints.command.import
+      - waypoints.teleport.private
+      - waypoints.teleport.public
+      - waypoints.teleport.permission
+      - waypoints.tracking.enabled
+      - waypoints.tracking.trackAll
 
   waypoints.command.scripting: { }
   waypoints.command.use:
@@ -54,22 +50,17 @@ permissions:
   waypoints.command.statistics: { }
   waypoints.command.import: { }
 
-  waypoints.unlimited:
-    default: op
+  waypoints.unlimited: { }
 
   waypoints.modify.private:
     default: true
-  waypoints.modify.public:
-    default: op
-  waypoints.modify.permission:
-    default: op
+  waypoints.modify.public: { }
+  waypoints.modify.permission: { }
 
-  waypoints.teleport.*:
-    default: op
-    children:
-      - waypoints.teleport.private
-      - waypoints.teleport.public
-      - waypoints.teleport.permission
   waypoints.teleport.private: { }
   waypoints.teleport.public: { }
   waypoints.teleport.permission: { }
+
+  waypoints.tracking.enabled:
+    default: true
+  waypoints.tracking.trackAll: { }

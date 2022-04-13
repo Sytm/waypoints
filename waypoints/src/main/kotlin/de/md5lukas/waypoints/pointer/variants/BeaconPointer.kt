@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.pointer.variants
 
 import de.md5lukas.waypoints.WaypointsPlugin
+import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.BeaconConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
@@ -21,7 +22,9 @@ class BeaconPointer(
 
     private val activeBeacons: MutableMap<UUID, Location> = HashMap()
 
-    override fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
+    override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
+        if (trackable !is Waypoint)
+            return
         if (translatedTarget !== null) {
             val distance = player.location.distanceSquared(translatedTarget)
 
@@ -30,29 +33,31 @@ class BeaconPointer(
 
                 val lastBeaconPosition = activeBeacons[player.uniqueId]
                 if (lastBeaconPosition != null && !lastBeaconPosition.blockEquals(beaconBase)) {
-                    hide0(player, waypoint, lastBeaconPosition)
+                    hide0(player, trackable, lastBeaconPosition)
                 }
 
                 activeBeacons[player.uniqueId] = beaconBase
 
-                sendBeacon(player, beaconBase, waypoint, true)
+                sendBeacon(player, beaconBase, trackable, true)
             } else {
-                hide(player, waypoint, translatedTarget)
+                hide(player, trackable, translatedTarget)
             }
         }
     }
 
-    override fun hide(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
-        hide0(player, waypoint, activeBeacons.remove(player.uniqueId))
+    override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
+        if (trackable !is Waypoint)
+            return
+        hide0(player, trackable, activeBeacons.remove(player.uniqueId))
     }
 
-    private fun hide0(player: Player, waypoint: Waypoint, lastBeaconPosition: Location?) {
+    private fun hide0(player: Player, trackable: Trackable, lastBeaconPosition: Location?) {
         if (lastBeaconPosition != null && player.world == lastBeaconPosition.world) {
-            sendBeacon(player, lastBeaconPosition, waypoint, false)
+            sendBeacon(player, lastBeaconPosition, trackable, false)
         }
     }
 
-    private fun sendBeacon(player: Player, beaconBase: Location, waypoint: Waypoint, create: Boolean) {
+    private fun sendBeacon(player: Player, beaconBase: Location, trackable: Trackable, create: Boolean) {
         val loc = beaconBase.clone()
 
         // Create or remove 3x3 base platform
@@ -74,7 +79,9 @@ class BeaconPointer(
 
             loc.add(0.0, 1.0, 0.0)
 
-            player.sendBlockChange(loc, (waypoint.beaconColor ?: config.defaultColor[waypoint.type]!!).blockData)
+            if (trackable is Waypoint) {
+                player.sendBlockChange(loc, (trackable.beaconColor ?: config.defaultColor[trackable.type]!!).blockData)
+            }
         } else {
             player.sendActualBlock(loc)
 
