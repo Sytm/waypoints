@@ -117,6 +117,15 @@ integrations:
     # See https://github.com/webbukkit/dynmap/wiki/Using-Markers#marker-icons for more information
     icon: default
 
+playerTracking:
+  enabled: false
+  # When true, players can enable / disable being able to be tracked in the GUI
+  toggleable: true
+  # When true, players can only track other players when they themselves can be tracked by other players
+  trackingRequiresTrackable: false
+  # When true, the tracked player is notified when someone starts to track them
+  notification: true
+
 pointers:
   # Automatically deselects the waypoint when the player gets into the defined radius. Set to zero to disable
   disableWhenReachedRadius: 5
@@ -176,6 +185,9 @@ pointers:
   compass:
     enabled: true
 
+    # The interval in game ticks when the compass target should be updated. Only relevant when tracking players
+    interval: 20
+
   particle:
     enabled: true
 
@@ -224,6 +236,7 @@ inventory:
   listing:
     public: ENCHANTED_BOOK
     permission: ENCHANTED_BOOK
+    tracking: PLAYER_HEAD
 
   waypoint:
     icon:
@@ -280,3 +293,9 @@ inventory:
   confirm:
     background: GRAY_STAINED_GLASS_PANE
 
+  tracking:
+    background: GRAY_STAINED_GLASS_PANE
+    trackable:
+      enabled: ENDER_EYE
+      disabled: ENDER_PEARL
+    refresh: FISHING_ROD

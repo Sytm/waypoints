@@ -9,7 +9,7 @@ class PointerTask(
 
     override fun run() {
         activePointers.forEach { (player, pointerData) ->
-            pointer.update(player, pointerData.waypoint, pointerData.translatedTarget)
+            pointer.update(player, pointerData.trackable, pointerData.translatedTarget)
         }
     }
 }

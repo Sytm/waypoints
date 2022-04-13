@@ -1,7 +1,7 @@
 package de.md5lukas.waypoints.pointer.variants
 
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.config.pointers.ActionBarConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.format
@@ -17,7 +17,7 @@ class ActionBarPointer(
     private val config: ActionBarConfiguration,
 ) : Pointer(plugin, config.interval) {
 
-    override fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
+    override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
         player.spigot().sendMessage(
             ChatMessageType.ACTION_BAR,
             *TextComponent.fromLegacyText(
@@ -26,7 +26,7 @@ class ActionBarPointer(
                         plugin.translations.POINTERS_ACTION_BAR_DISTANCE.withReplacements(
                             mapOf(
                                 "distance3D" to player.location.distance(translatedTarget).format(),
-                                "heightDifference" to (player.location.y - waypoint.location.y).format()
+                                "heightDifference" to (player.location.y - trackable.location.y).format()
                             )
                         )
                     } else {
@@ -41,7 +41,7 @@ class ActionBarPointer(
                     plugin.translations.POINTERS_ACTION_BAR_WRONG_WORLD.withReplacements(
                         mapOf(
                             "current" to plugin.worldTranslations.getWorldName(player.world),
-                            "correct" to plugin.worldTranslations.getWorldName(waypoint.location.world!!),
+                            "correct" to plugin.worldTranslations.getWorldName(trackable.location.world!!),
                         )
                     )
                 }

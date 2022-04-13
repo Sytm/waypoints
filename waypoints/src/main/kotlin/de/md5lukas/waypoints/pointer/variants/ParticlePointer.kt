@@ -1,7 +1,7 @@
 package de.md5lukas.waypoints.pointer.variants
 
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.config.pointers.ParticleConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.divide
@@ -13,7 +13,7 @@ class ParticlePointer(
     private val config: ParticleConfiguration,
 ) : Pointer(plugin, config.interval) {
 
-    override fun update(player: Player, waypoint: Waypoint, translatedTarget: Location?) {
+    override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
         if (translatedTarget !== null) {
             val pLoc = player.location
             var dir = translatedTarget.toVector().subtract(pLoc.toVector())

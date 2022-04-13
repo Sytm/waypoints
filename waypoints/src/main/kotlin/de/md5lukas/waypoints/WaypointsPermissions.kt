@@ -17,4 +17,7 @@ object WaypointsPermissions {
     const val TELEPORT_PRIVATE = "waypoints.teleport.private"
     const val TELEPORT_PUBLIC = "waypoints.teleport.public"
     const val TELEPORT_PERMISSION = "waypoints.teleport.permission"
+
+    const val TRACKING_ENABLED = "waypoints.tracking.enabled"
+    const val TRACKING_TRACK_ALL = "waypoints.tracking.trackAll"
 }

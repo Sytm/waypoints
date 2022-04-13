@@ -12,7 +12,7 @@ import net.md_5.bungee.api.chat.TextComponent
 import net.wesjd.anvilgui.AnvilGUI
 import java.util.*
 
-class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePage(wpGUI, waypoint) {
+class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePage(wpGUI, wpGUI.extendApi { waypoint.type.getBackgroundItem() }) {
 
     private companion object {
         /**

@@ -7,9 +7,12 @@ class CompassConfiguration {
     var enabled: Boolean = false
         private set
 
+    var interval: Int = 0
+        private set
+
     fun loadFromConfiguration(cfg: ConfigurationSection) {
-        with(cfg) {
-            enabled = cfg.getBoolean("enabled")
-        }
+        enabled = cfg.getBoolean("enabled")
+
+        interval = cfg.getInt("interval")
     }
 }

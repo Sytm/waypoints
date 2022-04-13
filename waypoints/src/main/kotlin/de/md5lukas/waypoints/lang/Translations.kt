@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.lang
 
 import de.md5lukas.waypoints.api.BeaconColor
 import de.md5lukas.waypoints.api.OverviewSort
+import org.bukkit.Material
 
 @Suppress("PropertyName")
 class Translations(
@@ -112,6 +113,10 @@ class Translations(
     val MESSAGE_TELEPORT_STAND_STILL_NOTICE = Translation(tl, "message.teleport.standStill.notice")
     val MESSAGE_TELEPORT_STAND_STILL_MOVED = Translation(tl, "message.teleport.standStill.moved")
 
+    val MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE = Translation(tl, "message.tracking.playerNoLongerOnline")
+    val MESSAGE_TRACKING_TRACKABLE_REQUIRED = Translation(tl, "message.tracking.trackableRequired")
+    val MESSAGE_TRACKING_NOTIFICATION = Translation(tl, "message.tracking.notification")
+
 
     val INVENTORY_TITLE_SELF = Translation(tl, "inventory.title.self")
     val INVENTORY_TITLE_OTHER = Translation(tl, "inventory.title.other")
@@ -141,6 +146,7 @@ class Translations(
 
     val ICON_PUBLIC = ItemTranslation(tl, "inventory.listing.public")
     val ICON_PERMISSION = ItemTranslation(tl, "inventory.listing.permission")
+    val ICON_TRACKING = ItemTranslation(tl, "inventory.listing.tracking")
 
     val WAYPOINT_ICON_PRIVATE = ItemTranslation(tl, "inventory.waypoint.icon.private")
     val WAYPOINT_ICON_DEATH = ItemTranslation(tl, "inventory.waypoint.icon.death")
@@ -194,4 +200,10 @@ class Translations(
     val CONFIRM_BACKGROUND = ItemTranslation(tl, "inventory.confirm.background")
 
     val INTEGRATIONS_DYNMAP_MARKER_SET_LABEL = Translation(tl, "integrations.dynmap.markerSet.label")
+
+    val TRACKING_BACKGROUND = ItemTranslation(tl, "inventory.tracking.background")
+    val TRACKING_TRACKABLE_ENABLED = ItemTranslation(tl, "inventory.tracking.trackable.enabled")
+    val TRACKING_TRACKABLE_DISABLED = ItemTranslation(tl, "inventory.tracking.trackable.disabled")
+    val TRACKING_REFRESH_LISTING = ItemTranslation(tl, "inventory.tracking.refresh")
+    val TRACKING_PLAYER = ItemTranslation(tl, "inventory.tracking.player", fixedMaterial = Material.PLAYER_HEAD)
 }

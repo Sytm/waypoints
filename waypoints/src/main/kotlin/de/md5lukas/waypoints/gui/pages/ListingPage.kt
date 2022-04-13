@@ -2,15 +2,15 @@ package de.md5lukas.waypoints.gui.pages
 
 import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.items.GUIContent
-import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.gui.WaypointsGUI
+import org.bukkit.inventory.ItemStack
 
-open class ListingPage<T : GUIDisplayable>(
+open class ListingPage<T>(
     wpGUI: WaypointsGUI,
-    guiDisplayable: GUIDisplayable,
+    background: ItemStack,
     private val contentGetter: () -> PaginationList<T>,
     private val displayableConverter: (T) -> GUIContent
-) : BasePage(wpGUI, guiDisplayable) {
+) : BasePage(wpGUI, background) {
 
     companion object Constants {
         const val PAGINATION_LIST_PAGE_SIZE = 4 * 9

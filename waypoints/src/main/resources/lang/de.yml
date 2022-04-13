@@ -207,6 +207,11 @@ message:
       notice: "$[prefix] &7Du darfst dich für &e${duration}&7 nicht Bewegen."
       moved: "$[prefix] &cDeine eingereihte Teleportation wurde abgebrochen da du dich bewegt hast."
 
+  tracking:
+    playerNoLongerOnline: "$[prefix] &cDer Spieler den du verfolgen möchtest ist nicht mehr online."
+    trackableRequired: "$[prefix] &cUm andere Spieler verfolgen zu können musst du dich selbst sichtbar machen."
+    notification: "$[prefix] &7Der Spieler &e${name}&7 verfolgt dich."
+
 pointers:
   actionBar:
     # current: Translated name of the world the player is in
@@ -303,6 +308,9 @@ inventory:
     permission:
       displayName: "&dEingeschränkte Wegpunkte"
       description: "&7Für dich verfügbar: &6${amount}"
+    tracking:
+      displayName: "&aSpieler"
+      description: "&7Verfolge andere Spieler"
 
   waypoint:
     # name: Name of the waypoint
@@ -464,3 +472,29 @@ inventory:
     background:
       displayName: "&0-"
       description: ""
+
+  tracking:
+    background:
+      displayName: "&0-"
+      description: ""
+    trackable:
+      enabled:
+        displayName: "&7Du bist sichtbar"
+        description: "&7Andere Spieler können dich verfolgen"
+      disabled:
+        displayName: "&7Du bist versteckt"
+        description: "&7Andere Spieler können dich nicht verfolgen"
+    refresh:
+      displayName: "&7Spieler-Liste aktualisieren"
+      description: ""
+
+    # name: Name of the player
+    # world: World where the player is located at
+    # x, y, z: Coordinates of the player
+    # blockX, blockY, blockZ: Coordinates of the block nearest to the player
+    # distance: Distance in blocks to the player
+    player:
+      displayName: "&a${name}"
+      description: |
+        &7Welt: &6${world}
+        &7Entfernung: &6${distance}
