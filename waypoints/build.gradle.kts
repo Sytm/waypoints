@@ -11,7 +11,6 @@ plugins {
 description = "Waypoints plugin"
 
 repositories {
-    mavenLocal()
     mavenCentral()
 
     maven(url = "https://repo.codemc.io/repository/maven-public/")
@@ -23,6 +22,8 @@ repositories {
     maven(url = "https://repo.mikeprimm.com/")
 
     maven(url = "https://repo.dmulloy2.net/repository/public/")
+
+    mavenLocal()
 }
 
 val spigotVersion: String by project

@@ -134,12 +134,7 @@ class Hologram(private val hologramManager: HologramManager, private val entityI
     }
 
     private val destroyPacket = PacketContainer(PacketType.Play.Server.ENTITY_DESTROY).also {
-        // TODO If Minecraft 1.19 comes out remove integer arrays
-        if (isMinecraftVersionEqualOrLaterThan(hologramManager.plugin, 17)) {
-            it.intLists.write(0, listOf(entityId))
-        } else {
-            it.integerArrays.write(0, intArrayOf(entityId))
-        }
+        it.intLists.write(0, listOf(entityId))
     }
 
     fun spawn(player: Player) {
