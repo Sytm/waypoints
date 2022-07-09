@@ -20,6 +20,7 @@ import de.md5lukas.waypoints.pointer.PointerManagerImpl
 import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.TeleportManager
 import org.bstats.bukkit.Metrics
+import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
 import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
@@ -173,6 +174,24 @@ class WaypointsPlugin : JavaPlugin() {
                 totalFolders
             })
         }
+        metrics.addCustomChart(SimplePie("uses_dynmap") {
+            dynMapIntegrationAvailable.toString()
+        })
+        metrics.addCustomChart(SimplePie("uses_vault") {
+            (vaultIntegration0 !== null).toString()
+        })
+        metrics.addCustomChart(SimplePie("global_waypoints_enabled") {
+            waypointsConfig.general.features.globalWaypoints.toString()
+        })
+        metrics.addCustomChart(SimplePie("death_waypoints_enabled") {
+            waypointsConfig.general.features.deathWaypoints.toString()
+        })
+        metrics.addCustomChart(SimplePie("player_tracking_enabled") {
+            waypointsConfig.playerTracking.enabled.toString()
+        })
+        metrics.addCustomChart(SimplePie("protocollib_available") {
+            (server.pluginManager.getPlugin("ProtocolLib") !== null).toString()
+        })
     }
 
     private fun startBackgroundTasks() {
