@@ -40,6 +40,7 @@ command:
       private: "&7 - &e/${label} set <Name> &7&l|&r&7 Create a new waypoint"
       public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Create a new public waypoint"
       permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Create a new permission waypoint"
+      temporary: "&7 - &e/${label} setTemporary <X> <Y> <Z> &7&l|&r&7 Target a waypoint that is not saved"
     other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 View the waypoints of another player"
     statistics: "&7 - &e/${label} statistics &7&l|&r&7 View the statistics of the database"
     import: "&7 - &e/${label} import &7&l|&r&7 Import waypoints from Waypoints V2"
@@ -55,6 +56,9 @@ command:
       permission: |
         $[prefix] &cYou need to provide a permission and a name to create a new permission waypoint. Example:
         &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
+      temporary: |
+        $[prefix] &cYou need to provide coordinates to set a temporary waypoint. Example:
+        &a/${label} setTemporary 196 93 -187
 
   other:
     wrongUsage: |
@@ -66,6 +70,7 @@ command:
       name: "$[prefix] &cA player with that name could not be found."
     notUuidOrName: "$[prefix] &cThe provided identifier is neither a UUID nor a Minecraft username."
     playerNoWaypoints: "$[prefix] &cThe provided player has no waypoints."
+    notANumber: "$[prefix] &cThe provided values could not be read as numbers."
 
   statistics:
     # dbFileSize: Size of the database in SI Units
@@ -232,6 +237,7 @@ pointers:
     death: "&cDeath ${createdAt}"
     public: "&b${name}"
     permission: "&d${name}"
+    temporary: "&5Temporary Waypoint"
 
 integrations:
   dynmap:

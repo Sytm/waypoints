@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.pointer.variants
 
 import de.md5lukas.waypoints.WaypointsPlugin
+import de.md5lukas.waypoints.api.StaticTrackable
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.BeaconConfiguration
@@ -23,7 +24,7 @@ class BeaconPointer(
     private val activeBeacons: MutableMap<UUID, Location> = HashMap()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (trackable !is Waypoint)
+        if (trackable !is StaticTrackable)
             return
         if (translatedTarget !== null) {
             val distance = player.location.distanceSquared(translatedTarget)
@@ -46,7 +47,7 @@ class BeaconPointer(
     }
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (trackable !is Waypoint)
+        if (trackable !is StaticTrackable)
             return
         hide0(player, trackable, activeBeacons.remove(player.uniqueId))
     }

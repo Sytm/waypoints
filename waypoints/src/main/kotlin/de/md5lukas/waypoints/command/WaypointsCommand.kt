@@ -6,6 +6,7 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.legacy.LegacyImporter
 import de.md5lukas.waypoints.util.*
+import org.bukkit.Location
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -42,11 +43,16 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
                     translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
                 }
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC) && plugin.waypointsConfig.general.features.globalWaypoints) {
-                    translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelMap)
+                if (plugin.waypointsConfig.general.features.globalWaypoints) {
+                    if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+                        translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelMap)
+                    }
+                    if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+                        translations.COMMAND_HELP_SET_PERMISSION.send(sender, labelMap)
+                    }
                 }
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION) && plugin.waypointsConfig.general.features.globalWaypoints) {
-                    translations.COMMAND_HELP_SET_PERMISSION.send(sender, labelMap)
+                if (sender.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)) {
+                    translations.COMMAND_HELP_SET_TEMPORARY.send(sender, labelMap)
                 }
                 if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
                     translations.COMMAND_HELP_OTHER.send(sender, labelMap)
@@ -86,6 +92,20 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                     val name = args.join(2)
 
                     createWaypointPermission(plugin, sender, name, permission)
+                }
+            }
+            "settemporary" -> when {
+                !sender.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT) -> translations.COMMAND_NO_PERMISSION.send(sender)
+                args.size <= 3 -> translations.COMMAND_SET_WRONG_USAGE_TEMPORARY.send(sender, labelMap)
+                else -> {
+                    try {
+                        val location = Location(sender.world, args[1].toDouble(), args[2].toDouble(), args[3].toDouble())
+                        plugin.api.pointerManager.let {
+                            it.enable(sender, it.trackableOf(location))
+                        }
+                    } catch (_: NumberFormatException) {
+                        translations.COMMAND_OTHER_NOT_A_NUMBER.send(sender)
+                    }
                 }
             }
             "other" -> when {
@@ -174,11 +194,16 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
             if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
                 options.add("set")
             }
-            if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC) && plugin.waypointsConfig.general.features.globalWaypoints) {
-                options.add("setPublic")
+            if (plugin.waypointsConfig.general.features.globalWaypoints) {
+                if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+                    options.add("setPublic")
+                }
+                if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+                    options.add("setPermission")
+                }
             }
-            if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION) && plugin.waypointsConfig.general.features.globalWaypoints) {
-                options.add("setPermission")
+            if (sender.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)) {
+                options.add("setTemporary")
             }
             if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
                 options.add("other")

@@ -1,8 +1,8 @@
 package de.md5lukas.waypoints.pointer.variants
 
 import de.md5lukas.waypoints.WaypointsPlugin
+import de.md5lukas.waypoints.api.StaticTrackable
 import de.md5lukas.waypoints.api.Trackable
-import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.BlinkingBlockConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.sendActualBlock
@@ -19,7 +19,7 @@ class BlinkingBlockPointer(
     private val lastLocations: MutableMap<UUID, Location> = HashMap()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (trackable !is Waypoint)
+        if (trackable !is StaticTrackable)
             return
         if (translatedTarget !== null) {
             val distance = player.location.distanceSquared(translatedTarget)
@@ -43,7 +43,7 @@ class BlinkingBlockPointer(
     }
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (trackable !is Waypoint)
+        if (trackable !is StaticTrackable)
             return
         val lastLocation = lastLocations.remove(player.uniqueId)
         if (counters.remove(player.uniqueId) !== null && lastLocation !== null) {

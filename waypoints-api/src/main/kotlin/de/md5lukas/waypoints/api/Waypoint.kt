@@ -5,7 +5,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import java.util.*
 
-interface Waypoint : GUIDisplayable, Trackable {
+interface Waypoint : GUIDisplayable, StaticTrackable {
 
     override val id: UUID
 
