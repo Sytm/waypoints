@@ -51,6 +51,8 @@ permissions:
   waypoints.command.import: { }
 
   waypoints.unlimited: { }
+  waypoints.temporaryWaypoint:
+    default: true
 
   waypoints.modify.private:
     default: true

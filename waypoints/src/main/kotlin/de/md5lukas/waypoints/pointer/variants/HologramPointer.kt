@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.pointer.variants
 
 import de.md5lukas.waypoints.WaypointsPlugin
+import de.md5lukas.waypoints.api.StaticTrackable
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.HologramConfiguration
@@ -21,13 +22,19 @@ class HologramPointer(
     private val activeHolograms: MutableMap<UUID, Hologram> = HashMap()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (trackable !is Waypoint)
+        if (trackable !is StaticTrackable)
             return
         if (translatedTarget !== null) {
             if (player.location.distanceSquared(translatedTarget) < config.maxDistance) {
                 activeHolograms.computeIfAbsent(player.uniqueId) {
                     plugin.apiExtensions.run {
-                        hologramManager.createHologram(translatedTarget, trackable.getHologramName())
+                        hologramManager.createHologram(
+                            translatedTarget, if (trackable is Waypoint) {
+                                trackable.getHologramName()
+                            } else {
+                                plugin.translations.POINTERS_HOLOGRAM_TEMPORARY.text
+                            }
+                        )
                     }
                 }.spawn(player)
             }
@@ -35,7 +42,7 @@ class HologramPointer(
     }
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (trackable !is Waypoint)
+        if (trackable !is StaticTrackable)
             return
         activeHolograms.remove(player.uniqueId)?.destroy(player)
     }

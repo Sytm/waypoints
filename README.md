@@ -72,6 +72,8 @@ tracked player.
 
 `/waypoints setPermission <Permission> <Name>` - Create a waypoint only visible for players with the given permission
 
+`/waypoints setTemporary <X> <Y> <Z>` - Create a waypoint that is only visible for the time he is online
+
 `/waypoints other <Name|UUID>` - View the waypoints of another player
 
 `/waypoints statistics` - Look at some rudimentary statistics about the database
@@ -103,6 +105,8 @@ tracked player.
 `waypoints.modify.permission` - Allows the player to create, alter, delete and always see permission waypoints
 
 `waypoints.unlimited` - Allows the player to create more waypoints and folders than the limit in the config
+
+`waypoints.temporaryWaypoint` - Allows the player to create a waypoint that is only visible for the time he is online
 
 `waypoints.teleport.private` - Allows the player to teleport to private waypoints
 

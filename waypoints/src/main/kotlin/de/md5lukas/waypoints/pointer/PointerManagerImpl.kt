@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.pointer
 
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.PointerManager
+import de.md5lukas.waypoints.api.StaticTrackable
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.event.WaypointDeselectEvent
@@ -11,6 +12,7 @@ import de.md5lukas.waypoints.config.pointers.PointerConfiguration
 import de.md5lukas.waypoints.pointer.variants.*
 import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.runTask
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -131,6 +133,8 @@ class PointerManagerImpl(
     }
 
     override fun trackableOf(player: Player) = PlayerTrackableImpl(player)
+
+    override fun trackableOf(location: Location): StaticTrackable = StaticTrackableImpl(location)
 
     override fun getCurrentTarget(player: Player): Trackable? = activePointers[player]?.trackable
 

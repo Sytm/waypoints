@@ -30,6 +30,7 @@ class Translations(
     val COMMAND_HELP_SET_PRIVATE = Translation(tl, "command.help.set.private")
     val COMMAND_HELP_SET_PUBLIC = Translation(tl, "command.help.set.public")
     val COMMAND_HELP_SET_PERMISSION = Translation(tl, "command.help.set.permission")
+    val COMMAND_HELP_SET_TEMPORARY = Translation(tl, "command.help.set.temporary")
     val COMMAND_HELP_OTHER = Translation(tl, "command.help.other")
     val COMMAND_HELP_STATISTICS = Translation(tl, "command.help.statistics")
     val COMMAND_HELP_IMPORT = Translation(tl, "command.help.import")
@@ -37,12 +38,14 @@ class Translations(
     val COMMAND_SET_WRONG_USAGE_PRIVATE = Translation(tl, "command.set.wrongUsage.private")
     val COMMAND_SET_WRONG_USAGE_PUBLIC = Translation(tl, "command.set.wrongUsage.public")
     val COMMAND_SET_WRONG_USAGE_PERMISSION = Translation(tl, "command.set.wrongUsage.permission")
+    val COMMAND_SET_WRONG_USAGE_TEMPORARY = Translation(tl, "command.set.wrongUsage.temporary")
 
     val COMMAND_OTHER_WRONG_USAGE = Translation(tl, "command.other.wrongUsage")
     val COMMAND_OTHER_NOT_FOUND_UUID = Translation(tl, "command.other.notFound.uuid")
     val COMMAND_OTHER_NOT_FOUND_NAME = Translation(tl, "command.other.notFound.name")
     val COMMAND_OTHER_NOT_UUID_OR_NAME = Translation(tl, "command.other.notUuidOrName")
     val COMMAND_OTHER_PLAYER_NO_WAYPOINTS = Translation(tl, "command.other.playerNoWaypoints")
+    val COMMAND_OTHER_NOT_A_NUMBER = Translation(tl, "command.other.notANumber")
 
     val COMMAND_STATISTICS_MESSAGE = Translation(tl, "command.statistics.message")
 
@@ -60,6 +63,7 @@ class Translations(
     val POINTERS_HOLOGRAM_DEATH = Translation(tl, "pointers.hologram.death")
     val POINTERS_HOLOGRAM_PUBLIC = Translation(tl, "pointers.hologram.public")
     val POINTERS_HOLOGRAM_PERMISSION = Translation(tl, "pointers.hologram.permission")
+    val POINTERS_HOLOGRAM_TEMPORARY = Translation(tl, "pointers.hologram.temporary")
 
     val TEXT_DURATION_SECOND = Translation(tl, "text.duration.second")
     val TEXT_DURATION_SECONDS = Translation(tl, "text.duration.seconds")
