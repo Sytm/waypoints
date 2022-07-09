@@ -412,6 +412,9 @@ inventory:
         cancel:
           displayName: "&aNein, &e${name}&a nicht eingeschränkt machen."
           description: ""
+    changeDynMapIcon:
+      displayName: "&eBenutzerdefiniertes DynMap Symbol ändern"
+      description: ""
 
     create:
       enterName: "Name hier eingeben"

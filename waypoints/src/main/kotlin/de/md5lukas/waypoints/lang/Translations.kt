@@ -174,6 +174,7 @@ class Translations(
     val WAYPOINT_MAKE_PERMISSION_CONFIRM_QUESTION = ItemTranslation(tl, "inventory.waypoint.make.permission.question")
     val WAYPOINT_MAKE_PERMISSION_CONFIRM_TRUE = ItemTranslation(tl, "inventory.waypoint.make.permission.confirm")
     val WAYPOINT_MAKE_PERMISSION_CONFIRM_FALSE = ItemTranslation(tl, "inventory.waypoint.make.permission.cancel")
+    val WAYPOINT_CHANGE_DYNMAP_ICON = ItemTranslation(tl, "inventory.waypoint.changeDynMapIcon")
 
     val FOLDER_ICON_PRIVATE = ItemTranslation(tl, "inventory.folder.icon.private")
     val FOLDER_ICON_DEATH = ItemTranslation(tl, "inventory.folder.icon.death")

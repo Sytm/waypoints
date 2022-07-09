@@ -138,6 +138,19 @@ class SQLiteManager(
             )
             update(
                 """
+                CREATE TABLE IF NOT EXISTS waypoint_custom_data (
+                  waypointId TEXT NOT NULL,
+                  key TEXT NOT NULL,
+                  
+                  data TEXT NOT NULL,
+                  
+                  PRIMARY KEY (waypointId, key),
+                  FOREIGN KEY (waypointId) REFERENCES waypoints(id) ON DELETE CASCADE
+                );
+                """.trimIndent()
+            )
+            update(
+                """
                CREATE TABLE IF NOT EXISTS compass_storage (
                  playerId TEXT NOT NULL PRIMARY KEY,
                  

@@ -4,6 +4,7 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
+import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -22,20 +23,24 @@ class DynMapIntegration(
     private val plugin: WaypointsPlugin
 ) : Listener {
 
+    companion object Constants {
+        val CUSTOM_DATA_KEY = "dynmap-icon"
+    }
+
     private lateinit var markerApi: MarkerAPI
     private lateinit var markerSet: MarkerSet
-    private lateinit var markerIcon: MarkerIcon
+    private lateinit var defaultMarkerIcon: MarkerIcon
 
-    fun setupDynMap() {
+    fun setupDynMap(): Boolean {
         val dynmapPluginInstance = plugin.server.pluginManager.getPlugin("dynmap")
         if (dynmapPluginInstance === null) {
-            return
+            return false
         }
 
         plugin.logger.log(Level.INFO, "Found DynMap plugin")
         try {
             markerApi = (dynmapPluginInstance as DynmapAPI).markerAPI
-            markerIcon = markerApi.getMarkerIcon(plugin.waypointsConfig.integrations.dynmap.icon)
+            defaultMarkerIcon = markerApi.getMarkerIcon(plugin.waypointsConfig.integrations.dynmap.icon)
 
             markerSet = markerApi.createMarkerSet(
                 "waypoints_public",
@@ -51,7 +56,9 @@ class DynMapIntegration(
             plugin.server.pluginManager.registerEvents(this, plugin)
         } catch (_: ClassNotFoundException) {
             plugin.logger.log(Level.WARNING, "The DynMap plugin has been found, but plugin instance class could not be found")
+            return false
         }
+        return true
     }
 
     @EventHandler
@@ -68,6 +75,14 @@ class DynMapIntegration(
         }
     }
 
+    @EventHandler
+    private fun onUpdate(e: WaypointCustomDataChangeEvent) {
+        if (e.key != CUSTOM_DATA_KEY) {
+            return
+        }
+        markerSet.findMarker(e.waypoint.id.toString())?.markerIcon = getMarkerForWaypoint(e.waypoint, e.data)
+    }
+
     private fun createMarker(waypoint: Waypoint) {
         with(waypoint.location) {
             val worldNotNull = world ?: return
@@ -78,9 +93,25 @@ class DynMapIntegration(
                 x, // X
                 y, // Y
                 z, // z
-                markerIcon, // Marker icon
+                getMarkerForWaypoint(waypoint), // Marker icon
                 false // is persistent
             )
+        }
+    }
+
+    private fun getMarkerForWaypoint(waypoint: Waypoint, directIcon: String? = null): MarkerIcon {
+        val icon = directIcon ?: waypoint.getCustomData(CUSTOM_DATA_KEY);
+        return if (icon === null) {
+            defaultMarkerIcon
+        } else {
+            val customIcon: MarkerIcon? = markerApi.getMarkerIcon(icon)
+
+            if (customIcon === null) {
+                plugin.logger.log(Level.SEVERE, "The public waypoint ${waypoint.name} has the icon with the name '$icon', but that icon does not exist!")
+                defaultMarkerIcon
+            } else {
+                customIcon
+            }
         }
     }
 }

@@ -412,7 +412,9 @@ inventory:
         cancel:
           displayName: "&aNo, do not make &e${name}&a a permission waypoint."
           description: ""
-
+    changeDynMapIcon:
+      displayName: "&eChange custom DynMap icon"
+      description: ""
 
     create:
       enterName: "Enter name here"

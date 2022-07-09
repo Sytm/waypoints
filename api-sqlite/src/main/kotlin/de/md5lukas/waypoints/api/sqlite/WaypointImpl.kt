@@ -4,6 +4,7 @@ import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
@@ -108,6 +109,30 @@ class WaypointImpl private constructor(
             WaypointMetaImpl(dm, this)
         }!!
     }
+
+    override fun setCustomData(key: String, data: String?) {
+        if (data === null) {
+            dm.connection.update(
+                "DELETE FROM waypoint_custom_data WHERE waypointId = ? AND key = ?;",
+                id.toString(),
+                key,
+            )
+        } else {
+            dm.connection.update(
+                "INSERT INTO waypoint_custom_data(waypointId, key, data) VALUES (?, ?, ?) ON CONFLICT(waypointId, key) DO UPDATE SET data = ?;",
+                id.toString(),
+                key,
+                data,
+                data,
+            )
+        }
+        dm.plugin.callEvent(WaypointCustomDataChangeEvent(this, key, data))
+    }
+
+    override fun getCustomData(key: String): String? =
+        dm.connection.selectFirst("SELECT data FROM waypoint_custom_data WHERE waypointId = ? AND key = ?;", id.toString(), key) {
+            getString("data")
+        }
 
     override fun delete() {
         dm.plugin.callEvent(WaypointPreDeleteEvent(this))

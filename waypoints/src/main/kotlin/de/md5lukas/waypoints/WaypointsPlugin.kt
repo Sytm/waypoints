@@ -56,6 +56,8 @@ class WaypointsPlugin : JavaPlugin() {
     private var vaultIntegration0: VaultIntegration? = null
     val vaultIntegration: VaultIntegration
         get() = vaultIntegration0 ?: throw IllegalStateException("The vault integration is configured to be used, but no vault compatible plugin is installed")
+    var dynMapIntegrationAvailable = false
+        private set
 
     override fun onEnable() {
         logger.level = Level.FINE
@@ -141,7 +143,7 @@ class WaypointsPlugin : JavaPlugin() {
         }
 
         if (waypointsConfig.general.features.globalWaypoints) {
-            DynMapIntegration(this).setupDynMap()
+            dynMapIntegrationAvailable = DynMapIntegration(this).setupDynMap()
         }
     }
 
