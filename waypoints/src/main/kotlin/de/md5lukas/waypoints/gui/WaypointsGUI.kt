@@ -215,7 +215,7 @@ class WaypointsGUI(
                     content.add(deathFolder)
                 }
             }
-            if (plugin.waypointsConfig.playerTracking.enabled) {
+            if (plugin.waypointsConfig.playerTracking.enabled && viewer.hasPermission(WaypointsPermissions.TRACKING_ENABLED)) {
                 content.add(PlayerTrackingDisplayable)
             }
         }
