@@ -27,5 +27,9 @@ interface Waypoint : GUIDisplayable, Trackable {
 
     fun getWaypointMeta(owner: UUID): WaypointMeta
 
+    fun setCustomData(key: String, data: String?)
+
+    fun getCustomData(key: String): String?
+
     fun delete()
 }

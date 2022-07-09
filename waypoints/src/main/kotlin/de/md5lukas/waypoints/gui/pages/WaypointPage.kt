@@ -6,6 +6,7 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
+import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.util.*
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.TextComponent
@@ -22,6 +23,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
          * e = Move to permission folder
          * p = Change permission
          * s = Select
+         * y = Dynmap custom icon
          * c = Select beacon color
          * f = Move to folder
          * r = rename
@@ -32,7 +34,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
         val waypointPattern = GUIPattern(
             "____w____",
             "_________",
-            "i_u_s___c",
+            "i_u_s_y_c",
             "_f_e_p_r_",
             "d___t___b",
         )
@@ -183,6 +185,27 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                 GUIItem(wpGUI.translations.WAYPOINT_SELECT.item) {
                     wpGUI.viewer.closeInventory()
                     wpGUI.plugin.api.pointerManager.enable(wpGUI.viewer, waypoint)
+                }
+            } else {
+                background
+            },
+            'y' to if (canModifyWaypoint && waypoint.type === Type.PUBLIC && wpGUI.plugin.dynMapIntegrationAvailable) {
+                GUIItem(wpGUI.translations.WAYPOINT_CHANGE_DYNMAP_ICON.item) {
+                    wpGUI.viewer.closeInventory()
+                    AnvilGUI.Builder().plugin(wpGUI.plugin)
+                        .text(waypoint.getCustomData(DynMapIntegration.CUSTOM_DATA_KEY) ?: wpGUI.plugin.waypointsConfig.integrations.dynmap.icon)
+                        .onComplete { _, newIcon ->
+                            waypoint.setCustomData(
+                                DynMapIntegration.CUSTOM_DATA_KEY, newIcon.ifBlank {
+                                    null
+                                }
+                            )
+                            return@onComplete AnvilGUI.Response.close()
+                        }.onClose {
+                            wpGUI.plugin.runTask {
+                                wpGUI.gui.open()
+                            }
+                        }.open(wpGUI.viewer)
                 }
             } else {
                 background
