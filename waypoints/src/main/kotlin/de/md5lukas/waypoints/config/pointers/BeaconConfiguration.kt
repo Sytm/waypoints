@@ -44,6 +44,12 @@ class BeaconConfiguration {
     var defaultColor: Map<Type, BeaconColor> = emptyMap()
         private set
 
+    var playerTrackableColor = BeaconColor.CLEAR
+        private set
+
+    var temporaryTrackableColor = BeaconColor.CLEAR
+        private set
+
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         with(cfg) {
             enabled = getBoolean("enabled")
@@ -58,15 +64,19 @@ class BeaconConfiguration {
                 viewDistance
             }
 
-            baseBlock = cfg.getStringNotNull("baseBlock").let {
+            baseBlock = getStringNotNull("baseBlock").let {
                 Material.matchMaterial(it)?.createBlockData() ?: throw IllegalArgumentException("The material $it could not be found")
             }
 
             val mutableDefaultColor: MutableMap<Type, BeaconColor> = HashMap(Type.values().size)
             Type.values().forEach {
-                mutableDefaultColor[it] = BeaconColor.valueOf(cfg.getStringNotNull("defaultColor.${it.name.lowercase()}"))
+                mutableDefaultColor[it] = BeaconColor.valueOf(getStringNotNull("defaultColor.${it.name.lowercase()}"))
             }
             defaultColor = mutableDefaultColor
+
+            playerTrackableColor = BeaconColor.valueOf(getStringNotNull("defaultColor.player"))
+
+            temporaryTrackableColor = BeaconColor.valueOf(getStringNotNull("defaultColor.temporary"))
         }
     }
 
