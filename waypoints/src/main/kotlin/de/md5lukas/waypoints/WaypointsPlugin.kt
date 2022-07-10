@@ -192,6 +192,21 @@ class WaypointsPlugin : JavaPlugin() {
         metrics.addCustomChart(SimplePie("protocollib_available") {
             (server.pluginManager.getPlugin("ProtocolLib") !== null).toString()
         })
+        metrics.addCustomChart(SimplePie("actionbar_pointer_enabled") {
+            waypointsConfig.pointer.actionBar.enabled.toString()
+        })
+        metrics.addCustomChart(SimplePie("beacon_pointer_enabled") {
+            waypointsConfig.pointer.beacon.enabled.toString()
+        })
+        metrics.addCustomChart(SimplePie("blinking_block_pointer_enabled") {
+            waypointsConfig.pointer.blinkingBlock.enabled.toString()
+        })
+        metrics.addCustomChart(SimplePie("compass_pointer_enabled") {
+            waypointsConfig.pointer.compass.enabled.toString()
+        })
+        metrics.addCustomChart(SimplePie("particle_pointer_enabled") {
+            waypointsConfig.pointer.particle.enabled.toString()
+        })
     }
 
     private fun startBackgroundTasks() {
