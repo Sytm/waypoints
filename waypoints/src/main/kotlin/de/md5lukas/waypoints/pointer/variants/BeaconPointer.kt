@@ -1,9 +1,7 @@
 package de.md5lukas.waypoints.pointer.variants
 
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.StaticTrackable
-import de.md5lukas.waypoints.api.Trackable
-import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.config.pointers.BeaconConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.blockEquals
@@ -80,9 +78,14 @@ class BeaconPointer(
 
             loc.add(0.0, 1.0, 0.0)
 
-            if (trackable is Waypoint) {
-                player.sendBlockChange(loc, (trackable.beaconColor ?: config.defaultColor[trackable.type]!!).blockData)
-            }
+            player.sendBlockChange(
+                loc, when (trackable) {
+                    is Waypoint -> trackable.beaconColor ?: config.defaultColor[trackable.type]!!
+                    is PlayerTrackable -> config.playerTrackableColor
+                    is StaticTrackable -> config.temporaryTrackableColor
+                    else -> BeaconColor.CLEAR
+                }.blockData
+            )
         } else {
             player.sendActualBlock(loc)
 

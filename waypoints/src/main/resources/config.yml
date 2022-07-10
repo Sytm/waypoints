@@ -167,6 +167,8 @@ pointers:
       death: RED
       public: GREEN
       permission: PURPLE
+      player: PINK
+      temporary: ORANGE
 
   blinkingBlock:
     enabled: true
