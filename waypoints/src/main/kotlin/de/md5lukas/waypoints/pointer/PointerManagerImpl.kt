@@ -5,9 +5,9 @@ import de.md5lukas.waypoints.api.PointerManager
 import de.md5lukas.waypoints.api.StaticTrackable
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.api.event.WaypointDeselectEvent
+import de.md5lukas.waypoints.api.event.TrackableDeselectEvent
+import de.md5lukas.waypoints.api.event.TrackableSelectEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
-import de.md5lukas.waypoints.api.event.WaypointSelectEvent
 import de.md5lukas.waypoints.config.pointers.PointerConfiguration
 import de.md5lukas.waypoints.pointer.variants.*
 import de.md5lukas.waypoints.util.callEvent
@@ -140,9 +140,7 @@ class PointerManagerImpl(
 
     private fun show(player: Player, pointer: ActivePointer) {
         val trackable = pointer.trackable
-        if (trackable is Waypoint) {
-            plugin.callEvent(WaypointSelectEvent(player, trackable))
-        }
+        plugin.callEvent(TrackableSelectEvent(player, trackable))
         enabledPointers.forEach {
             it.show(player, pointer.trackable, pointer.translatedTarget)
         }
@@ -150,9 +148,7 @@ class PointerManagerImpl(
 
     private fun hide(player: Player, pointer: ActivePointer) {
         val trackable = pointer.trackable
-        if (trackable is Waypoint) {
-            plugin.callEvent(WaypointDeselectEvent(player, trackable))
-        }
+        plugin.callEvent(TrackableDeselectEvent(player, trackable))
         enabledPointers.forEach {
             it.hide(player, pointer.trackable, pointer.translatedTarget)
         }
