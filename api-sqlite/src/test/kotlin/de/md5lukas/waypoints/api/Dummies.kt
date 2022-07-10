@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.base.DatabaseConfiguration
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.time.Period
 import java.util.*
@@ -8,6 +9,7 @@ import javax.naming.OperationNotSupportedException
 
 object DummyPointerManager : PointerManager {
     override fun trackableOf(player: Player): PlayerTrackable = throw OperationNotSupportedException()
+    override fun trackableOf(location: Location): StaticTrackable = throw OperationNotSupportedException()
 
     override fun enable(player: Player, trackable: Trackable) = throw OperationNotSupportedException()
 
