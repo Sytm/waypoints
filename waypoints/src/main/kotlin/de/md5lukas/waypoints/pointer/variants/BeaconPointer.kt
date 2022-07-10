@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.pointer.variants
 
+import de.md5lukas.commons.MathHelper
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.config.pointers.BeaconConfiguration
@@ -18,6 +19,7 @@ class BeaconPointer(
 ) : Pointer(plugin, config.interval) {
 
     private val BEACON = Material.BEACON.createBlockData()
+    private val AIR = Material.AIR.createBlockData()
 
     private val activeBeacons: MutableMap<UUID, Location> = HashMap()
 
@@ -25,7 +27,7 @@ class BeaconPointer(
         if (trackable !is StaticTrackable)
             return
         if (translatedTarget !== null) {
-            val distance = player.location.distanceSquared(translatedTarget)
+            val distance = MathHelper.distance2DSquared(player.location, translatedTarget)
 
             if (distance >= config.minDistance && distance < config.maxDistance) {
                 val beaconBase = translatedTarget.getHighestBlock().location
@@ -58,6 +60,8 @@ class BeaconPointer(
 
     private fun sendBeacon(player: Player, beaconBase: Location, trackable: Trackable, create: Boolean) {
         val loc = beaconBase.clone()
+        val world = loc.world!!
+        loc.y = world.minHeight.toDouble()
 
         // Create or remove 3x3 base platform
         for (x in -1..1) {
@@ -92,6 +96,15 @@ class BeaconPointer(
             loc.add(0.0, 1.0, 0.0)
 
             player.sendActualBlock(loc)
+        }
+        while (loc.blockY < world.maxHeight) {
+            if (create) {
+                player.sendBlockChange(loc, AIR)
+            } else {
+                player.sendActualBlock(loc)
+            }
+
+            loc.y++
         }
     }
 }
