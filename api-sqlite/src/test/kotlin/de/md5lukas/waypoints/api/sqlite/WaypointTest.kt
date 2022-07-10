@@ -9,9 +9,7 @@ import org.bukkit.Material
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertAll
 import java.util.*
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 class WaypointTest {
 
@@ -116,6 +114,62 @@ class WaypointTest {
 
             assertEquals(1, waypoint.getWaypointMeta(player1).teleportations)
             assertEquals(2, waypoint.getWaypointMeta(player2).teleportations)
+        }
+    }
+
+    @Nested
+    inner class WaypointsCustomData {
+
+        @TypesNoDeath
+        fun customDataSaved(type: Type) {
+            val holder = api.holderOfType(type)
+            val waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
+
+            waypoint.setCustomData("some key", "some data")
+            assertEquals("some data", waypoint.getCustomData("some key"))
+
+            waypoint.setCustomData("some key", null)
+            assertNull(waypoint.getCustomData("some key"))
+        }
+
+        @TypesNoDeath
+        fun noInWaypointCrossSave(type: Type) {
+            val holder = api.holderOfType(type)
+            val waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
+
+            waypoint.setCustomData("some key", "some data")
+            waypoint.setCustomData("some other key", "some other data")
+            assertEquals("some data", waypoint.getCustomData("some key"))
+            assertEquals("some other data", waypoint.getCustomData("some other key"))
+
+            waypoint.setCustomData("some key", null)
+            assertNull(waypoint.getCustomData("some key"))
+            assertNotNull(waypoint.getCustomData("some other key"))
+
+            waypoint.setCustomData("some other key", null)
+            assertNull(waypoint.getCustomData("some key"))
+            assertNull(waypoint.getCustomData("some other key"))
+        }
+
+        @TypesNoDeath
+        fun noOverWaypointCrossSave(type: Type) {
+            val holder = api.holderOfType(type)
+
+            val waypoint1 = holder.createWaypoint("Test 1", server.createLocation("world", 1, 2, 3))
+            val waypoint2 = holder.createWaypoint("Test 2", server.createLocation("world", 1, 2, 3))
+
+            waypoint1.setCustomData("some key", "some data")
+            waypoint2.setCustomData("some key", "some other data");
+            assertEquals("some data", waypoint1.getCustomData("some key"))
+            assertEquals("some other data", waypoint2.getCustomData("some key"))
+
+            waypoint1.setCustomData("some key", null)
+            assertNull(waypoint1.getCustomData("some key"))
+            assertNotNull(waypoint2.getCustomData("some key"))
+
+            waypoint2.setCustomData("some key", null)
+            assertNull(waypoint1.getCustomData("some key"))
+            assertNull(waypoint2.getCustomData("some key"))
         }
     }
 }
