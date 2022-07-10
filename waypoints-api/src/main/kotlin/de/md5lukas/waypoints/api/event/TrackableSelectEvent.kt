@@ -1,13 +1,13 @@
 package de.md5lukas.waypoints.api.event
 
-import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.Trackable
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.player.PlayerEvent
 
-class WaypointSelectEvent(
+class TrackableSelectEvent(
     player: Player,
-    val waypoint: Waypoint
+    val trackable: Trackable
 ) : PlayerEvent(player) {
 
     private companion object {
