@@ -34,6 +34,7 @@ permissions:
       - waypoints.command.statistics
       - waypoints.command.import
       - waypoints.unlimited
+      - waypoints.temporaryWaypoint
       - waypoints.modify.private
       - waypoints.modify.public
       - waypoints.modify.permission
