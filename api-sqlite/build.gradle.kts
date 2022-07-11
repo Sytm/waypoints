@@ -7,10 +7,10 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 
     maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven(url = "https://repo.md5lukas.de/releases/")
 }
 
 dependencies {

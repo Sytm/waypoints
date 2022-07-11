@@ -23,7 +23,7 @@ repositories {
 
     maven(url = "https://repo.dmulloy2.net/repository/public/")
 
-    mavenLocal()
+    maven(url = "https://repo.md5lukas.de/releases/")
 }
 
 val spigotVersion: String by project
