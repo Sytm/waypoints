@@ -103,14 +103,23 @@ class BeaconPointer(
 
             player.sendActualBlock(loc)
         }
-        while (loc.blockY < world.maxHeight) {
-            if (create) {
+        if (create) {
+            while (loc.blockY < world.maxHeight) {
                 player.sendBlockChange(loc, AIR)
-            } else {
-                player.sendActualBlock(loc)
+                loc.y++
             }
+        } else {
+            // Place blocks on top of beacon half a second later, so the beacon beam consistently disappears
+            // because the client only recalculates the beam if the original block is rendered (not culled by blocks on top)
+            plugin.server.scheduler.runTaskLater(plugin, Runnable {
+                while (loc.blockY < world.maxHeight) {
+                    player.sendActualBlock(loc)
+                    loc.y++
+                }
+            }, 10L)
 
-            loc.y++
         }
+
+
     }
 }
