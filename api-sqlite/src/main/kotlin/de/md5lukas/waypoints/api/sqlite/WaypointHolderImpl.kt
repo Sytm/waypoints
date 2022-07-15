@@ -110,7 +110,7 @@ internal open class WaypointHolderImpl(
         }
     }
 
-    override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
+    override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.of("UTC"))
 
     override fun isDuplicateWaypointName(name: String): Boolean = dm.connection.selectFirst(
         "SELECT EXISTS(SELECT 1 FROM waypoints WHERE type = ? AND owner IS ? AND name = ? COLLATE NOCASE);",
