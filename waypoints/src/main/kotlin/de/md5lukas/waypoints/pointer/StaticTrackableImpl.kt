@@ -5,7 +5,12 @@ import de.md5lukas.waypoints.api.StaticTrackable
 import org.bukkit.Location
 import java.util.*
 
-class StaticTrackableImpl(override val location: Location) : StaticTrackable {
+open class StaticTrackableImpl(
+    override val location: Location,
+    override val beaconColor: BeaconColor? = null,
+    override val hologramText: String? = null
+) : StaticTrackable {
     override val id: UUID = UUID.randomUUID()
-    override val beaconColor: BeaconColor? = null
 }
+
+class TemporaryWaypointTrackable(location: Location) : StaticTrackableImpl(location)

@@ -5,9 +5,15 @@ import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.player.PlayerEvent
 
+/**
+ * This event is triggered when a trackable has been selected for a player
+ */
 class TrackableSelectEvent(
     player: Player,
-    val trackable: Trackable
+    /**
+     * The trackable that has been selected
+     */
+    val trackable: Trackable,
 ) : PlayerEvent(player) {
 
     private companion object {

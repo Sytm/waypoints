@@ -1,8 +1,8 @@
 package de.md5lukas.waypoints.gui.items
 
 import de.md5lukas.kinvs.items.GUICycleItem
-import de.md5lukas.waypoints.api.PlayerTrackable
 import de.md5lukas.waypoints.gui.WaypointsGUI
+import de.md5lukas.waypoints.pointer.PlayerTrackable
 
 class TrackableToggleItem(wpGUI: WaypointsGUI) : GUICycleItem<Boolean>(
     listOf(
