@@ -101,7 +101,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                     try {
                         val location = Location(sender.world, args[1].toDouble(), args[2].toDouble(), args[3].toDouble())
                         plugin.api.pointerManager.let {
-                            it.enable(sender, it.trackableOf(location))
+                            it.enable(sender, it.temporaryWaypointTrackableOf(location))
                         }
                     } catch (_: NumberFormatException) {
                         translations.COMMAND_OTHER_NOT_A_NUMBER.send(sender)

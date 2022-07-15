@@ -4,7 +4,13 @@ import de.md5lukas.waypoints.api.Folder
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
+/**
+ * This event is triggered after the folder has been removed from the database
+ */
 class FolderPostDeleteEvent(
+    /**
+     * The deleted folder
+     */
     val folder: Folder
 ) : Event() {
 

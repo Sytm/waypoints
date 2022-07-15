@@ -67,6 +67,9 @@ class WaypointImpl private constructor(
             }
         }
         set(value) {
+            if (value !== null && value.type !== type) {
+                throw IllegalArgumentException("The type of the folder (${value.type}) and the type of the waypoint ($type) does not match!")
+            }
             folderId = value?.id
         }
     override var name: String = name
@@ -148,6 +151,8 @@ class WaypointImpl private constructor(
     }
 
     override val guiType: GUIType = GUIType.WAYPOINT
+
+    override val hologramText: String? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

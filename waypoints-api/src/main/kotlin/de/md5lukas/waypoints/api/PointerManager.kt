@@ -6,9 +6,11 @@ import java.util.*
 
 interface PointerManager {
 
-    fun trackableOf(player: Player): PlayerTrackable
+    fun trackableOf(player: Player): Trackable
 
     fun trackableOf(location: Location): StaticTrackable
+
+    fun temporaryWaypointTrackableOf(location: Location): StaticTrackable
 
     fun enable(player: Player, trackable: Trackable)
 

@@ -6,6 +6,7 @@ import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.HologramConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
+import de.md5lukas.waypoints.pointer.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.util.Hologram
 import de.md5lukas.waypoints.util.HologramManager
 import org.bukkit.Location
@@ -24,18 +25,18 @@ class HologramPointer(
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
         if (trackable !is StaticTrackable)
             return
+        val localHologramText = when (trackable) {
+            is Waypoint -> plugin.apiExtensions.run { trackable.getHologramName() }
+            is TemporaryWaypointTrackable -> plugin.translations.POINTERS_HOLOGRAM_TEMPORARY.text
+            else -> trackable.hologramText
+        }
+        if (localHologramText === null)
+            return
+
         if (translatedTarget !== null) {
             if (player.location.distanceSquared(translatedTarget) < config.maxDistance) {
                 activeHolograms.computeIfAbsent(player.uniqueId) {
-                    plugin.apiExtensions.run {
-                        hologramManager.createHologram(
-                            translatedTarget, if (trackable is Waypoint) {
-                                trackable.getHologramName()
-                            } else {
-                                plugin.translations.POINTERS_HOLOGRAM_TEMPORARY.text
-                            }
-                        )
-                    }
+                    hologramManager.createHologram(translatedTarget, localHologramText)
                 }.spawn(player)
             }
         }

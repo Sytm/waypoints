@@ -4,7 +4,13 @@ import de.md5lukas.waypoints.api.Waypoint
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
+/**
+ * This event is triggered when a new waypoint is created
+ */
 class WaypointCreateEvent(
+    /**
+     * The just created waypoint
+     */
     val waypoint: Waypoint
 ) : Event() {
 

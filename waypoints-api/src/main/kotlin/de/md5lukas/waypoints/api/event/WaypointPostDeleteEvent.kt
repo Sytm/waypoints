@@ -4,7 +4,13 @@ import de.md5lukas.waypoints.api.Waypoint
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
+/**
+ * This event is triggered after the waypoint has been removed from the database
+ */
 class WaypointPostDeleteEvent(
+    /**
+     * The deleted waypoint
+     */
     val waypoint: Waypoint
 ) : Event() {
 
