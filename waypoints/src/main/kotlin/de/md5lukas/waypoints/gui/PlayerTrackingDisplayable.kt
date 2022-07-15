@@ -11,5 +11,5 @@ object PlayerTrackingDisplayable : GUIDisplayable {
     override val type: Type = Type.PUBLIC
     override val guiType: GUIType = GUIType.PUBLIC_HOLDER
     override val name: String = guiType.name
-    override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
+    override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.of("UTC"))
 }

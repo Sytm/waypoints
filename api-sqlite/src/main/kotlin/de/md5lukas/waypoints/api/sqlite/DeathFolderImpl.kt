@@ -21,7 +21,7 @@ class DeathFolderImpl(
 
     override val id: UUID
         get() = owner
-    override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.systemDefault())
+    override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.of("UTC"))
     override val type: Type
         get() = Type.DEATH
     override var name: String
