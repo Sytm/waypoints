@@ -57,7 +57,7 @@ class SQLiteManager(
                   
                   showGlobals BOOLEAN NOT NULL DEFAULT 1,
                   sortBy TEXT NOT NULL DEFAULT '${OverviewSort.TYPE_ASCENDING.name}',
-                  canBeTracked BOOLEAN NOT NULL DEFAULT 1,
+                  canBeTracked BOOLEAN NOT NULL DEFAULT 0,
                   lastSelectedWaypoint TEXT,
                   
                   FOREIGN KEY (lastSelectedWaypoint) REFERENCES waypoints(id) ON DELETE SET NULL
@@ -190,7 +190,7 @@ class SQLiteManager(
         it[2] = {
             update(
                 """
-                ALTER TABLE player_data ADD COLUMN canBeTracked BOOLEAN NOT NULL DEFAULT 1;
+                ALTER TABLE player_data ADD COLUMN canBeTracked BOOLEAN NOT NULL DEFAULT 0;
             """.trimIndent()
             )
         }
