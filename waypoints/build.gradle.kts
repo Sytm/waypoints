@@ -44,7 +44,6 @@ dependencies {
     implementation(project(":waypoints-api"))
     implementation(project(":api-base"))
     implementation(project(":api-sqlite", "shadow"))
-    implementation(project(":legacy-importer", "shadow"))
 
     // Dependencies on own projects
     implementation("de.md5lukas:md5-commons:$md5CommonsVersion")
@@ -105,7 +104,6 @@ tasks.withType<ShadowJar> {
         exclude(dependency("net.wesjd:anvilgui"))
 
         exclude(project(":waypoints-api"))
-        exclude(project(":legacy-importer"))
     }
 
     exclude("META-INF/")
@@ -115,7 +113,6 @@ tasks.withType<ShadowJar> {
         include(project(":waypoints-api"))
         include(project(":api-base"))
         include(project(":api-sqlite"))
-        include(project(":legacy-importer"))
 
         include(dependency("de.md5lukas:md5-commons"))
         include(dependency("de.md5lukas:kinvs"))

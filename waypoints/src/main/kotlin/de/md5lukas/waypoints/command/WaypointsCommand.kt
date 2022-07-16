@@ -4,7 +4,6 @@ import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import de.md5lukas.waypoints.legacy.LegacyImporter
 import de.md5lukas.waypoints.util.*
 import org.bukkit.Location
 import org.bukkit.command.Command
@@ -14,7 +13,6 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import org.bukkit.util.StringUtil
 import java.util.*
-import java.util.logging.Level
 
 class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, TabCompleter {
 
@@ -59,9 +57,6 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 }
                 if (sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS)) {
                     translations.COMMAND_HELP_STATISTICS.send(sender, labelMap)
-                }
-                if (sender.hasPermission(WaypointsPermissions.COMMAND_IMPORT)) {
-                    translations.COMMAND_HELP_IMPORT.send(sender, labelMap)
                 }
                 if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
                     translations.COMMAND_HELP_RELOAD.send(sender, labelMap)
@@ -165,20 +160,6 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                     }
                 }
             }
-            "import" -> when {
-                !sender.hasPermission(WaypointsPermissions.COMMAND_IMPORT) -> translations.COMMAND_NO_PERMISSION.send(sender)
-                args.size <= 1 || !args[1].equals("confirm", true) -> translations.COMMAND_IMPORT_MUST_CONFIRM.send(sender, labelMap)
-                else -> {
-                    translations.COMMAND_IMPORT_STARTED.send(sender)
-                    try {
-                        LegacyImporter(plugin.logger, plugin.api).performImport()
-                        translations.COMMAND_IMPORT_FINISHED_SUCCESS.send(sender)
-                    } catch (e: Throwable) {
-                        translations.COMMAND_IMPORT_FINISHED_ERROR.send(sender)
-                        plugin.logger.log(Level.SEVERE, "An error occurred while importing old waypoint data", e)
-                    }
-                }
-            }
             "reload" -> when {
                 !sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD) -> translations.COMMAND_NO_PERMISSION.send(sender)
                 else -> {
@@ -220,9 +201,6 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
             }
             if (sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS)) {
                 options.add("statistics")
-            }
-            if (sender.hasPermission(WaypointsPermissions.COMMAND_IMPORT)) {
-                options.add("import")
             }
             if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
                 options.add("reload")

@@ -99,19 +99,6 @@ command:
       &7Public folders: &e${publicFolders}
       &7Permission folders: &e${permissionFolders}
 
-  import:
-    mustConfirm: |
-      $[prefix] &7To import the old waypoints you must confirm your choice.
-      &cKeep in mind that if you already imported old waypoints you will have duplicates after this action.
-      &cAll these duplicates have to be removed manually or you must delete everything by deleting plugins/Waypoints/waypoints.db.
-      &cSo run this command only once and then make sure everything is there and then remove the old saves so they can't be imported a second time by accident.
-
-      &7Run &a/${label} import confirm&7 to ackknowledge this message.
-    started: "$[prefix] &7The import has started, check the console output for more information."
-    finished:
-      success: "$[prefix] &7The import has finished, make sure the imported waypoints look good to you."
-      error: "$[prefix] &cWhile importing the old waypoints an error occurred. Check the console output for more information."
-
   reload:
     finished: "$[prefix] &7The configuration has been reloaded."
 
