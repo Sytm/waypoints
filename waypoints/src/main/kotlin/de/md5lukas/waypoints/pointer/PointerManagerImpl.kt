@@ -8,8 +8,10 @@ import de.md5lukas.waypoints.api.event.TrackableDeselectEvent
 import de.md5lukas.waypoints.api.event.TrackableSelectEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.config.pointers.PointerConfiguration
+import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.pointer.variants.*
 import de.md5lukas.waypoints.util.callEvent
+import de.md5lukas.waypoints.util.registerEvents
 import de.md5lukas.waypoints.util.runTask
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -18,6 +20,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.scheduler.BukkitTask
 import java.util.*
 
 class PointerManagerImpl(
@@ -25,7 +28,7 @@ class PointerManagerImpl(
 ) : PointerManager, Listener {
 
     init {
-        plugin.server.pluginManager.registerEvents(this, plugin)
+        plugin.registerEvents(this)
     }
 
     private val availablePointers: List<(PointerConfiguration) -> Pointer?> = listOf(
@@ -81,6 +84,7 @@ class PointerManagerImpl(
     )
 
     private val enabledPointers: MutableList<Pointer> = ArrayList()
+    private val enabledPointerTasks: MutableList<BukkitTask> = ArrayList()
 
     private val activePointers: MutableMap<Player, ActivePointer> = HashMap()
 
@@ -91,9 +95,26 @@ class PointerManagerImpl(
                 enabledPointers.add(pointer)
 
                 if (pointer.interval > 0) {
-                    plugin.server.scheduler.runTaskTimer(plugin, PointerTask(pointer, activePointers), 0, pointer.interval.toLong())
+                    enabledPointerTasks.add(plugin.server.scheduler.runTaskTimer(plugin, PointerTask(pointer, activePointers), 0, pointer.interval.toLong()))
                 }
             }
+        }
+    }
+
+    @EventHandler
+    private fun onConfigReload(e: ConfigReloadEvent) {
+        enabledPointerTasks.forEach(BukkitTask::cancel)
+        enabledPointerTasks.clear()
+
+        val activePointersCopy = HashMap(activePointers)
+        activePointersCopy.keys.forEach {
+            disable(it, false)
+        }
+
+        enabledPointers.clear()
+        setupPointers()
+        activePointersCopy.forEach { (player, activePointer) ->
+            enable(player, activePointer.trackable)
         }
     }
 

@@ -9,6 +9,7 @@ import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfiguration
+import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.WaypointsListener
 import de.md5lukas.waypoints.gui.APIExtensions
 import de.md5lukas.waypoints.integrations.DynMapIntegration
@@ -19,6 +20,8 @@ import de.md5lukas.waypoints.lang.WorldTranslations
 import de.md5lukas.waypoints.pointer.PointerManagerImpl
 import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.TeleportManager
+import de.md5lukas.waypoints.util.callEvent
+import de.md5lukas.waypoints.util.registerEvents
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
@@ -85,6 +88,13 @@ class WaypointsPlugin : JavaPlugin() {
         saveDefaultConfig()
         waypointsConfig = WaypointsConfiguration()
         waypointsConfig.loadFromConfiguration(config)
+    }
+
+    fun reloadConfiguration() {
+        reloadConfig()
+        waypointsConfig.loadFromConfiguration(config)
+
+        callEvent(ConfigReloadEvent(waypointsConfig))
     }
 
     private fun initDatabase() {
@@ -158,9 +168,7 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun registerEvents() {
-        val pluginManager = server.pluginManager
-
-        pluginManager.registerEvents(WaypointsListener(this), this)
+        registerEvents(WaypointsListener(this))
     }
 
     private fun startMetrics() {

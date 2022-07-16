@@ -44,6 +44,7 @@ command:
     other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 Sieh dir die Wegpunkte von einem anderen Spieler an"
     statistics: "&7 - &e/${label} statistics &7&l|&r&7 Sieh dir die Statistik der Datenbank an"
     import: "&7 - &e/${label} import &7&l|&r&7 Importiere Wegpunkte von Waypoints V2"
+    reload: "&7 - &e/${label} reload &7&l|&r&7 Lädt die Konfiguration neu"
 
   set:
     wrongUsage:
@@ -110,6 +111,9 @@ command:
     finished:
       success: "$[prefix] &7Die Importierung wurde abgeschlossen. Stelle sicher das die importierten Wegpunkte alle da sind."
       error: "$[prefix] &cBeim Importieren der alten Wegpunkte ist ein Fehler aufgetreten. Prüfe die Ausgabe der Konsole für mehr Informationen."
+
+  reload:
+    finished: "$[prefix] &7Die Konfiguration wurde neu geladen."
 
 text:
   duration:
