@@ -78,7 +78,7 @@ tracked player.
 
 `/waypoints statistics` - Look at some rudimentary statistics about the database
 
-`/waypoints import` - Import waypoints from Waypoints v2.X.X
+`/waypoints reload` - Reload the configuration
 
 ### Scripting
 
@@ -94,7 +94,7 @@ tracked player.
 
 `waypoints.command.statistics` - Allows the player to use the `/waypoints statistics` command
 
-`waypoints.command.import` - Allows the player to use the `/waypoints import` command
+`waypoints.command.reload` - Allows the player to use the `/waypoints reload` command
 
 `waypoints.command.scripting` - Allows the player to use the `/waypointsscript` command and get the UUID of waypoints
 
@@ -129,6 +129,8 @@ Also, you can change every piece of text to other languages or just change the c
 ## Additional notes
 
 ### Migrating from v2.X.X
+
+Migrating from v2 only works in plugin versions up to 3.5.2. Version 3.5.3 and above no longer support migrating
 
 - Shutdown the server
 - Make backups of
@@ -169,4 +171,4 @@ At the time of writing this would be 1.18.1, 1.17.1 and 1.16.5, but not 1.18, 1.
 
 ### Java version
 
-Java 11 is the minimum required version. When Minecraft 1.19 gets released and support for 1.16.5 is dropped, the minimum Java version will be Java 17
+Java 16 is the minimum required version.
