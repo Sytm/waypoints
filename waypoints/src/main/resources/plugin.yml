@@ -33,6 +33,7 @@ permissions:
       - waypoints.command.other
       - waypoints.command.statistics
       - waypoints.command.import
+      - waypoints.command.reload
       - waypoints.unlimited
       - waypoints.temporaryWaypoint
       - waypoints.modify.private

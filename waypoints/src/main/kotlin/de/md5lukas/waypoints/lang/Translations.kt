@@ -34,6 +34,7 @@ class Translations(
     val COMMAND_HELP_OTHER = Translation(tl, "command.help.other")
     val COMMAND_HELP_STATISTICS = Translation(tl, "command.help.statistics")
     val COMMAND_HELP_IMPORT = Translation(tl, "command.help.import")
+    val COMMAND_HELP_RELOAD = Translation(tl, "command.help.reload")
 
     val COMMAND_SET_WRONG_USAGE_PRIVATE = Translation(tl, "command.set.wrongUsage.private")
     val COMMAND_SET_WRONG_USAGE_PUBLIC = Translation(tl, "command.set.wrongUsage.public")
@@ -53,6 +54,8 @@ class Translations(
     val COMMAND_IMPORT_STARTED = Translation(tl, "command.import.started")
     val COMMAND_IMPORT_FINISHED_SUCCESS = Translation(tl, "command.import.finished.success")
     val COMMAND_IMPORT_FINISHED_ERROR = Translation(tl, "command.import.finished.error")
+
+    val COMMAND_RELOAD_FINISHED = Translation(tl, "command.reload.finished")
 
 
     val POINTERS_ACTION_BAR_WRONG_WORLD = Translation(tl, "pointers.actionBar.wrongWorld")

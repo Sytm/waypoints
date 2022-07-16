@@ -63,6 +63,9 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 if (sender.hasPermission(WaypointsPermissions.COMMAND_IMPORT)) {
                     translations.COMMAND_HELP_IMPORT.send(sender, labelMap)
                 }
+                if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
+                    translations.COMMAND_HELP_RELOAD.send(sender, labelMap)
+                }
             }
             "set" -> when {
                 !sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE) -> translations.COMMAND_NO_PERMISSION.send(sender)
@@ -176,6 +179,13 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                     }
                 }
             }
+            "reload" -> when {
+                !sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD) -> translations.COMMAND_NO_PERMISSION.send(sender)
+                else -> {
+                    plugin.reloadConfiguration()
+                    translations.COMMAND_RELOAD_FINISHED.send(sender)
+                }
+            }
             else -> translations.COMMAND_NOT_FOUND.send(sender)
         }
         return true
@@ -213,6 +223,9 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
             }
             if (sender.hasPermission(WaypointsPermissions.COMMAND_IMPORT)) {
                 options.add("import")
+            }
+            if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
+                options.add("reload")
             }
 
             return if (args.isEmpty()) {

@@ -6,12 +6,15 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
+import de.md5lukas.waypoints.events.ConfigReloadEvent
+import de.md5lukas.waypoints.util.registerEvents
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.dynmap.DynmapAPI
 import org.dynmap.markers.MarkerAPI
 import org.dynmap.markers.MarkerIcon
 import org.dynmap.markers.MarkerSet
+import java.util.*
 import java.util.logging.Level
 
 /**
@@ -53,12 +56,23 @@ class DynMapIntegration(
                 createMarker(it)
             }
 
-            plugin.server.pluginManager.registerEvents(this, plugin)
+            plugin.registerEvents(this)
         } catch (_: ClassNotFoundException) {
             plugin.logger.log(Level.WARNING, "The DynMap plugin has been found, but plugin instance class could not be found")
             return false
         }
         return true
+    }
+
+    @EventHandler
+    private fun onConfigReload(e: ConfigReloadEvent) {
+        val newId = e.config.integrations.dynmap.icon
+        if (newId != defaultMarkerIcon.markerIconID) {
+            defaultMarkerIcon = markerApi.getMarkerIcon(newId)
+        }
+        markerSet.markers.forEach {
+            it.markerIcon = getMarkerForWaypoint(plugin.api.getWaypointByID(UUID.fromString(it.markerID))!!)
+        }
     }
 
     @EventHandler

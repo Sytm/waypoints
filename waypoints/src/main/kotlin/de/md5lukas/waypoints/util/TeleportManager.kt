@@ -25,7 +25,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
     private val pendingTeleports = HashMap<Player, BukkitTask>()
 
     init {
-        plugin.server.pluginManager.registerEvents(this, plugin)
+        plugin.registerEvents(this)
     }
 
     fun getTeleportPermission(waypoint: Waypoint) = when (waypoint.type) {

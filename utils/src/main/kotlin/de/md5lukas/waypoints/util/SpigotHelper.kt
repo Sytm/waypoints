@@ -5,6 +5,7 @@ import org.bukkit.block.Block
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
+import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.util.Vector
 
@@ -18,6 +19,10 @@ fun Plugin.runTaskAsync(block: () -> Unit) {
 
 fun Plugin.callEvent(event: Event) {
     server.pluginManager.callEvent(event)
+}
+
+fun Plugin.registerEvents(listener: Listener) {
+    server.pluginManager.registerEvents(listener, this)
 }
 
 fun ConfigurationSection.getStringNotNull(path: String): String =

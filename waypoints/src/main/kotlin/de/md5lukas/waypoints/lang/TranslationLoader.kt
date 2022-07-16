@@ -1,17 +1,25 @@
 package de.md5lukas.waypoints.lang
 
 import de.md5lukas.waypoints.WaypointsPlugin
+import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.util.aotReplace
+import de.md5lukas.waypoints.util.registerEvents
 import de.md5lukas.waypoints.util.translateColorCodes
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.logging.Level
 
 class TranslationLoader(
     val plugin: WaypointsPlugin,
-) {
+) : Listener {
+
+    init {
+        plugin.registerEvents(this)
+    }
 
     private lateinit var loadedLanguage: String
     private lateinit var translations: Map<String, String>
@@ -90,5 +98,10 @@ class TranslationLoader(
             plugin.logger.log(Level.WARNING, "The translation key $key is missing in the translation file for the language $loadedLanguage, but not required")
         }
         return contains
+    }
+
+    @EventHandler
+    private fun onConfigReload(e: ConfigReloadEvent) {
+        loadLanguage(e.config.general.language)
     }
 }
