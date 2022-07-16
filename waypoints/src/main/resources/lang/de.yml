@@ -99,19 +99,6 @@ command:
       &7Öffentliche Ordner: &e${publicFolders}
       &7Eingeschränkte Ordner: &e${permissionFolders}
 
-  import:
-    mustConfirm: |
-      $[prefix] &7Um die alten Wegpunkte zu importieren musst du deine Entscheidung bestätigen.
-      &cWenn du schon einmal alte Wegpunkte importiert hast und dies jetzt wieder tust wirst du Duplikate haben.
-      &cDie Duplikate müssen entweder manuell entfernt werden oder du löschst alles indem du plugins/Waypoints/waypoints.db löschst.
-      &cAlso führen diesen Befehl nur einmal aus, stelle sicher alles ist da und dann entferne die alten Daten damit sie nicht ausversehen ein zweites mal importiert werden.
-
-      &7Führe &a/${label} import confirm&7 aus um diese Nachricht zu bestätigen.
-    started: "$[prefix] &7Die Importierung wurde gestartet. Prüfe die Ausgabe der Konsole für mehr Informationen."
-    finished:
-      success: "$[prefix] &7Die Importierung wurde abgeschlossen. Stelle sicher das die importierten Wegpunkte alle da sind."
-      error: "$[prefix] &cBeim Importieren der alten Wegpunkte ist ein Fehler aufgetreten. Prüfe die Ausgabe der Konsole für mehr Informationen."
-
   reload:
     finished: "$[prefix] &7Die Konfiguration wurde neu geladen."
 

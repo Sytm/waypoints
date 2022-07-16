@@ -33,7 +33,6 @@ class Translations(
     val COMMAND_HELP_SET_TEMPORARY = Translation(tl, "command.help.set.temporary")
     val COMMAND_HELP_OTHER = Translation(tl, "command.help.other")
     val COMMAND_HELP_STATISTICS = Translation(tl, "command.help.statistics")
-    val COMMAND_HELP_IMPORT = Translation(tl, "command.help.import")
     val COMMAND_HELP_RELOAD = Translation(tl, "command.help.reload")
 
     val COMMAND_SET_WRONG_USAGE_PRIVATE = Translation(tl, "command.set.wrongUsage.private")
@@ -49,11 +48,6 @@ class Translations(
     val COMMAND_OTHER_NOT_A_NUMBER = Translation(tl, "command.other.notANumber")
 
     val COMMAND_STATISTICS_MESSAGE = Translation(tl, "command.statistics.message")
-
-    val COMMAND_IMPORT_MUST_CONFIRM = Translation(tl, "command.import.mustConfirm")
-    val COMMAND_IMPORT_STARTED = Translation(tl, "command.import.started")
-    val COMMAND_IMPORT_FINISHED_SUCCESS = Translation(tl, "command.import.finished.success")
-    val COMMAND_IMPORT_FINISHED_ERROR = Translation(tl, "command.import.finished.error")
 
     val COMMAND_RELOAD_FINISHED = Translation(tl, "command.reload.finished")
 
