@@ -81,11 +81,11 @@ class BeaconPointer(
             }
         }
 
-        loc.add(0.0, 1.0, 0.0)
+        loc.y++
         if (create) {
             player.sendBlockChange(loc, BEACON)
 
-            loc.add(0.0, 1.0, 0.0)
+            loc.y++
 
             player.sendBlockChange(
                 loc, when (trackable) {
@@ -99,10 +99,12 @@ class BeaconPointer(
         } else {
             player.sendActualBlock(loc)
 
-            loc.add(0.0, 1.0, 0.0)
+            loc.y++
 
             player.sendActualBlock(loc)
         }
+        // Need to go higher once more because otherwise we will destroy the color of the beacon beam again
+        loc.y++
         if (create) {
             while (loc.blockY < world.maxHeight) {
                 player.sendBlockChange(loc, AIR)
