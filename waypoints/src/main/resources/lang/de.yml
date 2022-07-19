@@ -231,9 +231,8 @@ pointers:
     temporary: "&5Temporärer Wegpunkt"
 
 integrations:
-  dynmap:
-    markerSet:
-      label: "Öffentliche Wegpunkte"
+  maps:
+    label: "Öffentliche Wegpunkte"
 
 inventory:
   title:
@@ -409,8 +408,8 @@ inventory:
         cancel:
           displayName: "&aNein, &e${name}&a nicht eingeschränkt machen."
           description: ""
-    changeDynMapIcon:
-      displayName: "&eBenutzerdefiniertes DynMap Symbol ändern"
+    changeMapIcon:
+      displayName: "&eBenutzerdefiniertes Web-Karten Symbol ändern"
       description: ""
 
     create:

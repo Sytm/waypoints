@@ -35,6 +35,7 @@ dependencies {
     val bstatsVersion: String by project
     val vaultVersion: String by project
     val dynmapVersion: String by project
+    val squareMapVersion: String by project
     val protocolLibVersion: String by project
 
     implementation("org.spigotmc:spigot-api:$spigotVersion")
@@ -60,6 +61,8 @@ dependencies {
     implementation("us.dynmap:dynmap-api:$dynmapVersion:unshaded") {
         isTransitive = false
     }
+
+    implementation("xyz.jpenilla:squaremap-api:$squareMapVersion")
 
     implementation("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")
 }

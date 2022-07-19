@@ -175,7 +175,7 @@ class Translations(
     val WAYPOINT_MAKE_PERMISSION_CONFIRM_QUESTION = ItemTranslation(tl, "inventory.waypoint.make.permission.question")
     val WAYPOINT_MAKE_PERMISSION_CONFIRM_TRUE = ItemTranslation(tl, "inventory.waypoint.make.permission.confirm")
     val WAYPOINT_MAKE_PERMISSION_CONFIRM_FALSE = ItemTranslation(tl, "inventory.waypoint.make.permission.cancel")
-    val WAYPOINT_CHANGE_DYNMAP_ICON = ItemTranslation(tl, "inventory.waypoint.changeDynMapIcon")
+    val WAYPOINT_CHANGE_MAP_ICON = ItemTranslation(tl, "inventory.waypoint.changeMapIcon")
 
     val FOLDER_ICON_PRIVATE = ItemTranslation(tl, "inventory.folder.icon.private")
     val FOLDER_ICON_DEATH = ItemTranslation(tl, "inventory.folder.icon.death")
@@ -201,7 +201,7 @@ class Translations(
 
     val CONFIRM_BACKGROUND = ItemTranslation(tl, "inventory.confirm.background")
 
-    val INTEGRATIONS_DYNMAP_MARKER_SET_LABEL = Translation(tl, "integrations.dynmap.markerSet.label")
+    val INTEGRATIONS_MAPS_LABEL = Translation(tl, "integrations.maps.label")
 
     val TRACKING_BACKGROUND = ItemTranslation(tl, "inventory.tracking.background")
     val TRACKING_TRACKABLE_ENABLED = ItemTranslation(tl, "inventory.tracking.trackable.enabled")

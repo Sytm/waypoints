@@ -231,9 +231,8 @@ pointers:
     temporary: "&5Temporary Waypoint"
 
 integrations:
-  dynmap:
-    markerSet:
-      label: "Public waypoints"
+  maps:
+    label: "Public waypoints"
 
 inventory:
   title:
@@ -409,8 +408,8 @@ inventory:
         cancel:
           displayName: "&aNo, do not make &e${name}&a a permission waypoint."
           description: ""
-    changeDynMapIcon:
-      displayName: "&eChange custom DynMap icon"
+    changeMapIcon:
+      displayName: "&eChange custom web map icon"
       description: ""
 
     create:

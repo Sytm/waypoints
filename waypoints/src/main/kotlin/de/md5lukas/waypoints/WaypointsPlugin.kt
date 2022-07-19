@@ -13,6 +13,7 @@ import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.WaypointsListener
 import de.md5lukas.waypoints.gui.APIExtensions
 import de.md5lukas.waypoints.integrations.DynMapIntegration
+import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.integrations.VaultIntegration
 import de.md5lukas.waypoints.lang.TranslationLoader
 import de.md5lukas.waypoints.lang.Translations
@@ -61,6 +62,8 @@ class WaypointsPlugin : JavaPlugin() {
     val vaultIntegration: VaultIntegration
         get() = vaultIntegration0 ?: throw IllegalStateException("The vault integration is configured to be used, but no vault compatible plugin is installed")
     var dynMapIntegrationAvailable = false
+        private set
+    var squareMapIntegrationAvailable = false
         private set
 
     override fun onEnable() {
@@ -155,6 +158,7 @@ class WaypointsPlugin : JavaPlugin() {
 
         if (waypointsConfig.general.features.globalWaypoints) {
             dynMapIntegrationAvailable = DynMapIntegration(this).setupDynMap()
+            squareMapIntegrationAvailable = SquareMapIntegration(this).setupSquareMap()
         }
     }
 
@@ -182,8 +186,12 @@ class WaypointsPlugin : JavaPlugin() {
                 totalFolders
             })
         }
-        metrics.addCustomChart(SimplePie("uses_dynmap") {
-            dynMapIntegrationAvailable.toString()
+        metrics.addCustomChart(SimplePie("web_map") {
+            when {
+                dynMapIntegrationAvailable -> "DynMap"
+                squareMapIntegrationAvailable -> "squaremap"
+                else -> "none"
+            }
         })
         metrics.addCustomChart(SimplePie("uses_vault") {
             (vaultIntegration0 !== null).toString()
