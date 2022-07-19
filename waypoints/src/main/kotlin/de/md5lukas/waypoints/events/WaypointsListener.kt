@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerRespawnEvent
 
 class WaypointsListener(
     private val plugin: WaypointsPlugin
@@ -27,6 +28,17 @@ class WaypointsListener(
             e.material in config.items
         ) {
             WaypointsGUI(plugin, e.player, e.player.uniqueId)
+        }
+    }
+
+    @EventHandler
+    private fun onPlayerRespawn(e: PlayerRespawnEvent) {
+        if (plugin.waypointsConfig.general.features.deathWaypoints && plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.enabled) {
+            plugin.api.getWaypointPlayer(e.player.uniqueId).deathFolder.waypoints.maxByOrNull { it.createdAt }?.let {
+                if (plugin.api.pointerManager.getCurrentTarget(e.player) === null || plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.overwriteCurrent) {
+                    plugin.api.pointerManager.enable(e.player, it)
+                }
+            }
         }
     }
 }

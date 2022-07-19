@@ -27,6 +27,12 @@ general:
     # Set to "false" to disable death waypoints
     deathWaypoints: true
 
+  # Automatically select the last death waypoint upon death
+  pointToDeathWaypointOnDeath:
+    enabled: true
+    # Overwrites the current selected waypoint with the death waypoint
+    overwriteCurrent: false
+
   # Connected worlds in this list allow the translation of the coordinates 1:8, so you can for example navigate in the nether to a waypoint in the overworld
   connectedWorlds:
     - overworld: world

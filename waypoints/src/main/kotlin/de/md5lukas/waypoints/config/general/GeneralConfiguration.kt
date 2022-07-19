@@ -13,7 +13,7 @@ class GeneralConfiguration {
     var worldNotFound: WorldNotFoundAction = WorldNotFoundAction.SHOW
         private set
 
-    val uuidCache = UUIDCacheConfiguration()
+        val uuidCache = UUIDCacheConfiguration()
 
     val features = FeaturesConfiguration()
 
@@ -28,6 +28,8 @@ class GeneralConfiguration {
     val teleport = TeleportConfiguration()
 
     val connectedWorlds = ConnectedWorldsConfiguration()
+
+    val pointToDeathWaypointOnDeath = PointToDeathWaypointOnDeathConfiguration()
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         language = cfg.getStringNotNull("language")
@@ -49,5 +51,7 @@ class GeneralConfiguration {
         teleport.loadFromConfiguration(cfg.getConfigurationSectionNotNull("teleport"))
 
         connectedWorlds.loadFromConfiguration(cfg.getListNotNull("connectedWorlds"))
+
+        pointToDeathWaypointOnDeath.loadFromConfiguration(cfg.getConfigurationSectionNotNull("pointToDeathWaypointOnDeath"))
     }
 }
