@@ -8,6 +8,8 @@ import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import org.bukkit.util.Vector
+import kotlin.math.abs
+import kotlin.math.roundToInt
 
 fun Plugin.runTask(block: () -> Unit) {
     server.scheduler.runTask(this, block)
@@ -79,9 +81,26 @@ fun parseLocationString(player: Player, input: String): Location? {
     }
 }
 
+private const val MAX_MAP_SIZE: Double = 30_000_000.0
+
+fun isLocationOutOfBounds(plugin: Plugin, location: Location): Boolean {
+    if (abs(location.x) >= MAX_MAP_SIZE || abs(location.z) >= MAX_MAP_SIZE) {
+        return true
+    }
+
+    // TODO: Remove once 1.20 is out
+    val validYValues = if (isMinecraftVersionEqualOrLaterThan(plugin, 18, 0)) {
+        -64..320
+    } else {
+        0..256
+    }
+
+    return location.y.roundToInt() !in validYValues
+}
+
 fun isMinecraftVersionEqualOrLaterThan(plugin: Plugin, major: Int, minor: Int = 0): Boolean {
     val version = plugin.server.bukkitVersion.substringBefore('-') // 1.16.5-R0.1-SNAPSHOT -> 1.16.5
     val parts = version.split('.')
 
-    return parts[1].toInt() >= major && parts[2].toInt() >= minor
+    return parts[1].toInt() >= major && (parts.getOrNull(2)?.toInt() ?: 0) >= minor
 }

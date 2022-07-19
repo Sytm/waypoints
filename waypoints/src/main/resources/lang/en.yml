@@ -154,6 +154,7 @@ message:
   waypoint:
     create:
       coordinates:
+        outOfBounds: "$[prefix] &cThe location you are trying to create the waypoint at is out of bounds."
         invalidFormat: |
           $[prefix] &cThe coordinates must be provided in the following format:
           &a102/35/-238

@@ -12,10 +12,7 @@ import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.CycleSortItem
 import de.md5lukas.waypoints.gui.items.ToggleGlobalsItem
-import de.md5lukas.waypoints.util.checkFolderName
-import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
-import de.md5lukas.waypoints.util.parseLocationString
-import de.md5lukas.waypoints.util.runTask
+import de.md5lukas.waypoints.util.*
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import java.util.*
@@ -191,11 +188,16 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                         AnvilGUI.Builder().plugin(wpGUI.plugin).text(wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.text).onComplete { _, coordinates ->
                             parsedLocation = parseLocationString(wpGUI.viewer, coordinates)
 
-                            return@onComplete if (parsedLocation === null) {
-                                wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(wpGUI.viewer)
-                                AnvilGUI.Response.text(coordinates)
-                            } else {
-                                AnvilGUI.Response.close()
+                            return@onComplete parsedLocation.let { location ->
+                                if (location === null) {
+                                    wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(wpGUI.viewer)
+                                    AnvilGUI.Response.text(coordinates)
+                                } else if (isLocationOutOfBounds(wpGUI.plugin, location)) {
+                                    wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(wpGUI.viewer)
+                                    AnvilGUI.Response.text(coordinates)
+                                } else {
+                                    AnvilGUI.Response.close()
+                                }
                             }
                         }.onClose {
                             parsedLocation.let { location ->
