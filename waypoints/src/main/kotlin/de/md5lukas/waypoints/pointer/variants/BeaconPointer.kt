@@ -82,6 +82,7 @@ class BeaconPointer(
         }
 
         loc.y++
+        val beaconBlockLocation = loc.clone()
         if (create) {
             player.sendBlockChange(loc, BEACON)
 
@@ -111,17 +112,16 @@ class BeaconPointer(
                 loc.y++
             }
         } else {
-            // Place blocks on top of beacon half a second later, so the beacon beam consistently disappears
+            // Place blocks on top of beacon at least 4 seconds, so the beacon beam hopefully consistently disappears
             // because the client only recalculates the beam if the original block is rendered (not culled by blocks on top)
+            // Also see https://wiki.vg/Block_Actions#Beacon
             plugin.server.scheduler.runTaskLater(plugin, Runnable {
+                player.sendActualBlock(beaconBlockLocation)
                 while (loc.blockY < world.maxHeight) {
                     player.sendActualBlock(loc)
                     loc.y++
                 }
-            }, 10L)
-
+            }, 20L * 5)
         }
-
-
     }
 }
