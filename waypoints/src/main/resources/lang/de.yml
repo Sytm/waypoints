@@ -154,6 +154,7 @@ message:
   waypoint:
     create:
       coordinates:
+        outOfBounds: "$[prefix] &cDie Position an der du den Wegpunkt erstellen möchtest liegt außerhalb der Grenzen."
         invalidFormat: |
           $[prefix] &cDie Koordinaten müssen im folgenden Format angegeben werden:
           &a102/35/-238

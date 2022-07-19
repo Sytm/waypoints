@@ -15,6 +15,7 @@ sealed class CreateResult
 
 object LimitReached : CreateResult()
 object NameTaken : CreateResult()
+object LocationOutOfBounds : CreateResult()
 
 class SuccessWaypoint(val waypoint: Waypoint) : CreateResult()
 class SuccessFolder(val folder: Folder) : CreateResult()
@@ -36,6 +37,11 @@ fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String,
 
     val waypointLimit = plugin.waypointsConfig.general.waypoints.limit
 
+    if (isLocationOutOfBounds(plugin, location)) {
+        plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
+        return LocationOutOfBounds
+    }
+
     if (!player.hasPermission(WaypointsPermissions.UNLIMITED) && waypointLimit > 0 && waypointsPlayer.waypointsAmount >= waypointLimit) {
         plugin.translations.WAYPOINT_LIMIT_REACHED_PRIVATE.send(player)
         return LimitReached
@@ -52,6 +58,11 @@ fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String,
 }
 
 fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
+    if (isLocationOutOfBounds(plugin, location)) {
+        plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
+        return LocationOutOfBounds
+    }
+
     if (!checkWaypointName(plugin, plugin.api.publicWaypoints, name)) {
         plugin.translations.WAYPOINT_NAME_DUPLICATE_PUBLIC.send(player)
         return NameTaken
@@ -64,6 +75,11 @@ fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, 
 }
 
 fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: String, permission: String, location: Location = player.location): CreateResult {
+    if (isLocationOutOfBounds(plugin, location)) {
+        plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
+        return LocationOutOfBounds
+    }
+
     if (!checkWaypointName(plugin, plugin.api.permissionWaypoints, name)) {
         plugin.translations.WAYPOINT_NAME_DUPLICATE_PERMISSION.send(player)
         return NameTaken

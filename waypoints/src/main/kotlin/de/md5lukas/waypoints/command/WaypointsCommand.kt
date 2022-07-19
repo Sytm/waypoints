@@ -98,8 +98,12 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                 else -> {
                     try {
                         val location = Location(sender.world, args[1].toDouble(), args[2].toDouble(), args[3].toDouble())
-                        plugin.api.pointerManager.let {
-                            it.enable(sender, it.temporaryWaypointTrackableOf(location))
+                        if (isLocationOutOfBounds(plugin, location)) {
+                            translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
+                        } else {
+                            plugin.api.pointerManager.let {
+                                it.enable(sender, it.temporaryWaypointTrackableOf(location))
+                            }
                         }
                     } catch (_: NumberFormatException) {
                         translations.COMMAND_OTHER_NOT_A_NUMBER.send(sender)
