@@ -7,6 +7,7 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.integrations.DynMapIntegration
+import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.util.*
 import net.md_5.bungee.api.chat.ClickEvent
 import net.md_5.bungee.api.chat.TextComponent
@@ -189,23 +190,13 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             } else {
                 background
             },
-            'y' to if (canModifyWaypoint && waypoint.type === Type.PUBLIC && wpGUI.plugin.dynMapIntegrationAvailable) {
-                GUIItem(wpGUI.translations.WAYPOINT_CHANGE_DYNMAP_ICON.item) {
-                    wpGUI.viewer.closeInventory()
-                    AnvilGUI.Builder().plugin(wpGUI.plugin)
-                        .text(waypoint.getCustomData(DynMapIntegration.CUSTOM_DATA_KEY) ?: wpGUI.plugin.waypointsConfig.integrations.dynmap.icon)
-                        .onComplete { _, newIcon ->
-                            waypoint.setCustomData(
-                                DynMapIntegration.CUSTOM_DATA_KEY, newIcon.ifBlank {
-                                    null
-                                }
-                            )
-                            return@onComplete AnvilGUI.Response.close()
-                        }.onClose {
-                            wpGUI.plugin.runTask {
-                                wpGUI.gui.open()
-                            }
-                        }.open(wpGUI.viewer)
+            'y' to if (canModifyWaypoint && waypoint.type === Type.PUBLIC) {
+                if (wpGUI.plugin.dynMapIntegrationAvailable) {
+                    createChangeCustomMapIconItem(DynMapIntegration.CUSTOM_DATA_KEY, wpGUI.plugin.waypointsConfig.integrations.dynmap.icon)
+                } else if (wpGUI.plugin.squareMapIntegrationAvailable) {
+                    createChangeCustomMapIconItem(SquareMapIntegration.CUSTOM_DATA_KEY, wpGUI.plugin.waypointsConfig.integrations.squaremap.icon)
+                } else {
+                    background
                 }
             } else {
                 background
@@ -301,6 +292,24 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
         if (update) {
             wpGUI.gui.update()
         }
+    }
+
+    private fun createChangeCustomMapIconItem(customDataKey: String, defaultIcon: String) = GUIItem(wpGUI.translations.WAYPOINT_CHANGE_MAP_ICON.item) {
+        wpGUI.viewer.closeInventory()
+        AnvilGUI.Builder().plugin(wpGUI.plugin)
+            .text(waypoint.getCustomData(customDataKey) ?: defaultIcon)
+            .onComplete { _, newIcon ->
+                waypoint.setCustomData(
+                    customDataKey, newIcon.ifBlank {
+                        null
+                    }
+                )
+                return@onComplete AnvilGUI.Response.close()
+            }.onClose {
+                wpGUI.plugin.runTask {
+                    wpGUI.gui.open()
+                }
+            }.open(wpGUI.viewer)
     }
 
     init {
