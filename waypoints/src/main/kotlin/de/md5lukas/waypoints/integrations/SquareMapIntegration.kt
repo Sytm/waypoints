@@ -30,7 +30,7 @@ class SquareMapIntegration(
     }
 
     private lateinit var api: Squaremap
-    private val layerKey = Key.of("waypoints")
+    private lateinit var layerKey: Key
     private val layerProviders: MutableMap<UUID, SimpleLayerProvider?> = HashMap()
 
     private val iconFolder = File(plugin.dataFolder, "sqm-icons")
@@ -45,6 +45,8 @@ class SquareMapIntegration(
         extractSQMIcons()
 
         api = SquaremapProvider.get()
+
+        layerKey = Key.of("waypoints")
 
         plugin.api.publicWaypoints.allWaypoints.forEach {
             createMarker(it)
