@@ -43,6 +43,9 @@ class TypedTeleportConfiguration {
     var formula: Expression = MathParser.parse("1")
         private set
 
+    var onlyLastWaypoint: Boolean = false
+        private set
+
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         cooldown = Duration.ofMillis(DurationParser.parseDuration(cfg.getStringNotNull("cooldown"), TimeUnit.MILLISECONDS))
 
@@ -51,6 +54,9 @@ class TypedTeleportConfiguration {
         maxCost = cfg.getLong("maxCost")
 
         formula = MathParser.parse(cfg.getStringNotNull("formula"), "n")
+
+        // Only used for death waypoints
+        onlyLastWaypoint = cfg.getBoolean("onlyLastWaypoint")
     }
 }
 

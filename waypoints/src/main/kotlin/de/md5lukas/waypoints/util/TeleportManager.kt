@@ -5,6 +5,7 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.config.general.TeleportPaymentType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -41,7 +42,16 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         Type.PERMISSION -> plugin.waypointsConfig.general.teleport.permission
     }
 
-    fun isTeleportEnabled(waypoint: Waypoint) = getTeleportConfig(waypoint).paymentType != TeleportPaymentType.DISABLED
+    fun isTeleportEnabled(player: WaypointsPlayer, waypoint: Waypoint): Boolean {
+        val config = getTeleportConfig(waypoint)
+        return when {
+            config.paymentType === TeleportPaymentType.DISABLED -> false
+            waypoint.type !== Type.DEATH || !config.onlyLastWaypoint -> true
+            else -> {
+                player.deathFolder.waypoints.maxByOrNull { it.createdAt } == waypoint
+            }
+        }
+    }
 
     private fun getTeleportationPrice(player: Player, waypoint: Waypoint): Double {
         val meta = waypoint.getWaypointMeta(player.uniqueId)

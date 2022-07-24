@@ -100,9 +100,12 @@ general:
     death:
       cooldown: 24h
 
+      # Allows the player to only teleport to the last location they died at, not all of them
+      onlyLastWaypoint: true
+
       paymentType: disabled
       maxCost: 10
-      formula: 1 + n * 2
+      formula: 10
 
     public:
       cooldown: 24h

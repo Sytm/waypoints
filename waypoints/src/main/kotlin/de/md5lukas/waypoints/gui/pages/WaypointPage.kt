@@ -271,7 +271,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                 background
             },
             't' to if ((wpGUI.viewer.hasPermission(wpGUI.plugin.teleportManager.getTeleportPermission(waypoint)) ||
-                        wpGUI.plugin.teleportManager.isTeleportEnabled(waypoint)) && waypoint.location.world !== null
+                        wpGUI.plugin.teleportManager.isTeleportEnabled(wpGUI.targetData, waypoint)) && waypoint.location.world !== null
             ) {
                 GUIItem(
                     wpGUI.translations.WAYPOINT_TELEPORT.getItem(
