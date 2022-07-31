@@ -1,6 +1,5 @@
 package de.md5lukas.waypoints.pointer.variants
 
-import de.md5lukas.commons.MathHelper
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.BeaconColor
 import de.md5lukas.waypoints.api.StaticTrackable
@@ -11,12 +10,13 @@ import de.md5lukas.waypoints.pointer.PlayerTrackable
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.pointer.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.util.blockEquals
-import de.md5lukas.waypoints.util.getHighestBlock
+import de.md5lukas.waypoints.util.highestBlock
 import de.md5lukas.waypoints.util.sendActualBlock
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import java.util.*
+import kotlin.math.max
 
 class BeaconPointer(
     plugin: WaypointsPlugin,
@@ -24,7 +24,6 @@ class BeaconPointer(
 ) : Pointer(plugin, config.interval) {
 
     private val BEACON = Material.BEACON.createBlockData()
-    private val AIR = Material.AIR.createBlockData()
 
     private val activeBeacons: MutableMap<UUID, Location> = HashMap()
 
@@ -32,10 +31,10 @@ class BeaconPointer(
         if (trackable !is StaticTrackable)
             return
         if (translatedTarget !== null) {
-            val distance = MathHelper.distance2DSquared(player.location, translatedTarget)
+            val distance = player.location.distanceSquared(translatedTarget)
 
             if (distance >= config.minDistance && distance < config.maxDistance) {
-                val beaconBase = translatedTarget.getHighestBlock().location
+                val beaconBase = translatedTarget.highestBlock.location
 
                 val lastBeaconPosition = activeBeacons[player.uniqueId]
                 if (lastBeaconPosition != null && !lastBeaconPosition.blockEquals(beaconBase)) {
@@ -66,7 +65,29 @@ class BeaconPointer(
     private fun sendBeacon(player: Player, beaconBase: Location, trackable: Trackable, create: Boolean) {
         val loc = beaconBase.clone()
         val world = loc.world!!
-        loc.y = world.minHeight.toDouble()
+
+        loc.y = max(loc.blockY, world.minHeight + 2).toDouble()
+
+        if (create) {
+            player.sendBlockChange(
+                loc, when (trackable) {
+                    is Waypoint -> trackable.beaconColor ?: config.defaultColor[trackable.type]!!
+                    is PlayerTrackable -> config.playerTrackableColor
+                    is TemporaryWaypointTrackable -> config.temporaryTrackableColor
+                    is StaticTrackable -> trackable.beaconColor ?: BeaconColor.CLEAR
+                    else -> BeaconColor.CLEAR
+                }.blockData
+            )
+        } else {
+            player.sendActualBlock(loc)
+        }
+        loc.y--
+        if (create) {
+            player.sendBlockChange(loc, BEACON)
+        } else {
+            player.sendActualBlock(loc)
+        }
+        loc.y--
 
         // Create or remove 3x3 base platform
         for (x in -1..1) {
@@ -79,49 +100,6 @@ class BeaconPointer(
                 }
                 loc.subtract(x.toDouble(), 0.0, z.toDouble())
             }
-        }
-
-        loc.y++
-        val beaconBlockLocation = loc.clone()
-        if (create) {
-            player.sendBlockChange(loc, BEACON)
-
-            loc.y++
-
-            player.sendBlockChange(
-                loc, when (trackable) {
-                    is Waypoint -> trackable.beaconColor ?: config.defaultColor[trackable.type]!!
-                    is PlayerTrackable -> config.playerTrackableColor
-                    is TemporaryWaypointTrackable -> config.temporaryTrackableColor
-                    is StaticTrackable -> trackable.beaconColor ?: BeaconColor.CLEAR
-                    else -> BeaconColor.CLEAR
-                }.blockData
-            )
-        } else {
-            player.sendActualBlock(loc)
-
-            loc.y++
-
-            player.sendActualBlock(loc)
-        }
-        // Need to go higher once more because otherwise we will destroy the color of the beacon beam again
-        loc.y++
-        if (create) {
-            while (loc.blockY < world.maxHeight) {
-                player.sendBlockChange(loc, AIR)
-                loc.y++
-            }
-        } else {
-            // Place blocks on top of beacon at least 4 seconds, so the beacon beam hopefully consistently disappears
-            // because the client only recalculates the beam if the original block is rendered (not culled by blocks on top)
-            // Also see https://wiki.vg/Block_Actions#Beacon
-            plugin.server.scheduler.runTaskLater(plugin, Runnable {
-                player.sendActualBlock(beaconBlockLocation)
-                while (loc.blockY < world.maxHeight) {
-                    player.sendActualBlock(loc)
-                    loc.y++
-                }
-            }, 20L * 5)
         }
     }
 }
