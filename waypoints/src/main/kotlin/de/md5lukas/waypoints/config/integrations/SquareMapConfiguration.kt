@@ -5,6 +5,9 @@ import org.bukkit.configuration.ConfigurationSection
 
 class SquareMapConfiguration {
 
+    var enabled: Boolean = false
+        private set
+
     var icon: String = ""
         private set
 
@@ -12,6 +15,7 @@ class SquareMapConfiguration {
         private set
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
+        cfg.getBoolean("enabled")
         icon = cfg.getStringNotNull("icon")
         iconSize = cfg.getInt("iconSize")
     }

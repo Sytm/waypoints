@@ -123,9 +123,11 @@ general:
 
 integrations:
   dynmap:
+    enabled: true
     # See https://github.com/webbukkit/dynmap/wiki/Using-Markers#marker-icons for more information
     icon: default
   squaremap:
+    enabled: true
     # The icon id must either be the full key of an existing icon that got registered by another plugin (see "plugins/squaremap/web/images/icon/registered")
     # Or it must be the name of an icon in the folder "plugins/Waypoints/sqm-icons".
     # Examples:
