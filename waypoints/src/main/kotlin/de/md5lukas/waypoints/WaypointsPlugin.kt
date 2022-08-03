@@ -157,8 +157,12 @@ class WaypointsPlugin : JavaPlugin() {
         }
 
         if (waypointsConfig.general.features.globalWaypoints) {
-            dynMapIntegrationAvailable = DynMapIntegration(this).setupDynMap()
-            squareMapIntegrationAvailable = SquareMapIntegration(this).setupSquareMap()
+            if (waypointsConfig.integrations.dynmap.enabled) {
+                dynMapIntegrationAvailable = DynMapIntegration(this).setupDynMap()
+            }
+            if (waypointsConfig.integrations.squaremap.enabled) {
+                squareMapIntegrationAvailable = SquareMapIntegration(this).setupSquareMap()
+            }
         }
     }
 
