@@ -17,6 +17,8 @@ class TranslationLoader(
     val plugin: WaypointsPlugin,
 ) : Listener {
 
+    private val defaultLanguage = "en"
+
     init {
         plugin.registerEvents(this)
     }
@@ -69,17 +71,25 @@ class TranslationLoader(
         if (languageFile.exists()) {
             val loadedTranslations = YamlConfiguration.loadConfiguration(languageFile)
 
-            val fallbackReader = plugin.getResource(
-                if (languageKey in bundledLanguages) {
-                    getLanguageFilePath(languageKey)
-                } else {
-                    getLanguageFilePath(bundledLanguages[0])
+            // Languages are applied in the following order: File > In Jar > In Jar (English)
+            val sameLanguageFallback: FileConfiguration? = if (languageKey in bundledLanguages) {
+                plugin.getResource(getLanguageFilePath(languageKey))!!.reader().use {
+                    YamlConfiguration.loadConfiguration(it)
                 }
-            )!!.reader()
+            } else null
 
-            val defaultTranslations = YamlConfiguration.loadConfiguration(fallbackReader)
+            val fallback = plugin.getResource(getLanguageFilePath(defaultLanguage))!!.reader().use {
+                val fallback = YamlConfiguration.loadConfiguration(it)
+                if (sameLanguageFallback == null) {
+                    fallback
+                } else {
+                    sameLanguageFallback.setDefaults(fallback)
+                    sameLanguageFallback.options().copyDefaults(true)
+                    sameLanguageFallback
+                }
+            }
 
-            loadedTranslations.setDefaults(defaultTranslations)
+            loadedTranslations.setDefaults(fallback)
             loadedTranslations.options().copyDefaults(true)
 
             translations = processConfiguration(loadedTranslations)
