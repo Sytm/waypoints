@@ -12,17 +12,22 @@ import de.md5lukas.waypoints.util.HologramManager
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
+import java.util.logging.Level
 
 class HologramPointer(
     plugin: WaypointsPlugin,
     private val config: HologramConfiguration
 ) : Pointer(plugin, config.interval) {
 
+    private var protocolLibSupportsVersion = true
+
     private val hologramManager = HologramManager(plugin)
 
     private val activeHolograms: MutableMap<UUID, Hologram> = HashMap()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
+        if (!protocolLibSupportsVersion)
+            return
         if (trackable !is StaticTrackable)
             return
         val localHologramText = when (trackable) {
@@ -34,10 +39,18 @@ class HologramPointer(
             return
 
         if (translatedTarget !== null) {
-            if (player.location.distanceSquared(translatedTarget) < config.maxDistance) {
-                activeHolograms.computeIfAbsent(player.uniqueId) {
-                    hologramManager.createHologram(translatedTarget, localHologramText)
-                }.spawn(player)
+            try {
+                if (player.location.distanceSquared(translatedTarget) < config.maxDistance) {
+                    activeHolograms.computeIfAbsent(player.uniqueId) {
+                        hologramManager.createHologram(translatedTarget, localHologramText)
+                    }.spawn(player)
+                }
+            } catch (e: Exception) {
+                plugin.logger.log(
+                    Level.SEVERE, "An issue occurred trying to create a hologram using ProtocolLib." +
+                            " Automatically disabling Holograms until the next restart.", e
+                )
+                protocolLibSupportsVersion = false
             }
         }
     }
