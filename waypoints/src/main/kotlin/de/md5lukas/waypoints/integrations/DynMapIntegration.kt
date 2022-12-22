@@ -27,7 +27,7 @@ class DynMapIntegration(
 ) : Listener {
 
     companion object Constants {
-        val CUSTOM_DATA_KEY = "dynmap-icon"
+        const val CUSTOM_DATA_KEY = "dynmap-icon"
     }
 
     private lateinit var markerApi: MarkerAPI

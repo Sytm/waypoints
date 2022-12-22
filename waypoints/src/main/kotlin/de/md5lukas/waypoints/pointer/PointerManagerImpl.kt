@@ -102,6 +102,7 @@ class PointerManagerImpl(
     }
 
     @EventHandler
+    @Suppress("UNUSED_PARAMETER")
     private fun onConfigReload(e: ConfigReloadEvent) {
         enabledPointerTasks.forEach(BukkitTask::cancel)
         enabledPointerTasks.clear()
