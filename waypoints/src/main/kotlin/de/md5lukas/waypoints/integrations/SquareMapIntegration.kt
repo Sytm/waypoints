@@ -26,7 +26,7 @@ class SquareMapIntegration(
 ) : Listener {
 
     companion object Constants {
-        val CUSTOM_DATA_KEY = "squaremap-icon"
+        const val CUSTOM_DATA_KEY = "squaremap-icon"
     }
 
     private lateinit var api: Squaremap
@@ -80,6 +80,7 @@ class SquareMapIntegration(
     }
 
     @EventHandler
+    @Suppress("UNUSED_PARAMETER")
     private fun onConfigReload(e: ConfigReloadEvent) {
         plugin.api.publicWaypoints.allWaypoints.let { waypoints ->
             waypoints.forEach {

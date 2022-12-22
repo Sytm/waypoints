@@ -140,7 +140,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                         ) {
                             if (it) {
                                 AnvilGUI.Builder().plugin(wpGUI.plugin).text(wpGUI.translations.WAYPOINT_CREATE_ENTER_PERMISSION.text)
-                                    .onComplete { _, permission ->
+                                    .onComplete { (permission) ->
                                         when (val result = createWaypointPermission(wpGUI.plugin, wpGUI.viewer, waypoint.name, permission, waypoint.location)) {
                                             is SuccessWaypoint -> {
                                                 waypoint.copyFieldsTo(result.waypoint)
@@ -148,10 +148,11 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                                                 wpGUI.goBack()
                                                 wpGUI.goBack()
                                             }
+
                                             else -> wpGUI.goBack()
                                         }
 
-                                        return@onComplete AnvilGUI.Response.close()
+                                        return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
                                     }.onClose {
                                         (wpGUI.gui.activePage as BasePage).update()
                                         wpGUI.plugin.runTask {
@@ -169,9 +170,9 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             },
             'p' to if (waypoint.type === Type.PERMISSION && canModifyWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_EDIT_PERMISSION.getItem(Collections.singletonMap("permission", waypoint.permission ?: ""))) {
-                    AnvilGUI.Builder().plugin(wpGUI.plugin).text(waypoint.permission).onComplete { _, permission ->
+                    AnvilGUI.Builder().plugin(wpGUI.plugin).text(waypoint.permission).onComplete { (permission) ->
                         waypoint.permission = permission
-                        return@onComplete AnvilGUI.Response.close()
+                        return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
                     }.onClose {
                         updatePage()
                         wpGUI.plugin.runTask {
@@ -218,7 +219,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             'r' to if (canModifyWaypoint && isNotDeathWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_RENAME.item) {
                     wpGUI.viewer.closeInventory()
-                    AnvilGUI.Builder().plugin(wpGUI.plugin).text(waypoint.name).onComplete { _, newName ->
+                    AnvilGUI.Builder().plugin(wpGUI.plugin).text(waypoint.name).onComplete { (newName) ->
                         val holder = wpGUI.getHolderForType(waypoint.type)
 
                         if (checkWaypointName(wpGUI.plugin, holder, newName)) {
@@ -234,7 +235,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                             }.send(wpGUI.viewer)
                         }
 
-                        return@onComplete AnvilGUI.Response.close()
+                        return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
                     }.onClose {
                         wpGUI.plugin.runTask {
                             wpGUI.gui.open()
@@ -298,13 +299,13 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
         wpGUI.viewer.closeInventory()
         AnvilGUI.Builder().plugin(wpGUI.plugin)
             .text(waypoint.getCustomData(customDataKey) ?: defaultIcon)
-            .onComplete { _, newIcon ->
+            .onComplete { (newIcon) ->
                 waypoint.setCustomData(
                     customDataKey, newIcon.ifBlank {
                         null
                     }
                 )
-                return@onComplete AnvilGUI.Response.close()
+                return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
             }.onClose {
                 wpGUI.plugin.runTask {
                     wpGUI.gui.open()
