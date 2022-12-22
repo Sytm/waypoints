@@ -60,7 +60,7 @@ tracked player.
 
 ## Integrations
 
-- Public waypoints are added to [Dynmap](https://www.spigotmc.org/resources/dynmap%C2%AE.274/)
+- Public waypoints are added to [Dynmap](https://www.spigotmc.org/resources/dynmap%C2%AE.274/) or [SquareMap](https://github.com/jpenilla/squaremap)
 
 ## Commands
 
@@ -167,7 +167,7 @@ This plugin is licensed under the MIT license. For more information on it, you c
 Because I don't have the time or motivation to support a lot of versions, and it is generally advised to update to the latest Minecraft/Spigot versions only the
 last 3 major updates with the latest builds are supported.
 
-At the time of writing this would be 1.18.1, 1.17.1 and 1.16.5, but not 1.18, 1.16.4 or 1.15.2.
+At the time of writing this would be 1.19.3, 1.18.2 and 1.17.1, but not 1.18, 1.16.4 or 1.15.2.
 
 ### Java version
 
