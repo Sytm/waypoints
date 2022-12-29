@@ -81,6 +81,7 @@ class Translations(
 
     val MESSAGE_FEATURE_DISABLED = Translation(tl, "message.featureDisabled")
 
+    val WAYPOINT_CREATE_WORLD_UNAVAILABLE = Translation(tl, "message.waypoint.create.worldUnavailable")
     val WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS = Translation(tl, "message.waypoint.create.coordinates.outOfBounds")
     val WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT = Translation(tl, "message.waypoint.create.coordinates.invalidFormat")
 

@@ -2,7 +2,9 @@ package de.md5lukas.waypoints.events
 
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
+import de.md5lukas.waypoints.util.checkWorldAvailability
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
@@ -14,7 +16,7 @@ class WaypointsListener(
 
     @EventHandler
     private fun onPlayerDeath(e: PlayerDeathEvent) {
-        if (plugin.waypointsConfig.general.features.deathWaypoints) {
+        if (plugin.waypointsConfig.general.features.deathWaypoints && checkWorldAvailability(plugin, e.entity.world)) {
             plugin.api.getWaypointPlayer(e.entity.uniqueId).addDeathLocation(e.entity.location)
         }
     }
@@ -31,9 +33,11 @@ class WaypointsListener(
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     private fun onPlayerRespawn(e: PlayerRespawnEvent) {
-        if (plugin.waypointsConfig.general.features.deathWaypoints && plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.enabled) {
+        if (plugin.waypointsConfig.general.features.deathWaypoints && plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.enabled
+            && checkWorldAvailability(plugin, e.respawnLocation.world!!)
+        ) {
             plugin.api.getWaypointPlayer(e.player.uniqueId).deathFolder.waypoints.maxByOrNull { it.createdAt }?.let {
                 if (plugin.api.pointerManager.getCurrentTarget(e.player) === null || plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.overwriteCurrent) {
                     plugin.api.pointerManager.enable(e.player, it)

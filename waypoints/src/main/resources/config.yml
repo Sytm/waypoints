@@ -38,6 +38,17 @@ general:
     - overworld: world
       nether: world_the_nether
 
+  # Specify in which worlds waypoints can be created
+  # Players with the permission waypoints.modify.anywhere can place waypoints wherever they want.
+  # Automatic waypoint-creation in disabled worlds will not occur
+  availableWorlds:
+    # Available options:
+    # blacklist: Worlds in the list are not available
+    # whitelist: Only worlds on the list are available
+    type: blacklist
+    worlds:
+      - hub
+
   openWithItem:
     enabled: true
 

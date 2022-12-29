@@ -181,7 +181,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                     background
                 }
             },
-            'w' to if (canModify) {
+            'w' to if (canModify
+                && (checkWorldAvailability(wpGUI.plugin, wpGUI.viewer.world) || wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_ANYWHERE))
+            ) {
                 GUIItem(wpGUI.translations.OVERVIEW_SET_WAYPOINT.item) {
                     if (it.isShiftClick) {
                         var parsedLocation: Location? = null

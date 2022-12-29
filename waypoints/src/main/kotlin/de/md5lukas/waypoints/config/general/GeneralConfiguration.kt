@@ -29,6 +29,8 @@ class GeneralConfiguration {
 
     val connectedWorlds = ConnectedWorldsConfiguration()
 
+    val availableWorldsConfiguration = AvailableWorldsConfiguration()
+
     val pointToDeathWaypointOnDeath = PointToDeathWaypointOnDeathConfiguration()
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
@@ -51,6 +53,8 @@ class GeneralConfiguration {
         teleport.loadFromConfiguration(cfg.getConfigurationSectionNotNull("teleport"))
 
         connectedWorlds.loadFromConfiguration(cfg.getListNotNull("connectedWorlds"))
+
+        availableWorldsConfiguration.loadFromConfiguration(cfg.getConfigurationSectionNotNull("availableWorlds"))
 
         pointToDeathWaypointOnDeath.loadFromConfiguration(cfg.getConfigurationSectionNotNull("pointToDeathWaypointOnDeath"))
     }
