@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow")
+    id("com.modrinth.minotaur") version "2.+"
 }
 
 description = "Waypoints plugin"
@@ -131,4 +132,21 @@ tasks.withType<ShadowJar> {
 
     relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
     relocate("org.bstats", "de.md5lukas.waypoints.bstats")
+}
+
+modrinth {
+    val modrinthToken: String by project
+
+    token.set(modrinthToken)
+
+    projectId.set("waypoints")
+    versionType.set("release")
+    uploadFile.set(tasks.shadowJar as Any)
+
+    gameVersions.addAll("1.19.3", "1.18.2", "1.17.1")
+    loaders.addAll("spigot", "paper")
+
+    syncBodyFrom.set(rootProject.file("README.md").readText())
+
+    debugMode.set(false)
 }

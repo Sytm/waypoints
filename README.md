@@ -130,28 +130,6 @@ Also, you can change every piece of text to other languages or just change the c
 
 ## Additional notes
 
-### Migrating from v2.X.X
-
-Migrating from v2 only works in plugin versions up to 3.5.2. Version 3.5.3 and above no longer support migrating
-
-- Shutdown the server
-- Make backups of
-  - `plugins/Waypoints/`
-  - `plugins/Md5Lukas-Commons/`
-- Delete
-  - The old plugin jar (for example `waypoints-2.9.2.jar`)
-  - `plugins/Waypoints/config.yml`
-  - `plugins/Waypoints/config.base.yml`
-  - `plugins/Waypoints/lang/`
-  - md5-commons (for example `md5-commons-1.2-SNAPSHOT.jar`)
-- Put the new plugin jar into place
-- Start the server
-- Run `/waypoints import` **ONLY ONCE**
-- Make sure the old waypoints are all there
-- Delete
-  - `plugins/Waypoints/globalstore.nbt`
-  - `plugins/Md5Lukas-Commons/`
-
 ### Metrics
 
 This plugin uses [bStats](https://bstats.org/) to collect basic metrics about the usage of this plugin. You can, of course, opt-out of this if you wish. For
@@ -159,7 +137,7 @@ further information have a look at "What data is collected?"
 and "Disabling bStats" over [here](https://bstats.org/getting-started).
 
 To view the metrics of this plugin, go [here](https://bstats.org/plugin/bukkit/waypoints2/6864).
-
+<!-- modrinth_exclude.start -->
 ### License
 
 This plugin is licensed under the MIT license. For more information on it, you can read [this](https://choosealicense.com/licenses/mit/).
@@ -170,7 +148,7 @@ Because I don't have the time or motivation to support a lot of versions, and it
 last 3 major updates with the latest builds are supported.
 
 At the time of writing this would be 1.19.3, 1.18.2 and 1.17.1, but not 1.18, 1.16.4 or 1.15.2.
-
+<!-- modrinth_exclude.end -->
 ### Java version
 
 Java 16 is the minimum required version.
