@@ -104,6 +104,8 @@ tracked player.
 
 `waypoints.modify.permission` - Allows the player to create, alter, delete and always see permission waypoints
 
+`waypoints.modify.anywhere` - Allows the player to place waypoints wherever they want, ignoring disabled worlds
+
 `waypoints.unlimited` - Allows the player to create more waypoints and folders than the limit in the config
 
 `waypoints.temporaryWaypoint` - Allows the player to create a waypoint that is only visible for the time he is online

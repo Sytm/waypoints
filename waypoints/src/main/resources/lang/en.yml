@@ -153,6 +153,7 @@ message:
 
   waypoint:
     create:
+      worldUnavailable: "$[prefix] &cIn world you are in waypoints are unavailable."
       coordinates:
         outOfBounds: "$[prefix] &cThe location you are trying to create the waypoint at is out of bounds."
         invalidFormat: |

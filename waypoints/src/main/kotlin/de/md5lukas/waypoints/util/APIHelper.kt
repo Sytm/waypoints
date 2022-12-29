@@ -6,9 +6,10 @@ import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
-import de.md5lukas.waypoints.config.general.CustomIconFilterConfiguration
+import de.md5lukas.waypoints.config.general.FilterType
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.World
 import org.bukkit.entity.Player
 
 sealed class CreateResult
@@ -16,6 +17,7 @@ sealed class CreateResult
 object LimitReached : CreateResult()
 object NameTaken : CreateResult()
 object LocationOutOfBounds : CreateResult()
+object WorldUnavailable : CreateResult()
 
 class SuccessWaypoint(val waypoint: Waypoint) : CreateResult()
 class SuccessFolder(val folder: Folder) : CreateResult()
@@ -27,20 +29,27 @@ fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material): Boo
 
     val filter = plugin.waypointsConfig.general.customIconFilter
     return when (filter.type) {
-        CustomIconFilterConfiguration.FilterType.WHITELIST -> material in filter.materials
-        CustomIconFilterConfiguration.FilterType.BLACKLIST -> material !in filter.materials
+        FilterType.WHITELIST -> material in filter.materials
+        FilterType.BLACKLIST -> material !in filter.materials
+    }
+}
+
+fun checkWorldAvailability(plugin: WaypointsPlugin, world: World): Boolean {
+    val config = plugin.waypointsConfig.general.availableWorldsConfiguration
+    return when (config.type) {
+        FilterType.WHITELIST -> world.name.lowercase() in config.worlds
+        FilterType.BLACKLIST -> world.name.lowercase() !in config.worlds
     }
 }
 
 fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
+    creationPreChecks(plugin, player, location)?.let {
+        return it
+    }
+
     val waypointsPlayer = plugin.api.getWaypointPlayer(player.uniqueId)
 
     val waypointLimit = plugin.waypointsConfig.general.waypoints.limit
-
-    if (isLocationOutOfBounds(plugin, location)) {
-        plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
-        return LocationOutOfBounds
-    }
 
     if (!player.hasPermission(WaypointsPermissions.UNLIMITED) && waypointLimit > 0 && waypointsPlayer.waypointsAmount >= waypointLimit) {
         plugin.translations.WAYPOINT_LIMIT_REACHED_PRIVATE.send(player)
@@ -58,9 +67,8 @@ fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String,
 }
 
 fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
-    if (isLocationOutOfBounds(plugin, location)) {
-        plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
-        return LocationOutOfBounds
+    creationPreChecks(plugin, player, location)?.let {
+        return it
     }
 
     if (!checkWaypointName(plugin, plugin.api.publicWaypoints, name)) {
@@ -75,9 +83,8 @@ fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, 
 }
 
 fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: String, permission: String, location: Location = player.location): CreateResult {
-    if (isLocationOutOfBounds(plugin, location)) {
-        plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
-        return LocationOutOfBounds
+    creationPreChecks(plugin, player, location)?.let {
+        return it
     }
 
     if (!checkWaypointName(plugin, plugin.api.permissionWaypoints, name)) {
@@ -91,6 +98,19 @@ fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: Stri
     plugin.translations.WAYPOINT_SET_SUCCESS_PERMISSION.send(player)
 
     return SuccessWaypoint(waypoint)
+}
+
+private fun creationPreChecks(plugin: WaypointsPlugin, player: Player, location: Location): CreateResult? {
+    if (!player.hasPermission(WaypointsPermissions.MODIFY_ANYWHERE) && !checkWorldAvailability(plugin, location.world!!)) {
+        plugin.translations.WAYPOINT_CREATE_WORLD_UNAVAILABLE.send(player)
+        return WorldUnavailable
+    }
+
+    if (isLocationOutOfBounds(plugin, location)) {
+        plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
+        return LocationOutOfBounds
+    }
+    return null
 }
 
 fun createFolderPrivate(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
