@@ -1,6 +1,10 @@
 rootProject.name = "waypoints"
 
 pluginManagement {
+    repositories {
+        gradlePluginPortal()
+    }
+
     plugins {
         val kotlinVersion: String by settings
         kotlin("jvm") version kotlinVersion
