@@ -20,6 +20,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.scheduler.BukkitTask
 import java.util.*
 
@@ -76,6 +77,14 @@ class PointerManagerImpl(
             with(it.hologram) {
                 if (enabled && plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
                     HologramPointer(plugin, this)
+                } else {
+                    null
+                }
+            }
+        }, {
+            with(it.bossBar) {
+                if (enabled) {
+                    BossBarPointer(plugin, this)
                 } else {
                     null
                 }
@@ -212,6 +221,16 @@ class PointerManagerImpl(
     @EventHandler
     private fun onWaypointDelete(e: WaypointPostDeleteEvent) {
         disableAll(e.waypoint.id)
+    }
+
+    @EventHandler
+    private fun onPluginDisable(e: PluginDisableEvent) {
+        if (e.plugin !== plugin)
+            return
+
+        plugin.server.onlinePlayers.forEach {
+            disable(it, false)
+        }
     }
 
     init {

@@ -182,6 +182,28 @@ pointers:
     showDistance:
       enabled: true
 
+  bossBar:
+    enabled: true
+
+    # The tick interval where the boss bar is updated to account for the rotation of the player
+    interval: 4
+    #
+    recalculateEveryNthInterval: 5
+
+    # Color of the boss bar
+    # Available values: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+    barColor: BLUE
+
+    # Style of the boss bar
+    # Available values: SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
+    barStyle: SOLID
+
+    title: " · · ◈ · · ◈ · · O · · ◈ · · ◈ · · S · · ◈ · · ◈ · · W · · ◈ · · ◈ · · N"
+
+    indicator: "⬛"
+    indicatorColor: "&4"
+    normalColor: "&f"
+
   beacon:
     enabled: true
 

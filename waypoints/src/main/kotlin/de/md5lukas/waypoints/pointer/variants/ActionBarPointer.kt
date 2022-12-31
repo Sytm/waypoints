@@ -5,11 +5,11 @@ import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.config.pointers.ActionBarConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.format
+import de.md5lukas.waypoints.util.getAngleToTarget
 import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import kotlin.math.atan2
 import kotlin.math.roundToInt
 
 class ActionBarPointer(
@@ -91,7 +91,7 @@ class ActionBarPointer(
             playerAngle += 360.0
         }
 
-        var angle = playerAngle - Math.toDegrees(atan2(location.z - target.z, location.x - target.x)) + 180
+        var angle = playerAngle - getAngleToTarget(location, target) + 180
 
         while (angle > 360) {
             angle -= 360.0
