@@ -63,5 +63,33 @@ class StringsTest {
         assertEquals(false, "Hello World".isMinecraftUsername())
     }
 
+    private val loopingTestString = "12345678"
 
+    @Test
+    fun `loopingSubstring() with negative offset`() {
+        assertEquals("78", loopingTestString.loopingSubstring(2, -2))
+        assertEquals("81", loopingTestString.loopingSubstring(2, -1))
+    }
+
+    @Test
+    fun `loopingSubstring() without wrapping around`() {
+        assertEquals("12", loopingTestString.loopingSubstring(2, 0))
+        assertEquals("23", loopingTestString.loopingSubstring(2, 1))
+        assertEquals("34", loopingTestString.loopingSubstring(2, 2))
+        assertEquals("45", loopingTestString.loopingSubstring(2, 3))
+        assertEquals("56", loopingTestString.loopingSubstring(2, 4))
+        assertEquals("67", loopingTestString.loopingSubstring(2, 5))
+        assertEquals("78", loopingTestString.loopingSubstring(2, 6))
+    }
+
+    @Test
+    fun `loopingSubstring() at edge`() {
+        assertEquals("81", loopingTestString.loopingSubstring(2, 7))
+        assertEquals("7812", loopingTestString.loopingSubstring(4, 6))
+    }
+
+    @Test
+    fun `loopingSubstring() over edge`() {
+        assertEquals("12", loopingTestString.loopingSubstring(2, 8))
+    }
 }

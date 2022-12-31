@@ -3,6 +3,8 @@ package de.md5lukas.waypoints.util
 import org.bukkit.ChatColor
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.math.max
+import kotlin.math.min
 
 private val minecraftUsernamePattern = Pattern.compile("^\\w{3,16}$")
 private val aotVariablePattern = Pattern.compile("\\$\\[(\\w+)]")
@@ -41,4 +43,12 @@ fun splitDescriptionStringToList(description: String): List<String> {
     }
 
     return lines
+}
+
+fun String.loopingSubstring(size: Int, offset: Int): String {
+    val modOffset = Math.floorMod(offset, length)
+
+    val overhang = max(0, (size + modOffset) - length)
+
+    return substring(modOffset, min(length, modOffset + size)) + substring(0, overhang)
 }

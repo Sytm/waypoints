@@ -215,6 +215,9 @@ class WaypointsPlugin : JavaPlugin() {
         metrics.addCustomChart(SimplePie("actionbar_pointer_enabled") {
             waypointsConfig.pointer.actionBar.enabled.toString()
         })
+        metrics.addCustomChart(SimplePie("bossbar_pointer_enabled") {
+            waypointsConfig.pointer.bossBar.enabled.toString()
+        })
         metrics.addCustomChart(SimplePie("beacon_pointer_enabled") {
             waypointsConfig.pointer.beacon.enabled.toString()
         })

@@ -19,6 +19,10 @@ It won't get any simpler than that if the player owns a compass. It will have th
 This is comparable to the compass but doesn't require one. It will show the rough direction with small sections in the action bar of the player. If the player
 is too far left, the sections in the right will light up and vice versa.
 
+### Bossbar Indicator
+
+A compass will be visible at the top of the screen, with a highlighter marking in which direction the waypoint is
+
 ### Beacon
 
 When the waypoint is in render distance, a beacon beam will appear at the location of the waypoint to make it easier to pinpoint the location of the waypoint.
