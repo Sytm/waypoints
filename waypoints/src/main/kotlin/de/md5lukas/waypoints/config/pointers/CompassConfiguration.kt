@@ -10,9 +10,14 @@ class CompassConfiguration {
     var interval: Int = 0
         private set
 
+    var netherSupport: Boolean = false
+        private set
+
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         enabled = cfg.getBoolean("enabled")
 
         interval = cfg.getInt("interval")
+
+        netherSupport = cfg.getBoolean("netherSupport")
     }
 }
