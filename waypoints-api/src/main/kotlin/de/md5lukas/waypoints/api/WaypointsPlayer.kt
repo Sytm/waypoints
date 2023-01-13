@@ -32,9 +32,6 @@ interface WaypointsPlayer : WaypointHolder {
     /**
      * Get the point in time at which a cooldown for teleporting has expired if present.
      *
-     * Note: As a clean-up measure, the implementation will periodically delete expired cool-downs,
-     * so it cannot be differentiated between never set and possibly expired.
-     *
      * @param type The type the cooldown is valid for
      * @return The time the cooldown expires or null
      */
@@ -43,10 +40,26 @@ interface WaypointsPlayer : WaypointHolder {
     /**
      * Set a new cooldown for the player and the time at which it expires.
      *
-     * @param type The Type the cooldown is valid for
+     * @param type The type the cooldown is valid for
      * @param cooldownUntil The point in time at which the cooldown should expire
      */
     fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime)
+
+    /**
+     * Get the amount of teleportations this player has performed to the given waypoint type
+     *
+     * @param type The type the counter is applicable to
+     * @return The amount of teleportations
+     */
+    fun getTeleportations(type: Type): Int
+
+    /**
+     * Update the amount of teleportations the player has performed to the given waypoint type
+     *
+     * @param type The type the counter is applicable to
+     * @param teleportations The new amount of teleportations
+     */
+    fun setTeleportations(type: Type, teleportations: Int)
 
     /**
      * Adds a new location to the death history of the player.

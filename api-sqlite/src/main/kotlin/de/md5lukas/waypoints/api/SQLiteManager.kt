@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.api
 
 import de.md5lukas.jdbc.SQLiteHelper
+import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.base.DatabaseConfiguration
@@ -21,7 +22,7 @@ class SQLiteManager(
 ) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache) {
 
 
-    private val schemaVersion: Int = 2
+    private val schemaVersion: Int = 3
     private val sqliteHelper = if (file === null) {
         SQLiteHelper()
     } else {
@@ -66,11 +67,12 @@ class SQLiteManager(
             )
             update(
                 """
-                CREATE TABLE IF NOT EXISTS player_cooldown (
+                CREATE TABLE IF NOT EXISTS player_data_typed (
                   playerId TEXT NOT NULL,
                   type TEXT NOT NULL,
                   
-                  cooldownUntil TEXT NOT NULL,
+                  cooldownUntil TEXT,
+                  teleportations INTEGER NOT NULL DEFAULT 0,
                   
                   PRIMARY KEY (playerId, type),
                   FOREIGN KEY (playerId) REFERENCES player_data(id) ON DELETE CASCADE
@@ -167,8 +169,6 @@ class SQLiteManager(
     }
 
     override fun cleanDatabase() {
-        connection.update("DELETE FROM player_cooldown WHERE datetime(cooldownUntil) <= datetime(?)", OffsetDateTime.now().toString())
-
         // Remove death waypoints older than the specified amount of time, if the amount is non-zero
         if (!databaseConfiguration.deathWaypointRetentionPeriod.isZero) {
             connection.update(
@@ -184,15 +184,24 @@ class SQLiteManager(
             update(
                 """
                 ALTER TABLE player_data ADD COLUMN lastSelectedWaypoint TEXT REFERENCES waypoints (id) ON DELETE SET NULL;
-            """.trimIndent()
+            """
             )
         }
         it[2] = {
             update(
                 """
                 ALTER TABLE player_data ADD COLUMN canBeTracked BOOLEAN NOT NULL DEFAULT 0;
-            """.trimIndent()
+            """
             )
+        }
+        it[3] = {
+            select("SELECT playerId, type, cooldownUntil FROM player_cooldown;") {
+                update(
+                    "INSERT INTO player_data_typed(playerId, type, cooldownUntil) VALUES (?, ?, ?);",
+                    getString("playerId"), getString("type"), getString("cooldownUntil")
+                )
+            }
+            update("DROP TABLE player_cooldown;")
         }
     }
 

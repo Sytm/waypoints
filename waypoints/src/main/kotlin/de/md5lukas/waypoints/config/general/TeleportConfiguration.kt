@@ -37,6 +37,9 @@ class TypedTeleportConfiguration {
     var paymentType: TeleportPaymentType = TeleportPaymentType.XP
         private set
 
+    var perCategory: Boolean = false
+        private set
+
     var maxCost: Long = 1
         private set
 
@@ -50,6 +53,8 @@ class TypedTeleportConfiguration {
         cooldown = Duration.ofMillis(DurationParser.parseDuration(cfg.getStringNotNull("cooldown"), TimeUnit.MILLISECONDS))
 
         paymentType = TeleportPaymentType.valueOf(cfg.getStringNotNull("paymentType").uppercase())
+
+        perCategory = cfg.getBoolean("perCategory")
 
         maxCost = cfg.getLong("maxCost")
 

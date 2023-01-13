@@ -54,12 +54,17 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
     }
 
     private fun getTeleportationPrice(player: Player, waypoint: Waypoint): Double {
-        val meta = waypoint.getWaypointMeta(player.uniqueId)
         val config = getTeleportConfig(waypoint)
+
+        val teleportations = if (config.perCategory) {
+            plugin.api.getWaypointPlayer(player.uniqueId).getTeleportations(waypoint.type)
+        } else {
+            waypoint.getWaypointMeta(player.uniqueId).teleportations
+        }
 
         return min(
             config.maxCost.toDouble(),
-            config.formula.eval(Collections.singletonMap("n", meta.teleportations.toDouble()))
+            config.formula.eval(Collections.singletonMap("n", teleportations.toDouble()))
         )
     }
 
@@ -145,11 +150,11 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                         TeleportPaymentType.FREE -> true
                         TeleportPaymentType.XP -> {
                             player.giveExpLevels((-price).toInt())
-                            waypoint.getWaypointMeta(player.uniqueId).teleportations++
+                            incrementTeleportations(player, waypoint)
                             true
                         }
                         TeleportPaymentType.VAULT -> {
-                            waypoint.getWaypointMeta(player.uniqueId).teleportations++
+                            incrementTeleportations(player, waypoint)
                             plugin.vaultIntegration.withdraw(player, price)
                         }
                     }
@@ -178,6 +183,15 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         }
     }
 
+    private fun incrementTeleportations(player: Player, waypoint: Waypoint) {
+        if (getTeleportConfig(waypoint).perCategory) {
+            val playerData = plugin.api.getWaypointPlayer(player.uniqueId)
+            playerData.setTeleportations(waypoint.type, playerData.getTeleportations(waypoint.type) + 1)
+        } else {
+            waypoint.getWaypointMeta(player.uniqueId).teleportations++
+        }
+    }
+
     @EventHandler
     private fun onPlayerLeave(e: PlayerQuitEvent) {
         cancelRunningTeleport(e.player)
@@ -185,9 +199,13 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
     @EventHandler
     private fun onPlayerMove(e: PlayerMoveEvent) {
-        if (e.from.x == e.to!!.x && e.from.y == e.to!!.y && e.from.z == e.to!!.z) {
-            return
+        e.to?.let { to ->
+            // Need to perform a fuzzy equals, because after a player stopped moving and first looks around he "snaps" to some double value that's nearby
+            if (e.from.fuzzyEquals(to, 0.1)) {
+                return
+            }
         }
+
         if (cancelRunningTeleport(e.player)) {
             plugin.translations.MESSAGE_TELEPORT_STAND_STILL_MOVED.send(e.player)
         }

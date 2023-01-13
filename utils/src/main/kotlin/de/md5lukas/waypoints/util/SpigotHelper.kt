@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.util
 
+import com.google.common.math.DoubleMath
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.configuration.ConfigurationSection
@@ -104,3 +105,7 @@ fun isMinecraftVersionEqualOrLaterThan(plugin: Plugin, major: Int, minor: Int = 
 
     return parts[1].toInt() >= major && (parts.getOrNull(2)?.toInt() ?: 0) >= minor
 }
+
+fun Location.fuzzyEquals(other: Location, tolerance: Double) =
+    world === other.world && DoubleMath.fuzzyEquals(x, other.x, tolerance)
+            && DoubleMath.fuzzyEquals(y, other.y, tolerance) && DoubleMath.fuzzyEquals(x, other.x, tolerance)

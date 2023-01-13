@@ -98,13 +98,18 @@ general:
 
     # The cooldown between each teleportation for a player
     # Set to 0s to disable
+    #
     # Available types are: disabled, free, xp (levels), vault (your economy plugins currency)
     # You can provide a formula to calculate the price. The variable n is how often a player teleported
     # When using the payment method xp the returned value is rounded to the closest full value
+    #
+    # Optionally the counter can be applied to the entire category (e.g. private, death, public, permission) per player or per waypoint per player
+    # This only affects the price of the teleportation
     private:
       cooldown: 24h
 
       paymentType: disabled
+      perCategory: true
       maxCost: 10
       formula: 1 + n
 
@@ -115,6 +120,7 @@ general:
       onlyLastWaypoint: true
 
       paymentType: disabled
+      perCategory: true
       maxCost: 10
       formula: 10
 
@@ -122,6 +128,7 @@ general:
       cooldown: 24h
 
       paymentType: disabled
+      perCategory: false
       maxCost: 8
       formula: 2 + n
 
@@ -129,6 +136,7 @@ general:
       cooldown: 4h
 
       paymentType: disabled
+      perCategory: false
       maxCost: 3
       formula: n
 
