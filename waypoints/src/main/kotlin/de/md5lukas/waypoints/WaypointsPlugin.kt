@@ -12,6 +12,7 @@ import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.WaypointsListener
 import de.md5lukas.waypoints.gui.APIExtensions
+import de.md5lukas.waypoints.integrations.BlueMapIntegration
 import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.integrations.VaultIntegration
@@ -65,6 +66,7 @@ class WaypointsPlugin : JavaPlugin() {
         private set
     var squareMapIntegrationAvailable = false
         private set
+    private var blueMapIntegrationAvailable = false
 
     override fun onEnable() {
         logger.level = Level.FINE
@@ -157,12 +159,18 @@ class WaypointsPlugin : JavaPlugin() {
         }
 
         if (waypointsConfig.general.features.globalWaypoints) {
-            if (waypointsConfig.integrations.dynmap.enabled) {
-                dynMapIntegrationAvailable = DynMapIntegration(this).setupDynMap()
+            with(waypointsConfig.integrations) {
+                if (dynmap.enabled) {
+                    dynMapIntegrationAvailable = DynMapIntegration(this@WaypointsPlugin).setupDynMap()
+                }
+                if (squaremap.enabled) {
+                    squareMapIntegrationAvailable = SquareMapIntegration(this@WaypointsPlugin).setupSquareMap()
+                }
+                if (bluemap.enabled) {
+                    blueMapIntegrationAvailable = BlueMapIntegration(this@WaypointsPlugin).setupBlueMap()
+                }
             }
-            if (waypointsConfig.integrations.squaremap.enabled) {
-                squareMapIntegrationAvailable = SquareMapIntegration(this).setupSquareMap()
-            }
+
         }
     }
 
@@ -194,6 +202,7 @@ class WaypointsPlugin : JavaPlugin() {
             when {
                 dynMapIntegrationAvailable -> "DynMap"
                 squareMapIntegrationAvailable -> "squaremap"
+                blueMapIntegrationAvailable -> "BlueMap"
                 else -> "none"
             }
         })
