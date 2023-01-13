@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm")
 }
@@ -18,8 +16,7 @@ dependencies {
     api(project(":waypoints-api"))
 }
 
-tasks.withType<KotlinCompile> {
+kotlin {
     val jvmTarget: String by project
-
-    kotlinOptions.jvmTarget = jvmTarget
+    jvmToolchain(jvmTarget.toInt())
 }
