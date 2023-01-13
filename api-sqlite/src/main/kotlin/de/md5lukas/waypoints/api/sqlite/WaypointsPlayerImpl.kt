@@ -46,7 +46,7 @@ internal class WaypointsPlayerImpl private constructor(
     override fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime) {
         val until = cooldownUntil.toString()
         dm.connection.update(
-            "INSERT INTO player_cooldown(playerId, type, cooldownUntil) VALUES (?, ?, ?) ON CONFLICT(playerId, type) DO UPDATE SET cooldownUntil = ?;",
+            "INSERT INTO player_data_typed(playerId, type, cooldownUntil) VALUES (?, ?, ?) ON CONFLICT(playerId, type) DO UPDATE SET cooldownUntil = ?;",
             id.toString(),
             type.name,
             until,
@@ -55,12 +55,30 @@ internal class WaypointsPlayerImpl private constructor(
     }
 
     override fun getCooldownUntil(type: Type): OffsetDateTime? = dm.connection.selectFirst(
-        "SELECT cooldownUntil FROM player_cooldown WHERE playerId = ? AND type = ?;",
+        "SELECT cooldownUntil FROM player_data_typed WHERE playerId = ? AND type = ?;",
         id.toString(),
         type.name,
     ) {
         OffsetDateTime.parse(getString("cooldownUntil"))
     }
+
+    override fun setTeleportations(type: Type, teleportations: Int) {
+        dm.connection.update(
+            "INSERT INTO player_data_typed(playerId, type, teleportations) VALUES (?, ?, ?) ON CONFLICT(playerId, type) DO UPDATE SET teleportations = ?;",
+            id.toString(),
+            type.name,
+            teleportations,
+            teleportations,
+        )
+    }
+
+    override fun getTeleportations(type: Type): Int = dm.connection.selectFirst(
+        "SELECT teleportations FROM player_data_typed WHERE playerId = ? AND type = ?;",
+        id.toString(),
+        type.name,
+    ) {
+        getInt("teleportations")
+    } ?: 0
 
     override fun addDeathLocation(location: Location) {
         super.createWaypointTyped("", location, Type.DEATH)
