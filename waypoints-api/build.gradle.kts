@@ -1,5 +1,4 @@
 import org.jetbrains.dokka.gradle.DokkaTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
@@ -22,10 +21,9 @@ dependencies {
     api(kotlin("stdlib-jdk8"))
 }
 
-tasks.withType<KotlinCompile> {
+kotlin {
     val jvmTarget: String by project
-
-    kotlinOptions.jvmTarget = jvmTarget
+    jvmToolchain(jvmTarget.toInt())
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
