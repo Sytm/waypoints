@@ -7,9 +7,11 @@ class IntegrationsConfiguration {
 
     val dynmap = DynMapConfiguration()
     val squaremap = SquareMapConfiguration()
+    val bluemap = BlueMapConfiguration()
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         dynmap.loadFromConfiguration(cfg.getConfigurationSectionNotNull("dynmap"))
         squaremap.loadFromConfiguration(cfg.getConfigurationSectionNotNull("squaremap"))
+        bluemap.loadFromConfiguration(cfg.getConfigurationSectionNotNull("bluemap"))
     }
 }

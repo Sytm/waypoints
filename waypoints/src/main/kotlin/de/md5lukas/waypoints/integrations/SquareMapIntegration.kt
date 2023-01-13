@@ -33,7 +33,7 @@ class SquareMapIntegration(
     private lateinit var layerKey: Key
     private val layerProviders: MutableMap<UUID, SimpleLayerProvider?> = HashMap()
 
-    private val iconFolder = File(plugin.dataFolder, "sqm-icons")
+    private val iconFolder = File(plugin.dataFolder, "icons")
 
     fun setupSquareMap(): Boolean {
         if (plugin.server.pluginManager.getPlugin("squaremap") === null) {
@@ -42,7 +42,7 @@ class SquareMapIntegration(
 
         plugin.logger.log(Level.INFO, "Found squaremap plugin")
 
-        extractSQMIcons()
+        extractIcons()
 
         api = SquaremapProvider.get()
 
@@ -56,10 +56,10 @@ class SquareMapIntegration(
         return true
     }
 
-    private fun extractSQMIcons() {
+    private fun extractIcons() {
         plugin.getResource("resourceIndex")!!.bufferedReader(StandardCharsets.UTF_8).useLines { seq ->
             seq.filter {
-                it.startsWith("sqm-icons/")
+                it.startsWith("icons/")
             }.forEach {
                 if (!File(plugin.dataFolder, it).exists()) {
                     plugin.saveResource(it, false)

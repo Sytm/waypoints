@@ -37,6 +37,7 @@ dependencies {
     val vaultVersion: String by project
     val dynmapVersion: String by project
     val squareMapVersion: String by project
+    val blueMapVersion: String by project
     val protocolLibVersion: String by project
 
     implementation("org.spigotmc:spigot-api:$spigotVersion")
@@ -64,6 +65,8 @@ dependencies {
     }
 
     implementation("xyz.jpenilla:squaremap-api:$squareMapVersion")
+
+    implementation("com.github.BlueMap-Minecraft:BlueMapAPI:$blueMapVersion")
 
     implementation("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")
 }

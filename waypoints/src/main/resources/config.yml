@@ -151,9 +151,11 @@ integrations:
     # Or it must be the name of an icon in the folder "plugins/Waypoints/sqm-icons".
     # Examples:
     # plugins/squaremap/web/images/icon/registered/squaremap-spawn_icon.png -> squaremap-spawn_icon.png
-    # plugins/Waypoints/sqm-icons/special.png -> special
+    # plugins/Waypoints/icons/special.png -> special
     icon: w
     iconSize: 20
+  bluemap:
+    enabled: true
 
 playerTracking:
   enabled: false
