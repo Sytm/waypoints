@@ -64,7 +64,7 @@ tracked player.
 
 ## Integrations
 
-- Public waypoints are added to [Dynmap](https://www.spigotmc.org/resources/dynmap%C2%AE.274/) or [SquareMap](https://github.com/jpenilla/squaremap)
+- Public waypoints are added to [Dynmap](https://www.spigotmc.org/resources/dynmap%C2%AE.274/), [SquareMap](https://github.com/jpenilla/squaremap) or [BlueMap](https://bluemap.bluecolored.de/)
 
 ## Commands
 
