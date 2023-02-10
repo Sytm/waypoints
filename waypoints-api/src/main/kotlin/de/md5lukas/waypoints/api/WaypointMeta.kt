@@ -22,4 +22,9 @@ interface WaypointMeta {
      * The amount of teleportations the player has performed to this waypoint
      */
     var teleportations: Int
+
+    /**
+     * Whether the player has visited the location of this waypoint or not
+     */
+    var visited: Boolean
 }

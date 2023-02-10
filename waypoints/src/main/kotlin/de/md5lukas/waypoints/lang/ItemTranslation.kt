@@ -22,14 +22,21 @@ class ItemTranslation(
         get() = fixedMaterial ?: translationLoader.plugin.waypointsConfig.inventory.getMaterial(key + if (appendItemSuffix) ".item" else "")
 
     val item: ItemStack
-        get() = getItem(displayName, description)
+        get() = getItem(displayName, description, false)
 
-    private fun getItem(displayName: String, description: String) = ItemStack(material).also {
+    private fun getItem(displayName: String, description: String, trimDescription: Boolean) = ItemStack(material).also {
         it.itemMeta = it.itemMeta!!.also { itemMeta ->
             itemMeta.setDisplayName(displayName)
-            itemMeta.lore = splitDescriptionStringToList(description)
+            itemMeta.lore = splitDescriptionStringToList(
+                if (trimDescription) {
+                    description.trim()
+                } else {
+                    description
+                }
+            )
         }
     }
 
-    fun getItem(map: Map<String, String>): ItemStack = getItem(displayName.runtimeReplace(map), description.runtimeReplace(map))
+    fun getItem(map: Map<String, String>, trimDescription: Boolean = false): ItemStack =
+        getItem(displayName.runtimeReplace(map), description.runtimeReplace(map), trimDescription)
 }

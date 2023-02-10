@@ -371,11 +371,17 @@ inventory:
     teleport:
       displayName: "&eTeleport to waypoint"
       # paymentNotice: A payment notice informing the player how much the teleportation will cost him, or if it is free nothing
-      description: "${paymentNotice}"
+      # mustVisit: This text is added if the player must visit the waypoint beforehand to be able to teleport to it
+      description: |
+        ${paymentNotice}
+        ${mustVisit}
       # levels: The amount of levels required for teleportation
       xpLevel: "&7You need &e${levels}&7 levels to perform this teleportation."
       # balance: The amount of balance required for teleportation
       balance: "&7You need &e${balance}&7 balance to perform this teleportation."
+      mustVisit: |
+        &cYou must have visited this waypoint before to
+        &cbe able to teleport to it.
     selectBeaconColor:
       displayName: "&eChange the color of the beacon beam"
       description: ""

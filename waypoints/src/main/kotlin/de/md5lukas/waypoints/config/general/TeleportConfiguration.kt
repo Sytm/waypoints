@@ -14,6 +14,9 @@ class TeleportConfiguration {
     var standStillTime: Duration = Duration.ZERO
         private set
 
+    var visitedRadius = 0
+        private set
+
     val private = TypedTeleportConfiguration()
     val death = TypedTeleportConfiguration()
     val public = TypedTeleportConfiguration()
@@ -21,6 +24,8 @@ class TeleportConfiguration {
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         standStillTime = Duration.ofMillis(DurationParser.parseDuration(cfg.getStringNotNull("standStillTime"), TimeUnit.MILLISECONDS))
+
+        visitedRadius = cfg.getInt("visitedRadius").let { it * it }
 
         private.loadFromConfiguration(cfg.getConfigurationSectionNotNull("private"))
         death.loadFromConfiguration(cfg.getConfigurationSectionNotNull("death"))
@@ -32,6 +37,9 @@ class TeleportConfiguration {
 class TypedTeleportConfiguration {
 
     var cooldown: Duration = Duration.ZERO
+        private set
+
+    var mustVisit: Boolean = false
         private set
 
     var paymentType: TeleportPaymentType = TeleportPaymentType.XP
@@ -51,6 +59,8 @@ class TypedTeleportConfiguration {
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         cooldown = Duration.ofMillis(DurationParser.parseDuration(cfg.getStringNotNull("cooldown"), TimeUnit.MILLISECONDS))
+
+        mustVisit = cfg.getBoolean("mustVisit")
 
         paymentType = TeleportPaymentType.valueOf(cfg.getStringNotNull("paymentType").uppercase())
 

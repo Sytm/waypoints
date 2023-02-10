@@ -96,17 +96,31 @@ general:
     # Set to 0s to disable
     standStillTime: 3s
 
+    # The radius in blocks a player needs to be in from a waypoint to mark that waypoint as visited for the player
+    # This should be bigger or the same size as the disableWhenReached radius
+    visitedRadius: 5
+
+    # cooldown:
     # The cooldown between each teleportation for a player
     # Set to 0s to disable
     #
+    # mustVisit:
+    # If set to true, the player must have visited the waypoint before.
+    # To mark a waypoint as visited the player must have either created it at his current location without coordinates
+    # or have the waypoint selected and reach the visited radius
+    #
+    # paymentType, maxCost, formula:
     # Available types are: disabled, free, xp (levels), vault (your economy plugins currency)
     # You can provide a formula to calculate the price. The variable n is how often a player teleported
     # When using the payment method xp the returned value is rounded to the closest full value
     #
+    # perCategory:
     # Optionally the counter can be applied to the entire category (e.g. private, death, public, permission) per player or per waypoint per player
     # This only affects the price of the teleportation
     private:
       cooldown: 24h
+
+      mustVisit: true
 
       paymentType: disabled
       perCategory: true
@@ -127,6 +141,8 @@ general:
     public:
       cooldown: 24h
 
+      mustVisit: true
+
       paymentType: disabled
       perCategory: false
       maxCost: 8
@@ -134,6 +150,8 @@ general:
 
     permission:
       cooldown: 4h
+
+      mustVisit: false
 
       paymentType: disabled
       perCategory: false

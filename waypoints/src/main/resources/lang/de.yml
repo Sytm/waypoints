@@ -371,11 +371,17 @@ inventory:
     teleport:
       displayName: "&eZum Wegpunkt teleportieren"
       # paymentNotice: A payment notice informing the player how much the teleportation will cost him, or if it is free nothing
-      description: "${paymentNotice}"
+      # mustVisit: This text is added if the player must visit the waypoint beforehand to be able to teleport to it
+      description: |
+        ${paymentNotice}
+        ${mustVisit}
       # levels: The amount of levels required for teleportation
       xpLevel: "&7Du benötigst &e${levels}&7 Erfahrungs-Level um diese Teleportation durchzuführen."
       # balance: The amount of balance required for teleportation
       balance: "&7Du benötigst &e${balance}&7 auf deinem Konto um diese Teleportation durchzuführen."
+      mustVisit: |
+        &cDu musst den Wegpunkt zuvor besucht haben um
+        &cdich zu ihm teleportieren zu können.
     selectBeaconColor:
       displayName: "&eFarbe vom Leuchtfeuer ändern"
       description: ""

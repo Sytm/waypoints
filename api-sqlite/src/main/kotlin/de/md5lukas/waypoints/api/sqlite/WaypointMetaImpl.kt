@@ -11,6 +11,7 @@ class WaypointMetaImpl private constructor(
     override val waypoint: UUID,
     override val owner: UUID,
     teleportations: Int,
+    visited: Boolean,
 ) : WaypointMeta {
 
     constructor(dm: DatabaseManager, row: ResultSet) : this(
@@ -18,12 +19,19 @@ class WaypointMetaImpl private constructor(
         waypoint = UUID.fromString(row.getString("waypointId")),
         owner = UUID.fromString(row.getString("playerId")),
         teleportations = row.getInt("teleportations"),
+        visited = row.getBoolean("visited"),
     )
 
     override var teleportations: Int = teleportations
         set(value) {
             field = value
             set("teleportations", value)
+        }
+
+    override var visited: Boolean = visited
+        set(value) {
+            field = value
+            set("visited", value)
         }
 
     private fun set(column: String, value: Any?) {
