@@ -203,18 +203,26 @@ class PointerManagerImpl(
 
     @EventHandler
     private fun onMove(e: PlayerMoveEvent) {
+        val pointer = activePointers[e.player] ?: return
+
         val disableWhenReachedRadius = plugin.waypointsConfig.pointer.disableWhenReachedRadius
+        val visitedRadius = plugin.waypointsConfig.general.teleport.visitedRadius
 
         if (disableWhenReachedRadius == 0) {
             return
         }
 
-        val pointer = activePointers[e.player] ?: return
 
-        if (e.player.world === pointer.trackable.location.world &&
-            e.player.location.distanceSquared(pointer.trackable.location) <= disableWhenReachedRadius
-        ) {
-            disable(e.player)
+        if (e.player.world === pointer.trackable.location.world) {
+            val distance = e.player.location.distanceSquared(pointer.trackable.location)
+
+            if (distance <= visitedRadius && pointer.trackable is Waypoint) {
+                pointer.trackable.getWaypointMeta(e.player.uniqueId).visited = true
+            }
+
+            if (distance <= disableWhenReachedRadius) {
+                disable(e.player)
+            }
         }
     }
 

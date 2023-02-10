@@ -79,11 +79,22 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
             TeleportPaymentType.XP -> plugin.translations.WAYPOINT_TELEPORT_XP_LEVEL.withReplacements(
                 Collections.singletonMap("levels", getTeleportationPrice(player, waypoint).roundToInt().toString())
             )
+
             TeleportPaymentType.VAULT -> plugin.translations.WAYPOINT_TELEPORT_BALANCE.withReplacements(
                 Collections.singletonMap("balance", getTeleportationPrice(player, waypoint).format())
             )
+
             else -> null
         }
+    }
+
+    fun isAllowedToTeleportToWaypoint(player: Player, waypoint: Waypoint): Boolean {
+        if (player.hasPermission(getTeleportPermission(waypoint)))
+            return true
+        val config = getTeleportConfig(waypoint)
+        if (!config.mustVisit)
+            return true
+        return waypoint.getWaypointMeta(player.uniqueId).visited
     }
 
     fun teleportPlayerToWaypoint(player: Player, waypoint: Waypoint) {

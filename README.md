@@ -92,7 +92,7 @@ tracked player.
 
 ## Permissions
 
-`waypoints.command.use` - Allows the player to use the `/waypoints` command and open the GUI
+`waypoints.command.use`* - Allows the player to use the `/waypoints` command and open the GUI
 
 `waypoints.command.other` - Allows the player to use the `/waypoints other` command
 
@@ -102,7 +102,7 @@ tracked player.
 
 `waypoints.command.scripting` - Allows the player to use the `/waypointsscript` command and get the UUID of waypoints
 
-`waypoints.modify.private` - Allows the player to create, alter and delete private waypoints
+`waypoints.modify.private`* - Allows the player to create, alter and delete private waypoints
 
 `waypoints.modify.public` - Allows the player to create, alter and delete public waypoints
 
@@ -112,7 +112,7 @@ tracked player.
 
 `waypoints.unlimited` - Allows the player to create more waypoints and folders than the limit in the config
 
-`waypoints.temporaryWaypoint` - Allows the player to create a waypoint that is only visible for the time he is online
+`waypoints.temporaryWaypoint`* - Allows the player to create a waypoint that is only visible for the time he is online
 
 `waypoints.teleport.private` - Allows the player to teleport to private waypoints
 
@@ -120,9 +120,11 @@ tracked player.
 
 `waypoints.teleport.permission` - Allows the player to teleport to permission waypoints
 
-`waypoints.tracking.enabled` - Allows the player to use the player tracking feature
+`waypoints.tracking.enabled`* - Allows the player to use the player tracking feature
 
 `waypoints.tracking.trackAll` - Allows the player to track players that are hidden
+
+*: These permissions are granted to all players by default
 
 ## Configuration
 

@@ -63,6 +63,8 @@ fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String,
     val waypoint = waypointsPlayer.createWaypoint(name, location)
     plugin.translations.WAYPOINT_SET_SUCCESS_PRIVATE.send(player)
 
+    checkVisited(plugin, waypoint, player)
+
     return SuccessWaypoint(waypoint)
 }
 
@@ -78,6 +80,8 @@ fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, 
 
     val waypoint = plugin.api.publicWaypoints.createWaypoint(name, location)
     plugin.translations.WAYPOINT_SET_SUCCESS_PUBLIC.send(player)
+
+    checkVisited(plugin, waypoint, player)
 
     return SuccessWaypoint(waypoint)
 }
@@ -97,6 +101,8 @@ fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: Stri
     }
     plugin.translations.WAYPOINT_SET_SUCCESS_PERMISSION.send(player)
 
+    checkVisited(plugin, waypoint, player)
+
     return SuccessWaypoint(waypoint)
 }
 
@@ -111,6 +117,14 @@ private fun creationPreChecks(plugin: WaypointsPlugin, player: Player, location:
         return LocationOutOfBounds
     }
     return null
+}
+
+private fun checkVisited(plugin: WaypointsPlugin, waypoint: Waypoint, player: Player) {
+    if (player.world === waypoint.location.world
+        && player.location.distanceSquared(waypoint.location) <= plugin.waypointsConfig.general.teleport.visitedRadius
+    ) {
+        waypoint.getWaypointMeta(player.uniqueId).visited = true
+    }
 }
 
 fun createFolderPrivate(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {

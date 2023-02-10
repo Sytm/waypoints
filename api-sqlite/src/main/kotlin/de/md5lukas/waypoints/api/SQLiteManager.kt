@@ -22,7 +22,7 @@ class SQLiteManager(
 ) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache) {
 
 
-    private val schemaVersion: Int = 3
+    private val schemaVersion: Int = 4
     private val sqliteHelper = if (file === null) {
         SQLiteHelper()
     } else {
@@ -131,6 +131,7 @@ class SQLiteManager(
                   playerId TEXT NOT NULL,
                   
                   teleportations INTEGER NOT NULL DEFAULT 0,
+                  visited BOOLEAN NOT NULL DEFAULT 0,
                   
                   PRIMARY KEY (waypointId, playerId),
                   FOREIGN KEY (waypointId) REFERENCES waypoints(id) ON DELETE CASCADE,
@@ -202,6 +203,13 @@ class SQLiteManager(
                 )
             }
             update("DROP TABLE player_cooldown;")
+        }
+        it[4] = {
+            update(
+                """
+                ALTER TABLE waypoint_meta ADD COLUMN visited BOOLEAN NOT NULL DEFAULT 0;
+            """
+            )
         }
     }
 
