@@ -68,6 +68,8 @@ class WaypointsPlugin : JavaPlugin() {
         private set
     private var blueMapIntegrationAvailable = false
 
+    private lateinit var metrics: Metrics
+
     override fun onEnable() {
         logger.level = Level.FINE
         loadConfiguration()
@@ -188,7 +190,7 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun startMetrics() {
-        val metrics = Metrics(this, METRICS_PLUGIN_ID)
+        metrics = Metrics(this, METRICS_PLUGIN_ID)
 
         with(api.statistics) {
             metrics.addCustomChart(SingleLineChart("total_waypoints") {
@@ -251,6 +253,9 @@ class WaypointsPlugin : JavaPlugin() {
     override fun onDisable() {
         if (this::databaseManager.isInitialized) {
             databaseManager.close()
+        }
+        if (this::metrics.isInitialized) {
+            metrics.shutdown()
         }
     }
 }
