@@ -189,7 +189,7 @@ pointers:
   disableWhenReachedRadius: 5
 
   actionBar:
-    enabled: true
+    enabled: false
 
     interval: 20
     # The indicator color is used to show where the waypoint is by changing the color of one of the sections
@@ -274,7 +274,7 @@ pointers:
     netherSupport: true
 
   particle:
-    enabled: true
+    enabled: false
 
     interval: 30
     # The height offset from the ground where the particles should spawn
