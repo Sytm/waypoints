@@ -13,4 +13,4 @@ open class StaticTrackableImpl(
     override val id: UUID = UUID.randomUUID()
 }
 
-class TemporaryWaypointTrackable(location: Location) : StaticTrackableImpl(location)
+class TemporaryWaypointTrackable(location: Location, beaconColor: BeaconColor?) : StaticTrackableImpl(location, beaconColor)

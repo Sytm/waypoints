@@ -1,9 +1,7 @@
 package de.md5lukas.waypoints.pointer
 
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.PointerManager
-import de.md5lukas.waypoints.api.Trackable
-import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.TrackableDeselectEvent
 import de.md5lukas.waypoints.api.event.TrackableSelectEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
@@ -166,7 +164,8 @@ class PointerManagerImpl(
 
     override fun trackableOf(location: Location) = StaticTrackableImpl(location)
 
-    override fun temporaryWaypointTrackableOf(location: Location) = TemporaryWaypointTrackable(location)
+    override fun temporaryWaypointTrackableOf(location: Location, beaconColor: BeaconColor?): StaticTrackable =
+        TemporaryWaypointTrackable(location, beaconColor)
 
     override fun getCurrentTarget(player: Player): Trackable? = activePointers[player]?.trackable
 

@@ -73,7 +73,7 @@ class BeaconPointer(
                 loc, when (trackable) {
                     is Waypoint -> trackable.beaconColor ?: config.defaultColor[trackable.type]!!
                     is PlayerTrackable -> config.playerTrackableColor
-                    is TemporaryWaypointTrackable -> config.temporaryTrackableColor
+                    is TemporaryWaypointTrackable -> trackable.beaconColor ?: config.temporaryTrackableColor
                     is StaticTrackable -> trackable.beaconColor ?: BeaconColor.CLEAR
                     else -> BeaconColor.CLEAR
                 }.blockData
