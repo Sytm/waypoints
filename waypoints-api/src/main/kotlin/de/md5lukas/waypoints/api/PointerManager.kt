@@ -10,7 +10,7 @@ interface PointerManager {
 
     fun trackableOf(location: Location): StaticTrackable
 
-    fun temporaryWaypointTrackableOf(location: Location): StaticTrackable
+    fun temporaryWaypointTrackableOf(location: Location, beaconColor: BeaconColor? = null): StaticTrackable
 
     fun enable(player: Player, trackable: Trackable)
 

@@ -16,6 +16,7 @@ command:
       header: "$[scriptPrefix] &7&nHilfe"
       deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Spieler-Name> &7&l|&r&7 Entferne die Wegpunkt-Auswahl von einem Spieler"
       selectWaypoint: "&7 - &e/${label} selectWaypoint <Spieler-Name> <Wegpunkt-UUID> &7&l|&r&7 Setzte die Wegpunkt-Auswahl von einem Spieler auf diesen Wegpunkt"
+      temporaryWaypoint: "&7 - &e/${label} temporaryWaypoint <Spieler-Name> <X> <Y> <Z> [Leuchtfeuerfarbe] &7&l|&r&7 Erstelle einen temporären Wegpunkt für den Spieler"
 
     deselectWaypoint:
       wrongUsage: |
@@ -28,6 +29,12 @@ command:
         &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cKonnte keinen Wegpunkt mit der UUID &e${uuid}&c finden."
+
+    temporaryWaypoint:
+      wrongUsage: |
+        $[scriptPrefix] &cDu musst den Namen von dem Spieler und die Koordinaten des Wegpunkts angeben. Die Leuchtfeuerfarbe ist optional. Beispiel:
+        &a/${label} temporaryWaypoint Sytm 100 200 300 RED
+      beaconColorNotFound: "$[scriptPrefix] &cDie angegebene Leuchtfeuerfarbe konnte nicht gefunden werden."
 
     playerNotFound: "$[scriptPrefix] &cKonnte keinen Spieler der Online ist mit dem Namen &e${name}&c finden."
     invalidUuid: "$[scriptPrefix] &cDie UUID &e${uuid}&c ist in einem nicht gültigen Format."

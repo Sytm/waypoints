@@ -15,11 +15,15 @@ class Translations(
     val COMMAND_SCRIPT_HELP_HEADER = Translation(tl, "command.script.help.header")
     val COMMAND_SCRIPT_HELP_DESELECT_WAYPOINT = Translation(tl, "command.script.help.deselectWaypoint")
     val COMMAND_SCRIPT_HELP_SELECT_WAYPOINT = Translation(tl, "command.script.help.selectWaypoint")
+    val COMMAND_SCRIPT_HELP_TEMPORARY_WAYPOINT = Translation(tl, "command.script.help.temporaryWaypoint")
 
     val COMMAND_SCRIPT_DESELECT_WAYPOINT_WRONG_USAGE = Translation(tl, "command.script.deselectWaypoint.wrongUsage")
 
     val COMMAND_SCRIPT_SELECT_WAYPOINT_WRONG_USAGE = Translation(tl, "command.script.selectWaypoint.wrongUsage")
     val COMMAND_SCRIPT_SELECT_WAYPOINT_WAYPOINT_NOT_FOUND = Translation(tl, "command.script.selectWaypoint.waypointNotFound")
+
+    val COMMAND_SCRIPT_TEMPORARY_WAYPOINT_WRONG_USAGE = Translation(tl, "command.script.temporaryWaypoint.wrongUsage")
+    val COMMAND_SCRIPT_TEMPORARY_WAYPOINT_BEACON_COLOR_NOT_FOUND = Translation(tl, "command.script.temporaryWaypoint.beaconColorNotFound")
 
     val COMMAND_SCRIPT_PLAYER_NOT_FOUND = Translation(tl, "commands.script.playerNotFound")
     val COMMAND_SCRIPT_INVALID_UUID = Translation(tl, "commands.script.invalidUuid")

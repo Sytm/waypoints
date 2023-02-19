@@ -90,6 +90,8 @@ tracked player.
 
 `/waypointsscript selectWaypoint <Player-Name> <Waypoint-UUID>` - Set the waypoint selection of a player with a command
 
+`/waypointsscript temporaryWaypoint <Player-Name> <X> <Y> <Z> [Beacon-Color]` - Create a temporary waypoint for the player
+
 ## Permissions
 
 `waypoints.command.use`* - Allows the player to use the `/waypoints` command and open the GUI

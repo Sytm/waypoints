@@ -16,6 +16,7 @@ command:
       header: "$[scriptPrefix] &7&nHelp"
       deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remove the waypoint selection of a player"
       selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Set the waypoint selection of a player to that waypoint"
+      temporaryWaypoint: "&7 - &e/${label} temporaryWaypoint <Player-Name> <X> <Y> <Z> [Beacon-Color] &7&l|&r&7 Create a temporary waypoint for the player"
 
     deselectWaypoint:
       wrongUsage: |
@@ -28,6 +29,12 @@ command:
         &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cCould not find a waypoint with the UUID &e${uuid}&c."
+
+    temporaryWaypoint:
+      wrongUsage: |
+        $[scriptPrefix] &cYou need to provide the name of an online player and the coordinates of the target location. The beacon color is optional. Example:
+        &a/${label} temporaryWaypoint Sytm 100 200 300 RED
+      beaconColorNotFound: "$[scriptPrefix] &cThe provided beacon color could not be found."
 
     playerNotFound: "$[scriptPrefix] &cCould not find an online player with the name &e${name}&c."
     invalidUuid: "$[scriptPrefix] &cThe uuid &e${uuid}&c is not in a valid format."

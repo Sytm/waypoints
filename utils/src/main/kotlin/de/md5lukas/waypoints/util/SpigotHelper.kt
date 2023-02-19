@@ -69,7 +69,7 @@ fun Player.teleportKeepOrientation(location: Location) {
 }
 
 fun parseLocationString(player: Player, input: String): Location? {
-    val parts = input.split("/")
+    val parts = input.split("/", " ")
 
     if (parts.size != 3) {
         return null
