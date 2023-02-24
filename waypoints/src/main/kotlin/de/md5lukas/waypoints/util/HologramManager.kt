@@ -9,6 +9,7 @@ import com.comphenix.protocol.reflect.fuzzy.FuzzyMethodContract
 import com.comphenix.protocol.utility.MinecraftReflection
 import com.comphenix.protocol.wrappers.BukkitConverters
 import com.comphenix.protocol.wrappers.WrappedChatComponent
+import com.comphenix.protocol.wrappers.WrappedDataValue
 import com.comphenix.protocol.wrappers.WrappedDataWatcher
 import de.md5lukas.waypoints.WaypointsPlugin
 import org.bukkit.Location
@@ -36,7 +37,14 @@ class HologramManager(internal val plugin: WaypointsPlugin) {
 
 
         // Get the fields of every available registry type
-        val allRegistryFields = registry.getFieldListByType(registryClass)
+        val allRegistryFields = if (isMinecraftVersionEqualOrLaterThan(plugin, 19)) {
+            // This is technically unnecessary for MC 1.19+ because the EntityType finally works when used directly in the packet, I am going to leave
+            // this here in case anyone stumbles upon it and needs it for newer versions
+            FuzzyReflection.fromClass(MinecraftReflection.getBuiltInRegistries())
+                .getFieldListByType(registryClass)
+        } else {
+            registry.getFieldListByType(registryClass)
+        }
 
         // Accessor to get the resource key of a registry
         val registryGetResourceKey = Accessors.getMethodAccessor(
@@ -87,50 +95,83 @@ class Hologram(private val hologramManager: HologramManager, private val entityI
     private companion object DataWatchers {
         // https://wiki.vg/Entity_metadata#Entity
         // Must use native types of Byte and Boolean, but not the primitive types
-        val entityFlags = WrappedDataWatcher.WrappedDataWatcherObject(0, WrappedDataWatcher.Registry.get(java.lang.Byte::class.java))
+        val byteSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Byte::class.java)
+        val booleanSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Boolean::class.java)
 
         // Component serializer must be optional because the Custom name is of type OptChat
-        val entityCustomName = WrappedDataWatcher.WrappedDataWatcherObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true))
-        val entityCustomNameVisibility = WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(java.lang.Boolean::class.java))
-        val entityDisableGravity = WrappedDataWatcher.WrappedDataWatcherObject(5, WrappedDataWatcher.Registry.get(java.lang.Boolean::class.java))
+        val optChatSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getChatComponentSerializer(true)
+
+        val entityFlags = WrappedDataWatcher.WrappedDataWatcherObject(0, byteSerializer)
+        val entityCustomName = WrappedDataWatcher.WrappedDataWatcherObject(2, optChatSerializer)
+        val entityCustomNameVisibility = WrappedDataWatcher.WrappedDataWatcherObject(3, booleanSerializer)
+        val entityDisableGravity = WrappedDataWatcher.WrappedDataWatcherObject(5, booleanSerializer)
     }
 
     private val wrappedText = Optional.of(WrappedChatComponent.fromLegacyText(text).handle)
 
-    private val spawnPacket = PacketContainer(PacketType.Play.Server.SPAWN_ENTITY_LIVING).also {
-        it.integers.write(0, entityId)
-        it.uuiDs.write(0, uuid)
-        // Set type to armor stand
-        it.integers.write(1, hologramManager.armorStandEntityTypeId)
-        it.doubles
-            .write(0, location.x)
-            .write(1, location.y)
-            .write(2, location.z)
+    private val spawnPacket =
+        PacketContainer(
+            // TODO remove with Minecraft 1.21
+            if (isMinecraftVersionEqualOrLaterThan(hologramManager.plugin, 19)) {
+                PacketType.Play.Server.SPAWN_ENTITY
+            } else {
+                @Suppress("DEPRECATION")
+                PacketType.Play.Server.SPAWN_ENTITY_LIVING
+            }
+        ).also {
+            it.integers.write(0, entityId)
+            it.uuiDs.write(0, uuid)
 
-        // Set angles to zero
-        it.bytes
-            .write(0, 0)
-            .write(1, 0)
-            .write(2, 0)
+            // I know this is horrible but it can be reverted again with MC 1.21
+            var intFieldIndex = 1
 
-        // Set velocity to zero
-        it.integers
-            .write(2, 0)
-            .write(3, 0)
-            .write(4, 0)
-    }
+            // Set type to armor stand
+            if (isMinecraftVersionEqualOrLaterThan(hologramManager.plugin, 19)) {
+                it.entityTypeModifier.write(0, EntityType.ARMOR_STAND)
+            } else {
+                it.integers.write(intFieldIndex++, hologramManager.armorStandEntityTypeId)
+            }
+            it.doubles
+                .write(0, location.x)
+                .write(1, location.y)
+                .write(2, location.z)
+
+            // Set angles to zero
+            it.bytes
+                .write(0, 0)
+                .write(1, 0)
+                .write(2, 0)
+
+            // Set velocity to zero
+            it.integers
+                .write(intFieldIndex++, 0)
+                .write(intFieldIndex++, 0)
+                .write(intFieldIndex, 0)
+
+        }
 
     private val metadataPacket = PacketContainer(PacketType.Play.Server.ENTITY_METADATA).also {
         it.integers.write(0, entityId)
-
-        val metadata = WrappedDataWatcher()
         // https://wiki.vg/Entity_metadata#Entity
-        metadata.setObject(entityFlags, (0x20).toByte()) // Make invisible
-        metadata.setObject(entityCustomName, wrappedText)
-        metadata.setObject(entityCustomNameVisibility, true)
-        metadata.setObject(entityDisableGravity, true)
+        if (isMinecraftVersionEqualOrLaterThan(hologramManager.plugin, 19)) {
+            it.dataValueCollectionModifier.write(
+                0, listOf(
+                    WrappedDataValue(0, byteSerializer, (0x20).toByte()),
+                    WrappedDataValue(2, optChatSerializer, wrappedText),
+                    WrappedDataValue(3, booleanSerializer, true),
+                    WrappedDataValue(5, booleanSerializer, true),
+                )
+            )
+        } else {
+            val metadata = WrappedDataWatcher()
 
-        it.watchableCollectionModifier.write(0, metadata.watchableObjects)
+            metadata.setObject(entityFlags, (0x20).toByte()) // Make invisible
+            metadata.setObject(entityCustomName, wrappedText)
+            metadata.setObject(entityCustomNameVisibility, true)
+            metadata.setObject(entityDisableGravity, true)
+
+            it.watchableCollectionModifier.write(0, metadata.watchableObjects)
+        }
     }
 
     private val destroyPacket = PacketContainer(PacketType.Play.Server.ENTITY_DESTROY).also {
