@@ -1,5 +1,7 @@
 # Waypoints
 
+![Modrinth Downloads](https://img.shields.io/modrinth/dt/waypoints?label=Modrinth%20Downloads&style=flat-square) ![Spiget Downloads](https://img.shields.io/spiget/downloads/66647?label=Spigot%20Downloads&style=flat-square)
+
 Ever had the problem, that you were on a long trip and don't find your base?
 
 You could set a warp with a conventional plugin at your home and simply teleport back. But if you want to keep the survival experience of not being able to
