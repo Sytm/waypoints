@@ -1,3 +1,0 @@
-[submodule "nbt"]
-	path = legacy-importer/deps/nbt
-	url = https://github.com/Sytm-Archive/nbt.git
