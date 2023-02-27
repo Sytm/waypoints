@@ -25,6 +25,13 @@ class BossBarPointer(
     private val bossBars: MutableMap<UUID, BarData> = mutableMapOf()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
+        val target = translatedTarget ?: trackable.location
+
+        if (player.world !== target.world) {
+            hide(player, trackable, translatedTarget)
+            return
+        }
+
         val barData = bossBars.computeIfAbsent(player.uniqueId) {
             BarData(
                 Bukkit.createBossBar(
@@ -41,7 +48,6 @@ class BossBarPointer(
         // Don't calculate the position of the indicator everytime in favour to make the compass update smoother
         barData.counter = (barData.counter + 1) % config.recalculateEveryNthInterval
         if (barData.counter == 0) {
-            val target = translatedTarget ?: trackable.location
 
             // Subtract 90° from the returned angle because Minecraft yaw is rotated by 90°
             val angleToTarget = normalizeAngleTo360(getAngleToTarget(player.location, target) - 90)

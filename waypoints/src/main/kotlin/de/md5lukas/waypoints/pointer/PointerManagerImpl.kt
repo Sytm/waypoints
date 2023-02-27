@@ -9,6 +9,7 @@ import de.md5lukas.waypoints.config.pointers.PointerConfiguration
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.pointer.variants.*
 import de.md5lukas.waypoints.util.callEvent
+import de.md5lukas.waypoints.util.isMinecraftVersionEqualOrLaterThan
 import de.md5lukas.waypoints.util.registerEvents
 import de.md5lukas.waypoints.util.runTask
 import org.bukkit.Location
@@ -21,6 +22,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.scheduler.BukkitTask
 import java.util.*
+import java.util.logging.Level
 
 class PointerManagerImpl(
     private val plugin: WaypointsPlugin
@@ -74,7 +76,12 @@ class PointerManagerImpl(
         }, {
             with(it.hologram) {
                 if (enabled && plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
-                    HologramPointer(plugin, this)
+                    if (isMinecraftVersionEqualOrLaterThan(plugin, 19)) {
+                        HologramPointer(plugin, this)
+                    } else {
+                        plugin.logger.log(Level.WARNING, "Waypoints does not support Holograms for this Minecraft version")
+                        null
+                    }
                 } else {
                     null
                 }
