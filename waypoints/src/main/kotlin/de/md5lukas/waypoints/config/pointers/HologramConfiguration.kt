@@ -7,22 +7,30 @@ class HologramConfiguration {
     var enabled = false
         private set
 
-    var interval = 0
+    var interval: Int = 0
         private set
 
-    var maxDistance = 0
-        private set(value) {
-            if (value <= 0) {
-                throw IllegalArgumentException("The maxDistance must be greater than zero ($value)")
-            }
-            field = value * value
-        }
+    var distanceFromPlayer: Int = 0
+        private set
+
+    val distanceFromPlayerSquared: Int
+        get() = distanceFromPlayer * distanceFromPlayer
+
+    var preventOcclusion: Boolean = false
+        private set
+
+    var hologramHeightOffset: Double = 0.0
+        private set
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         enabled = cfg.getBoolean("enabled")
 
         interval = cfg.getInt("interval")
 
-        maxDistance = cfg.getInt("maxDistance")
+        distanceFromPlayer = cfg.getInt("distanceFromPlayer")
+
+        preventOcclusion = cfg.getBoolean("preventOcclusion")
+
+        hologramHeightOffset = cfg.getDouble("hologramHeightOffset")
     }
 }

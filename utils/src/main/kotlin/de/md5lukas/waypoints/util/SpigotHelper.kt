@@ -53,6 +53,8 @@ fun Vector.divide(d: Int): Vector {
     return this
 }
 
+operator fun Vector.minus(other: Vector) = subtract(other)
+
 fun Location.blockEquals(other: Location): Boolean =
     this.world == other.world && this.blockX == other.blockX && this.blockY == other.blockY && this.blockZ == other.blockZ
 

@@ -12,7 +12,7 @@ data class ActivePointer(
     val trackable: Trackable,
 ) {
 
-    val translatedTarget: Location
+    val translatedTarget: Location?
         get() {
             if (player.world === trackable.location.world) {
                 return trackable.location
@@ -37,6 +37,6 @@ data class ActivePointer(
                 }
             }
 
-            return trackable.location
+            return null
         }
 }

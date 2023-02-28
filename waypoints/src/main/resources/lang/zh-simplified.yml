@@ -226,11 +226,12 @@ pointers:
     # world: World where the waypoint is located at
     # x, y, z: Coordinates of the waypoint
     # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
-    private: "&5${name}"
-    death: "&c死亡位置 ${createdAt}"
-    public: "&b${name}"
-    permission: "&d${name}"
-    temporary: "&5临时路径点"
+    private: "&5${name} (${distance}m)"
+    death: "&c死亡位置 ${createdAt} (${distance}m)"
+    public: "&b${name} (${distance}m)"
+    permission: "&d${name} (${distance}m)"
+    temporary: "&5临时路径点 (${distance}m)"
+    playerTracking: "&9${name} &r&9(${distance}m)"
 
 integrations:
   maps:

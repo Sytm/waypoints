@@ -17,4 +17,11 @@ interface Trackable {
      * The location the Trackable is located at. This location may change.
      */
     val location: Location
+
+    /**
+     * The text the hologram pointer should use. Strings formatted with [org.bukkit.ChatColor.translateAlternateColorCodes] can be used for coloring.
+     *
+     * If this value is null the hologram pointer will not be available.
+     */
+    val hologramText: String?
 }
