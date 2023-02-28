@@ -1,6 +1,8 @@
 # Waypoints
 
-![Modrinth Downloads](https://img.shields.io/modrinth/dt/waypoints?label=Modrinth%20Downloads&style=flat-square) ![Spiget Downloads](https://img.shields.io/spiget/downloads/66647?label=Spigot%20Downloads&style=flat-square)
+[![Support Discord](https://img.shields.io/static/v1?message=Support%20Discord&color=7289da&style=flat-square&logo=discord&logoColor=white&label)](https://discord.gg/4xY9TcHQja)
+![Modrinth Downloads](https://img.shields.io/modrinth/dt/waypoints?label=Modrinth%20Downloads&style=flat-square)
+![Spiget Downloads](https://img.shields.io/spiget/downloads/66647?label=Spigot%20Downloads&style=flat-square)
 
 Ever had the problem, that you were on a long trip and don't find your base?
 
