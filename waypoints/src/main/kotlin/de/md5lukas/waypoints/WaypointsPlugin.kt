@@ -98,6 +98,7 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     fun reloadConfiguration() {
+        saveDefaultConfig()
         reloadConfig()
         waypointsConfig.loadFromConfiguration(config)
 

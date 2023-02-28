@@ -23,8 +23,8 @@ class HologramManager(internal val plugin: WaypointsPlugin) {
     private val nextEntityId: Int
         get() = (entityId.get(null) as AtomicInteger).incrementAndGet()
 
-    fun createHologram(location: Location, text: String): Hologram {
-        return Hologram(nextEntityId, UUID.randomUUID(), location, text)
+    fun createHologram(player: Player, location: Location, text: String): Hologram {
+        return Hologram(player, nextEntityId, UUID.randomUUID(), location, text)
     }
 }
 
@@ -33,7 +33,7 @@ class HologramManager(internal val plugin: WaypointsPlugin) {
  * https://protocol.derklaro.dev/
  * https://wiki.vg
  */
-class Hologram(private val entityId: Int, private val uuid: UUID, var location: Location, var text: String) {
+class Hologram(private val player: Player, private val entityId: Int, private val uuid: UUID, var location: Location, var text: String) {
 
     private var previousLocation = location
 
@@ -80,13 +80,15 @@ class Hologram(private val entityId: Int, private val uuid: UUID, var location: 
     private val metadataPacket
         get() = PacketContainer(PacketType.Play.Server.ENTITY_METADATA).also {
             it.integers.write(0, entityId)
-            // https://wiki.vg/Entity_metadata#Entity
             it.dataValueCollectionModifier.write(
                 0, listOf(
-                    WrappedDataValue(0, byteSerializer, (0x20).toByte()),
+                    // https://wiki.vg/Entity_metadata#Entity
+                    WrappedDataValue(0, byteSerializer, (0x20).toByte()), // Make invisible
                     WrappedDataValue(2, optChatSerializer, wrappedText),
                     WrappedDataValue(3, booleanSerializer, true),
                     WrappedDataValue(5, booleanSerializer, true),
+                    // https://wiki.vg/Entity_metadata#Armor_Stand
+                    WrappedDataValue(15, byteSerializer, (0x10).toByte()) // Make ArmorStand a marker
                 )
             )
         }
@@ -143,14 +145,18 @@ class Hologram(private val entityId: Int, private val uuid: UUID, var location: 
         it.intLists.write(0, listOf(entityId))
     }
 
-    fun spawn(player: Player) {
+    fun spawn() {
         ProtocolLibrary.getProtocolManager().let {
             it.sendServerPacket(player, spawnPacket)
             it.sendServerPacket(player, metadataPacket)
         }
     }
 
-    fun update(player: Player) {
+    init {
+        spawn()
+    }
+
+    fun update() {
         ProtocolLibrary.getProtocolManager().let {
             it.sendServerPacket(player, updateNamePacket)
             it.sendServerPacket(
@@ -164,7 +170,7 @@ class Hologram(private val entityId: Int, private val uuid: UUID, var location: 
         }
     }
 
-    fun destroy(player: Player) {
+    fun destroy() {
         ProtocolLibrary.getProtocolManager().sendServerPacket(player, destroyPacket)
     }
 }

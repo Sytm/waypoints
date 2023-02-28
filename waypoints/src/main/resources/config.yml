@@ -293,9 +293,14 @@ pointers:
     # Requires ProtocolLib to be actually available
     enabled: true
 
-    interval: 30
-
-    maxDistance: 50
+    interval: 5
+    # The distance of the hologram from the player
+    distanceFromPlayer: 4
+    # Move the hologram closer to the player if a block would be in the way
+    preventOcclusion: true
+    # The height offset of the hologram.
+    # If set to zero it will be at the exact location of the waypoint and close to the ground, set to higher numbers to move it up
+    hologramHeightOffset: 1
 
 inventory:
   general:

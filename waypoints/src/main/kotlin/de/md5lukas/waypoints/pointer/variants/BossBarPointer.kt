@@ -25,9 +25,7 @@ class BossBarPointer(
     private val bossBars: MutableMap<UUID, BarData> = mutableMapOf()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        val target = translatedTarget ?: trackable.location
-
-        if (player.world !== target.world) {
+        if (translatedTarget === null) {
             hide(player, trackable, translatedTarget)
             return
         }
@@ -50,7 +48,7 @@ class BossBarPointer(
         if (barData.counter == 0) {
 
             // Subtract 90° from the returned angle because Minecraft yaw is rotated by 90°
-            val angleToTarget = normalizeAngleTo360(getAngleToTarget(player.location, target) - 90)
+            val angleToTarget = normalizeAngleTo360(getAngleToTarget(player.location, translatedTarget) - 90)
 
             // Subtract 1 from the index to, because otherwise the indicator is always one too much to the right
             val replaceIndex = Math.floorMod((angleToTarget / 360 * rawTitle.length).roundToInt() - 1, rawTitle.length)

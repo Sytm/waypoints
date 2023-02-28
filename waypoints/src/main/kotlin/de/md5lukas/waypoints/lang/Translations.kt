@@ -65,6 +65,7 @@ class Translations(
     val POINTERS_HOLOGRAM_PUBLIC = Translation(tl, "pointers.hologram.public")
     val POINTERS_HOLOGRAM_PERMISSION = Translation(tl, "pointers.hologram.permission")
     val POINTERS_HOLOGRAM_TEMPORARY = Translation(tl, "pointers.hologram.temporary")
+    val POINTERS_HOLOGRAM_PLAYER_TRACKING = Translation(tl, "pointers.hologram.playerTracking")
 
     val TEXT_DURATION_SECOND = Translation(tl, "text.duration.second")
     val TEXT_DURATION_SECONDS = Translation(tl, "text.duration.seconds")

@@ -223,10 +223,11 @@ pointers:
     # world: World where the waypoint is located at
     # x, y, z: Coordinates of the waypoint
     # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
-    private: "&5${name}"
-    death: "&cMorte ${createdAt}"
-    public: "&b${name}"
-    permission: "&d${name}"
+    private: "&5${name} (${distance}m)"
+    death: "&cMorte ${createdAt} (${distance}m)"
+    public: "&b${name} (${distance}m)"
+    permission: "&d${name} (${distance}m)"
+    playerTracking: "&9${name} &r&9(${distance}m)"
 
 integrations:
   dynmap:
