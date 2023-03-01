@@ -87,7 +87,11 @@ class APIExtensions(
             else -> throw IllegalStateException("A waypoint holder for a player cannot be a GUI item")
         }
 
-        itemStack.amount = MathHelper.clamp(1, 64, amountVisibleToPlayer)
+        itemStack.amount = if (plugin.waypointsConfig.inventory.disableFolderSizes) {
+            1
+        } else {
+            MathHelper.clamp(1, 64, amountVisibleToPlayer)
+        }
 
         return itemStack
     }
@@ -117,7 +121,11 @@ class APIExtensions(
             )
         )
 
-        stack.amount = MathHelper.clamp(1, 64, fetchedAmount)
+        stack.amount = if (plugin.waypointsConfig.inventory.disableFolderSizes) {
+            1
+        } else {
+            MathHelper.clamp(1, 64, fetchedAmount)
+        }
 
         material?.also {
             stack.type = it

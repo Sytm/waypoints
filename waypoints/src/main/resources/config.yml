@@ -303,6 +303,9 @@ pointers:
     hologramHeightOffset: 1
 
 inventory:
+  # Folders will always have the item stack size 1 and not the amount of waypoints in it
+  disableFolderSizes: false
+
   general:
     previous: ARROW
     next: ARROW

@@ -10,9 +10,14 @@ class InventoryConfiguration {
 
     private val materialCache = HashMap<String, Material>()
 
+    var disableFolderSizes: Boolean = false
+        private set
+
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         rootConfig = cfg.root!!
         materialCache.clear()
+
+        disableFolderSizes = cfg.getBoolean("disableFolderSizes")
     }
 
     fun getMaterial(path: String): Material {
