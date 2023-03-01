@@ -3,6 +3,7 @@ package de.md5lukas.waypoints.events
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.util.checkWorldAvailability
+import de.md5lukas.waypoints.util.runTask
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -29,7 +30,10 @@ class WaypointsListener(
             e.action in config.validClicks &&
             e.material in config.items
         ) {
-            WaypointsGUI(plugin, e.player, e.player.uniqueId)
+            plugin.runTask {
+                // Run in next tick to hopefully fix https://github.com/Sytm/waypoints/issues/86
+                WaypointsGUI(plugin, e.player, e.player.uniqueId)
+            }
         }
     }
 
