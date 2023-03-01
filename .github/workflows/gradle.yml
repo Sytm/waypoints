@@ -26,9 +26,10 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: -Pversion=dev-${{ steps.commit.outputs.short }} :waypoints:shadowJar
+          arguments: -Pversion=dev-${{ steps.commit.outputs.short }} :test :waypoints:shadowJar
       - name: Save produced plugin Jar
         uses: actions/upload-artifact@v3
         with:
           name: plugin
           path: waypoints/build/libs/waypoints-*.jar
+          retention-days: 7
