@@ -10,7 +10,7 @@ import javax.naming.OperationNotSupportedException
 object DummyPointerManager : PointerManager {
     override fun trackableOf(player: Player): Trackable = throw OperationNotSupportedException()
     override fun trackableOf(location: Location): StaticTrackable = throw OperationNotSupportedException()
-    override fun temporaryWaypointTrackableOf(location: Location): StaticTrackable = throw OperationNotSupportedException()
+    override fun temporaryWaypointTrackableOf(location: Location, beaconColor: BeaconColor?): StaticTrackable = throw OperationNotSupportedException()
 
     override fun enable(player: Player, trackable: Trackable) = throw OperationNotSupportedException()
 
