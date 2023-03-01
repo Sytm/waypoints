@@ -140,7 +140,7 @@ tasks.withType<ShadowJar> {
 }
 
 modrinth {
-    val modrinthToken: String by project
+    val modrinthToken: String? by project
 
     token.set(modrinthToken)
 
