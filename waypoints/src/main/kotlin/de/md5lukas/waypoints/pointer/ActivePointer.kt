@@ -19,8 +19,8 @@ data class ActivePointer(
             }
 
             plugin.waypointsConfig.general.connectedWorlds.worlds.forEach {
-                if (it.primary == player.world.name || it.secondary == trackable.location.world?.name
-                    && it.secondary == player.world.name || it.primary == trackable.location.world?.name
+                if (it.primary == player.world.name && it.secondary == trackable.location.world?.name
+                    || it.secondary == player.world.name && it.primary == trackable.location.world?.name
                 ) {
                     val target = trackable.location.clone()
                     target.world = player.world
