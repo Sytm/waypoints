@@ -1,54 +1,40 @@
-package de.md5lukas.waypoints.util
+package de.md5lukas.waypoints.util.protocol
 
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary
 import com.comphenix.protocol.events.PacketContainer
-import com.comphenix.protocol.reflect.accessors.Accessors
-import com.comphenix.protocol.utility.MinecraftReflection
-import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedDataValue
 import com.comphenix.protocol.wrappers.WrappedDataWatcher
-import de.md5lukas.waypoints.WaypointsPlugin
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import java.util.*
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs
-
-class HologramManager(internal val plugin: WaypointsPlugin) {
-
-    private val entityId = Accessors.getFieldAccessor(MinecraftReflection.getEntityClass(), AtomicInteger::class.java, true)
-
-    private val nextEntityId: Int
-        get() = (entityId.get(null) as AtomicInteger).incrementAndGet()
-
-    fun createHologram(player: Player, location: Location, text: String): Hologram {
-        return Hologram(player, nextEntityId, UUID.randomUUID(), location, text)
-    }
-}
 
 /*
  * Useful Links:
  * https://protocol.derklaro.dev/
  * https://wiki.vg
  */
-class Hologram(private val player: Player, private val entityId: Int, private val uuid: UUID, var location: Location, var text: String) {
+open class ClientSideEntity(
+    protected val entityId: Int,
+    protected val player: Player,
+    var location: Location,
+    private val entityType: EntityType,
+) {
+
+    protected val uuid: UUID = UUID.randomUUID()
 
     private var previousLocation = location
 
-    private companion object DataWatchers {
+    protected companion object DataSerializers {
         // https://wiki.vg/Entity_metadata#Entity
         // Must use native types of Byte and Boolean, but not the primitive types
         val byteSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Byte::class.java)
         val booleanSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Boolean::class.java)
-
-        // Component serializer must be optional because the Custom name is of type OptChat
         val optChatSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getChatComponentSerializer(true)
+        val slotSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false)
     }
-
-    private val wrappedText
-        get() = Optional.of(WrappedChatComponent.fromLegacyText(text).handle)
 
     private val spawnPacket
         get() = PacketContainer(PacketType.Play.Server.SPAWN_ENTITY).also {
@@ -56,7 +42,7 @@ class Hologram(private val player: Player, private val entityId: Int, private va
             it.uuiDs.write(0, uuid)
 
             // Set type to armor stand
-            it.entityTypeModifier.write(0, EntityType.ARMOR_STAND)
+            it.entityTypeModifier.write(0, entityType)
 
             it.doubles
                 .write(0, location.x)
@@ -77,19 +63,17 @@ class Hologram(private val player: Player, private val entityId: Int, private va
 
         }
 
-    private val metadataPacket
+    protected open val initialDataValues: MutableList<WrappedDataValue>
+        get() = mutableListOf()
+
+    private val initialMetadataPacket
         get() = PacketContainer(PacketType.Play.Server.ENTITY_METADATA).also {
             it.integers.write(0, entityId)
             it.dataValueCollectionModifier.write(
-                0, listOf(
+                0, initialDataValues.also { values ->
                     // https://wiki.vg/Entity_metadata#Entity
-                    WrappedDataValue(0, byteSerializer, (0x20).toByte()), // Make invisible
-                    WrappedDataValue(2, optChatSerializer, wrappedText),
-                    WrappedDataValue(3, booleanSerializer, true),
-                    WrappedDataValue(5, booleanSerializer, true),
-                    // https://wiki.vg/Entity_metadata#Armor_Stand
-                    WrappedDataValue(15, byteSerializer, (0x10).toByte()) // Make ArmorStand a marker
-                )
+                    values += WrappedDataValue(5, booleanSerializer, true) // Disable gravity
+                }
             )
         }
 
@@ -130,17 +114,6 @@ class Hologram(private val player: Player, private val entityId: Int, private va
     private val requiresTeleport
         get() = abs(location.x - previousLocation.x) > 8 || abs(location.z - previousLocation.z) > 8 || abs(location.y - previousLocation.y) > 8
 
-    private val updateNamePacket
-        get() = PacketContainer(PacketType.Play.Server.ENTITY_METADATA).also {
-            it.integers.write(0, entityId)
-            // https://wiki.vg/Entity_metadata#Entity
-            it.dataValueCollectionModifier.write(
-                0, listOf(
-                    WrappedDataValue(2, optChatSerializer, wrappedText),
-                )
-            )
-        }
-
     private val destroyPacket = PacketContainer(PacketType.Play.Server.ENTITY_DESTROY).also {
         it.intLists.write(0, listOf(entityId))
     }
@@ -148,17 +121,12 @@ class Hologram(private val player: Player, private val entityId: Int, private va
     fun spawn() {
         ProtocolLibrary.getProtocolManager().let {
             it.sendServerPacket(player, spawnPacket)
-            it.sendServerPacket(player, metadataPacket)
+            it.sendServerPacket(player, initialMetadataPacket)
         }
     }
 
-    init {
-        spawn()
-    }
-
-    fun update() {
+    open fun update() {
         ProtocolLibrary.getProtocolManager().let {
-            it.sendServerPacket(player, updateNamePacket)
             it.sendServerPacket(
                 player, if (requiresTeleport) {
                     teleportPacket

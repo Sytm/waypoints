@@ -4,7 +4,7 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.config.pointers.ParticleConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
-import de.md5lukas.waypoints.util.divide
+import de.md5lukas.waypoints.util.div
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
@@ -24,7 +24,7 @@ class ParticlePointer(
 
             dir = dir.normalize().multiply(config.length)
 
-            dir.divide(config.amount)
+            dir /= config.amount
 
             for (i in 0 until config.amount) {
                 var y = config.heightOffset
