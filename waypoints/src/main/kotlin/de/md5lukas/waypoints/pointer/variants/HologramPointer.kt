@@ -7,10 +7,17 @@ import de.md5lukas.waypoints.config.pointers.HologramConfiguration
 import de.md5lukas.waypoints.pointer.PlayerTrackable
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.pointer.TemporaryWaypointTrackable
-import de.md5lukas.waypoints.util.*
+import de.md5lukas.waypoints.util.Formatters
+import de.md5lukas.waypoints.util.format
+import de.md5lukas.waypoints.util.minus
+import de.md5lukas.waypoints.util.protocol.FloatingItem
+import de.md5lukas.waypoints.util.protocol.Hologram
+import de.md5lukas.waypoints.util.protocol.ProtocolManager
+import de.md5lukas.waypoints.util.runtimeReplace
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import java.util.*
 import kotlin.math.roundToLong
 
@@ -19,9 +26,9 @@ class HologramPointer(
     private val config: HologramConfiguration
 ) : Pointer(plugin, config.interval) {
 
-    private val hologramManager = HologramManager(plugin)
+    private val protocolManager = ProtocolManager(plugin)
 
-    private val activeHolograms: MutableMap<UUID, Hologram> = HashMap()
+    private val activeHolograms: MutableMap<UUID, Pair<Hologram, FloatingItem?>> = HashMap()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
         if (translatedTarget === null)
@@ -68,13 +75,26 @@ class HologramPointer(
         hologramText = hologramText.runtimeReplace(trackable.getReplacements(player))
 
         if (player.uniqueId in activeHolograms) {
-            val hologram = activeHolograms[player.uniqueId]!!
+            val (hologram, item) = activeHolograms[player.uniqueId]!!
 
             hologram.location = location
             hologram.text = hologramText
             hologram.update()
+
+            item?.let {
+                item.location = location.clone().subtract(0.0, 0.25, 0.0)
+                item.update()
+            }
         } else {
-            activeHolograms[player.uniqueId] = hologramManager.createHologram(player, location, hologramText)
+            val hologram = protocolManager.createHologram(player, location, hologramText).also { it.spawn() }
+            val item = if (config.showWaypointIcon && trackable is Waypoint) {
+                plugin.apiExtensions.run {
+                    protocolManager.createFloatingItem(player, location, plugin.apiExtensions.run { ItemStack(trackable.getIconMaterial()) })
+                        .also { it.spawn() }
+                }
+            } else null
+
+            activeHolograms[player.uniqueId] = hologram to item
         }
     }
 
@@ -100,6 +120,9 @@ class HologramPointer(
     }
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        activeHolograms.remove(player.uniqueId)?.destroy()
+        activeHolograms.remove(player.uniqueId)?.let { (hologram, item) ->
+            hologram.destroy()
+            item?.destroy()
+        }
     }
 }

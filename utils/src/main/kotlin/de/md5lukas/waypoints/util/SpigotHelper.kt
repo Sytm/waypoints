@@ -45,13 +45,18 @@ private fun ConfigurationSection.getFullPath(path: String): String =
         "$currentPath.$path"
     }
 
-fun Vector.divide(d: Int): Vector {
-    this.x /= d
-    this.y /= d
-    this.z /= d
+operator fun Vector.div(d: Int) = Vector(
+    this.x / d,
+    this.y / d,
+    this.z / d,
+)
 
-    return this
-}
+operator fun Vector.div(d: Double) = Vector(
+    this.x / d,
+    this.y / d,
+    this.z / d,
+)
+
 
 operator fun Vector.minus(other: Vector) = subtract(other)
 

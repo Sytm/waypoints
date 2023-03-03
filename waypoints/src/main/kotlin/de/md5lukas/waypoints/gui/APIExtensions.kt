@@ -11,6 +11,7 @@ import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.util.Formatters
 import de.md5lukas.waypoints.util.format
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.*
@@ -60,6 +61,13 @@ class APIExtensions(
 
         return stack
     }
+
+    fun Waypoint.getIconMaterial(): Material = material ?: when (type) {
+        Type.DEATH -> translations.WAYPOINT_ICON_DEATH
+        Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
+        Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
+        Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
+    }.material
 
     fun Waypoint.getHologramTranslations() = when (type) {
         Type.PRIVATE -> plugin.translations.POINTERS_HOLOGRAM_PRIVATE

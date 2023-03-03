@@ -301,6 +301,8 @@ pointers:
     # The height offset of the hologram.
     # If set to zero it will be at the exact location of the waypoint and close to the ground, set to higher numbers to move it up
     hologramHeightOffset: 1
+    # Displays the icon of the waypoint as a floating item below the text
+    showWaypointIcon: true
 
 inventory:
   # Folders will always have the item stack size 1 and not the amount of waypoints in it

@@ -22,6 +22,9 @@ class HologramConfiguration {
     var hologramHeightOffset: Double = 0.0
         private set
 
+    var showWaypointIcon: Boolean = false
+        private set
+
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         enabled = cfg.getBoolean("enabled")
 
@@ -32,5 +35,7 @@ class HologramConfiguration {
         preventOcclusion = cfg.getBoolean("preventOcclusion")
 
         hologramHeightOffset = cfg.getDouble("hologramHeightOffset")
+
+        showWaypointIcon = cfg.getBoolean("showWaypointIcon")
     }
 }
