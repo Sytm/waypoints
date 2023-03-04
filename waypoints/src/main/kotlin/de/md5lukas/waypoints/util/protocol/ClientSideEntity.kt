@@ -17,11 +17,12 @@ import kotlin.math.abs
  * https://wiki.vg
  */
 open class ClientSideEntity(
-    protected val entityId: Int,
+    protected val protocolManager: ProtocolManager,
     protected val player: Player,
     var location: Location,
     private val entityType: EntityType,
 ) {
+    protected val entityId = protocolManager.nextEntityId
 
     protected val uuid: UUID = UUID.randomUUID()
 
@@ -114,14 +115,25 @@ open class ClientSideEntity(
     private val requiresTeleport
         get() = abs(location.x - previousLocation.x) > 8 || abs(location.z - previousLocation.z) > 8 || abs(location.y - previousLocation.y) > 8
 
+    val passengers: MutableList<ClientSideEntity> = mutableListOf()
+    private val passengersPacket
+        get() = PacketContainer(PacketType.Play.Server.MOUNT).also {
+            it.integers.write(0, entityId)
+
+            it.integerArrays.write(0, passengers.map { it.entityId }.toIntArray())
+        }
+
     private val destroyPacket = PacketContainer(PacketType.Play.Server.ENTITY_DESTROY).also {
         it.intLists.write(0, listOf(entityId))
     }
 
-    fun spawn() {
+    open fun spawn() {
         ProtocolLibrary.getProtocolManager().let {
             it.sendServerPacket(player, spawnPacket)
             it.sendServerPacket(player, initialMetadataPacket)
+            if (passengers.isNotEmpty()) {
+                it.sendServerPacket(player, passengersPacket)
+            }
         }
     }
 
@@ -138,7 +150,7 @@ open class ClientSideEntity(
         }
     }
 
-    fun destroy() {
+    open fun destroy() {
         ProtocolLibrary.getProtocolManager().sendServerPacket(player, destroyPacket)
     }
 }

@@ -22,7 +22,10 @@ class HologramConfiguration {
     var hologramHeightOffset: Double = 0.0
         private set
 
-    var showWaypointIcon: Boolean = false
+    var iconEnabled: Boolean = false
+        private set
+
+    var iconOffset: Double = 0.0
         private set
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
@@ -36,6 +39,8 @@ class HologramConfiguration {
 
         hologramHeightOffset = cfg.getDouble("hologramHeightOffset")
 
-        showWaypointIcon = cfg.getBoolean("showWaypointIcon")
+        iconEnabled = cfg.getBoolean("icon.enabled")
+
+        iconOffset = cfg.getDouble("icon.offset")
     }
 }
