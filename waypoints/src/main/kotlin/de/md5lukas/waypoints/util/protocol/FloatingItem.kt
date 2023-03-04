@@ -8,12 +8,12 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class FloatingItem(
-    entityId: Int,
+    protocolManager: ProtocolManager,
     player: Player,
     location: Location,
     private val itemStack: ItemStack,
 ) : ClientSideEntity(
-    entityId,
+    protocolManager,
     player,
     location,
     EntityType.DROPPED_ITEM,

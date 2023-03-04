@@ -11,12 +11,12 @@ import org.bukkit.entity.Player
 import java.util.*
 
 class Hologram(
-    entityId: Int,
+    protocolManager: ProtocolManager,
     player: Player,
     location: Location,
     var text: String
 ) : ClientSideEntity(
-    entityId,
+    protocolManager,
     player,
     location,
     EntityType.ARMOR_STAND,
