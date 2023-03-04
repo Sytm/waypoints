@@ -1,4 +1,4 @@
-package de.md5lukas.waypoints.util.protocol
+package de.md5lukas.waypoints.packets
 
 import com.comphenix.protocol.PacketType
 import com.comphenix.protocol.ProtocolLibrary
@@ -17,24 +17,25 @@ import kotlin.math.abs
  * https://wiki.vg
  */
 open class ClientSideEntity(
-    protected val protocolManager: ProtocolManager,
     protected val player: Player,
     var location: Location,
     private val entityType: EntityType,
 ) {
-    protected val entityId = protocolManager.nextEntityId
+    protected val entityId = Packets.nextEntityId
 
     protected val uuid: UUID = UUID.randomUUID()
 
     private var previousLocation = location
 
-    protected companion object DataSerializers {
+    protected companion object EntityMetadata {
         // https://wiki.vg/Entity_metadata#Entity
         // Must use native types of Byte and Boolean, but not the primitive types
         val byteSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Byte::class.java)
         val booleanSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Boolean::class.java)
         val optChatSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getChatComponentSerializer(true)
         val slotSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false)
+
+        val disableGravity = WrappedDataValue(5, booleanSerializer, true)
     }
 
     private val spawnPacket
@@ -64,19 +65,22 @@ open class ClientSideEntity(
 
         }
 
-    protected open val initialDataValues: MutableList<WrappedDataValue>
-        get() = mutableListOf()
+    protected open fun modifyMetadataValues(spawn: Boolean, dataValues: MutableList<WrappedDataValue>) {}
 
-    private val initialMetadataPacket
-        get() = PacketContainer(PacketType.Play.Server.ENTITY_METADATA).also {
+    private fun getMetadataPacket(spawn: Boolean): PacketContainer? {
+        val values = mutableListOf<WrappedDataValue>()
+        modifyMetadataValues(spawn, values)
+
+        if (values.isEmpty())
+            return null
+
+        return PacketContainer(PacketType.Play.Server.ENTITY_METADATA).also {
             it.integers.write(0, entityId)
             it.dataValueCollectionModifier.write(
-                0, initialDataValues.also { values ->
-                    // https://wiki.vg/Entity_metadata#Entity
-                    values += WrappedDataValue(5, booleanSerializer, true) // Disable gravity
-                }
+                0, values
             )
         }
+    }
 
     private val movePacket
         get() = PacketContainer(PacketType.Play.Server.REL_ENTITY_MOVE).also {
@@ -130,7 +134,8 @@ open class ClientSideEntity(
     open fun spawn() {
         ProtocolLibrary.getProtocolManager().let {
             it.sendServerPacket(player, spawnPacket)
-            it.sendServerPacket(player, initialMetadataPacket)
+            getMetadataPacket(true)?.let { packet -> it.sendServerPacket(player, packet) }
+
             if (passengers.isNotEmpty()) {
                 it.sendServerPacket(player, passengersPacket)
             }
@@ -147,6 +152,7 @@ open class ClientSideEntity(
                 }
             )
             previousLocation = location
+            getMetadataPacket(false)?.let { packet -> it.sendServerPacket(player, packet) }
         }
     }
 

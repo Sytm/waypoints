@@ -4,15 +4,14 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.HologramConfiguration
+import de.md5lukas.waypoints.packets.Hologram
+import de.md5lukas.waypoints.packets.SmoothFloatingItem
 import de.md5lukas.waypoints.pointer.PlayerTrackable
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.pointer.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.util.Formatters
 import de.md5lukas.waypoints.util.format
 import de.md5lukas.waypoints.util.minus
-import de.md5lukas.waypoints.util.protocol.Hologram
-import de.md5lukas.waypoints.util.protocol.ProtocolManager
-import de.md5lukas.waypoints.util.protocol.SmoothFloatingItem
 import de.md5lukas.waypoints.util.runtimeReplace
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
@@ -25,8 +24,6 @@ class HologramPointer(
     plugin: WaypointsPlugin,
     private val config: HologramConfiguration
 ) : Pointer(plugin, config.interval) {
-
-    private val protocolManager = ProtocolManager(plugin)
 
     private val activeHolograms: MutableMap<UUID, Pair<Hologram, SmoothFloatingItem?>> = HashMap()
 
@@ -86,10 +83,10 @@ class HologramPointer(
                 item.update()
             }
         } else {
-            val hologram = protocolManager.createHologram(player, location, hologramText).also { it.spawn() }
+            val hologram = Hologram(player, location, hologramText).also { it.spawn() }
             val item = if (config.iconEnabled && trackable is Waypoint) {
                 plugin.apiExtensions.run {
-                    protocolManager.createSmoothFloatingItem(
+                    SmoothFloatingItem(
                         player,
                         location,
                         plugin.apiExtensions.run {

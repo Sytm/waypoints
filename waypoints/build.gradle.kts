@@ -38,12 +38,12 @@ dependencies {
     val dynmapVersion: String by project
     val squareMapVersion: String by project
     val blueMapVersion: String by project
-    val protocolLibVersion: String by project
 
     implementation("org.spigotmc:spigot-api:$spigotVersion")
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":utils"))
+    implementation(project(":packets"))
     implementation(project(":waypoints-api"))
     implementation(project(":api-base"))
     implementation(project(":api-sqlite", "shadow"))
@@ -67,8 +67,6 @@ dependencies {
     implementation("xyz.jpenilla:squaremap-api:$squareMapVersion")
 
     implementation("com.github.BlueMap-Minecraft:BlueMapAPI:$blueMapVersion")
-
-    implementation("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")
 }
 
 tasks.register("createResourceIndex", ResourceIndexTask::class.java) {
@@ -121,6 +119,7 @@ tasks.withType<ShadowJar> {
 
     dependencies {
         include(project(":utils"))
+        include(project(":packets"))
         include(project(":waypoints-api"))
         include(project(":api-base"))
         include(project(":api-sqlite"))
