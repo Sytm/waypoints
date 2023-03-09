@@ -8,8 +8,8 @@ plugins {
 repositories {
     mavenCentral()
 
-    maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven(url = "https://repo.md5lukas.de/releases/")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.md5lukas.de/releases/")
 }
 
 dependencies {
