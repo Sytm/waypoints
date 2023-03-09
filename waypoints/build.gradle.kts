@@ -14,17 +14,17 @@ description = "Waypoints plugin"
 repositories {
     mavenCentral()
 
-    maven(url = "https://repo.codemc.io/repository/maven-public/")
-    maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
-    maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven(url = "https://repo.minebench.de/")
-    maven(url = "https://jitpack.io")
+    maven("https://repo.codemc.io/repository/maven-public/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.minebench.de/")
+    maven("https://jitpack.io")
 
-    maven(url = "https://repo.mikeprimm.com/")
+    maven("https://repo.mikeprimm.com/")
 
-    maven(url = "https://repo.dmulloy2.net/repository/public/")
+    maven("https://repo.dmulloy2.net/repository/public/")
 
-    maven(url = "https://repo.md5lukas.de/releases/")
+    maven("https://repo.md5lukas.de/public/")
 }
 
 val spigotVersion: String by project

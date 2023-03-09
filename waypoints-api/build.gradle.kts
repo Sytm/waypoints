@@ -11,7 +11,7 @@ description = "Waypoints api"
 repositories {
     mavenCentral()
 
-    maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 }
 
 dependencies {

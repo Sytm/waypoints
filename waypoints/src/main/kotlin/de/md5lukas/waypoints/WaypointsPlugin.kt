@@ -173,7 +173,6 @@ class WaypointsPlugin : JavaPlugin() {
                     blueMapIntegrationAvailable = BlueMapIntegration(this@WaypointsPlugin).setupBlueMap()
                 }
             }
-
         }
     }
 

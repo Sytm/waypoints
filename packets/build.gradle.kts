@@ -9,8 +9,8 @@ description = "Waypoints Packets utility module"
 repositories {
     mavenCentral()
 
-    maven(url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven(url = "https://repo.dmulloy2.net/repository/public/")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.dmulloy2.net/repository/public/")
 }
 
 dependencies {
