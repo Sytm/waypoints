@@ -29,6 +29,7 @@ class WorldTranslations(
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     @EventHandler
     private fun onReload(e: ConfigReloadEvent) {
         warned.clear()
