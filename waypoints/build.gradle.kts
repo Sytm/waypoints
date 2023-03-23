@@ -28,6 +28,7 @@ repositories {
 }
 
 val spigotVersion: String by project
+val commandApiVersion: String by project
 
 dependencies {
     val md5CommonsVersion: String by project
@@ -55,6 +56,8 @@ dependencies {
     // Required dependencies
     implementation("net.wesjd:anvilgui:$anvilGUIVersion")
     implementation("org.bstats:bstats-bukkit:$bstatsVersion")
+    implementation("dev.jorel:commandapi-shade:$commandApiVersion")
+    implementation("dev.jorel:commandapi-kotlin:$commandApiVersion")
 
     // Optional dependencies
     implementation("com.github.MilkBowl:VaultAPI:$vaultVersion")
@@ -78,6 +81,7 @@ tasks.withType<ProcessResources> {
     inputs.property("version", project.version)
     inputs.property("spigotVersion", spigotVersion)
     inputs.property("kotlinVersion", getKotlinPluginVersion())
+    inputs.property("commandApiVersion", commandApiVersion)
 
     filteringCharset = "UTF-8"
 
@@ -91,6 +95,7 @@ tasks.withType<ProcessResources> {
             "version" to project.version,
             "kotlinVersion" to getKotlinPluginVersion(),
             "apiVersion" to apiVersion,
+            "commandApiVersion" to commandApiVersion,
         )
     }
 }
