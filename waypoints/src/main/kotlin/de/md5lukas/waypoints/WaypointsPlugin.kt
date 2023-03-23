@@ -6,7 +6,6 @@ import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.base.DatabaseManager
-import de.md5lukas.waypoints.command.NewWaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfiguration
@@ -75,11 +74,11 @@ class WaypointsPlugin : JavaPlugin() {
 
     override fun onLoad() {
         CommandAPI.onLoad(CommandAPIConfig().silentLogs(true))
-
-        NewWaypointsCommand(this).register()
     }
 
     override fun onEnable() {
+        CommandAPI.onEnable(this)
+
         logger.level = Level.FINE
         loadConfiguration()
         initDatabase()
@@ -186,12 +185,8 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun registerCommands() {
-        val waypointsCommand = getCommand("waypoints")!!
-        WaypointsCommand(this).let {
-            waypointsCommand.setExecutor(it)
-            waypointsCommand.tabCompleter = it
-        }
-        getCommand("waypointsscript")!!.setExecutor(WaypointsScriptCommand(this))
+        WaypointsCommand(this).register()
+        WaypointsScriptCommand(this).register()
     }
 
     private fun registerEvents() {

@@ -34,33 +34,33 @@ command:
 
   help:
     header: "$[prefix] &7&nAjuda"
-    gui: "&7 - &e/${label} &7&l|&r&7 Abrir a interface de waypoints"
-    help: "&7 - &e/${label} help &7&l|&r&7 Mostrar ajuda"
+    gui: "&7 - &e/waypoints &7&l|&r&7 Abrir a interface de waypoints"
+    help: "&7 - &e/waypoints help &7&l|&r&7 Mostrar ajuda"
     set:
-      private: "&7 - &e/${label} set <Name> &7&l|&r&7 Criar nova waypoint"
-      public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Criar nova waypoint pública"
-      permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Criar nova waypoint usando permissões"
-    other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 Ver waypoints de outro player"
-    statistics: "&7 - &e/${label} statistics &7&l|&r&7 Ver estatísticas do banco de dados"
-    import: "&7 - &e/${label} import &7&l|&r&7 Importar waypoints do Waypoints V2"
+      private: "&7 - &e/waypoints set <Name> &7&l|&r&7 Criar nova waypoint"
+      public: "&7 - &e/waypoints setPublic <Name> &7&l|&r&7 Criar nova waypoint pública"
+      permission: "&7 - &e/waypoints setPermission <Permission> <Name> &7&l|&r&7 Criar nova waypoint usando permissões"
+    other: "&7 - &e/waypoints other <Name|UUID> &7&l|&r&7 Ver waypoints de outro player"
+    statistics: "&7 - &e/waypoints statistics &7&l|&r&7 Ver estatísticas do banco de dados"
+    import: "&7 - &e/waypoints import &7&l|&r&7 Importar waypoints do Waypoints V2"
 
   set:
     wrongUsage:
       private: |
         $[prefix] &cVocê deve providenciar um nome para a waypoint. Exemplo:
-        &a/${label} set My Home
+        &a/waypoints set My Home
       public: |
         $[prefix] &cVocê deve providenciar um nome para a waypoint. Exemplo:
-        &a/${label} setPublic Spawn
+        &a/waypoints setPublic Spawn
       permission: |
         $[prefix] &cVocê deve providenciar uma permissão e um nome para a waypoint. Exemplo:
-        &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
+        &a/waypoints setPermission ranks.vip.secretHideout Secret Hideout
 
   other:
     wrongUsage: |
       $[prefix] &cPara ver waypoints de outro player providencie nome ou UUID. Exemplo:
-      &a/${label} other Sytm
-      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
+      &a/waypoints other Sytm
+      &a/waypoints other 68f22021-732e-4afe-9cf5-6906f07a41db
     notFound:
       uuid: "$[prefix] &cPlayer com esse UUID não encontrado."
       name: "$[prefix] &cPlayer com esse nome não encontrado."
@@ -92,19 +92,6 @@ command:
       &7Private folders: &e${privateFolders}
       &7Public folders: &e${publicFolders}
       &7Permission folders: &e${permissionFolders}
-
-  import:
-    mustConfirm: |
-      $[prefix] &7To import the old waypoints you must confirm your choice.
-      &cKeep in mind that if you already imported old waypoints you will have duplicates after this action.
-      &cAll these duplicates have to be removed manually or you must delete everything by deleting plugins/Waypoints/waypoints.db.
-      &cSo run this command only once and then make sure everything is there and then remove the old saves so they can't be imported a second time by accident.
-
-      &7Run &a/${label} import confirm&7 to ackknowledge this message.
-    started: "$[prefix] &7The import has started, check the console output for more information."
-    finished:
-      success: "$[prefix] &7The import has finished, make sure the imported waypoints look good to you."
-      error: "$[prefix] &cWhile importing the old waypoints an error occurred. Check the console output for more information."
 
 text:
   duration:
