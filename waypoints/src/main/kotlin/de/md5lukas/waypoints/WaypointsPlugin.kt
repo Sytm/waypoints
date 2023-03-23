@@ -6,6 +6,7 @@ import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import de.md5lukas.waypoints.command.NewWaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfiguration
@@ -24,6 +25,8 @@ import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.registerEvents
+import dev.jorel.commandapi.CommandAPI
+import dev.jorel.commandapi.CommandAPIConfig
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
@@ -69,6 +72,12 @@ class WaypointsPlugin : JavaPlugin() {
     private var blueMapIntegrationAvailable = false
 
     private lateinit var metrics: Metrics
+
+    override fun onLoad() {
+        CommandAPI.onLoad(CommandAPIConfig().silentLogs(true))
+
+        NewWaypointsCommand(this).register()
+    }
 
     override fun onEnable() {
         logger.level = Level.FINE
@@ -251,6 +260,7 @@ class WaypointsPlugin : JavaPlugin() {
     //</editor-fold>
 
     override fun onDisable() {
+        CommandAPI.onDisable()
         if (this::databaseManager.isInitialized) {
             databaseManager.close()
         }
