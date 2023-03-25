@@ -2,7 +2,6 @@ package de.md5lukas.waypoints.gui
 
 import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.GUI
-import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.WaypointsPermissions
@@ -24,24 +23,8 @@ import java.util.*
 class WaypointsGUI(
     internal val plugin: WaypointsPlugin,
     internal val viewer: Player,
-    internal val target: UUID,
+    target: UUID,
 ) {
-
-    internal companion object {
-        /*
-        * t = title
-        * u = pUblic
-        * r = pRivate
-        * e = pErmission
-        */
-        val createWaypointPattern = GUIPattern(
-            "_________",
-            "____t____",
-            "_________",
-            "_u_____e_",
-            "____r___b",
-        )
-    }
 
     private val pageStack = ArrayDeque<BasePage>()
 
@@ -202,9 +185,9 @@ class WaypointsGUI(
             if (viewerData.showGlobals && plugin.waypointsConfig.general.features.globalWaypoints) {
                 val public = plugin.api.publicWaypoints
                 if (public.waypointsAmount > 0 || viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
-                    content.add(public);
+                    content.add(public)
                 }
-                val permission = plugin.api.permissionWaypoints;
+                val permission = plugin.api.permissionWaypoints
                 if (permission.getWaypointsVisibleForPlayer(viewer) > 0 || viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
                     content.add(permission)
                 }

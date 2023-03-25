@@ -14,8 +14,8 @@ command:
   script:
     help:
       header: "$[scriptPrefix] &7&nAjuda"
-      deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remover seleção de waypoint de um player"
-      selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Setar seleção de waypoint de um player"
+      deselectWaypoint: "&7 - &e/waypointsscript deselectWaypoint <Player-Name> &7&l|&r&7 Remover seleção de waypoint de um player"
+      selectWaypoint: "&7 - &e/waypointsscript selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Setar seleção de waypoint de um player"
 
     deselectWaypoint:
       wrongUsage: |

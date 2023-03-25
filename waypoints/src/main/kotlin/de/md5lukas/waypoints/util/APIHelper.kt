@@ -2,14 +2,12 @@ package de.md5lukas.waypoints.util
 
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.Folder
-import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.api.WaypointHolder
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.config.general.FilterType
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 sealed class CreateResult
@@ -198,6 +196,30 @@ fun checkFolderName(plugin: WaypointsPlugin, holder: WaypointHolder, name: Strin
 
     return !holder.isDuplicateFolderName(name)
 }
+
+
+private fun searchWaypoints0(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): List<SearchResult<out Waypoint>> {
+    val publicPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PUBLIC.text + "/"
+    val permissionPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PERMISSION.text + "/"
+
+    val (strippedQuery, holder) = if (allowGlobals && query.startsWith(publicPrefix)) {
+        query.removePrefix(publicPrefix) to plugin.api.publicWaypoints
+    } else if (allowGlobals && query.startsWith(permissionPrefix)) {
+        query.removePrefix(permissionPrefix) to plugin.api.permissionWaypoints
+    } else if (sender is Player) {
+        query to plugin.api.getWaypointPlayer(sender.uniqueId)
+    } else {
+        return emptyList()
+    }
+
+    return holder.searchWaypoints(strippedQuery, sender)
+}
+
+fun searchWaypoints(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): List<Waypoint> =
+    searchWaypoints0(plugin, sender, query, allowGlobals).map { it.t }.toList()
+
+fun searchWaypoint(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): Waypoint? =
+    searchWaypoints0(plugin, sender, query, allowGlobals).firstOrNull()?.t
 
 fun Waypoint.copyFieldsTo(waypoint: Waypoint) {
     waypoint.description = this.description

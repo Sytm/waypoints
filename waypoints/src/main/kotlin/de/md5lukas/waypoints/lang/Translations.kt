@@ -16,6 +16,7 @@ class Translations(
     val COMMAND_SCRIPT_HELP_DESELECT_WAYPOINT = Translation(tl, "command.script.help.deselectWaypoint")
     val COMMAND_SCRIPT_HELP_SELECT_WAYPOINT = Translation(tl, "command.script.help.selectWaypoint")
     val COMMAND_SCRIPT_HELP_TEMPORARY_WAYPOINT = Translation(tl, "command.script.help.temporaryWaypoint")
+    val COMMAND_SCRIPT_HELP_UUID = Translation(tl, "command.script.help.uuid")
 
     val COMMAND_SCRIPT_DESELECT_WAYPOINT_WRONG_USAGE = Translation(tl, "command.script.deselectWaypoint.wrongUsage")
 
@@ -25,12 +26,18 @@ class Translations(
     val COMMAND_SCRIPT_TEMPORARY_WAYPOINT_WRONG_USAGE = Translation(tl, "command.script.temporaryWaypoint.wrongUsage")
     val COMMAND_SCRIPT_TEMPORARY_WAYPOINT_BEACON_COLOR_NOT_FOUND = Translation(tl, "command.script.temporaryWaypoint.beaconColorNotFound")
 
+    val COMMAND_SCRIPT_UUID_NO_MATCH = Translation(tl, "command.script.uuid.noMatch")
+    val COMMAND_SCRIPT_UUID_HEADER = Translation(tl, "command.script.uuid.header")
+    val COMMAND_SCRIPT_UUID_RESULT = Translation(tl, "command.script.uuid.result")
+
     val COMMAND_SCRIPT_PLAYER_NOT_FOUND = Translation(tl, "commands.script.playerNotFound")
     val COMMAND_SCRIPT_INVALID_UUID = Translation(tl, "commands.script.invalidUuid")
 
     val COMMAND_HELP_HEADER = Translation(tl, "command.help.header")
     val COMMAND_HELP_GUI = Translation(tl, "command.help.gui")
     val COMMAND_HELP_HELP = Translation(tl, "command.help.help")
+    val COMMAND_HELP_SELECT = Translation(tl, "command.help.select")
+    val COMMAND_HELP_DESELECT = Translation(tl, "command.help.deselect")
     val COMMAND_HELP_SET_PRIVATE = Translation(tl, "command.help.set.private")
     val COMMAND_HELP_SET_PUBLIC = Translation(tl, "command.help.set.public")
     val COMMAND_HELP_SET_PERMISSION = Translation(tl, "command.help.set.permission")
@@ -38,6 +45,15 @@ class Translations(
     val COMMAND_HELP_OTHER = Translation(tl, "command.help.other")
     val COMMAND_HELP_STATISTICS = Translation(tl, "command.help.statistics")
     val COMMAND_HELP_RELOAD = Translation(tl, "command.help.reload")
+
+    val COMMAND_SEARCH_PREFIX_PUBLIC = Translation(tl, "command.search.prefix.public")
+    val COMMAND_SEARCH_PREFIX_PERMISSION = Translation(tl, "command.search.prefix.permission")
+    val COMMAND_SEARCH_NOT_FOUND_WAYPOINT = Translation(tl, "command.search.notFound.waypoint")
+    val COMMAND_SEARCH_AMBIGUOUS_WAYPOINT = Translation(tl, "command.search.ambiguous.waypoint")
+
+    val COMMAND_SELECT_SELECTED = Translation(tl, "command.select.selected")
+
+    val COMMAND_DESELECT_DONE = Translation(tl, "command.deselect.done")
 
     val COMMAND_SET_WRONG_USAGE_PRIVATE = Translation(tl, "command.set.wrongUsage.private")
     val COMMAND_SET_WRONG_USAGE_PUBLIC = Translation(tl, "command.set.wrongUsage.public")

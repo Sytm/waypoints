@@ -2,7 +2,7 @@ package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import org.bukkit.Location
-import org.bukkit.entity.Player
+import org.bukkit.permissions.Permissible
 
 /**
  * The WaypointHolder provides methods and properties to accumulate waypoints and folders
@@ -43,7 +43,7 @@ interface WaypointHolder : GUIFolder {
      *
      * If the type of this holder is [Type.PERMISSION], then the waypoints the player does not have the permission for are omitted from the amount.
      */
-    fun getWaypointsVisibleForPlayer(player: Player): Int
+    fun getWaypointsVisibleForPlayer(permissible: Permissible): Int
 
     /**
      * Creates a new Waypoint in this holder with the given name and location
@@ -77,4 +77,27 @@ interface WaypointHolder : GUIFolder {
      * @return `true` if a folder exists with the name
      */
     fun isDuplicateFolderName(name: String): Boolean
+
+    /**
+     * Searches for folders
+     *
+     * An empty string will return all folders like [folders]
+     *
+     * @param query The text that folder names must match
+     * @param permissible The permissible to check the permissions for
+     * @return All matching folders, or none
+     */
+    fun searchFolders(query: String, permissible: Permissible? = null): List<SearchResult<out Folder>>
+
+    /**
+     * Searches for waypoints in this holder, case is ignored.
+     *
+     * If the query contains a forward slash, the part before it will be used as the folder name that must match.
+     *
+     * An empty string will return all waypoints like [allWaypoints]
+     *
+     * @param query The text that waypoint names must match
+     * @return All matching waypoints, or none
+     */
+    fun searchWaypoints(query: String, permissible: Permissible? = null): List<SearchResult<out Waypoint>>
 }

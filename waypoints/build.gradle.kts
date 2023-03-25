@@ -19,6 +19,7 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.minebench.de/")
     maven("https://jitpack.io")
+    maven("https://libraries.minecraft.net")
 
     maven("https://repo.mikeprimm.com/")
 
@@ -58,6 +59,7 @@ dependencies {
     implementation("org.bstats:bstats-bukkit:$bstatsVersion")
     implementation("dev.jorel:commandapi-shade:$commandApiVersion")
     implementation("dev.jorel:commandapi-kotlin:$commandApiVersion")
+    implementation("com.mojang:brigadier:1.0.18")
 
     // Optional dependencies
     implementation("com.github.MilkBowl:VaultAPI:$vaultVersion")

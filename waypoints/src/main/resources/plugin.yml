@@ -19,14 +19,6 @@ softdepend:
   - squaremap
   - BlueMap
 
-commands:
-  waypoints:
-    aliases:
-      - wp
-  waypointsscript:
-    permission: waypoints.command.scripting
-    aliases:
-      - wps
 
 permissions:
   waypoints.*:

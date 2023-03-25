@@ -1,14 +1,13 @@
 package de.md5lukas.waypoints.util
 
 import org.bukkit.ChatColor
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 import kotlin.math.max
 import kotlin.math.min
 
-private val minecraftUsernamePattern = Pattern.compile("^\\w{3,16}$")
-private val aotVariablePattern = Pattern.compile("\\$\\[(\\w+)]")
-private val runtimeVariablePattern = Pattern.compile("\\$\\{(\\w+)}")
+private val minecraftUsernamePattern = Regex("^\\w{3,16}$")
+private val nonWordCharacterRegex = Regex("\\W")
+private val aotVariablePattern = Regex("\\$\\[(\\w+)]")
+private val runtimeVariablePattern = Regex("\\$\\{(\\w+)}")
 
 fun String.translateColorCodes(): String = ChatColor.translateAlternateColorCodes('&', this)
 
@@ -20,12 +19,10 @@ fun String.runtimeReplace(map: Map<String, String>): String {
     return replace(runtimeVariablePattern, map)
 }
 
-fun String.isMinecraftUsername() = minecraftUsernamePattern.matcher(this).matches()
+fun String.isMinecraftUsername() = this.matches(minecraftUsernamePattern)
 
-private fun String.replace(pattern: Pattern, map: Map<String, String>): String {
-    return pattern.matcher(this).replaceAll {
-        Matcher.quoteReplacement(map[it.group(1)] ?: it.group(0))
-    }
+private fun String.replace(regex: Regex, map: Map<String, String>): String {
+    return regex.replace(this) { map[it.groupValues[1]] ?: it.groupValues[0] }
 }
 
 fun splitDescriptionStringToList(description: String): List<String> {
@@ -34,7 +31,7 @@ fun splitDescriptionStringToList(description: String): List<String> {
     val lines = ArrayList<String>()
     var lastColorCodes = ""
 
-    description.lineSequence().forEachIndexed { index, line ->
+    rawLines.forEachIndexed { index, line ->
         if (index == rawLines.size - 1 && line.trim().isEmpty()) {
             return@forEachIndexed
         }
@@ -52,3 +49,5 @@ fun String.loopingSubstring(size: Int, offset: Int): String {
 
     return substring(modOffset, min(length, modOffset + size)) + substring(0, overhang)
 }
+
+fun String.containsNonWordCharacter() = nonWordCharacterRegex in this

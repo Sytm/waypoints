@@ -8,7 +8,7 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.gui.GUIType
 import org.bukkit.Material
-import org.bukkit.entity.Player
+import org.bukkit.permissions.Permissible
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -38,7 +38,7 @@ class DeathFolderImpl(
             getInt(1)
         }!!
 
-    override fun getAmountVisibleForPlayer(player: Player): Int = amount
+    override fun getAmountVisibleForPlayer(permissible: Permissible): Int = amount
 
     override val folders: List<Folder> = emptyList()
     override val waypoints: List<Waypoint>
