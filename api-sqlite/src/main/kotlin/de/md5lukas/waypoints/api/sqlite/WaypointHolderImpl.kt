@@ -2,18 +2,17 @@ package de.md5lukas.waypoints.api.sqlite
 
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
+import de.md5lukas.jdbc.selectNotNull
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.api.Folder
-import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.api.WaypointHolder
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.event.FolderCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.gui.GUIType
+import de.md5lukas.waypoints.util.asSingletonList
 import de.md5lukas.waypoints.util.callEvent
 import org.bukkit.Location
-import org.bukkit.entity.Player
+import org.bukkit.permissions.Permissible
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -59,11 +58,11 @@ internal open class WaypointHolderImpl(
             getInt(1)
         }!!
 
-    override fun getWaypointsVisibleForPlayer(player: Player): Int =
+    override fun getWaypointsVisibleForPlayer(permissible: Permissible): Int =
         if (type == Type.PERMISSION) {
             dm.connection.select("SELECT permission FROM waypoints WHERE type = ?;", type.name) {
                 getString("permission")
-            }.count { player.hasPermission(it) }
+            }.count { permissible.hasPermission(it) }
         } else {
             waypointsAmount
         }
@@ -129,6 +128,94 @@ internal open class WaypointHolderImpl(
     ) {
         getInt(1) == 1
     } ?: false
+
+    override fun searchFolders(query: String, permissible: Permissible?): List<SearchResult<out Folder>> {
+        val (reducedQuery, taggedIndex) = prepareQuery(query)
+
+        return dm.connection.selectNotNull<Folder>(
+            "SELECT * FROM folders WHERE type = ? AND owner = ? AND name LIKE ? ESCAPE '!';",
+            type.name,
+            owner?.toString(),
+            "$reducedQuery%",
+        ) {
+            FolderImpl(dm, this).also {
+                if (permissible !== null && this@WaypointHolderImpl.type === Type.PERMISSION && it.getAmountVisibleForPlayer(permissible) == 0)
+                    return@selectNotNull null
+            }
+        }.tagDuplicateSearchResults(Folder::name, reducedQuery, taggedIndex)
+    }
+
+    override fun searchWaypoints(query: String, permissible: Permissible?): List<SearchResult<out Waypoint>> {
+        val typeString = type.name
+        val ownerString = owner?.toString()
+
+        val (reducedQuery, taggedIndex) = prepareQuery(query)
+
+        return if ('/' in reducedQuery) {
+            val result = reducedQuery.split('/', limit = 2)
+            val folder = "${result[0]}%"
+            val waypoint = "${result[1]}%"
+
+            dm.connection.selectNotNull<Waypoint>(
+                "SELECT * FROM waypoints WHERE type = ? AND owner IS ? AND name LIKE ? ESCAPE '!' AND folder IN (SELECT id FROM folders WHERE type = ? AND owner IS ? AND name LIKE ? ESCAPE '!');",
+                typeString,
+                ownerString,
+                waypoint,
+                typeString,
+                ownerString,
+                folder,
+            ) {
+                if (permissible !== null && this@WaypointHolderImpl.type === Type.PERMISSION && !permissible.hasPermission(getString("permission")))
+                    return@selectNotNull null
+
+                WaypointImpl(dm, this)
+            }
+        } else {
+            dm.connection.selectNotNull<Waypoint>(
+                "SELECT * FROM waypoints WHERE type = ? AND owner IS ? AND name LIKE ? ESCAPE '!';",
+                typeString,
+                ownerString,
+                "$reducedQuery%",
+            ) {
+                if (permissible !== null && this@WaypointHolderImpl.type === Type.PERMISSION && !permissible.hasPermission(getString("permission")))
+                    return@selectNotNull null
+
+                WaypointImpl(dm, this)
+            }
+        }.tagDuplicateSearchResults(Waypoint::fullPath, reducedQuery, taggedIndex)
+    }
+
+    private fun prepareQuery(query: String): Pair<String, Int?> {
+        val taggedIndex = query.substringAfterLast('#').toIntOrNull()
+
+        val reducedQuery = if (taggedIndex === null) {
+            query
+        } else {
+            query.substringBeforeLast('#')
+        }.replace("!", "!!").replace("%", "!%").replace("_", "!_")
+
+        return reducedQuery to taggedIndex
+    }
+
+    private fun <T> List<T>.tagDuplicateSearchResults(nameSelector: (T) -> String, reducedQuery: String, taggedIndex: Int?): List<SearchResult<out T>> {
+        return this.groupBy(nameSelector).flatMap { (name, tList) ->
+            if (taggedIndex !== null) {
+                if (name != reducedQuery) {
+                    return@flatMap emptyList()
+                }
+                tList.getOrNull(taggedIndex)?.let { t ->
+                    return@flatMap SearchResult(t, "$name#$taggedIndex").asSingletonList()
+                }
+            }
+            if (tList.size == 1) {
+                SearchResult(tList[0], name).asSingletonList()
+            } else {
+                tList.mapIndexed { index, t ->
+                    SearchResult(t, "$name#$index")
+                }
+            }
+        }
+    }
 
     override val guiType: GUIType
         get() = when (type) {

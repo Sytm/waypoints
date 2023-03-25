@@ -77,6 +77,10 @@ class WaypointImpl private constructor(
             field = value
             set("name", value)
         }
+    override val fullPath: String
+        get() = folder?.let {
+            "${it.name}/$name"
+        } ?: name
     override var description: String? = description
         set(value) {
             field = value

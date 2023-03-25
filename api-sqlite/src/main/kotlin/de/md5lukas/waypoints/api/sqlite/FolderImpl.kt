@@ -12,7 +12,7 @@ import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.util.callEvent
 import org.bukkit.Material
-import org.bukkit.entity.Player
+import org.bukkit.permissions.Permissible
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.*
@@ -60,11 +60,11 @@ internal class FolderImpl private constructor(
             getInt(1)
         }!!
 
-    override fun getAmountVisibleForPlayer(player: Player): Int =
+    override fun getAmountVisibleForPlayer(permissible: Permissible): Int =
         if (type == Type.PERMISSION) {
             dm.connection.select("SELECT permission FROM main.waypoints WHERE folder = ?;", id.toString()) {
                 getString("permission")
-            }.count { player.hasPermission(it) }
+            }.count { permissible.hasPermission(it) }
         } else {
             amount
         }

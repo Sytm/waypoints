@@ -1,13 +1,16 @@
 package de.md5lukas.waypoints.command
 
-import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.BeaconColor
 import de.md5lukas.waypoints.util.isLocationOutOfBounds
+import de.md5lukas.waypoints.util.searchWaypoints
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
+import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.arguments.StringArgument
 import dev.jorel.commandapi.kotlindsl.*
+import net.md_5.bungee.api.chat.ClickEvent
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
@@ -19,12 +22,15 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
     fun register() {
         val labelMap = Collections.singletonMap("label", "waypointsscript")
 
-        commandTree("waypointsscript", { it.hasPermission(WaypointsPermissions.COMMAND_SCRIPTING) }) {
+        commandTree("waypointsscript") {
+            withPermission(WaypointsPermissions.COMMAND_SCRIPTING)
+            withAliases("wps")
             anyExecutor { sender, _ ->
                 translations.COMMAND_SCRIPT_HELP_HEADER.send(sender)
                 translations.COMMAND_SCRIPT_HELP_DESELECT_WAYPOINT.send(sender, labelMap)
                 translations.COMMAND_SCRIPT_HELP_SELECT_WAYPOINT.send(sender, labelMap)
                 translations.COMMAND_SCRIPT_HELP_TEMPORARY_WAYPOINT.send(sender, labelMap)
+                translations.COMMAND_SCRIPT_HELP_UUID.send(sender, labelMap)
             }
             literalArgument("deselectWaypoint") {
                 playerArgument("player") {
@@ -37,20 +43,15 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
             }
             literalArgument("selectWaypoint") {
                 playerArgument("player") {
-                    stringArgument("waypoint-id") {
+                    uuidArgument("waypoint-id") {
                         anyExecutor { sender, args ->
                             val player = args[0] as Player
-                            val uuidString = args[1] as String
+                            val uuid = args[1] as UUID
 
-                            if (!UUIDUtils.isUUID(uuidString)) {
-                                translations.COMMAND_SCRIPT_INVALID_UUID.send(sender, Collections.singletonMap("uuid", uuidString))
-                                return@anyExecutor
-                            }
-
-                            val waypoint = plugin.api.getWaypointByID(UUID.fromString(uuidString))
+                            val waypoint = plugin.api.getWaypointByID(uuid)
 
                             if (waypoint == null) {
-                                translations.COMMAND_SCRIPT_SELECT_WAYPOINT_WAYPOINT_NOT_FOUND.send(sender, Collections.singletonMap("uuid", uuidString))
+                                translations.COMMAND_SCRIPT_SELECT_WAYPOINT_WAYPOINT_NOT_FOUND.send(sender, Collections.singletonMap("uuid", uuid.toString()))
                                 return@anyExecutor
                             }
 
@@ -96,6 +97,39 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                                         it.enable(player, it.temporaryWaypointTrackableOf(target, beaconColor))
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+            literalArgument("uuid") {
+                argument(
+                    GreedyStringArgument("query")
+                        .replaceSuggestions(WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true))
+                ) {
+                    anyExecutor { sender, args ->
+                        val result = searchWaypoints(plugin, sender, args[0] as String, true)
+                        if (result.isEmpty()) {
+                            translations.COMMAND_SCRIPT_UUID_NO_MATCH.send(sender)
+                        } else {
+                            translations.COMMAND_SCRIPT_UUID_HEADER.send(sender)
+                            result.forEach {
+                                val components = TextComponent.fromLegacyText(
+                                    translations.COMMAND_SCRIPT_UUID_RESULT.withReplacements(
+                                        mapOf(
+                                            "name" to it.name,
+                                            "folder" to (it.folder?.name ?: "null"),
+                                        )
+                                    )
+                                )
+
+                                val clickEvent = ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, it.id.toString())
+
+                                components.forEach { component ->
+                                    component.clickEvent = clickEvent
+                                }
+
+                                sender.spigot().sendMessage(*components)
                             }
                         }
                     }

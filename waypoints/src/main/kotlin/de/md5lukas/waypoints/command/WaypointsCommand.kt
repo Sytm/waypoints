@@ -3,10 +3,8 @@ package de.md5lukas.waypoints.command
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import de.md5lukas.waypoints.util.createWaypointPermission
-import de.md5lukas.waypoints.util.createWaypointPrivate
-import de.md5lukas.waypoints.util.createWaypointPublic
-import de.md5lukas.waypoints.util.humanReadableByteCountBin
+import de.md5lukas.waypoints.util.*
+import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.arguments.LiteralArgument.of
 import dev.jorel.commandapi.kotlindsl.*
 import org.bukkit.Location
@@ -22,6 +20,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
         val labelMap = Collections.singletonMap("label", "waypoints")
 
         commandTree("waypoints") {
+            withPermission(WaypointsPermissions.COMMAND_PERMISSION)
+            withAliases("wp")
             playerExecutor { player, _ ->
                 WaypointsGUI(plugin, player, player.uniqueId)
             }
@@ -38,6 +38,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     translations.COMMAND_HELP_HELP.send(sender, labelMap)
 
                     if (sender is Player) {
+                        translations.COMMAND_HELP_SELECT.send(sender)
+                        translations.COMMAND_HELP_DESELECT.send(sender)
                         if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
                             translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
                         }
@@ -62,6 +64,33 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
                         translations.COMMAND_HELP_RELOAD.send(sender, labelMap)
                     }
+                }
+            }
+            literalArgument("select") {
+                argument(
+                    GreedyStringArgument("name")
+                        .replaceSuggestions(WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true))
+                ) {
+                    playerExecutor { player, args ->
+                        val waypoint = searchWaypoint(plugin, player, args[0] as String, true)
+                        if (waypoint == null) {
+                            translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
+                        } else {
+                            plugin.api.pointerManager.enable(player, waypoint)
+                            translations.COMMAND_SELECT_SELECTED.send(player, mapOf("name" to waypoint.name))
+                        }
+                    }
+                    anyExecutor { sender, _ ->
+                        translations.COMMAND_NOT_A_PLAYER.send(sender)
+                    }
+                }
+            }
+            literalArgument("deselect") {
+                playerExecutor { player, _ ->
+                    translations.COMMAND_DESELECT_DONE.send(player)
+                }
+                anyExecutor { sender, _ ->
+                    translations.COMMAND_NOT_A_PLAYER.send(sender)
                 }
             }
             requirement(of("set"), { it.hasPermission(WaypointsPermissions.MODIFY_PRIVATE) }) {
@@ -110,8 +139,12 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     playerExecutor { player, args ->
                         val location = args[0] as Location
 
-                        plugin.api.pointerManager.let {
-                            it.enable(player, it.temporaryWaypointTrackableOf(location))
+                        if (isLocationOutOfBounds(plugin, location)) {
+                            translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
+                        } else {
+                            plugin.api.pointerManager.let {
+                                it.enable(player, it.temporaryWaypointTrackableOf(location))
+                            }
                         }
                     }
                     anyExecutor { sender, _ ->

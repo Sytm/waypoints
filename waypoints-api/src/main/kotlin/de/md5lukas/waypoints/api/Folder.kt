@@ -2,7 +2,7 @@ package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import org.bukkit.Material
-import org.bukkit.entity.Player
+import org.bukkit.permissions.Permissible
 import java.util.*
 
 interface Folder : GUIFolder {
@@ -41,10 +41,10 @@ interface Folder : GUIFolder {
      * The amount of waypoints the player has permission to see in this folder if the type is [Type.PERMISSION].
      * Otherwise, identical to [amount]
      *
-     * @param player The player to check the permissions against
+     * @param permissible The permissible to check the permissions against
      * @return The amount of waypoints visible for the player
      */
-    fun getAmountVisibleForPlayer(player: Player): Int
+    fun getAmountVisibleForPlayer(permissible: Permissible): Int
 
     override val folders: List<Folder>
 

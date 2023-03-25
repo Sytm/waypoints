@@ -30,6 +30,11 @@ interface Waypoint : GUIDisplayable, StaticTrackable {
     override var name: String
 
     /**
+     * The name of the waypoint, optionally prefixed with the folder name
+     */
+    val fullPath: String
+
+    /**
      * The description of the waypoint, null if none has been provided
      */
     var description: String?

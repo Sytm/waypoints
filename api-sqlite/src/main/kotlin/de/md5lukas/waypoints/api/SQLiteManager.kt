@@ -150,7 +150,7 @@ class SQLiteManager(
                   PRIMARY KEY (waypointId, key),
                   FOREIGN KEY (waypointId) REFERENCES waypoints(id) ON DELETE CASCADE
                 );
-                """.trimIndent()
+                """
             )
             update(
                 """
