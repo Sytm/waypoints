@@ -87,6 +87,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
             }
             literalArgument("deselect") {
                 playerExecutor { player, _ ->
+                    plugin.api.pointerManager.disable(player)
                     translations.COMMAND_DESELECT_DONE.send(player)
                 }
                 anyExecutor { sender, _ ->
