@@ -14,18 +14,18 @@ command:
   script:
     help:
       header: "$[scriptPrefix] &7&n帮助界面"
-      deselectWaypoint: "&7 - &e${label} deselectWaypoint <玩家名称> &7&l|&r&7 为玩家删除选择的路径点"
-      selectWaypoint: "&7 - &e${label} selectWaypoint <玩家名称> <Waypoint-UUID> &7&l|&r&7 为玩家设置一个将要去到的路径点"
+      deselectWaypoint: "&7 - &e/${label} deselectWaypoint <玩家名称> &7&l|&r&7 为玩家删除选择的路径点"
+      selectWaypoint: "&7 - &e/${label} selectWaypoint <玩家名称> <Waypoint-UUID> &7&l|&r&7 为玩家设置一个将要去到的路径点"
 
     deselectWaypoint:
       wrongUsage: |
         $[scriptPrefix] &c你至少需要在参数中提供一个在线玩家的名称. 例如:
-        &a${label} deselectWaypoint Sytm
+        &a/${label} deselectWaypoint Sytm
 
     selectWaypoint:
       wrongUsage: |
         $[scriptPrefix] &c你至少需要在参数中提供一个在线玩家的名称和路径点的 UUID 才可为他选择路径点. Example:
-        &a${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
+        &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &c找不到 UUID 为 &e${uuid}&c 的路径点."
 
@@ -34,38 +34,38 @@ command:
 
   help:
     header: "$[prefix] &7&n帮助界面"
-    gui: "&7 - &e${label} &7&l|&r&7 打开路径点 GUI"
-    help: "&7 - &e${label} help &7&l|&r&7 显示该帮助界面"
+    gui: "&7 - &e/${label} &7&l|&r&7 打开路径点 GUI"
+    help: "&7 - &e/${label} help &7&l|&r&7 显示该帮助界面"
     set:
-      private: "&7 - &e${label} set <路径点名称> &7&l|&r&7 创建一个新的路径点"
-      public: "&7 - &e${label} setPublic <路径点名称> &7&l|&r&7 创建一个新的公开路径点"
-      permission: "&7 - &e${label} setPermission <Permission> <路径点名称> &7&l|&r&7 创建一个新的权限路径点"
-      temporary: "&7 - &e${label} setTemporary <X> <Y> <Z> &7&l|&r&7 标记一个未保存的路径点"
-    other: "&7 - &e${label} other <Name|UUID> &7&l|&r&7 查看其他玩家的路径点"
-    statistics: "&7 - &e${label} statistics &7&l|&r&7 查看数据库统计信息"
-    import: "&7 - &e${label} import &7&l|&r&7 从 Waypoints V2 版本导入路径点数据"
-    reload: "&7 - &e${label} reload &7&l|&r&7 重载配置文件"
+      private: "&7 - &e/${label} set <路径点名称> &7&l|&r&7 创建一个新的路径点"
+      public: "&7 - &e/${label} setPublic <路径点名称> &7&l|&r&7 创建一个新的公开路径点"
+      permission: "&7 - &e/${label} setPermission <Permission> <路径点名称> &7&l|&r&7 创建一个新的权限路径点"
+      temporary: "&7 - &e/${label} setTemporary <X> <Y> <Z> &7&l|&r&7 标记一个未保存的路径点"
+    other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 查看其他玩家的路径点"
+    statistics: "&7 - &e/${label} statistics &7&l|&r&7 查看数据库统计信息"
+    import: "&7 - &e/${label} import &7&l|&r&7 从 Waypoints V2 版本导入路径点数据"
+    reload: "&7 - &e/${label} reload &7&l|&r&7 重载配置文件"
 
   set:
     wrongUsage:
       private: |
         $[prefix] &c你需要为新路径点指定一个名称. Example:
-        &a${label} set My Home
+        &a/${label} set My Home
       public: |
         $[prefix] &c你需要为新公共路径点指定一个名称. Example:
-        &a${label} setPublic Spawn
+        &a/${label} setPublic Spawn
       permission: |
         $[prefix] &c你需要为新权限路径点指定一个名称和所需的权限. Example:
-        &a${label} setPermission ranks.vip.secretHideout Secret Hideout
+        &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
       temporary: |
         $[prefix] &c你需要为新临时路径点指定一个坐标. Example:
-        &a${label} setTemporary 196 93 -187
+        &a/${label} setTemporary 196 93 -187
 
   other:
     wrongUsage: |
       $[prefix] &c你需要提供玩家的名称和 UUID 来查看他们的路径点. Example:
-      &a${label} other Sytm
-      &a${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
+      &a/${label} other Sytm
+      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
     notFound:
       uuid: "$[prefix] &c无效的玩家名称."
       name: "$[prefix] &c无效的UUID."
