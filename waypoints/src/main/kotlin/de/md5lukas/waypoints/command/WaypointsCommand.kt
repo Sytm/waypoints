@@ -38,8 +38,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     translations.COMMAND_HELP_HELP.send(sender, labelMap)
 
                     if (sender is Player) {
-                        translations.COMMAND_HELP_SELECT.send(sender)
-                        translations.COMMAND_HELP_DESELECT.send(sender)
+                        translations.COMMAND_HELP_SELECT.send(sender, labelMap)
+                        translations.COMMAND_HELP_DESELECT.send(sender, labelMap)
                         if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
                             translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
                         }
