@@ -74,7 +74,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                 GUIItem(wpGUI.translations.WAYPOINT_GET_UUID.item) {
                     val messageString = wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements(Collections.singletonMap("name", waypoint.name))
 
-                    val clickEvent = ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, waypoint.id.toString())
+                    val clickEvent = ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, waypoint.id.toString())
 
                     val components = TextComponent.fromLegacyText(messageString)
                     components.forEach { component ->

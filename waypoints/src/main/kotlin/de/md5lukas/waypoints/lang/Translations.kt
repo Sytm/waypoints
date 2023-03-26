@@ -9,28 +9,27 @@ class Translations(
     tl: TranslationLoader
 ) {
     val COMMAND_NOT_A_PLAYER = Translation(tl, "command.notAPlayer")
-    val COMMAND_NO_PERMISSION = Translation(tl, "command.noPermission")
-    val COMMAND_NOT_FOUND = Translation(tl, "command.notFound")
 
     val COMMAND_SCRIPT_HELP_HEADER = Translation(tl, "command.script.help.header")
     val COMMAND_SCRIPT_HELP_DESELECT_WAYPOINT = Translation(tl, "command.script.help.deselectWaypoint")
     val COMMAND_SCRIPT_HELP_SELECT_WAYPOINT = Translation(tl, "command.script.help.selectWaypoint")
     val COMMAND_SCRIPT_HELP_TEMPORARY_WAYPOINT = Translation(tl, "command.script.help.temporaryWaypoint")
+    val COMMAND_SCRIPT_HELP_UUID = Translation(tl, "command.script.help.uuid")
 
-    val COMMAND_SCRIPT_DESELECT_WAYPOINT_WRONG_USAGE = Translation(tl, "command.script.deselectWaypoint.wrongUsage")
-
-    val COMMAND_SCRIPT_SELECT_WAYPOINT_WRONG_USAGE = Translation(tl, "command.script.selectWaypoint.wrongUsage")
     val COMMAND_SCRIPT_SELECT_WAYPOINT_WAYPOINT_NOT_FOUND = Translation(tl, "command.script.selectWaypoint.waypointNotFound")
 
-    val COMMAND_SCRIPT_TEMPORARY_WAYPOINT_WRONG_USAGE = Translation(tl, "command.script.temporaryWaypoint.wrongUsage")
     val COMMAND_SCRIPT_TEMPORARY_WAYPOINT_BEACON_COLOR_NOT_FOUND = Translation(tl, "command.script.temporaryWaypoint.beaconColorNotFound")
 
-    val COMMAND_SCRIPT_PLAYER_NOT_FOUND = Translation(tl, "commands.script.playerNotFound")
-    val COMMAND_SCRIPT_INVALID_UUID = Translation(tl, "commands.script.invalidUuid")
+    val COMMAND_SCRIPT_UUID_NO_MATCH = Translation(tl, "command.script.uuid.noMatch")
+    val COMMAND_SCRIPT_UUID_HEADER = Translation(tl, "command.script.uuid.header")
+    val COMMAND_SCRIPT_UUID_RESULT = Translation(tl, "command.script.uuid.result")
 
     val COMMAND_HELP_HEADER = Translation(tl, "command.help.header")
     val COMMAND_HELP_GUI = Translation(tl, "command.help.gui")
     val COMMAND_HELP_HELP = Translation(tl, "command.help.help")
+    val COMMAND_HELP_SELECT = Translation(tl, "command.help.select")
+    val COMMAND_HELP_DESELECT = Translation(tl, "command.help.deselect")
+    val COMMAND_HELP_TELEPORT = Translation(tl, "command.help.teleport")
     val COMMAND_HELP_SET_PRIVATE = Translation(tl, "command.help.set.private")
     val COMMAND_HELP_SET_PUBLIC = Translation(tl, "command.help.set.public")
     val COMMAND_HELP_SET_PERMISSION = Translation(tl, "command.help.set.permission")
@@ -39,17 +38,15 @@ class Translations(
     val COMMAND_HELP_STATISTICS = Translation(tl, "command.help.statistics")
     val COMMAND_HELP_RELOAD = Translation(tl, "command.help.reload")
 
-    val COMMAND_SET_WRONG_USAGE_PRIVATE = Translation(tl, "command.set.wrongUsage.private")
-    val COMMAND_SET_WRONG_USAGE_PUBLIC = Translation(tl, "command.set.wrongUsage.public")
-    val COMMAND_SET_WRONG_USAGE_PERMISSION = Translation(tl, "command.set.wrongUsage.permission")
-    val COMMAND_SET_WRONG_USAGE_TEMPORARY = Translation(tl, "command.set.wrongUsage.temporary")
+    val COMMAND_SEARCH_PREFIX_PUBLIC = Translation(tl, "command.search.prefix.public")
+    val COMMAND_SEARCH_PREFIX_PERMISSION = Translation(tl, "command.search.prefix.permission")
+    val COMMAND_SEARCH_NOT_FOUND_WAYPOINT = Translation(tl, "command.search.notFound.waypoint")
 
-    val COMMAND_OTHER_WRONG_USAGE = Translation(tl, "command.other.wrongUsage")
-    val COMMAND_OTHER_NOT_FOUND_UUID = Translation(tl, "command.other.notFound.uuid")
-    val COMMAND_OTHER_NOT_FOUND_NAME = Translation(tl, "command.other.notFound.name")
-    val COMMAND_OTHER_NOT_UUID_OR_NAME = Translation(tl, "command.other.notUuidOrName")
+    val COMMAND_SELECT_SELECTED = Translation(tl, "command.select.selected")
+
+    val COMMAND_DESELECT_DONE = Translation(tl, "command.deselect.done")
+
     val COMMAND_OTHER_PLAYER_NO_WAYPOINTS = Translation(tl, "command.other.playerNoWaypoints")
-    val COMMAND_OTHER_NOT_A_NUMBER = Translation(tl, "command.other.notANumber")
 
     val COMMAND_STATISTICS_MESSAGE = Translation(tl, "command.statistics.message")
 
@@ -84,8 +81,6 @@ class Translations(
         it to Translation(tl, "text.beaconColors.${it.name.lowercase()}")
     }
 
-    val MESSAGE_FEATURE_DISABLED = Translation(tl, "message.featureDisabled")
-
     val WAYPOINT_CREATE_WORLD_UNAVAILABLE = Translation(tl, "message.waypoint.create.worldUnavailable")
     val WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS = Translation(tl, "message.waypoint.create.coordinates.outOfBounds")
     val WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT = Translation(tl, "message.waypoint.create.coordinates.invalidFormat")
@@ -116,6 +111,7 @@ class Translations(
     val FOLDER_CREATE_SUCCESS_PERMISSION = Translation(tl, "message.folder.createSuccess.permission")
 
     val MESSAGE_TELEPORT_ON_COOLDOWN = Translation(tl, "message.teleport.onCooldown")
+    val MESSAGE_TELEPORT_NOT_ALLOWED = Translation(tl, "message.teleport.notAllowed")
     val MESSAGE_TELEPORT_NOT_ENOUGH_XP = Translation(tl, "message.teleport.notEnough.xp")
     val MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE = Translation(tl, "message.teleport.notEnough.balance")
     val MESSAGE_TELEPORT_STAND_STILL_NOTICE = Translation(tl, "message.teleport.standStill.notice")

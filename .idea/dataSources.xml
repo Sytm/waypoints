@@ -11,20 +11,12 @@
         <property name="foreign_keys" value="true" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="waypoints-live" uuid="468a5885-f0c2-4852-ae41-ebef5c6aca56">
+    <data-source source="LOCAL" name="waypoints-live" uuid="f1cdb784-ccef-47f9-87a2-7107fbcbfe3a">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/../servers/paper19/plugins/Waypoints/waypoints.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
-      <driver-properties>
-        <property name="foreign_keys" value="true" />
-      </driver-properties>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.34.0/sqlite-jdbc-3.34.0.jar</url>
-        </library>
-      </libraries>
     </data-source>
   </component>
 </project>

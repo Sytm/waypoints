@@ -9,6 +9,8 @@ api-version: ${apiVersion}
 
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
+  - dev.jorel:commandapi-shade:${commandApiVersion}
+  - dev.jorel:commandapi-kotlin:${commandApiVersion}
 
 softdepend:
   - Vault
@@ -17,14 +19,6 @@ softdepend:
   - squaremap
   - BlueMap
 
-commands:
-  waypoints:
-    aliases:
-      - wp
-  waypointsscript:
-    permission: waypoints.command.scripting
-    aliases:
-      - wps
 
 permissions:
   waypoints.*:

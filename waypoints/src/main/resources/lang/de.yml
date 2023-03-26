@@ -8,8 +8,6 @@ worlds:
 
 command:
   notAPlayer: "$[prefix] &cDu musst ein Spieler sein um diesen Befehl benutzen zu können."
-  noPermission: "$[prefix] &cDu hast nicht die Berechtigung diese Aktion auszuführen."
-  notFound: "$[prefix] &cDer eingegebene Befehl konnte nicht gefunden werden."
 
   script:
     help:
@@ -17,32 +15,27 @@ command:
       deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Spieler-Name> &7&l|&r&7 Entferne die Wegpunkt-Auswahl von einem Spieler"
       selectWaypoint: "&7 - &e/${label} selectWaypoint <Spieler-Name> <Wegpunkt-UUID> &7&l|&r&7 Setzte die Wegpunkt-Auswahl von einem Spieler auf diesen Wegpunkt"
       temporaryWaypoint: "&7 - &e/${label} temporaryWaypoint <Spieler-Name> <X> <Y> <Z> [Leuchtfeuerfarbe] &7&l|&r&7 Erstelle einen temporären Wegpunkt für den Spieler"
-
-    deselectWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &cDu musst den Namen von dem Spieler von dem du die Wegpunkt-Auswahl entfernen willst angeben. Beispiel:
-        &a/${label} deselectWaypoint Sytm
+      uuid: "&7 - &e/${label} uuid <Name> &7&l|&r&7 Suche nach Wegpunkten um deren UUID zu erhalten"
 
     selectWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &cDu musst den Namen von dem Spieler und die UUID von einem Wegpunkt angeben um die Wegpunkt-Auswahl setzten zu können. Beispiel:
-        &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cKonnte keinen Wegpunkt mit der UUID &e${uuid}&c finden."
 
     temporaryWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &cDu musst den Namen von dem Spieler und die Koordinaten des Wegpunkts angeben. Die Leuchtfeuerfarbe ist optional. Beispiel:
-        &a/${label} temporaryWaypoint Sytm 100 200 300 RED
       beaconColorNotFound: "$[scriptPrefix] &cDie angegebene Leuchtfeuerfarbe konnte nicht gefunden werden."
 
-    playerNotFound: "$[scriptPrefix] &cKonnte keinen Spieler der Online ist mit dem Namen &e${name}&c finden."
-    invalidUuid: "$[scriptPrefix] &cDie UUID &e${uuid}&c ist in einem nicht gültigen Format."
+    uuid:
+      noMatch: "$[scriptPrefix] &cEs konnten keine Wegpunkte mit dieser Suchanfrage gefunden werden."
+      header: "$[scriptPrefix] &7Wegpunkte: (Drücke auf ein Ergebnis um die UUID in die Zwischenablage zu kopieren)"
+      result: "&7 - Name: &e${name}&7 Ordner: &e${folder}"
 
   help:
     header: "$[prefix] &7&nHilfe"
     gui: "&7 - &e/${label} &7&l|&r&7 Öffne die Wegpunkt GUI"
     help: "&7 - &e/${label} help &7&l|&r&7 Zeigt diese Hilfe Nachricht"
+    select: "&7 - &e/${label} select <Name> &7&l|&r&7 Wählt den Wegpunkt aus"
+    deselect: "&7 - &e/${label} deselect &7&l|&r&7 Die Wegpunkt-Auswahl wird wieder entfernt"
+    teleport: "&7 - &e/${label} teleport <Name> &7&l|&r&7 Teleportiere dich zum Wegpunkt"
     set:
       private: "&7 - &e/${label} set <Name> &7&l|&r&7 Erstelle einen neuen Wegpunkt"
       public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Erstelle einen neuen öffentlichen Wegpunkt"
@@ -53,32 +46,21 @@ command:
     import: "&7 - &e/${label} import &7&l|&r&7 Importiere Wegpunkte von Waypoints V2"
     reload: "&7 - &e/${label} reload &7&l|&r&7 Lädt die Konfiguration neu"
 
-  set:
-    wrongUsage:
-      private: |
-        $[prefix] &cDu musst einen Namen angeben um einen Wegpunkt zu erstellen. Beispiel:
-        &a/${label} set Mein Zuhause
-      public: |
-        $[prefix] &cDu musst einen Namen angeben um einen öffentlichen Wegpunkt zu erstellen. Beispiel:
-        &a/${label} setPublic Spawn
-      permission: |
-        $[prefix] &cDu musst eine Berechtigung und Namen angeben um einen eingeschränkten Wegpunkt zu erstellen. Beispiel:
-        &a/${label} setPermission ranks.vip.geheimVersteck Geheimes Versteck
-      temporary: |
-        $[prefix] &cDu musst koordinaten angeben um einen temporären Wegpunkt zu erstellen. Beispiel:
-        &a/${label} setTemporary 196 93 -187
+  search:
+    prefix:
+      public: "Öffentlich"
+      permission: "Eingeschränkt"
+    notFound:
+      waypoint: "$[prefix] &cEs konnte kein Wegpunkt mit dieser Suchanfrage gefunden werden."
+
+    select:
+      selected: "$[prefix] &7Wegpunkt &e${name} &7ausgewählt."
+
+    deselect:
+      done: "$[prefix] &7Aktuellen Wegpunkt abgewählt."
 
   other:
-    wrongUsage: |
-      $[prefix] &cUm die Wegpunkte von jemand Anderem anzusehen musst du entweder seinen Namen oder seine UUID angeben. Beispiel:
-      &a/${label} other Sytm
-      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
-    notFound:
-      uuid: "$[prefix] &cEin Spieler mit dieser UUID konnte nicht gefunden werden."
-      name: "$[prefix] &cEin Spieler mit diesem Namen konnte nicht gefunden werden."
-    notUuidOrName: "$[prefix] &cDer angegebene Identifikator ist weder eine Minecraft Name noch eine UUID."
     playerNoWaypoints: "$[prefix] &cDer angegebene Spieler besitzt keine Wegpunkte."
-    notANumber: "$[prefix] &cDie angegebenen Werte konnten nicht als Zahlen gelesen werden."
 
   statistics:
     # dbFileSize: Size of the database in SI Units
@@ -156,8 +138,6 @@ text:
     purple: "&7Violett"
 
 message:
-  featureDisabled: "$[prefix] &cDie Funktion die du benutzten möchtest wurden deaktiviert."
-
   waypoint:
     create:
       worldUnavailable: "$[prefix] &cIn Welt in der du dich befindest sind Wegpunkte nicht verfügbar."
@@ -196,6 +176,7 @@ message:
   teleport:
     # remainingCooldown: Time left until player can teleport again
     onCooldown: "$[prefix] &cDu kannst für &e${remainingCooldown}&c nicht teleportieren."
+    notAllowed: "$[prefix] &cDu darfst dich nicht zu diesem Wegpunkt teleportieren."
     notEnough:
       # currentLevel: Level of the player
       # requiredLevel: Level required for teleportation
