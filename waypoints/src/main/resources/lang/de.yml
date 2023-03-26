@@ -14,27 +14,27 @@ command:
   script:
     help:
       header: "$[scriptPrefix] &7&nHilfe"
-      deselectWaypoint: "&7 - &e/waypointsscript deselectWaypoint <Spieler-Name> &7&l|&r&7 Entferne die Wegpunkt-Auswahl von einem Spieler"
-      selectWaypoint: "&7 - &e/waypointsscript selectWaypoint <Spieler-Name> <Wegpunkt-UUID> &7&l|&r&7 Setzte die Wegpunkt-Auswahl von einem Spieler auf diesen Wegpunkt"
-      temporaryWaypoint: "&7 - &e/waypointsscript temporaryWaypoint <Spieler-Name> <X> <Y> <Z> [Leuchtfeuerfarbe] &7&l|&r&7 Erstelle einen temporären Wegpunkt für den Spieler"
-      uuid: "&7 - &e/waypointsscript uuid <Name> &7&l|&r&7 Suche nach Wegpunkten um deren UUID zu erhalten"
+      deselectWaypoint: "&7 - &e${label} deselectWaypoint <Spieler-Name> &7&l|&r&7 Entferne die Wegpunkt-Auswahl von einem Spieler"
+      selectWaypoint: "&7 - &e${label} selectWaypoint <Spieler-Name> <Wegpunkt-UUID> &7&l|&r&7 Setzte die Wegpunkt-Auswahl von einem Spieler auf diesen Wegpunkt"
+      temporaryWaypoint: "&7 - &e${label} temporaryWaypoint <Spieler-Name> <X> <Y> <Z> [Leuchtfeuerfarbe] &7&l|&r&7 Erstelle einen temporären Wegpunkt für den Spieler"
+      uuid: "&7 - &e${label} uuid <Name> &7&l|&r&7 Suche nach Wegpunkten um deren UUID zu erhalten"
 
     deselectWaypoint:
       wrongUsage: |
         $[scriptPrefix] &cDu musst den Namen von dem Spieler von dem du die Wegpunkt-Auswahl entfernen willst angeben. Beispiel:
-        &a/waypointsscript deselectWaypoint Sytm
+        &a${label} deselectWaypoint Sytm
 
     selectWaypoint:
       wrongUsage: |
         $[scriptPrefix] &cDu musst den Namen von dem Spieler und die UUID von einem Wegpunkt angeben um die Wegpunkt-Auswahl setzten zu können. Beispiel:
-        &a/waypointsscript selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
+        &a${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cKonnte keinen Wegpunkt mit der UUID &e${uuid}&c finden."
 
     temporaryWaypoint:
       wrongUsage: |
         $[scriptPrefix] &cDu musst den Namen von dem Spieler und die Koordinaten des Wegpunkts angeben. Die Leuchtfeuerfarbe ist optional. Beispiel:
-        &a/waypointsscript temporaryWaypoint Sytm 100 200 300 RED
+        &a${label} temporaryWaypoint Sytm 100 200 300 RED
       beaconColorNotFound: "$[scriptPrefix] &cDie angegebene Leuchtfeuerfarbe konnte nicht gefunden werden."
 
     uuid:
@@ -47,19 +47,19 @@ command:
 
   help:
     header: "$[prefix] &7&nHilfe"
-    gui: "&7 - &e/waypoints &7&l|&r&7 Öffne die Wegpunkt GUI"
-    help: "&7 - &e/waypoints help &7&l|&r&7 Zeigt diese Hilfe Nachricht"
-    select: "&7 - &e/waypoints select <Name> &7&l|&r&7 Wählt den ersten Wegpunkt aus auf den die Suche zutrifft"
-    deselect: "&7 - &e/waypoints deselect &7&l|&r&7 Die Wegpunkt-Auswahl wird wieder entfernt"
+    gui: "&7 - &e${label} &7&l|&r&7 Öffne die Wegpunkt GUI"
+    help: "&7 - &e${label} help &7&l|&r&7 Zeigt diese Hilfe Nachricht"
+    select: "&7 - &e${label} select <Name> &7&l|&r&7 Wählt den ersten Wegpunkt aus auf den die Suche zutrifft"
+    deselect: "&7 - &e${label} deselect &7&l|&r&7 Die Wegpunkt-Auswahl wird wieder entfernt"
     set:
-      private: "&7 - &e/waypoints set <Name> &7&l|&r&7 Erstelle einen neuen Wegpunkt"
-      public: "&7 - &e/waypoints setPublic <Name> &7&l|&r&7 Erstelle einen neuen öffentlichen Wegpunkt"
-      permission: "&7 - &e/waypoints setPermission <Permission> <Name> &7&l|&r&7 Erstelle einen neuen eingeschränkten Wegpunkt"
-      temporary: "&7 - &e/waypoints setTemporary <X> <Y> <Z> &7&l|&r&7 Erstelle einen Wegpunkt der nicht gespeichert wird"
-    other: "&7 - &e/waypoints other <Name|UUID> &7&l|&r&7 Sieh dir die Wegpunkte von einem anderen Spieler an"
-    statistics: "&7 - &e/waypoints statistics &7&l|&r&7 Sieh dir die Statistik der Datenbank an"
-    import: "&7 - &e/waypoints import &7&l|&r&7 Importiere Wegpunkte von Waypoints V2"
-    reload: "&7 - &e/waypoints reload &7&l|&r&7 Lädt die Konfiguration neu"
+      private: "&7 - &e${label} set <Name> &7&l|&r&7 Erstelle einen neuen Wegpunkt"
+      public: "&7 - &e${label} setPublic <Name> &7&l|&r&7 Erstelle einen neuen öffentlichen Wegpunkt"
+      permission: "&7 - &e${label} setPermission <Permission> <Name> &7&l|&r&7 Erstelle einen neuen eingeschränkten Wegpunkt"
+      temporary: "&7 - &e${label} setTemporary <X> <Y> <Z> &7&l|&r&7 Erstelle einen Wegpunkt der nicht gespeichert wird"
+    other: "&7 - &e${label} other <Name|UUID> &7&l|&r&7 Sieh dir die Wegpunkte von einem anderen Spieler an"
+    statistics: "&7 - &e${label} statistics &7&l|&r&7 Sieh dir die Statistik der Datenbank an"
+    import: "&7 - &e${label} import &7&l|&r&7 Importiere Wegpunkte von Waypoints V2"
+    reload: "&7 - &e${label} reload &7&l|&r&7 Lädt die Konfiguration neu"
 
   search:
     prefix:
@@ -80,22 +80,22 @@ command:
     wrongUsage:
       private: |
         $[prefix] &cDu musst einen Namen angeben um einen Wegpunkt zu erstellen. Beispiel:
-        &a/waypoints set Mein Zuhause
+        &a${label} set Mein Zuhause
       public: |
         $[prefix] &cDu musst einen Namen angeben um einen öffentlichen Wegpunkt zu erstellen. Beispiel:
-        &a/waypoints setPublic Spawn
+        &a${label} setPublic Spawn
       permission: |
         $[prefix] &cDu musst eine Berechtigung und Namen angeben um einen eingeschränkten Wegpunkt zu erstellen. Beispiel:
-        &a/waypoints setPermission ranks.vip.geheimVersteck Geheimes Versteck
+        &a${label} setPermission ranks.vip.geheimVersteck Geheimes Versteck
       temporary: |
         $[prefix] &cDu musst koordinaten angeben um einen temporären Wegpunkt zu erstellen. Beispiel:
-        &a/waypoints setTemporary 196 93 -187
+        &a${label} setTemporary 196 93 -187
 
   other:
     wrongUsage: |
       $[prefix] &cUm die Wegpunkte von jemand Anderem anzusehen musst du entweder seinen Namen oder seine UUID angeben. Beispiel:
-      &a/waypoints other Sytm
-      &a/waypoints other 68f22021-732e-4afe-9cf5-6906f07a41db
+      &a${label} other Sytm
+      &a${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
     notFound:
       uuid: "$[prefix] &cEin Spieler mit dieser UUID konnte nicht gefunden werden."
       name: "$[prefix] &cEin Spieler mit diesem Namen konnte nicht gefunden werden."
