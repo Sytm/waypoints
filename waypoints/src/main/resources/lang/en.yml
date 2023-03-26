@@ -14,27 +14,27 @@ command:
   script:
     help:
       header: "$[scriptPrefix] &7&nHelp"
-      deselectWaypoint: "&7 - &e${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remove the waypoint selection of a player"
-      selectWaypoint: "&7 - &e${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Set the waypoint selection of a player to that waypoint"
-      temporaryWaypoint: "&7 - &e${label} temporaryWaypoint <Player-Name> <X> <Y> <Z> [Beacon-Color] &7&l|&r&7 Create a temporary waypoint for the player"
-      uuid: "&7 - &e${label} uuid <Name> &7&l|&r&7 Search for waypoints using the query to get their UUID"
+      deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remove the waypoint selection of a player"
+      selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Set the waypoint selection of a player to that waypoint"
+      temporaryWaypoint: "&7 - &e/${label} temporaryWaypoint <Player-Name> <X> <Y> <Z> [Beacon-Color] &7&l|&r&7 Create a temporary waypoint for the player"
+      uuid: "&7 - &e/${label} uuid <Name> &7&l|&r&7 Search for waypoints using the query to get their UUID"
 
     deselectWaypoint:
       wrongUsage: |
         $[scriptPrefix] &cYou need to provide the name of an online player to remove the waypoint selection from. Example:
-        &a${label} deselectWaypoint Sytm
+        &a/${label} deselectWaypoint Sytm
 
     selectWaypoint:
       wrongUsage: |
         $[scriptPrefix] &cYou need to provide the name of an online player and the UUID of an waypoint to set the selection of a player. Example:
-        &a${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
+        &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cCould not find a waypoint with the UUID &e${uuid}&c."
 
     temporaryWaypoint:
       wrongUsage: |
         $[scriptPrefix] &cYou need to provide the name of an online player and the coordinates of the target location. The beacon color is optional. Example:
-        &a${label} temporaryWaypoint Sytm 100 200 300 RED
+        &a/${label} temporaryWaypoint Sytm 100 200 300 RED
       beaconColorNotFound: "$[scriptPrefix] &cThe provided beacon color could not be found."
 
     uuid:
@@ -47,20 +47,20 @@ command:
 
   help:
     header: "$[prefix] &7&nHelp"
-    gui: "&7 - &e${label} &7&l|&r&7 Open the Waypoints GUI"
-    help: "&7 - &e${label} help &7&l|&r&7 Shows this help message"
-    select: "&7 - &e${label} select <Name> &7&l|&r&7 Selects the waypoint"
-    deselect: "&7 - &e${label} deselect &7&l|&r&7 Deselects the current waypoint"
-    teleport: "&7 - &e${label} teleport <Name> &7&l|&r&7 Teleport to the waypoint"
+    gui: "&7 - &e/${label} &7&l|&r&7 Open the Waypoints GUI"
+    help: "&7 - &e/${label} help &7&l|&r&7 Shows this help message"
+    select: "&7 - &e/${label} select <Name> &7&l|&r&7 Selects the waypoint"
+    deselect: "&7 - &e/${label} deselect &7&l|&r&7 Deselects the current waypoint"
+    teleport: "&7 - &e/${label} teleport <Name> &7&l|&r&7 Teleport to the waypoint"
     set:
-      private: "&7 - &e${label} set <Name> &7&l|&r&7 Create a new waypoint"
-      public: "&7 - &e${label} setPublic <Name> &7&l|&r&7 Create a new public waypoint"
-      permission: "&7 - &e${label} setPermission <Permission> <Name> &7&l|&r&7 Create a new permission waypoint"
-      temporary: "&7 - &e${label} setTemporary <X> <Y> <Z> &7&l|&r&7 Target a waypoint that is not saved"
-    other: "&7 - &e${label} other <Name|UUID> &7&l|&r&7 View the waypoints of another player"
-    statistics: "&7 - &e${label} statistics &7&l|&r&7 View the statistics of the database"
-    import: "&7 - &e${label} import &7&l|&r&7 Import waypoints from Waypoints V2"
-    reload: "&7 - &e${label} reload &7&l|&r&7 Reload the configuration"
+      private: "&7 - &e/${label} set <Name> &7&l|&r&7 Create a new waypoint"
+      public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Create a new public waypoint"
+      permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Create a new permission waypoint"
+      temporary: "&7 - &e/${label} setTemporary <X> <Y> <Z> &7&l|&r&7 Target a waypoint that is not saved"
+    other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 View the waypoints of another player"
+    statistics: "&7 - &e/${label} statistics &7&l|&r&7 View the statistics of the database"
+    import: "&7 - &e/${label} import &7&l|&r&7 Import waypoints from Waypoints V2"
+    reload: "&7 - &e/${label} reload &7&l|&r&7 Reload the configuration"
 
   search:
     prefix:
@@ -81,22 +81,22 @@ command:
     wrongUsage:
       private: |
         $[prefix] &cYou need to provide a name to create a new waypoint. Example:
-        &a${label} set My Home
+        &a/${label} set My Home
       public: |
         $[prefix] &cYou need to provide a name to create a new public waypoint. Example:
-        &a${label} setPublic Spawn
+        &a/${label} setPublic Spawn
       permission: |
         $[prefix] &cYou need to provide a permission and a name to create a new permission waypoint. Example:
-        &a${label} setPermission ranks.vip.secretHideout Secret Hideout
+        &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
       temporary: |
         $[prefix] &cYou need to provide coordinates to set a temporary waypoint. Example:
-        &a${label} setTemporary 196 93 -187
+        &a/${label} setTemporary 196 93 -187
 
   other:
     wrongUsage: |
       $[prefix] &cTo view the waypoints of another player you need to provide their name or UUID. Example:
-      &a${label} other Sytm
-      &a${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
+      &a/${label} other Sytm
+      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
     notFound:
       uuid: "$[prefix] &cA player with that UUID could not be found."
       name: "$[prefix] &cA player with that name could not be found."

@@ -14,18 +14,18 @@ command:
   script:
     help:
       header: "$[scriptPrefix] &7&nAjuda"
-      deselectWaypoint: "&7 - &e${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remover seleção de waypoint de um player"
-      selectWaypoint: "&7 - &e${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Setar seleção de waypoint de um player"
+      deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remover seleção de waypoint de um player"
+      selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Setar seleção de waypoint de um player"
 
     deselectWaypoint:
       wrongUsage: |
         $[scriptPrefix] &cVocê deve providenciar o nome de um player online. Exemplo:
-        &a/${label} deselectWaypoint Sytm
+        &a//${label} deselectWaypoint Sytm
 
     selectWaypoint:
       wrongUsage: |
         $[scriptPrefix] &cVocê deve providenciar o nome de um player online e a UUID da waypoint. Exemplo:
-        &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
+        &a//${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cWaypoint com UUID &e${uuid}&c não encontrada."
 
@@ -34,33 +34,33 @@ command:
 
   help:
     header: "$[prefix] &7&nAjuda"
-    gui: "&7 - &e${label} &7&l|&r&7 Abrir a interface de waypoints"
-    help: "&7 - &e${label} help &7&l|&r&7 Mostrar ajuda"
+    gui: "&7 - &e/${label} &7&l|&r&7 Abrir a interface de waypoints"
+    help: "&7 - &e/${label} help &7&l|&r&7 Mostrar ajuda"
     set:
-      private: "&7 - &e${label} set <Name> &7&l|&r&7 Criar nova waypoint"
-      public: "&7 - &e${label} setPublic <Name> &7&l|&r&7 Criar nova waypoint pública"
-      permission: "&7 - &e${label} setPermission <Permission> <Name> &7&l|&r&7 Criar nova waypoint usando permissões"
-    other: "&7 - &e${label} other <Name|UUID> &7&l|&r&7 Ver waypoints de outro player"
-    statistics: "&7 - &e${label} statistics &7&l|&r&7 Ver estatísticas do banco de dados"
-    import: "&7 - &e${label} import &7&l|&r&7 Importar waypoints do Waypoints V2"
+      private: "&7 - &e/${label} set <Name> &7&l|&r&7 Criar nova waypoint"
+      public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Criar nova waypoint pública"
+      permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Criar nova waypoint usando permissões"
+    other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 Ver waypoints de outro player"
+    statistics: "&7 - &e/${label} statistics &7&l|&r&7 Ver estatísticas do banco de dados"
+    import: "&7 - &e/${label} import &7&l|&r&7 Importar waypoints do Waypoints V2"
 
   set:
     wrongUsage:
       private: |
         $[prefix] &cVocê deve providenciar um nome para a waypoint. Exemplo:
-        &a${label} set My Home
+        &a/${label} set My Home
       public: |
         $[prefix] &cVocê deve providenciar um nome para a waypoint. Exemplo:
-        &a${label} setPublic Spawn
+        &a/${label} setPublic Spawn
       permission: |
         $[prefix] &cVocê deve providenciar uma permissão e um nome para a waypoint. Exemplo:
-        &a${label} setPermission ranks.vip.secretHideout Secret Hideout
+        &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
 
   other:
     wrongUsage: |
       $[prefix] &cPara ver waypoints de outro player providencie nome ou UUID. Exemplo:
-      &a${label} other Sytm
-      &a${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
+      &a/${label} other Sytm
+      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
     notFound:
       uuid: "$[prefix] &cPlayer com esse UUID não encontrado."
       name: "$[prefix] &cPlayer com esse nome não encontrado."
