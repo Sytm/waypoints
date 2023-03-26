@@ -11,6 +11,7 @@ import de.md5lukas.waypoints.util.runTaskAsync
 import dev.jorel.commandapi.SuggestionInfo
 import dev.jorel.commandapi.Tooltip
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
+import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.concurrent.CompletableFuture
 import java.util.logging.Level
@@ -19,6 +20,7 @@ class WaypointsArgumentSuggestions(
     private val plugin: WaypointsPlugin,
     private val textMode: Boolean,
     private val allowGlobals: Boolean,
+    private val filter: ((CommandSender, Waypoint) -> Boolean)? = null,
 ) : ArgumentSuggestions {
 
     private var reloadError = true
@@ -53,14 +55,23 @@ class WaypointsArgumentSuggestions(
                     }
                 }
                 plugin.api.publicWaypoints.searchWaypoints(query.removePrefix(publicPrefix)).forEach {
+                    if (shouldDiscard(sender, it.t)) {
+                        return@forEach
+                    }
                     builder.suggest(formatSuggestion("$publicPrefix${it.indexedName}"), it.t.getTooltip())
                 }
                 plugin.api.permissionWaypoints.searchWaypoints(query.removePrefix(permissionPrefix), sender).forEach {
+                    if (shouldDiscard(sender, it.t)) {
+                        return@forEach
+                    }
                     builder.suggest(formatSuggestion("$permissionPrefix${it.indexedName}"), it.t.getTooltip())
                 }
             }
             if (sender is Player) {
                 plugin.api.getWaypointPlayer(sender.uniqueId).searchWaypoints(query).forEach {
+                    if (shouldDiscard(sender, it.t)) {
+                        return@forEach
+                    }
                     builder.suggest(formatSuggestion(it.indexedName), it.t.getTooltip())
                 }
             }
@@ -76,4 +87,7 @@ class WaypointsArgumentSuggestions(
     }
 
     private fun Waypoint.getTooltip(): Message = Tooltip.messageFromString(createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER))
+
+    private fun shouldDiscard(sender: CommandSender, waypoint: Waypoint) =
+        waypoint.location.world === null || filter?.invoke(sender, waypoint) == false
 }

@@ -49,8 +49,9 @@ command:
     header: "$[prefix] &7&nHelp"
     gui: "&7 - &e${label} &7&l|&r&7 Open the Waypoints GUI"
     help: "&7 - &e${label} help &7&l|&r&7 Shows this help message"
-    select: "&7 - &e${label} select <Name> &7&l|&r&7 Selects the first waypoint that can be found using the name"
+    select: "&7 - &e${label} select <Name> &7&l|&r&7 Selects the waypoint"
     deselect: "&7 - &e${label} deselect &7&l|&r&7 Deselects the current waypoint"
+    teleport: "&7 - &e${label} teleport <Name> &7&l|&r&7 Teleport to the waypoint"
     set:
       private: "&7 - &e${label} set <Name> &7&l|&r&7 Create a new waypoint"
       public: "&7 - &e${label} setPublic <Name> &7&l|&r&7 Create a new public waypoint"
@@ -219,6 +220,7 @@ message:
   teleport:
     # remainingCooldown: Time left until player can teleport again
     onCooldown: "$[prefix] &cYou cannot teleport for &e${remainingCooldown}&c."
+    notAllowed: "$[prefix] &cYou are not allowed to teleport to that waypoint."
     notEnough:
       # currentLevel: Level of the player
       # requiredLevel: Level required for teleportation

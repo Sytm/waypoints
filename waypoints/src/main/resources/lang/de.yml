@@ -49,8 +49,9 @@ command:
     header: "$[prefix] &7&nHilfe"
     gui: "&7 - &e${label} &7&l|&r&7 Öffne die Wegpunkt GUI"
     help: "&7 - &e${label} help &7&l|&r&7 Zeigt diese Hilfe Nachricht"
-    select: "&7 - &e${label} select <Name> &7&l|&r&7 Wählt den ersten Wegpunkt aus auf den die Suche zutrifft"
+    select: "&7 - &e${label} select <Name> &7&l|&r&7 Wählt den Wegpunkt aus"
     deselect: "&7 - &e${label} deselect &7&l|&r&7 Die Wegpunkt-Auswahl wird wieder entfernt"
+    teleport: "&7 - &e${label} teleport <Name> &7&l|&r&7 Teleportiere dich zum Wegpunkt"
     set:
       private: "&7 - &e${label} set <Name> &7&l|&r&7 Erstelle einen neuen Wegpunkt"
       public: "&7 - &e${label} setPublic <Name> &7&l|&r&7 Erstelle einen neuen öffentlichen Wegpunkt"
@@ -219,6 +220,7 @@ message:
   teleport:
     # remainingCooldown: Time left until player can teleport again
     onCooldown: "$[prefix] &cDu kannst für &e${remainingCooldown}&c nicht teleportieren."
+    notAllowed: "$[prefix] &cDu darfst dich nicht zu diesem Wegpunkt teleportieren."
     notEnough:
       # currentLevel: Level of the player
       # requiredLevel: Level required for teleportation
