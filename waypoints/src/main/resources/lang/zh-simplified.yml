@@ -8,8 +8,6 @@ worlds:
 
 command:
   notAPlayer: "$[prefix] &c你必须是玩家才可执行此命令."
-  noPermission: "$[prefix] &c你没有执行此操作的权限."
-  notFound: "$[prefix] &c命令不存在."
 
   script:
     help:
@@ -17,20 +15,9 @@ command:
       deselectWaypoint: "&7 - &e/${label} deselectWaypoint <玩家名称> &7&l|&r&7 为玩家删除选择的路径点"
       selectWaypoint: "&7 - &e/${label} selectWaypoint <玩家名称> <Waypoint-UUID> &7&l|&r&7 为玩家设置一个将要去到的路径点"
 
-    deselectWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &c你至少需要在参数中提供一个在线玩家的名称. 例如:
-        &a/${label} deselectWaypoint Sytm
-
     selectWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &c你至少需要在参数中提供一个在线玩家的名称和路径点的 UUID 才可为他选择路径点. Example:
-        &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &c找不到 UUID 为 &e${uuid}&c 的路径点."
-
-    playerNotFound: "$[scriptPrefix] &c找不到名为 &e${name}&c 的玩家."
-    invalidUuid: "$[scriptPrefix] &cUUID &e${uuid}&c 格式无效."
 
   help:
     header: "$[prefix] &7&n帮助界面"
@@ -46,32 +33,8 @@ command:
     import: "&7 - &e/${label} import &7&l|&r&7 从 Waypoints V2 版本导入路径点数据"
     reload: "&7 - &e/${label} reload &7&l|&r&7 重载配置文件"
 
-  set:
-    wrongUsage:
-      private: |
-        $[prefix] &c你需要为新路径点指定一个名称. Example:
-        &a/${label} set My Home
-      public: |
-        $[prefix] &c你需要为新公共路径点指定一个名称. Example:
-        &a/${label} setPublic Spawn
-      permission: |
-        $[prefix] &c你需要为新权限路径点指定一个名称和所需的权限. Example:
-        &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
-      temporary: |
-        $[prefix] &c你需要为新临时路径点指定一个坐标. Example:
-        &a/${label} setTemporary 196 93 -187
-
   other:
-    wrongUsage: |
-      $[prefix] &c你需要提供玩家的名称和 UUID 来查看他们的路径点. Example:
-      &a/${label} other Sytm
-      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
-    notFound:
-      uuid: "$[prefix] &c无效的玩家名称."
-      name: "$[prefix] &c无效的UUID."
-    notUuidOrName: "$[prefix] &c输入参数错误, 它既不是玩家名称也不是 UUID."
     playerNoWaypoints: "$[prefix] &c指定玩家无现有路径点."
-    notANumber: "$[prefix] &c给定参数无有效数字."
 
   statistics:
     # dbFileSize: Size of the database in SI Units
@@ -149,8 +112,6 @@ text:
     purple: "&7紫"
 
 message:
-  featureDisabled: "$[prefix] &c该功能已被禁用."
-
   waypoint:
     create:
 #      worldUnavailable: "$[prefix] &cIn world you are in waypoints are unavailable."
