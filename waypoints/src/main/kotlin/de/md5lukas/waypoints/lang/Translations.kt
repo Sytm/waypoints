@@ -38,6 +38,7 @@ class Translations(
     val COMMAND_HELP_HELP = Translation(tl, "command.help.help")
     val COMMAND_HELP_SELECT = Translation(tl, "command.help.select")
     val COMMAND_HELP_DESELECT = Translation(tl, "command.help.deselect")
+    val COMMAND_HELP_TELEPORT = Translation(tl, "command.help.teleport")
     val COMMAND_HELP_SET_PRIVATE = Translation(tl, "command.help.set.private")
     val COMMAND_HELP_SET_PUBLIC = Translation(tl, "command.help.set.public")
     val COMMAND_HELP_SET_PERMISSION = Translation(tl, "command.help.set.permission")
@@ -132,6 +133,7 @@ class Translations(
     val FOLDER_CREATE_SUCCESS_PERMISSION = Translation(tl, "message.folder.createSuccess.permission")
 
     val MESSAGE_TELEPORT_ON_COOLDOWN = Translation(tl, "message.teleport.onCooldown")
+    val MESSAGE_TELEPORT_NOT_ALLOWED = Translation(tl, "message.teleport.notAllowed")
     val MESSAGE_TELEPORT_NOT_ENOUGH_XP = Translation(tl, "message.teleport.notEnough.xp")
     val MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE = Translation(tl, "message.teleport.notEnough.balance")
     val MESSAGE_TELEPORT_STAND_STILL_NOTICE = Translation(tl, "message.teleport.standStill.notice")

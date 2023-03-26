@@ -40,6 +40,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     if (sender is Player) {
                         translations.COMMAND_HELP_SELECT.send(sender, labelMap)
                         translations.COMMAND_HELP_DESELECT.send(sender, labelMap)
+                        translations.COMMAND_HELP_TELEPORT.send(sender, labelMap)
                         if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
                             translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
                         }
@@ -92,6 +93,29 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                 }
                 anyExecutor { sender, _ ->
                     translations.COMMAND_NOT_A_PLAYER.send(sender)
+                }
+            }
+            requirement(of("teleport"), { it is Player }) {
+                argument(
+                    GreedyStringArgument("name")
+                        .replaceSuggestions(
+                            WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true) { sender, waypoint ->
+                                if (sender !is Player)
+                                    throw IllegalStateException("Only players should receive completions")
+                                plugin.teleportManager.isAllowedToTeleportToWaypoint(sender, waypoint)
+                            }
+                        )
+                ) {
+                    playerExecutor { player, args ->
+                        val waypoint = searchWaypoint(plugin, player, args[0] as String, true)
+                        if (waypoint == null) {
+                            translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
+                        } else if (plugin.teleportManager.isAllowedToTeleportToWaypoint(player, waypoint)) {
+                            plugin.teleportManager.teleportPlayerToWaypoint(player, waypoint)
+                        } else {
+                            translations.MESSAGE_TELEPORT_NOT_ALLOWED.send(player)
+                        }
+                    }
                 }
             }
             permission(of("set"), WaypointsPermissions.MODIFY_PRIVATE) {

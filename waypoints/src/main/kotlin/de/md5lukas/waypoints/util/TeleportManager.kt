@@ -91,6 +91,8 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
     fun isAllowedToTeleportToWaypoint(player: Player, waypoint: Waypoint): Boolean {
         if (player.hasPermission(getTeleportPermission(waypoint)))
             return true
+        if (!isTeleportEnabled(plugin.api.getWaypointPlayer(player.uniqueId), waypoint))
+            return false
         val config = getTeleportConfig(waypoint)
         if (!config.mustVisit)
             return true
