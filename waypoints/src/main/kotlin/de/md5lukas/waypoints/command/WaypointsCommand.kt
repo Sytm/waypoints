@@ -95,14 +95,16 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     translations.COMMAND_NOT_A_PLAYER.send(sender)
                 }
             }
-            requirement(of("teleport"), { it is Player }) {
+            literalArgument("teleport") {
                 argument(
                     GreedyStringArgument("name")
                         .replaceSuggestions(
                             WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true) { sender, waypoint ->
-                                if (sender !is Player)
-                                    throw IllegalStateException("Only players should receive completions")
-                                plugin.teleportManager.isAllowedToTeleportToWaypoint(sender, waypoint)
+                                if (sender !is Player) {
+                                    false
+                                } else {
+                                    plugin.teleportManager.isAllowedToTeleportToWaypoint(sender, waypoint)
+                                }
                             }
                         )
                 ) {
@@ -115,6 +117,9 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                         } else {
                             translations.MESSAGE_TELEPORT_NOT_ALLOWED.send(player)
                         }
+                    }
+                    anyExecutor { sender, _ ->
+                        translations.COMMAND_NOT_A_PLAYER.send(sender)
                     }
                 }
             }
