@@ -93,7 +93,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     translations.COMMAND_NOT_A_PLAYER.send(sender)
                 }
             }
-            requirement(of("set"), { it.hasPermission(WaypointsPermissions.MODIFY_PRIVATE) }) {
+            permission(of("set"), WaypointsPermissions.MODIFY_PRIVATE) {
                 greedyStringArgument("name") {
                     playerExecutor { player, args ->
                         val name = args[0] as String
@@ -106,7 +106,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                 }
             }
             if (plugin.waypointsConfig.general.features.globalWaypoints) {
-                requirement(of("setPublic"), { it.hasPermission(WaypointsPermissions.MODIFY_PUBLIC) }) {
+                permission(of("setPublic"), WaypointsPermissions.MODIFY_PUBLIC) {
                     greedyStringArgument("name") {
                         playerExecutor { player, args ->
                             val name = args[0] as String
@@ -118,7 +118,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                         }
                     }
                 }
-                requirement(of("setPermission"), { it.hasPermission(WaypointsPermissions.MODIFY_PERMISSION) }) {
+                permission(of("setPermission"), WaypointsPermissions.MODIFY_PERMISSION) {
                     stringArgument("permission") {
                         greedyStringArgument("name") {
                             playerExecutor { player, args ->
@@ -134,7 +134,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            requirement(of("setTemporary"), { it.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT) }) {
+            permission(of("setTemporary"), WaypointsPermissions.TEMPORARY_WAYPOINT) {
                 locationArgument("target") {
                     playerExecutor { player, args ->
                         val location = args[0] as Location
@@ -152,7 +152,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            requirement(of("other"), { it.hasPermission(WaypointsPermissions.COMMAND_OTHER) }) {
+            permission(of("other"), WaypointsPermissions.COMMAND_OTHER) {
                 offlinePlayerArgument("target") {
                     playerExecutor { player, args ->
                         val otherUUID = (args[0] as OfflinePlayer).uniqueId
@@ -168,7 +168,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            requirement(of("statistics"), { it.hasPermission(WaypointsPermissions.COMMAND_STATISTICS) }) {
+            permission(of("statistics"), WaypointsPermissions.COMMAND_STATISTICS) {
                 anyExecutor { sender, _ ->
                     with(plugin.api.statistics) {
                         translations.COMMAND_STATISTICS_MESSAGE.send(
@@ -191,7 +191,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            requirement(of("reload"), { it.hasPermission(WaypointsPermissions.COMMAND_RELOAD) }) {
+            permission(of("reload"), WaypointsPermissions.COMMAND_RELOAD) {
                 anyExecutor { sender, _ ->
                     plugin.reloadConfiguration()
                     translations.COMMAND_RELOAD_FINISHED.send(sender)
