@@ -8,8 +8,6 @@ worlds:
 
 command:
   notAPlayer: "$[prefix] &cVocê deve ser um player para usar esse comando."
-  noPermission: "$[prefix] &cSem permissão."
-  notFound: "$[prefix] &cComando inválido."
 
   script:
     help:
@@ -17,20 +15,9 @@ command:
       deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remover seleção de waypoint de um player"
       selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Setar seleção de waypoint de um player"
 
-    deselectWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &cVocê deve providenciar o nome de um player online. Exemplo:
-        &a/${label} deselectWaypoint Sytm
-
     selectWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &cVocê deve providenciar o nome de um player online e a UUID da waypoint. Exemplo:
-        &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cWaypoint com UUID &e${uuid}&c não encontrada."
-
-    playerNotFound: "$[scriptPrefix] &cPlayer &e${name}&c não encontrado."
-    invalidUuid: "$[scriptPrefix] &cA UUID &e${uuid}&c não está em um formato válido."
 
   help:
     header: "$[prefix] &7&nAjuda"
@@ -44,27 +31,7 @@ command:
     statistics: "&7 - &e/${label} statistics &7&l|&r&7 Ver estatísticas do banco de dados"
     import: "&7 - &e/${label} import &7&l|&r&7 Importar waypoints do Waypoints V2"
 
-  set:
-    wrongUsage:
-      private: |
-        $[prefix] &cVocê deve providenciar um nome para a waypoint. Exemplo:
-        &a/${label} set My Home
-      public: |
-        $[prefix] &cVocê deve providenciar um nome para a waypoint. Exemplo:
-        &a/${label} setPublic Spawn
-      permission: |
-        $[prefix] &cVocê deve providenciar uma permissão e um nome para a waypoint. Exemplo:
-        &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
-
   other:
-    wrongUsage: |
-      $[prefix] &cPara ver waypoints de outro player providencie nome ou UUID. Exemplo:
-      &a/${label} other Sytm
-      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
-    notFound:
-      uuid: "$[prefix] &cPlayer com esse UUID não encontrado."
-      name: "$[prefix] &cPlayer com esse nome não encontrado."
-    notUuidOrName: "$[prefix] &cO texto providenciado não é um nome de player nem UUID."
     playerNoWaypoints: "$[prefix] &cEsse player não tem waypoints."
 
   statistics:
@@ -92,19 +59,6 @@ command:
       &7Private folders: &e${privateFolders}
       &7Public folders: &e${publicFolders}
       &7Permission folders: &e${permissionFolders}
-
-  import:
-    mustConfirm: |
-      $[prefix] &7To import the old waypoints you must confirm your choice.
-      &cKeep in mind that if you already imported old waypoints you will have duplicates after this action.
-      &cAll these duplicates have to be removed manually or you must delete everything by deleting plugins/Waypoints/waypoints.db.
-      &cSo run this command only once and then make sure everything is there and then remove the old saves so they can't be imported a second time by accident.
-
-      &7Run &a/${label} import confirm&7 to ackknowledge this message.
-    started: "$[prefix] &7The import has started, check the console output for more information."
-    finished:
-      success: "$[prefix] &7The import has finished, make sure the imported waypoints look good to you."
-      error: "$[prefix] &cWhile importing the old waypoints an error occurred. Check the console output for more information."
 
 text:
   duration:
@@ -153,8 +107,6 @@ text:
     purple: "&7Roxo"
 
 message:
-  featureDisabled: "$[prefix] &cEssa funcionalidade foi desabilitada."
-
   waypoint:
     create:
       coordinates:

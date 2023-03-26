@@ -1,148 +1,205 @@
 package de.md5lukas.waypoints.command
 
-import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.util.*
+import dev.jorel.commandapi.arguments.GreedyStringArgument
+import dev.jorel.commandapi.arguments.LiteralArgument.of
+import dev.jorel.commandapi.kotlindsl.*
 import org.bukkit.Location
-import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
-import org.bukkit.util.StringUtil
 import java.util.*
 
-class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, TabCompleter {
+class WaypointsCommand(private val plugin: WaypointsPlugin) {
 
     private val translations = plugin.translations
 
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (sender !is Player) {
-            translations.COMMAND_NOT_A_PLAYER.send(sender)
-            return true
-        }
-        if (!sender.hasPermission(WaypointsPermissions.COMMAND_PERMISSION)) {
-            translations.COMMAND_NO_PERMISSION.send(sender)
-            return true
-        }
-        if (args.isEmpty()) {
-            WaypointsGUI(plugin, sender, sender.uniqueId)
-            return true
-        }
-        val labelMap = Collections.singletonMap("label", label)
-        when (args[0].lowercase()) {
-            "help" -> {
-                translations.COMMAND_HELP_HEADER.send(sender)
-                translations.COMMAND_HELP_GUI.send(sender, labelMap)
-                translations.COMMAND_HELP_HELP.send(sender, labelMap)
+    fun register() {
+        val labelMap = Collections.singletonMap("label", "waypoints")
 
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
-                    translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
-                }
-                if (plugin.waypointsConfig.general.features.globalWaypoints) {
-                    if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
-                        translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelMap)
-                    }
-                    if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
-                        translations.COMMAND_HELP_SET_PERMISSION.send(sender, labelMap)
-                    }
-                }
-                if (sender.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)) {
-                    translations.COMMAND_HELP_SET_TEMPORARY.send(sender, labelMap)
-                }
-                if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
-                    translations.COMMAND_HELP_OTHER.send(sender, labelMap)
-                }
-                if (sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS)) {
-                    translations.COMMAND_HELP_STATISTICS.send(sender, labelMap)
-                }
-                if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
-                    translations.COMMAND_HELP_RELOAD.send(sender, labelMap)
-                }
+        commandTree("waypoints") {
+            withPermission(WaypointsPermissions.COMMAND_PERMISSION)
+            withAliases("wp")
+            playerExecutor { player, _ ->
+                WaypointsGUI(plugin, player, player.uniqueId)
             }
-            "set" -> when {
-                !sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE) -> translations.COMMAND_NO_PERMISSION.send(sender)
-                args.size <= 1 -> translations.COMMAND_SET_WRONG_USAGE_PRIVATE.send(sender, labelMap)
-                else -> {
-                    val name = args.join(1)
+            anyExecutor { sender, _ ->
+                translations.COMMAND_NOT_A_PLAYER.send(sender)
+            }
+            literalArgument("help") {
+                anyExecutor { sender, _ ->
+                    translations.COMMAND_HELP_HEADER.send(sender)
 
-                    createWaypointPrivate(plugin, sender, name)
-                }
-            }
-            "setpublic" -> when {
-                !plugin.waypointsConfig.general.features.globalWaypoints -> translations.MESSAGE_FEATURE_DISABLED.send(sender)
-                !sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC) -> translations.COMMAND_NO_PERMISSION.send(sender)
-                args.size <= 1 -> translations.COMMAND_SET_WRONG_USAGE_PUBLIC.send(sender, labelMap)
-                else -> {
-                    val name = args.join(1)
+                    if (sender is Player)
+                        translations.COMMAND_HELP_GUI.send(sender, labelMap)
 
-                    createWaypointPublic(plugin, sender, name)
-                }
-            }
-            "setpermission" -> when {
-                !plugin.waypointsConfig.general.features.globalWaypoints -> translations.MESSAGE_FEATURE_DISABLED.send(sender)
-                !sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION) -> translations.COMMAND_NO_PERMISSION.send(sender)
-                args.size <= 2 -> translations.COMMAND_SET_WRONG_USAGE_PERMISSION.send(sender, labelMap)
-                else -> {
-                    val permission = args[1]
-                    val name = args.join(2)
+                    translations.COMMAND_HELP_HELP.send(sender, labelMap)
 
-                    createWaypointPermission(plugin, sender, name, permission)
-                }
-            }
-            "settemporary" -> when {
-                !sender.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT) -> translations.COMMAND_NO_PERMISSION.send(sender)
-                args.size <= 3 -> translations.COMMAND_SET_WRONG_USAGE_TEMPORARY.send(sender, labelMap)
-                else -> {
-                    try {
-                        val location = Location(sender.world, args[1].toDouble(), args[2].toDouble(), args[3].toDouble())
-                        if (isLocationOutOfBounds(plugin, location)) {
-                            translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
-                        } else {
-                            plugin.api.pointerManager.let {
-                                it.enable(sender, it.temporaryWaypointTrackableOf(location))
+                    if (sender is Player) {
+                        translations.COMMAND_HELP_SELECT.send(sender, labelMap)
+                        translations.COMMAND_HELP_DESELECT.send(sender, labelMap)
+                        translations.COMMAND_HELP_TELEPORT.send(sender, labelMap)
+                        if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
+                            translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
+                        }
+                        if (plugin.waypointsConfig.general.features.globalWaypoints) {
+                            if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+                                translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelMap)
+                            }
+                            if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+                                translations.COMMAND_HELP_SET_PERMISSION.send(sender, labelMap)
                             }
                         }
-                    } catch (_: NumberFormatException) {
-                        translations.COMMAND_OTHER_NOT_A_NUMBER.send(sender)
+                        if (sender.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)) {
+                            translations.COMMAND_HELP_SET_TEMPORARY.send(sender, labelMap)
+                        }
+                        if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
+                            translations.COMMAND_HELP_OTHER.send(sender, labelMap)
+                        }
+                    }
+                    if (sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS)) {
+                        translations.COMMAND_HELP_STATISTICS.send(sender, labelMap)
+                    }
+                    if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
+                        translations.COMMAND_HELP_RELOAD.send(sender, labelMap)
                     }
                 }
             }
-            "other" -> when {
-                !sender.hasPermission(WaypointsPermissions.COMMAND_OTHER) -> translations.COMMAND_NO_PERMISSION.send(sender)
-                args.size <= 1 -> translations.COMMAND_OTHER_WRONG_USAGE.send(sender, labelMap)
-                else -> {
-                    val other = args[1]
-                    val otherUUID = if (UUIDUtils.isUUID(other)) {
-                        val uuid = UUID.fromString(other)
-                        if (plugin.uuidUtils.getName(uuid).isEmpty) {
-                            translations.COMMAND_OTHER_NOT_FOUND_UUID.send(sender, Collections.singletonMap("uuid", other))
-                            return true
+            literalArgument("select") {
+                argument(
+                    GreedyStringArgument("name")
+                        .replaceSuggestions(WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true))
+                ) {
+                    playerExecutor { player, args ->
+                        val waypoint = searchWaypoint(plugin, player, args[0] as String, true)
+                        if (waypoint == null) {
+                            translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
+                        } else {
+                            plugin.api.pointerManager.enable(player, waypoint)
+                            translations.COMMAND_SELECT_SELECTED.send(player, mapOf("name" to waypoint.name))
                         }
-                        uuid
-                    } else if (other.isMinecraftUsername()) {
-                        val uuid = plugin.uuidUtils.getUUID(other)
-                        if (uuid.isEmpty) {
-                            translations.COMMAND_OTHER_NOT_FOUND_NAME.send(sender, Collections.singletonMap("name", other))
-                            return true
-                        }
-                        uuid.get()
-                    } else {
-                        translations.COMMAND_OTHER_NOT_UUID_OR_NAME.send(sender)
-                        return true
                     }
-                    if (!plugin.api.waypointsPlayerExists(otherUUID)) {
-                        translations.COMMAND_OTHER_PLAYER_NO_WAYPOINTS.send(sender)
-                        return true
+                    anyExecutor { sender, _ ->
+                        translations.COMMAND_NOT_A_PLAYER.send(sender)
                     }
-                    WaypointsGUI(plugin, sender, otherUUID)
                 }
             }
-            "statistics" -> when {
-                !sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS) -> translations.COMMAND_NO_PERMISSION.send(sender)
-                else -> {
+            literalArgument("deselect") {
+                playerExecutor { player, _ ->
+                    plugin.api.pointerManager.disable(player)
+                    translations.COMMAND_DESELECT_DONE.send(player)
+                }
+                anyExecutor { sender, _ ->
+                    translations.COMMAND_NOT_A_PLAYER.send(sender)
+                }
+            }
+            literalArgument("teleport") {
+                argument(
+                    GreedyStringArgument("name")
+                        .replaceSuggestions(
+                            WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true) { sender, waypoint ->
+                                if (sender !is Player) {
+                                    false
+                                } else {
+                                    plugin.teleportManager.isAllowedToTeleportToWaypoint(sender, waypoint)
+                                }
+                            }
+                        )
+                ) {
+                    playerExecutor { player, args ->
+                        val waypoint = searchWaypoint(plugin, player, args[0] as String, true)
+                        if (waypoint == null) {
+                            translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
+                        } else if (plugin.teleportManager.isAllowedToTeleportToWaypoint(player, waypoint)) {
+                            plugin.teleportManager.teleportPlayerToWaypoint(player, waypoint)
+                        } else {
+                            translations.MESSAGE_TELEPORT_NOT_ALLOWED.send(player)
+                        }
+                    }
+                    anyExecutor { sender, _ ->
+                        translations.COMMAND_NOT_A_PLAYER.send(sender)
+                    }
+                }
+            }
+            permission(of("set"), WaypointsPermissions.MODIFY_PRIVATE) {
+                greedyStringArgument("name") {
+                    playerExecutor { player, args ->
+                        val name = args[0] as String
+
+                        createWaypointPrivate(plugin, player, name)
+                    }
+                    anyExecutor { sender, _ ->
+                        translations.COMMAND_NOT_A_PLAYER.send(sender)
+                    }
+                }
+            }
+            if (plugin.waypointsConfig.general.features.globalWaypoints) {
+                permission(of("setPublic"), WaypointsPermissions.MODIFY_PUBLIC) {
+                    greedyStringArgument("name") {
+                        playerExecutor { player, args ->
+                            val name = args[0] as String
+
+                            createWaypointPublic(plugin, player, name)
+                        }
+                        anyExecutor { sender, _ ->
+                            translations.COMMAND_NOT_A_PLAYER.send(sender)
+                        }
+                    }
+                }
+                permission(of("setPermission"), WaypointsPermissions.MODIFY_PERMISSION) {
+                    stringArgument("permission") {
+                        greedyStringArgument("name") {
+                            playerExecutor { player, args ->
+                                val permission = args[0] as String
+                                val name = args[1] as String
+
+                                createWaypointPermission(plugin, player, name, permission)
+                            }
+                            anyExecutor { sender, _ ->
+                                translations.COMMAND_NOT_A_PLAYER.send(sender)
+                            }
+                        }
+                    }
+                }
+            }
+            permission(of("setTemporary"), WaypointsPermissions.TEMPORARY_WAYPOINT) {
+                locationArgument("target") {
+                    playerExecutor { player, args ->
+                        val location = args[0] as Location
+
+                        if (isLocationOutOfBounds(plugin, location)) {
+                            translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
+                        } else {
+                            plugin.api.pointerManager.let {
+                                it.enable(player, it.temporaryWaypointTrackableOf(location))
+                            }
+                        }
+                    }
+                    anyExecutor { sender, _ ->
+                        translations.COMMAND_NOT_A_PLAYER.send(sender)
+                    }
+                }
+            }
+            permission(of("other"), WaypointsPermissions.COMMAND_OTHER) {
+                offlinePlayerArgument("target") {
+                    playerExecutor { player, args ->
+                        val otherUUID = (args[0] as OfflinePlayer).uniqueId
+
+                        if (!plugin.api.waypointsPlayerExists(otherUUID)) {
+                            translations.COMMAND_OTHER_PLAYER_NO_WAYPOINTS.send(player)
+                        } else {
+                            WaypointsGUI(plugin, player, otherUUID)
+                        }
+                    }
+                    anyExecutor { sender, _ ->
+                        translations.COMMAND_NOT_A_PLAYER.send(sender)
+                    }
+                }
+            }
+            permission(of("statistics"), WaypointsPermissions.COMMAND_STATISTICS) {
+                anyExecutor { sender, _ ->
                     with(plugin.api.statistics) {
                         translations.COMMAND_STATISTICS_MESSAGE.send(
                             sender,
@@ -164,59 +221,12 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) : CommandExecutor, T
                     }
                 }
             }
-            "reload" -> when {
-                !sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD) -> translations.COMMAND_NO_PERMISSION.send(sender)
-                else -> {
+            permission(of("reload"), WaypointsPermissions.COMMAND_RELOAD) {
+                anyExecutor { sender, _ ->
                     plugin.reloadConfiguration()
                     translations.COMMAND_RELOAD_FINISHED.send(sender)
                 }
             }
-            else -> translations.COMMAND_NOT_FOUND.send(sender)
-        }
-        return true
-    }
-
-    override fun onTabComplete(sender: CommandSender, command: Command, alias: String, args: Array<out String>): MutableList<String> {
-        if (sender !is Player) {
-            return mutableListOf()
-        }
-
-        if (args.size <= 1) {
-            val options = mutableListOf<String>()
-
-            options.add("help")
-
-            if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
-                options.add("set")
-            }
-            if (plugin.waypointsConfig.general.features.globalWaypoints) {
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
-                    options.add("setPublic")
-                }
-                if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
-                    options.add("setPermission")
-                }
-            }
-            if (sender.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)) {
-                options.add("setTemporary")
-            }
-            if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
-                options.add("other")
-            }
-            if (sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS)) {
-                options.add("statistics")
-            }
-            if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
-                options.add("reload")
-            }
-
-            return if (args.isEmpty()) {
-                options
-            } else {
-                StringUtil.copyPartialMatches(args[0], options, mutableListOf())
-            }
-        } else {
-            return mutableListOf()
         }
     }
 }

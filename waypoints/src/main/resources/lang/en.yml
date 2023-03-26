@@ -8,8 +8,6 @@ worlds:
 
 command:
   notAPlayer: "$[prefix] &cYou must be a player to use this command."
-  noPermission: "$[prefix] &cYou don't have permission to perform this action."
-  notFound: "$[prefix] &cThe command you entered could not be found."
 
   script:
     help:
@@ -17,32 +15,27 @@ command:
       deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remove the waypoint selection of a player"
       selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Set the waypoint selection of a player to that waypoint"
       temporaryWaypoint: "&7 - &e/${label} temporaryWaypoint <Player-Name> <X> <Y> <Z> [Beacon-Color] &7&l|&r&7 Create a temporary waypoint for the player"
-
-    deselectWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &cYou need to provide the name of an online player to remove the waypoint selection from. Example:
-        &a/${label} deselectWaypoint Sytm
+      uuid: "&7 - &e/${label} uuid <Name> &7&l|&r&7 Search for waypoints using the query to get their UUID"
 
     selectWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &cYou need to provide the name of an online player and the UUID of an waypoint to set the selection of a player. Example:
-        &a/${label} selectWaypoint Sytm 86a33aff-7d62-49d3-86c2-8cb5076c5bc0
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &cCould not find a waypoint with the UUID &e${uuid}&c."
 
     temporaryWaypoint:
-      wrongUsage: |
-        $[scriptPrefix] &cYou need to provide the name of an online player and the coordinates of the target location. The beacon color is optional. Example:
-        &a/${label} temporaryWaypoint Sytm 100 200 300 RED
       beaconColorNotFound: "$[scriptPrefix] &cThe provided beacon color could not be found."
 
-    playerNotFound: "$[scriptPrefix] &cCould not find an online player with the name &e${name}&c."
-    invalidUuid: "$[scriptPrefix] &cThe uuid &e${uuid}&c is not in a valid format."
+    uuid:
+      noMatch: "$[scriptPrefix] &cNo waypoints could be found for the given query."
+      header: "$[scriptPrefix] &7Waypoints: (Click result to copy UUID to clipboard)"
+      result: "&7 - Name: &e${name}&7 Folder: &e${folder}"
 
   help:
     header: "$[prefix] &7&nHelp"
     gui: "&7 - &e/${label} &7&l|&r&7 Open the Waypoints GUI"
     help: "&7 - &e/${label} help &7&l|&r&7 Shows this help message"
+    select: "&7 - &e/${label} select <Name> &7&l|&r&7 Selects the waypoint"
+    deselect: "&7 - &e/${label} deselect &7&l|&r&7 Deselects the current waypoint"
+    teleport: "&7 - &e/${label} teleport <Name> &7&l|&r&7 Teleport to the waypoint"
     set:
       private: "&7 - &e/${label} set <Name> &7&l|&r&7 Create a new waypoint"
       public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Create a new public waypoint"
@@ -53,32 +46,21 @@ command:
     import: "&7 - &e/${label} import &7&l|&r&7 Import waypoints from Waypoints V2"
     reload: "&7 - &e/${label} reload &7&l|&r&7 Reload the configuration"
 
-  set:
-    wrongUsage:
-      private: |
-        $[prefix] &cYou need to provide a name to create a new waypoint. Example:
-        &a/${label} set My Home
-      public: |
-        $[prefix] &cYou need to provide a name to create a new public waypoint. Example:
-        &a/${label} setPublic Spawn
-      permission: |
-        $[prefix] &cYou need to provide a permission and a name to create a new permission waypoint. Example:
-        &a/${label} setPermission ranks.vip.secretHideout Secret Hideout
-      temporary: |
-        $[prefix] &cYou need to provide coordinates to set a temporary waypoint. Example:
-        &a/${label} setTemporary 196 93 -187
+  search:
+    prefix:
+      public: "Public"
+      permission: "Permission"
+    notFound:
+      waypoint: "$[prefix] &cCould not find a waypoint with with the given query."
+
+  select:
+    selected: "$[prefix] &7Waypoint &e${name} &7selected."
+
+  deselect:
+    done: "$[prefix] &7Current waypoint deselected."
 
   other:
-    wrongUsage: |
-      $[prefix] &cTo view the waypoints of another player you need to provide their name or UUID. Example:
-      &a/${label} other Sytm
-      &a/${label} other 68f22021-732e-4afe-9cf5-6906f07a41db
-    notFound:
-      uuid: "$[prefix] &cA player with that UUID could not be found."
-      name: "$[prefix] &cA player with that name could not be found."
-    notUuidOrName: "$[prefix] &cThe provided identifier is neither a UUID nor a Minecraft username."
     playerNoWaypoints: "$[prefix] &cThe provided player has no waypoints."
-    notANumber: "$[prefix] &cThe provided values could not be read as numbers."
 
   statistics:
     # dbFileSize: Size of the database in SI Units
@@ -156,8 +138,6 @@ text:
     purple: "&7Purple"
 
 message:
-  featureDisabled: "$[prefix] &cThe feature you are trying to use is disabled."
-
   waypoint:
     create:
       worldUnavailable: "$[prefix] &cIn world you are in waypoints are unavailable."
@@ -196,6 +176,7 @@ message:
   teleport:
     # remainingCooldown: Time left until player can teleport again
     onCooldown: "$[prefix] &cYou cannot teleport for &e${remainingCooldown}&c."
+    notAllowed: "$[prefix] &cYou are not allowed to teleport to that waypoint."
     notEnough:
       # currentLevel: Level of the player
       # requiredLevel: Level required for teleportation

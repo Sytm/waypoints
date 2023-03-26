@@ -24,6 +24,8 @@ import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.registerEvents
+import dev.jorel.commandapi.CommandAPI
+import dev.jorel.commandapi.CommandAPIConfig
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
@@ -70,7 +72,13 @@ class WaypointsPlugin : JavaPlugin() {
 
     private lateinit var metrics: Metrics
 
+    override fun onLoad() {
+        CommandAPI.onLoad(CommandAPIConfig().silentLogs(true))
+    }
+
     override fun onEnable() {
+        CommandAPI.onEnable(this)
+
         logger.level = Level.FINE
         loadConfiguration()
         initDatabase()
@@ -177,12 +185,8 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun registerCommands() {
-        val waypointsCommand = getCommand("waypoints")!!
-        WaypointsCommand(this).let {
-            waypointsCommand.setExecutor(it)
-            waypointsCommand.tabCompleter = it
-        }
-        getCommand("waypointsscript")!!.setExecutor(WaypointsScriptCommand(this))
+        WaypointsCommand(this).register()
+        WaypointsScriptCommand(this).register()
     }
 
     private fun registerEvents() {
@@ -251,6 +255,7 @@ class WaypointsPlugin : JavaPlugin() {
     //</editor-fold>
 
     override fun onDisable() {
+        CommandAPI.onDisable()
         if (this::databaseManager.isInitialized) {
             databaseManager.close()
         }

@@ -9,7 +9,7 @@ repositories {
     mavenCentral()
 
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven("https://repo.md5lukas.de/releases/")
+    maven("https://repo.md5lukas.de/public/")
 }
 
 dependencies {
