@@ -14,10 +14,9 @@ repositories {
 }
 
 dependencies {
-    val spigotVersion: String by project
     val protocolLibVersion: String by project
 
-    api("org.spigotmc:spigot-api:$spigotVersion")
+    api("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
 
     api(kotlin("stdlib-jdk8"))
     implementation("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")

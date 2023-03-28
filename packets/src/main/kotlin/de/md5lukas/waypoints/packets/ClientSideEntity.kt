@@ -31,7 +31,9 @@ open class ClientSideEntity(
         // https://wiki.vg/Entity_metadata#Entity
         // Must use native types of Byte and Boolean, but not the primitive types
         val byteSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Byte::class.java)
+        val intSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Integer::class.java)
         val booleanSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.get(java.lang.Boolean::class.java)
+        val chatSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getChatComponentSerializer(false)
         val optChatSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getChatComponentSerializer(true)
         val slotSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false)
 
