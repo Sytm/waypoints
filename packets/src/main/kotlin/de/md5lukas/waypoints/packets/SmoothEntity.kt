@@ -4,19 +4,16 @@ import com.comphenix.protocol.wrappers.WrappedDataValue
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
-class SmoothFloatingItem(
+class SmoothEntity<T : ClientSideEntity>(
     player: Player,
     location: Location,
-    itemStack: ItemStack
+    private val wrapped: T
 ) : ClientSideEntity(
     player,
     location,
     EntityType.ARMOR_STAND,
 ) {
-
-    private val itemEntity = FloatingItem(player, location, itemStack)
 
     override fun modifyMetadataValues(spawn: Boolean, dataValues: MutableList<WrappedDataValue>) {
         if (spawn) {
@@ -28,21 +25,21 @@ class SmoothFloatingItem(
     }
 
     init {
-        passengers.add(itemEntity)
+        passengers.add(wrapped)
     }
 
     override fun spawn() {
-        itemEntity.spawn()
+        wrapped.spawn()
         super.spawn()
     }
 
     override fun update() {
         super.update()
-        itemEntity.location = location
+        wrapped.location = location
     }
 
     override fun destroy() {
-        itemEntity.destroy()
+        wrapped.destroy()
         super.destroy()
     }
 }

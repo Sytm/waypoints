@@ -4,8 +4,9 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.HologramConfiguration
+import de.md5lukas.waypoints.packets.FloatingItem
 import de.md5lukas.waypoints.packets.Hologram
-import de.md5lukas.waypoints.packets.SmoothFloatingItem
+import de.md5lukas.waypoints.packets.SmoothEntity
 import de.md5lukas.waypoints.pointer.PlayerTrackable
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.pointer.TemporaryWaypointTrackable
@@ -25,7 +26,7 @@ class HologramPointer(
     private val config: HologramConfiguration
 ) : Pointer(plugin, config.interval) {
 
-    private val activeHolograms: MutableMap<UUID, Pair<Hologram, SmoothFloatingItem?>> = HashMap()
+    private val activeHolograms: MutableMap<UUID, Pair<Hologram, SmoothEntity<*>?>> = HashMap()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
         if (translatedTarget === null)
@@ -86,12 +87,16 @@ class HologramPointer(
             val hologram = Hologram(player, location, hologramText).also { it.spawn() }
             val item = if (config.iconEnabled && trackable is Waypoint) {
                 plugin.apiExtensions.run {
-                    SmoothFloatingItem(
+                    SmoothEntity(
                         player,
                         location,
-                        plugin.apiExtensions.run {
-                            ItemStack(trackable.getIconMaterial())
-                        }
+                        FloatingItem(
+                            player,
+                            location,
+                            plugin.apiExtensions.run {
+                                ItemStack(trackable.getIconMaterial())
+                            },
+                        ),
                     ).also { it.spawn() }
                 }
             } else null
