@@ -18,13 +18,15 @@ class WorldTranslations(
     private val warned: MutableSet<World> = mutableSetOf()
 
     fun getWorldName(world: World): String {
+        if (world in warned)
+            return world.name
+
         val key = "worlds.${world.name}"
         return if (key in tl) {
             tl[key]
         } else {
-            if (warned.add(world)) {
-                tl.plugin.logger.log(Level.WARNING, "The world ${world.name} has no translation present. Using actual name as a fallback.")
-            }
+            warned.add(world)
+            tl.plugin.logger.log(Level.WARNING, "The world ${world.name} has no translation present. Using actual name as a fallback.")
             world.name
         }
     }
