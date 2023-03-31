@@ -36,6 +36,7 @@ open class ClientSideEntity(
         val chatSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getChatComponentSerializer(false)
         val optChatSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getChatComponentSerializer(true)
         val slotSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getItemStackSerializer(false)
+        val vectorSerializer: WrappedDataWatcher.Serializer = WrappedDataWatcher.Registry.getVectorSerializer()
 
         val disableGravity = WrappedDataValue(5, booleanSerializer, true)
     }
@@ -122,11 +123,12 @@ open class ClientSideEntity(
         get() = abs(location.x - previousLocation.x) > 8 || abs(location.z - previousLocation.z) > 8 || abs(location.y - previousLocation.y) > 8
 
     val passengers: MutableList<ClientSideEntity> = mutableListOf()
+
     private val passengersPacket
         get() = PacketContainer(PacketType.Play.Server.MOUNT).also {
             it.integers.write(0, entityId)
 
-            it.integerArrays.write(0, passengers.map { it.entityId }.toIntArray())
+            it.integerArrays.write(0, passengers.map { passenger -> passenger.entityId }.toIntArray())
         }
 
     private val destroyPacket = PacketContainer(PacketType.Play.Server.ENTITY_DESTROY).also {
@@ -145,17 +147,22 @@ open class ClientSideEntity(
     }
 
     open fun update() {
-        ProtocolLibrary.getProtocolManager().let {
-            it.sendServerPacket(
-                player, if (requiresTeleport) {
-                    teleportPacket
-                } else {
-                    movePacket
-                }
-            )
-            previousLocation = location
-            getMetadataPacket(false)?.let { packet -> it.sendServerPacket(player, packet) }
+        ProtocolLibrary.getProtocolManager().sendServerPacket(
+            player, if (requiresTeleport) {
+                teleportPacket
+            } else {
+                movePacket
+            }
+        )
+        previousLocation = location
+        updateMetadata()
+    }
+
+    open fun updateMetadata() {
+        getMetadataPacket(false)?.let {
+            ProtocolLibrary.getProtocolManager().sendServerPacket(player, it)
         }
+
     }
 
     open fun destroy() {

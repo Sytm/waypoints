@@ -4,9 +4,9 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.config.pointers.HologramConfiguration
-import de.md5lukas.waypoints.packets.FloatingItem
-import de.md5lukas.waypoints.packets.Hologram
+import de.md5lukas.waypoints.packets.ItemDisplay
 import de.md5lukas.waypoints.packets.SmoothEntity
+import de.md5lukas.waypoints.packets.TextDisplay
 import de.md5lukas.waypoints.pointer.PlayerTrackable
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.pointer.TemporaryWaypointTrackable
@@ -20,13 +20,14 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.*
 import kotlin.math.roundToLong
+import org.bukkit.util.Vector as BukkitVector
 
 class HologramPointer(
     plugin: WaypointsPlugin,
     private val config: HologramConfiguration
 ) : Pointer(plugin, config.interval) {
 
-    private val activeHolograms: MutableMap<UUID, Pair<Hologram, SmoothEntity<*>?>> = HashMap()
+    private val activeHolograms: MutableMap<UUID, Pair<SmoothEntity<TextDisplay>, ItemDisplay?>> = HashMap()
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
         if (translatedTarget === null)
@@ -76,28 +77,34 @@ class HologramPointer(
             val (hologram, item) = activeHolograms[player.uniqueId]!!
 
             hologram.location = location
-            hologram.text = hologramText
+            hologram.wrapped.text = hologramText
             hologram.update()
 
             item?.let {
-                item.location = location.clone().add(0.0, config.iconOffset, 0.0)
+                item.location = location
                 item.update()
             }
         } else {
-            val hologram = Hologram(player, location, hologramText).also { it.spawn() }
+            val hologram = SmoothEntity(
+                player,
+                location,
+                TextDisplay(
+                    player,
+                    location,
+                    hologramText,
+                ),
+            )
             val item = if (config.iconEnabled && trackable is Waypoint) {
                 plugin.apiExtensions.run {
-                    SmoothEntity(
+                    ItemDisplay(
                         player,
                         location,
-                        FloatingItem(
-                            player,
-                            location,
-                            plugin.apiExtensions.run {
-                                ItemStack(trackable.getIconMaterial())
-                            },
-                        ),
-                    ).also { it.spawn() }
+                        ItemStack(trackable.getIconMaterial()),
+                        BukkitVector(0.0, config.iconOffset, 0.0),
+                    ).also {
+                        it.spawn()
+                        hologram.passengers += it
+                    }
                 }
             } else null
 

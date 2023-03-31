@@ -76,7 +76,7 @@ class PointerManagerImpl(
         }, {
             with(it.hologram) {
                 if (enabled && plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
-                    if (isMinecraftVersionEqualOrLaterThan(plugin, 19)) {
+                    if (isMinecraftVersionEqualOrLaterThan(plugin, 19, 4)) {
                         HologramPointer(plugin, this)
                     } else {
                         plugin.logger.log(Level.WARNING, "Waypoints does not support Holograms for this Minecraft version")

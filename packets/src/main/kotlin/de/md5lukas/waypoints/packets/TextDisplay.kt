@@ -12,7 +12,7 @@ class TextDisplay(
     player: Player,
     location: Location,
     var text: String,
-    private val backgroundColor: Color
+    private val backgroundColor: Color? = null
 ) : DisplayEntity(
     player,
     location,
@@ -24,8 +24,16 @@ class TextDisplay(
         dataValues += WrappedDataValue(22, chatSerializer, WrappedChatComponent.fromLegacyText(text).handle)
         if (spawn) {
             // https://wiki.vg/Entity_metadata#Text_Display
-            dataValues += WrappedDataValue(24, intSerializer, backgroundColor.asARGB())
-            dataValues += WrappedDataValue(26, byteSerializer, (0x02).toByte()) // Set flag that text can be seen through blocks
+            if (backgroundColor !== null) {
+                dataValues += WrappedDataValue(24, intSerializer, backgroundColor.asARGB())
+            }
+            dataValues += WrappedDataValue(
+                26, byteSerializer, if (backgroundColor === null) {
+                    0x03 // If background color is null also set flag to use defaul background color
+                } else {
+                    0x02 // Set flag that text can be seen through blocks
+                }.toByte()
+            )
         }
     }
 }

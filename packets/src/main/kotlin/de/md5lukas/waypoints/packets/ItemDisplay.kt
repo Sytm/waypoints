@@ -8,11 +8,18 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.ItemDisplay.ItemDisplayTransform
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.util.Vector
 
-class ItemDisplay(player: Player, location: Location, private val itemStack: ItemStack) : DisplayEntity(
+class ItemDisplay(
+    player: Player,
+    location: Location,
+    private val itemStack: ItemStack,
+    translation: Vector,
+) : DisplayEntity(
     player, location,
     EntityType.ITEM_DISPLAY,
-    if (itemStack.type.isItem) Display.Billboard.CENTER else Display.Billboard.VERTICAL
+    if (itemStack.type.isBlock) Display.Billboard.FIXED else Display.Billboard.CENTER,
+    translation,
 ) {
     override fun modifyMetadataValues(spawn: Boolean, dataValues: MutableList<WrappedDataValue>) {
         super.modifyMetadataValues(spawn, dataValues)

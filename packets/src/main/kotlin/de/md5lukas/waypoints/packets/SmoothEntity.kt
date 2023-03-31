@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 class SmoothEntity<T : ClientSideEntity>(
     player: Player,
     location: Location,
-    private val wrapped: T
+    val wrapped: T
 ) : ClientSideEntity(
     player,
     location,
@@ -36,6 +36,7 @@ class SmoothEntity<T : ClientSideEntity>(
     override fun update() {
         super.update()
         wrapped.location = location
+        wrapped.updateMetadata()
     }
 
     override fun destroy() {
