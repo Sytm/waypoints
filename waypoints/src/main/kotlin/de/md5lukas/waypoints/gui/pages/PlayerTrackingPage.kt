@@ -8,9 +8,9 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.TrackableToggleItem
 import de.md5lukas.waypoints.util.format
+import de.md5lukas.waypoints.util.placeholder
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
-import java.util.*
 
 class PlayerTrackingPage(
     wpGUI: WaypointsGUI,
@@ -37,21 +37,19 @@ class PlayerTrackingPage(
     { player ->
         GUIItem(
             wpGUI.translations.TRACKING_PLAYER.getItem(
-                mapOf(
-                    "name" to player.displayName,
-                    "world" to wpGUI.plugin.worldTranslations.getWorldName(player.world),
-                    "x" to player.location.x.format(),
-                    "y" to player.location.y.format(),
-                    "z" to player.location.z.format(),
-                    "blockX" to player.location.blockX.toString(),
-                    "blockY" to player.location.blockY.toString(),
-                    "blockZ" to player.location.blockZ.toString(),
-                    "distance" to if (wpGUI.viewer.world === player.world) {
-                        MathHelper.distance2D(wpGUI.viewer.location, player.location).format()
-                    } else {
-                        wpGUI.translations.TEXT_DISTANCE_OTHER_WORLD.text
-                    }
-                )
+                "name" placeholder player.displayName(),
+                "world" placeholder wpGUI.plugin.worldTranslations.getWorldName(player.world),
+                "x" placeholder player.location.x,
+                "y" placeholder player.location.y,
+                "z" placeholder player.location.z,
+                "blockX" placeholder player.location.blockX,
+                "blockY" placeholder player.location.blockY,
+                "blockZ" placeholder player.location.blockZ,
+                if (wpGUI.viewer.world === player.world) {
+                    "distance" placeholder MathHelper.distance2D(wpGUI.viewer.location, player.location).format()
+                } else {
+                    "distance" placeholder wpGUI.translations.TEXT_DISTANCE_OTHER_WORLD.text
+                }
             ).also { stack ->
                 stack.itemMeta = (stack.itemMeta!! as SkullMeta).also { meta ->
                     meta.owningPlayer = player
@@ -68,7 +66,7 @@ class PlayerTrackingPage(
                     it.enable(wpGUI.viewer, it.trackableOf(player))
                 }
                 if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
-                    wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(player, Collections.singletonMap("name", wpGUI.viewer.displayName))
+                    wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(player, "name" placeholder wpGUI.viewer.displayName())
                 }
             }
 

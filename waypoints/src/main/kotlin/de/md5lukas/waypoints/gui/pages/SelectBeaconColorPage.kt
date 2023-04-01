@@ -30,7 +30,7 @@ class SelectBeaconColorPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint)
         wpGUI.translations.TEXT_BEACON_COLORS.forEach { pair ->
             val item = ItemStack(pair.first.material)
             item.itemMeta = item.itemMeta!!.also { meta ->
-                meta.setDisplayName(pair.second.text)
+                meta.displayName(pair.second.text)
             }
             list.add(GUIItem(item) {
                 waypoint.beaconColor = if (pair.first == BeaconColor.CLEAR) null else pair.first

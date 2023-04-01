@@ -7,9 +7,10 @@ import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.util.getAngleToTarget
 import de.md5lukas.waypoints.util.loopingSubstring
 import de.md5lukas.waypoints.util.normalizeAngleTo360
-import org.bukkit.Bukkit
+import net.kyori.adventure.bossbar.BossBar
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Location
-import org.bukkit.boss.BossBar
 import org.bukkit.entity.Player
 import java.util.*
 import kotlin.math.roundToInt
@@ -30,14 +31,17 @@ class BossBarPointer(
             return
         }
 
+        // TODO properly convert to adventure
+
         val barData = bossBars.computeIfAbsent(player.uniqueId) {
             BarData(
-                Bukkit.createBossBar(
-                    "",
+                BossBar.bossBar(
+                    Component.empty(),
+                    1f,
                     config.barColor,
                     config.barStyle
                 ).also {
-                    it.addPlayer(player)
+                    player.showBossBar(it)
                 },
                 0,
                 rawTitle,
@@ -75,11 +79,13 @@ class BossBarPointer(
             orientedTitle.insert(0, config.normalColor)
         }
 
-        barData.bossBar.setTitle(orientedTitle.toString())
+        barData.bossBar.name(LegacyComponentSerializer.legacyAmpersand().deserialize(orientedTitle.toString()))
     }
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        bossBars.remove(player.uniqueId)?.bossBar?.removeAll()
+        bossBars.remove(player.uniqueId)?.bossBar?.let {
+            player.hideBossBar(it)
+        }
     }
 
     private class BarData(val bossBar: BossBar, var counter: Int, var currentTitle: String)

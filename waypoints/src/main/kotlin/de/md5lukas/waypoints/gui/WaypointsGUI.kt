@@ -40,18 +40,22 @@ class WaypointsGUI(
     internal val translations = plugin.translations
 
     internal val gui = GUI(
-        viewer, if (isOwner) {
-            plugin.translations.INVENTORY_TITLE_SELF.text
-        } else {
-            val otherName = plugin.uuidUtils.getName(target)
+        viewer,
+        plugin.server.createInventory(
+            null,
+            5 * 9,
+            if (isOwner) {
+                plugin.translations.INVENTORY_TITLE_SELF.text
+            } else {
+                val otherName = plugin.uuidUtils.getName(target)
 
-            if (otherName.isEmpty) {
-                throw IllegalArgumentException("A player with the UUID $target does not exist.")
+                if (otherName.isEmpty) {
+                    throw IllegalArgumentException("A player with the UUID $target does not exist.")
+                }
+
+                plugin.translations.INVENTORY_TITLE_OTHER.withReplacements("name" placeholder otherName.get())
             }
-
-            plugin.translations.INVENTORY_TITLE_OTHER.withReplacements(Collections.singletonMap("name", otherName.get()))
-        },
-        5
+        ),
     )
 
     fun openOverview() {
@@ -75,7 +79,7 @@ class WaypointsGUI(
     }
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
-        AnvilGUI.Builder().plugin(plugin).text(translations.FOLDER_CREATE_ENTER_NAME.text).onComplete { (name) ->
+        AnvilGUI.Builder().plugin(plugin).text(translations.FOLDER_CREATE_ENTER_NAME.rawText).onComplete { (name) ->
             val result = when (waypointHolder.type) {
                 Type.PRIVATE -> createFolderPrivate(plugin, viewer, name)
                 Type.PUBLIC -> createFolderPublic(plugin, viewer, name)
@@ -84,7 +88,7 @@ class WaypointsGUI(
             }
 
             return@onComplete when (result) {
-                NameTaken -> AnvilGUI.ResponseAction.replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.text)
+                NameTaken -> AnvilGUI.ResponseAction.replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.rawText)
                 LimitReached, is SuccessFolder -> AnvilGUI.ResponseAction.close()
                 else -> throw IllegalStateException("Invalid return value $result")
             }.asSingletonList()
@@ -101,12 +105,12 @@ class WaypointsGUI(
 
         var name: String? = null
         var permission: String? = null
-        AnvilGUI.Builder().plugin(plugin).text(translations.WAYPOINT_CREATE_ENTER_NAME.text).onComplete { (enteredText) ->
+        AnvilGUI.Builder().plugin(plugin).text(translations.WAYPOINT_CREATE_ENTER_NAME.rawText).onComplete { (enteredText) ->
             if (name == null) {
                 name = enteredText
 
                 if (type == Type.PERMISSION && permission == null) {
-                    return@onComplete AnvilGUI.ResponseAction.replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.text).asSingletonList()
+                    return@onComplete AnvilGUI.ResponseAction.replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText).asSingletonList()
                 }
             } else if (type == Type.PERMISSION && permission == null) {
                 permission = enteredText
@@ -125,8 +129,9 @@ class WaypointsGUI(
                 LimitReached -> AnvilGUI.ResponseAction.close().asSingletonList()
                 NameTaken -> {
                     name = null
-                    AnvilGUI.ResponseAction.replaceInputText(translations.WAYPOINT_CREATE_ENTER_NAME.text).asSingletonList()
+                    AnvilGUI.ResponseAction.replaceInputText(translations.WAYPOINT_CREATE_ENTER_NAME.rawText).asSingletonList()
                 }
+
                 is SuccessWaypoint -> {
                     folder?.let {
                         result.waypoint.folder = it
@@ -137,6 +142,7 @@ class WaypointsGUI(
 
                     AnvilGUI.ResponseAction.close().asSingletonList()
                 }
+
                 else -> throw IllegalStateException("Invalid return value $result")
             }
         }.onClose {
