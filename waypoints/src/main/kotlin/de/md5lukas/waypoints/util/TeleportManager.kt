@@ -7,6 +7,7 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.config.general.TeleportPaymentType
+import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -19,7 +20,6 @@ import java.time.OffsetDateTime
 import java.util.*
 import kotlin.math.ceil
 import kotlin.math.min
-import kotlin.math.roundToInt
 
 class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
@@ -68,7 +68,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         )
     }
 
-    fun getTeleportCostDescription(player: Player, waypoint: Waypoint): String? {
+    fun getTeleportCostDescription(player: Player, waypoint: Waypoint): Component? {
         val config = getTeleportConfig(waypoint)
 
         if (player.hasPermission(getTeleportPermission(waypoint))) {
@@ -77,11 +77,11 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
         return when (config.paymentType) {
             TeleportPaymentType.XP -> plugin.translations.WAYPOINT_TELEPORT_XP_LEVEL.withReplacements(
-                Collections.singletonMap("levels", getTeleportationPrice(player, waypoint).roundToInt().toString())
+                "levels" placeholder ceil(getTeleportationPrice(player, waypoint)).toInt()
             )
 
             TeleportPaymentType.VAULT -> plugin.translations.WAYPOINT_TELEPORT_BALANCE.withReplacements(
-                Collections.singletonMap("balance", getTeleportationPrice(player, waypoint).format())
+                "balance" placeholder getTeleportationPrice(player, waypoint)
             )
 
             else -> null
@@ -114,7 +114,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
             if (remainingMillis > 0) {
                 val remainingCooldown = DurationFormatter.formatDuration(player, remainingMillis)
 
-                plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(player, Collections.singletonMap("remainingCooldown", remainingCooldown))
+                plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(player, "remainingCooldown" placeholder remainingCooldown)
 
                 return
             }
@@ -131,23 +131,23 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                 val canTeleport = player.level >= price
                 if (!canTeleport) {
                     plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_XP.send(
-                        player, mapOf(
-                            "currentLevel" to player.level.toString(),
-                            "requiredLevel" to ceil(price).toInt().toString()
-                        )
+                        player,
+                        "currentLevel" placeholder player.level,
+                        "requiredLevel" placeholder ceil(price).toInt()
+
                     )
                 }
                 canTeleport
             }
+
             TeleportPaymentType.VAULT -> {
                 val balance = plugin.vaultIntegration.getBalance(player)
                 val canTeleport = balance >= price
                 if (!canTeleport) {
                     plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE.send(
-                        player, mapOf(
-                            "currentBalance" to balance.format(),
-                            "requiredBalance" to price.format()
-                        )
+                        player,
+                        "currentBalance" placeholder balance,
+                        "requiredBalance" placeholder price
                     )
                 }
                 canTeleport
@@ -166,6 +166,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                             incrementTeleportations(player, waypoint)
                             true
                         }
+
                         TeleportPaymentType.VAULT -> {
                             incrementTeleportations(player, waypoint)
                             plugin.vaultIntegration.withdraw(player, price)
@@ -187,7 +188,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
             if (standStillTime.toSeconds() > 0) {
                 plugin.translations.MESSAGE_TELEPORT_STAND_STILL_NOTICE.send(
                     player,
-                    Collections.singletonMap("duration", DurationFormatter.formatDuration(player, standStillTime.toMillis()))
+                    "duration" placeholder DurationFormatter.formatDuration(player, standStillTime.toMillis())
                 )
                 pendingTeleports[player] = plugin.server.scheduler.runTaskLater(plugin, action, standStillTime.toSeconds() * 20)
             } else {

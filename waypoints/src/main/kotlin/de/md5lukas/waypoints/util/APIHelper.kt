@@ -199,8 +199,8 @@ fun checkFolderName(plugin: WaypointsPlugin, holder: WaypointHolder, name: Strin
 
 
 private fun searchWaypoints0(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): List<SearchResult<out Waypoint>> {
-    val publicPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PUBLIC.text + "/"
-    val permissionPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PERMISSION.text + "/"
+    val publicPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PUBLIC.rawText + "/"
+    val permissionPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PERMISSION.rawText + "/"
 
     val (strippedQuery, holder) = if (allowGlobals && query.startsWith(publicPrefix)) {
         query.removePrefix(publicPrefix) to plugin.api.publicWaypoints

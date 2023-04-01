@@ -47,8 +47,8 @@ class WaypointsArgumentSuggestions(
             } else info.currentArg
 
             if (allowGlobals) {
-                val publicPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PUBLIC.text + "/"
-                val permissionPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PERMISSION.text + "/"
+                val publicPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PUBLIC.rawText + "/"
+                val permissionPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PERMISSION.rawText + "/"
                 arrayOf(publicPrefix, permissionPrefix).forEach {
                     if (it.startsWith(query, true)) {
                         builder.suggest(formatSuggestion(it))

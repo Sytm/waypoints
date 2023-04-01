@@ -15,7 +15,6 @@ import de.md5lukas.waypoints.gui.items.ToggleGlobalsItem
 import de.md5lukas.waypoints.util.*
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
-import java.util.*
 
 class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : ListingPage<GUIDisplayable>(
     wpGUI,
@@ -85,16 +84,13 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                     }
                 } else {
                     GUIItem(wpGUI.translations.FOLDER_DELETE.item) {
-                        val nameMap = Collections.singletonMap(
-                            "name",
-                            guiFolder.name
-                        )
+                        val nameResolver = "name" placeholder guiFolder.name
                         wpGUI.open(
                             ConfirmPage(
                                 wpGUI,
-                                wpGUI.translations.FOLDER_DELETE_CONFIRM_QUESTION.getItem(nameMap),
-                                wpGUI.translations.FOLDER_DELETE_CONFIRM_FALSE.getItem(nameMap),
-                                wpGUI.translations.FOLDER_DELETE_CONFIRM_TRUE.getItem(nameMap),
+                                wpGUI.translations.FOLDER_DELETE_CONFIRM_QUESTION.getItem(nameResolver),
+                                wpGUI.translations.FOLDER_DELETE_CONFIRM_FALSE.getItem(nameResolver),
+                                wpGUI.translations.FOLDER_DELETE_CONFIRM_TRUE.getItem(nameResolver),
                             ) {
                                 if (it) {
                                     (guiFolder as Folder).delete()
@@ -187,7 +183,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                 GUIItem(wpGUI.translations.OVERVIEW_SET_WAYPOINT.item) {
                     if (it.isShiftClick) {
                         var parsedLocation: Location? = null
-                        AnvilGUI.Builder().plugin(wpGUI.plugin).text(wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.text).onComplete { (coordinates) ->
+                        AnvilGUI.Builder().plugin(wpGUI.plugin).text(wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.rawText).onComplete { (coordinates) ->
                             parsedLocation = parseLocationString(wpGUI.viewer, coordinates)
 
                             return@onComplete parsedLocation.let { location ->

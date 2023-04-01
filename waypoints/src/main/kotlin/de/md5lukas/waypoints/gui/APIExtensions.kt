@@ -9,12 +9,11 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
-import de.md5lukas.waypoints.util.Formatters
 import de.md5lukas.waypoints.util.format
+import de.md5lukas.waypoints.util.placeholder
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 class APIExtensions(
     private val plugin: WaypointsPlugin
@@ -36,23 +35,21 @@ class APIExtensions(
             Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
             Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
         }.getItem(
-            mapOf(
-                "name" to name,
-                "description" to (description ?: ""),
-                "createdAt" to createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER),
-                "world" to (location.world?.let { worldTranslations.getWorldName(it) } ?: translations.TEXT_WORLD_NOT_FOUND.text),
-                "x" to location.x.format(),
-                "y" to location.y.format(),
-                "z" to location.z.format(),
-                "blockX" to location.blockX.toString(),
-                "blockY" to location.blockY.toString(),
-                "blockZ" to location.blockZ.toString(),
-                "distance" to if (player.world == location.world) {
-                    MathHelper.distance2D(player.location, location).format()
-                } else {
-                    translations.TEXT_DISTANCE_OTHER_WORLD.text
-                },
-            )
+            "name" placeholder name,
+            "description" placeholder (description ?: ""),
+            "createdAt" placeholder createdAt,
+            "world" placeholder (location.world?.let { worldTranslations.getWorldName(it) } ?: translations.TEXT_WORLD_NOT_FOUND.text),
+            "x" placeholder location.x,
+            "y" placeholder location.y,
+            "z" placeholder location.z,
+            "blockX" placeholder location.blockX,
+            "blockY" placeholder location.blockY,
+            "blockZ" placeholder location.blockZ,
+            if (player.world == location.world) {
+                "distance" placeholder MathHelper.distance2D(player.location, location).format()
+            } else {
+                "distance" placeholder translations.TEXT_DISTANCE_OTHER_WORLD.text
+            },
         )
 
         material?.also {
@@ -90,8 +87,8 @@ class APIExtensions(
         }
 
         val itemStack = when (type) {
-            Type.PUBLIC -> translations.ICON_PUBLIC.getItem(Collections.singletonMap("amount", amountVisibleToPlayer.toString()))
-            Type.PERMISSION -> translations.ICON_PERMISSION.getItem(Collections.singletonMap("amount", amountVisibleToPlayer.toString()))
+            Type.PUBLIC -> translations.ICON_PUBLIC.getItem("amount" placeholder amountVisibleToPlayer)
+            Type.PERMISSION -> translations.ICON_PERMISSION.getItem("amount" placeholder amountVisibleToPlayer)
             else -> throw IllegalStateException("A waypoint holder for a player cannot be a GUI item")
         }
 
@@ -121,12 +118,10 @@ class APIExtensions(
             Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION
             else -> throw IllegalStateException("An folder with the type $type should not exist")
         }.getItem(
-            mapOf(
-                "name" to name,
-                "description" to (description ?: ""),
-                "createdAt" to createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER),
-                "amount" to fetchedAmount.toString()
-            )
+            "name" placeholder name,
+            "description" placeholder (description ?: ""),
+            "createdAt" placeholder createdAt,
+            "amount" placeholder fetchedAmount
         )
 
         stack.amount = if (plugin.waypointsConfig.inventory.disableFolderSizes) {
@@ -151,7 +146,7 @@ class APIExtensions(
 
     private fun Folder.getItemDeath(): ItemStack {
         val fetchedAmount = amount
-        val stack = translations.FOLDER_ICON_DEATH.getItem(Collections.singletonMap("amount", fetchedAmount.toString()))
+        val stack = translations.FOLDER_ICON_DEATH.getItem("amount" placeholder fetchedAmount)
 
         stack.amount = MathHelper.clamp(1, 64, fetchedAmount)
 

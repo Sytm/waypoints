@@ -4,10 +4,9 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Trackable
 import de.md5lukas.waypoints.config.pointers.ActionBarConfiguration
 import de.md5lukas.waypoints.pointer.Pointer
-import de.md5lukas.waypoints.util.format
 import de.md5lukas.waypoints.util.getAngleToTarget
-import net.md_5.bungee.api.ChatMessageType
-import net.md_5.bungee.api.chat.TextComponent
+import de.md5lukas.waypoints.util.placeholder
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import kotlin.math.roundToInt
@@ -18,34 +17,30 @@ class ActionBarPointer(
 ) : Pointer(plugin, config.interval) {
 
     override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        player.spigot().sendMessage(
-            ChatMessageType.ACTION_BAR,
-            *TextComponent.fromLegacyText(
-                if (translatedTarget !== null) {
-                    if (config.showDistanceEnabled && player.isSneaking) {
-                        plugin.translations.POINTERS_ACTION_BAR_DISTANCE.withReplacements(
-                            mapOf(
-                                "distance3D" to player.location.distance(translatedTarget).format(),
-                                "heightDifference" to (player.location.y - trackable.location.y).format()
-                            )
-                        )
-                    } else {
+        player.sendActionBar(
+            if (translatedTarget !== null) {
+                if (config.showDistanceEnabled && player.isSneaking) {
+                    plugin.translations.POINTERS_ACTION_BAR_DISTANCE.withReplacements(
+                        "distance3D" placeholder player.location.distance(translatedTarget),
+                        "heightDifference" placeholder (player.location.y - trackable.location.y)
+                    )
+                } else {
+                    // TODO properly convert to adventure
+                    LegacyComponentSerializer.legacyAmpersand().deserialize(
                         generateDirectionIndicator(
                             deltaAngleToTarget(
                                 player.location,
                                 translatedTarget
                             )
                         )
-                    }
-                } else {
-                    plugin.translations.POINTERS_ACTION_BAR_WRONG_WORLD.withReplacements(
-                        mapOf(
-                            "current" to plugin.worldTranslations.getWorldName(player.world),
-                            "correct" to plugin.worldTranslations.getWorldName(trackable.location.world!!),
-                        )
                     )
                 }
-            )
+            } else {
+                plugin.translations.POINTERS_ACTION_BAR_WRONG_WORLD.withReplacements(
+                    "current" placeholder plugin.worldTranslations.getWorldName(player.world),
+                    "correct" placeholder plugin.worldTranslations.getWorldName(trackable.location.world!!),
+                )
+            }
         )
     }
 

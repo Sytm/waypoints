@@ -223,7 +223,7 @@ pointers:
     barColor: BLUE
 
     # Style of the boss bar
-    # Available values: SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
+    # Available values: SOLID, NOTCHED_6, NOTCHED_10, NOTCHED_12, NOTCHED_20
     barStyle: SOLID
 
     title: " · · ◈ · · ◈ · · O · · ◈ · · ◈ · · S · · ◈ · · ◈ · · W · · ◈ · · ◈ · · N"

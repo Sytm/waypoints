@@ -47,7 +47,7 @@ class DynMapIntegration(
 
             markerSet = markerApi.createMarkerSet(
                 "waypoints_public",
-                plugin.translations.INTEGRATIONS_MAPS_LABEL.text,
+                plugin.translations.INTEGRATIONS_MAPS_LABEL.rawText,
                 null,
                 false
             ); // id, label, iconlimit, persistent

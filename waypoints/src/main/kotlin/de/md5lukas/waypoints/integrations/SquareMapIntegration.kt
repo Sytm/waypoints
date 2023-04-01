@@ -150,7 +150,7 @@ class SquareMapIntegration(
     private val World.layerProvider: SimpleLayerProvider?
         get() = layerProviders.computeIfAbsent(uid) {
             mapWorld?.let { mapWorld ->
-                val provider = SimpleLayerProvider.builder(plugin.translations.INTEGRATIONS_MAPS_LABEL.text).build()
+                val provider = SimpleLayerProvider.builder(plugin.translations.INTEGRATIONS_MAPS_LABEL.rawText).build()
 
                 mapWorld.layerRegistry().register(layerKey, provider)
 

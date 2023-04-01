@@ -9,7 +9,7 @@ description = "Waypoints Packets utility module"
 repositories {
     mavenCentral()
 
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.dmulloy2.net/repository/public/")
 }
 
@@ -17,7 +17,7 @@ dependencies {
     val spigotVersion: String by project
     val protocolLibVersion: String by project
 
-    api("org.spigotmc:spigot-api:$spigotVersion")
+    api("io.papermc.paper:paper-api:$spigotVersion")
 
     api(kotlin("stdlib-jdk8"))
     implementation("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")

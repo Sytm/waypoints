@@ -9,10 +9,10 @@ import de.md5lukas.waypoints.packets.SmoothFloatingItem
 import de.md5lukas.waypoints.pointer.PlayerTrackable
 import de.md5lukas.waypoints.pointer.Pointer
 import de.md5lukas.waypoints.pointer.TemporaryWaypointTrackable
-import de.md5lukas.waypoints.util.Formatters
-import de.md5lukas.waypoints.util.format
 import de.md5lukas.waypoints.util.minus
-import de.md5lukas.waypoints.util.runtimeReplace
+import de.md5lukas.waypoints.util.placeholder
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -31,12 +31,13 @@ class HologramPointer(
         if (translatedTarget === null)
             return
 
-        var hologramText = when (trackable) {
-            is Waypoint -> plugin.apiExtensions.run { trackable.getHologramTranslations().text }
-            is TemporaryWaypointTrackable -> plugin.translations.POINTERS_HOLOGRAM_TEMPORARY.text
-            is PlayerTrackable -> plugin.translations.POINTERS_HOLOGRAM_PLAYER_TRACKING.text
-            else -> trackable.hologramText
-        }
+        val hologramText = when (trackable) {
+            is Waypoint -> plugin.apiExtensions.run { trackable.getHologramTranslations() }
+            is TemporaryWaypointTrackable -> plugin.translations.POINTERS_HOLOGRAM_TEMPORARY
+            is PlayerTrackable -> plugin.translations.POINTERS_HOLOGRAM_PLAYER_TRACKING
+            else -> null
+        }?.withReplacements(*trackable.getReplacements(player)) ?: trackable.hologramText?.let { LegacyComponentSerializer.legacySection().deserialize(it) }
+
         if (hologramText === null)
             return
 
@@ -69,8 +70,6 @@ class HologramPointer(
             }.toLocation(player.world)
         }
 
-        hologramText = hologramText.runtimeReplace(trackable.getReplacements(player))
-
         if (player.uniqueId in activeHolograms) {
             val (hologram, item) = activeHolograms[player.uniqueId]!!
 
@@ -100,25 +99,25 @@ class HologramPointer(
         }
     }
 
-    private fun Trackable.getReplacements(player: Player): Map<String, String> {
-        val map = mutableMapOf(
-            "world" to plugin.worldTranslations.getWorldName(location.world!!),
-            "distance" to player.location.distance(location).roundToLong().toString(),
-            "x" to location.x.format(),
-            "y" to location.y.format(),
-            "z" to location.z.format(),
-            "blockX" to location.blockX.toString(),
-            "blockY" to location.blockY.toString(),
-            "blockZ" to location.blockZ.toString(),
+    private fun Trackable.getReplacements(player: Player): Array<TagResolver> {
+        val resolvers = mutableListOf(
+            "world" placeholder plugin.worldTranslations.getWorldName(location.world!!),
+            "distance" placeholder player.location.distance(location).roundToLong(),
+            "x" placeholder location.x,
+            "y" placeholder location.y,
+            "z" placeholder location.z,
+            "blockX" placeholder location.blockX,
+            "blockY" placeholder location.blockY,
+            "blockZ" placeholder location.blockZ,
         )
         if (this is Waypoint) {
-            map["name"] = name
-            map["createdAt"] = createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER)
+            resolvers += "name" placeholder name
+            resolvers += "createdAt" placeholder createdAt
         }
         if (this is PlayerTrackable) {
-            map["name"] = this.player.displayName
+            resolvers += "name" placeholder this.player.displayName()
         }
-        return map
+        return resolvers.toTypedArray()
     }
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
