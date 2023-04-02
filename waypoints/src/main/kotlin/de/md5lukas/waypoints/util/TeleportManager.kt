@@ -23,7 +23,6 @@ import kotlin.math.min
 
 class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
-    // TODO payment notice + must visit rework
     private val pendingTeleports = HashMap<Player, BukkitTask>()
 
     init {

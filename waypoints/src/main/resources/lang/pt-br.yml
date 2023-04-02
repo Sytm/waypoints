@@ -316,11 +316,7 @@ inventory:
         ou remove da pasta atual
     teleport:
       displayName: "<yellow>Teleportar para waypoint"
-      # payment_notice: A payment notice informing the player how much the teleportation will cost him, or if it is free nothing
-      # must_visit: This text is added if the player must visit the waypoint beforehand to be able to teleport to it
-      description: |
-        <payment_notice>
-        <must_visit>
+      description: ""
       # levels: The amount of levels required for teleportation
       xpLevel: "<gray>Você precisa de <yellow><levels><gray> levels para teleportar."
       # balance: The amount of balance required for teleportation
