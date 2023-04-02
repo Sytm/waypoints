@@ -241,4 +241,8 @@ internal open class WaypointHolderImpl(
     override fun hashCode(): Int {
         return type.hashCode()
     }
+
+    override fun toString(): String {
+        return "WaypointHolderImpl(type=$type, owner=$owner)"
+    }
 }

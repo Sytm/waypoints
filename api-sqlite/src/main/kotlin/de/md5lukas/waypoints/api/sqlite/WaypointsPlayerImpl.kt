@@ -144,4 +144,8 @@ internal class WaypointsPlayerImpl private constructor(
     override fun hashCode(): Int {
         return id.hashCode()
     }
+
+    override fun toString(): String {
+        return "WaypointsPlayerImpl(showGlobals=$showGlobals, sortBy=$sortBy, canBeTracked=$canBeTracked, lastSelectedWaypointID=$lastSelectedWaypointID) ${super.toString()}"
+    }
 }
