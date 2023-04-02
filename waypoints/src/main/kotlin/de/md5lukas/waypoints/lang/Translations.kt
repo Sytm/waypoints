@@ -8,23 +8,26 @@ import org.bukkit.Material
 class Translations(
     tl: TranslationLoader
 ) {
-    val COMMAND_NOT_A_PLAYER = Translation(tl, "command.notAPlayer")
+    val PREFIX = Translation(tl, "prefix")
+    val SCRIPT_PREFIX = Translation(tl, "scriptPrefix")
 
-    val COMMAND_SCRIPT_HELP_HEADER = Translation(tl, "command.script.help.header")
+    val COMMAND_NOT_A_PLAYER = Translation(tl, "command.notAPlayer", PREFIX)
+
+    val COMMAND_SCRIPT_HELP_HEADER = Translation(tl, "command.script.help.header", SCRIPT_PREFIX)
     val COMMAND_SCRIPT_HELP_DESELECT_WAYPOINT = Translation(tl, "command.script.help.deselectWaypoint")
     val COMMAND_SCRIPT_HELP_SELECT_WAYPOINT = Translation(tl, "command.script.help.selectWaypoint")
     val COMMAND_SCRIPT_HELP_TEMPORARY_WAYPOINT = Translation(tl, "command.script.help.temporaryWaypoint")
     val COMMAND_SCRIPT_HELP_UUID = Translation(tl, "command.script.help.uuid")
 
-    val COMMAND_SCRIPT_SELECT_WAYPOINT_WAYPOINT_NOT_FOUND = Translation(tl, "command.script.selectWaypoint.waypointNotFound")
+    val COMMAND_SCRIPT_SELECT_WAYPOINT_WAYPOINT_NOT_FOUND = Translation(tl, "command.script.selectWaypoint.waypointNotFound", SCRIPT_PREFIX)
 
-    val COMMAND_SCRIPT_TEMPORARY_WAYPOINT_BEACON_COLOR_NOT_FOUND = Translation(tl, "command.script.temporaryWaypoint.beaconColorNotFound")
+    val COMMAND_SCRIPT_TEMPORARY_WAYPOINT_BEACON_COLOR_NOT_FOUND = Translation(tl, "command.script.temporaryWaypoint.beaconColorNotFound", SCRIPT_PREFIX)
 
-    val COMMAND_SCRIPT_UUID_NO_MATCH = Translation(tl, "command.script.uuid.noMatch")
-    val COMMAND_SCRIPT_UUID_HEADER = Translation(tl, "command.script.uuid.header")
+    val COMMAND_SCRIPT_UUID_NO_MATCH = Translation(tl, "command.script.uuid.noMatch", SCRIPT_PREFIX)
+    val COMMAND_SCRIPT_UUID_HEADER = Translation(tl, "command.script.uuid.header", SCRIPT_PREFIX)
     val COMMAND_SCRIPT_UUID_RESULT = Translation(tl, "command.script.uuid.result")
 
-    val COMMAND_HELP_HEADER = Translation(tl, "command.help.header")
+    val COMMAND_HELP_HEADER = Translation(tl, "command.help.header", PREFIX)
     val COMMAND_HELP_GUI = Translation(tl, "command.help.gui")
     val COMMAND_HELP_HELP = Translation(tl, "command.help.help")
     val COMMAND_HELP_SELECT = Translation(tl, "command.help.select")
@@ -40,17 +43,18 @@ class Translations(
 
     val COMMAND_SEARCH_PREFIX_PUBLIC = Translation(tl, "command.search.prefix.public")
     val COMMAND_SEARCH_PREFIX_PERMISSION = Translation(tl, "command.search.prefix.permission")
-    val COMMAND_SEARCH_NOT_FOUND_WAYPOINT = Translation(tl, "command.search.notFound.waypoint")
+    val COMMAND_SEARCH_TOOLTIP = Translation(tl, "command.search.tooltip")
+    val COMMAND_SEARCH_NOT_FOUND_WAYPOINT = Translation(tl, "command.search.notFound.waypoint", PREFIX)
 
-    val COMMAND_SELECT_SELECTED = Translation(tl, "command.select.selected")
+    val COMMAND_SELECT_SELECTED = Translation(tl, "command.select.selected", PREFIX)
 
-    val COMMAND_DESELECT_DONE = Translation(tl, "command.deselect.done")
+    val COMMAND_DESELECT_DONE = Translation(tl, "command.deselect.done", PREFIX)
 
-    val COMMAND_OTHER_PLAYER_NO_WAYPOINTS = Translation(tl, "command.other.playerNoWaypoints")
+    val COMMAND_OTHER_PLAYER_NO_WAYPOINTS = Translation(tl, "command.other.playerNoWaypoints", PREFIX)
 
-    val COMMAND_STATISTICS_MESSAGE = Translation(tl, "command.statistics.message")
+    val COMMAND_STATISTICS_MESSAGE = Translation(tl, "command.statistics.message", PREFIX)
 
-    val COMMAND_RELOAD_FINISHED = Translation(tl, "command.reload.finished")
+    val COMMAND_RELOAD_FINISHED = Translation(tl, "command.reload.finished", PREFIX)
 
 
     val POINTERS_ACTION_BAR_WRONG_WORLD = Translation(tl, "pointers.actionBar.wrongWorld")
@@ -81,45 +85,45 @@ class Translations(
         it to Translation(tl, "text.beaconColors.${it.name.lowercase()}")
     }
 
-    val WAYPOINT_CREATE_WORLD_UNAVAILABLE = Translation(tl, "message.waypoint.create.worldUnavailable")
-    val WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS = Translation(tl, "message.waypoint.create.coordinates.outOfBounds")
-    val WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT = Translation(tl, "message.waypoint.create.coordinates.invalidFormat")
+    val WAYPOINT_CREATE_WORLD_UNAVAILABLE = Translation(tl, "message.waypoint.create.worldUnavailable", PREFIX)
+    val WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS = Translation(tl, "message.waypoint.create.coordinates.outOfBounds", PREFIX)
+    val WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT = Translation(tl, "message.waypoint.create.coordinates.invalidFormat", PREFIX)
 
-    val WAYPOINT_LIMIT_REACHED_PRIVATE = Translation(tl, "message.waypoint.limitReached.private")
-    val WAYPOINT_NAME_DUPLICATE_PRIVATE = Translation(tl, "message.waypoint.nameDuplicate.private")
-    val WAYPOINT_SET_SUCCESS_PRIVATE = Translation(tl, "message.waypoint.setSuccess.private")
+    val WAYPOINT_LIMIT_REACHED_PRIVATE = Translation(tl, "message.waypoint.limitReached.private", PREFIX)
+    val WAYPOINT_NAME_DUPLICATE_PRIVATE = Translation(tl, "message.waypoint.nameDuplicate.private", PREFIX)
+    val WAYPOINT_SET_SUCCESS_PRIVATE = Translation(tl, "message.waypoint.setSuccess.private", PREFIX)
 
-    val WAYPOINT_NAME_DUPLICATE_PUBLIC = Translation(tl, "message.waypoint.nameDuplicate.public")
-    val WAYPOINT_SET_SUCCESS_PUBLIC = Translation(tl, "message.waypoint.setSuccess.public")
+    val WAYPOINT_NAME_DUPLICATE_PUBLIC = Translation(tl, "message.waypoint.nameDuplicate.public", PREFIX)
+    val WAYPOINT_SET_SUCCESS_PUBLIC = Translation(tl, "message.waypoint.setSuccess.public", PREFIX)
 
-    val WAYPOINT_NAME_DUPLICATE_PERMISSION = Translation(tl, "message.waypoint.nameDuplicate.permission")
-    val WAYPOINT_SET_SUCCESS_PERMISSION = Translation(tl, "message.waypoint.setSuccess.permission")
+    val WAYPOINT_NAME_DUPLICATE_PERMISSION = Translation(tl, "message.waypoint.nameDuplicate.permission", PREFIX)
+    val WAYPOINT_SET_SUCCESS_PERMISSION = Translation(tl, "message.waypoint.setSuccess.permission", PREFIX)
 
-    val MESSAGE_WAYPOINT_GET_UUID = Translation(tl, "message.waypoint.getUuid")
-    val MESSAGE_WAYPOINT_NEW_ICON_INVALID = Translation(tl, "message.waypoint.newIconInvalid")
+    val MESSAGE_WAYPOINT_GET_UUID = Translation(tl, "message.waypoint.getUuid", PREFIX)
+    val MESSAGE_WAYPOINT_NEW_ICON_INVALID = Translation(tl, "message.waypoint.newIconInvalid", PREFIX)
 
 
-    val FOLDER_LIMIT_REACHED_PRIVATE = Translation(tl, "message.folder.limitReached.private")
-    val FOLDER_NAME_DUPLICATE_PRIVATE = Translation(tl, "message.folder.nameDuplicate.private")
-    val FOLDER_CREATE_SUCCESS_PRIVATE = Translation(tl, "message.folder.createSuccess.private")
-    val FOLDER_NEW_ICON_INVALID = Translation(tl, "message.folder.newIconInvalid")
+    val FOLDER_LIMIT_REACHED_PRIVATE = Translation(tl, "message.folder.limitReached.private", PREFIX)
+    val FOLDER_NAME_DUPLICATE_PRIVATE = Translation(tl, "message.folder.nameDuplicate.private", PREFIX)
+    val FOLDER_CREATE_SUCCESS_PRIVATE = Translation(tl, "message.folder.createSuccess.private", PREFIX)
+    val FOLDER_NEW_ICON_INVALID = Translation(tl, "message.folder.newIconInvalid", PREFIX)
 
-    val FOLDER_NAME_DUPLICATE_PUBLIC = Translation(tl, "message.folder.nameDuplicate.public")
-    val FOLDER_CREATE_SUCCESS_PUBLIC = Translation(tl, "message.folder.createSuccess.public")
+    val FOLDER_NAME_DUPLICATE_PUBLIC = Translation(tl, "message.folder.nameDuplicate.public", PREFIX)
+    val FOLDER_CREATE_SUCCESS_PUBLIC = Translation(tl, "message.folder.createSuccess.public", PREFIX)
 
-    val FOLDER_NAME_DUPLICATE_PERMISSION = Translation(tl, "message.folder.nameDuplicate.permission")
-    val FOLDER_CREATE_SUCCESS_PERMISSION = Translation(tl, "message.folder.createSuccess.permission")
+    val FOLDER_NAME_DUPLICATE_PERMISSION = Translation(tl, "message.folder.nameDuplicate.permission", PREFIX)
+    val FOLDER_CREATE_SUCCESS_PERMISSION = Translation(tl, "message.folder.createSuccess.permission", PREFIX)
 
-    val MESSAGE_TELEPORT_ON_COOLDOWN = Translation(tl, "message.teleport.onCooldown")
-    val MESSAGE_TELEPORT_NOT_ALLOWED = Translation(tl, "message.teleport.notAllowed")
-    val MESSAGE_TELEPORT_NOT_ENOUGH_XP = Translation(tl, "message.teleport.notEnough.xp")
-    val MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE = Translation(tl, "message.teleport.notEnough.balance")
-    val MESSAGE_TELEPORT_STAND_STILL_NOTICE = Translation(tl, "message.teleport.standStill.notice")
-    val MESSAGE_TELEPORT_STAND_STILL_MOVED = Translation(tl, "message.teleport.standStill.moved")
+    val MESSAGE_TELEPORT_ON_COOLDOWN = Translation(tl, "message.teleport.onCooldown", PREFIX)
+    val MESSAGE_TELEPORT_NOT_ALLOWED = Translation(tl, "message.teleport.notAllowed", PREFIX)
+    val MESSAGE_TELEPORT_NOT_ENOUGH_XP = Translation(tl, "message.teleport.notEnough.xp", PREFIX)
+    val MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE = Translation(tl, "message.teleport.notEnough.balance", PREFIX)
+    val MESSAGE_TELEPORT_STAND_STILL_NOTICE = Translation(tl, "message.teleport.standStill.notice", PREFIX)
+    val MESSAGE_TELEPORT_STAND_STILL_MOVED = Translation(tl, "message.teleport.standStill.moved", PREFIX)
 
-    val MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE = Translation(tl, "message.tracking.playerNoLongerOnline")
-    val MESSAGE_TRACKING_TRACKABLE_REQUIRED = Translation(tl, "message.tracking.trackableRequired")
-    val MESSAGE_TRACKING_NOTIFICATION = Translation(tl, "message.tracking.notification")
+    val MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE = Translation(tl, "message.tracking.playerNoLongerOnline", PREFIX)
+    val MESSAGE_TRACKING_TRACKABLE_REQUIRED = Translation(tl, "message.tracking.trackableRequired", PREFIX)
+    val MESSAGE_TRACKING_NOTIFICATION = Translation(tl, "message.tracking.notification", PREFIX)
 
 
     val INVENTORY_TITLE_SELF = Translation(tl, "inventory.title.self")
@@ -136,8 +140,8 @@ class Translations(
     val BACKGROUND_PERMISSION = ItemTranslation(tl, "inventory.background.permission")
 
     val OVERVIEW_CYCLE_SORT = ItemTranslation(tl, "inventory.overview.cycleSort")
-    val OVERVIEW_CYCLE_SORT_ACTIVE_COLOR = Translation(tl, "inventory.overview.cycleSort.activeColor")
-    val OVERVIEW_CYCLE_SORT_INACTIVE_COLOR = Translation(tl, "inventory.overview.cycleSort.inactiveColor")
+    val OVERVIEW_CYCLE_SORT_ACTIVE_COLOR = Translation(tl, "inventory.overview.cycleSort.activeColor", miniMessage = tl.itemMiniMessage)
+    val OVERVIEW_CYCLE_SORT_INACTIVE_COLOR = Translation(tl, "inventory.overview.cycleSort.inactiveColor", miniMessage = tl.itemMiniMessage)
     val OVERVIEW_CYCLE_SORT_OPTIONS = OverviewSort.values().map {
         it to Translation(tl, "text.sortOptions.${it.name.lowercase()}")
     }
@@ -165,9 +169,9 @@ class Translations(
     val WAYPOINT_RENAME = ItemTranslation(tl, "inventory.waypoint.rename")
     val WAYPOINT_MOVE_TO_FOLDER = ItemTranslation(tl, "inventory.waypoint.moveToFolder")
     val WAYPOINT_TELEPORT = ItemTranslation(tl, "inventory.waypoint.teleport")
-    val WAYPOINT_TELEPORT_XP_LEVEL = Translation(tl, "inventory.waypoint.teleport.xpLevel")
-    val WAYPOINT_TELEPORT_BALANCE = Translation(tl, "inventory.waypoint.teleport.balance")
-    val WAYPOINT_TELEPORT_MUST_VISIT = Translation(tl, "inventory.waypoint.teleport.mustVisit")
+    val WAYPOINT_TELEPORT_XP_LEVEL = InventoryTranslation(tl, "inventory.waypoint.teleport.xpLevel")
+    val WAYPOINT_TELEPORT_BALANCE = InventoryTranslation(tl, "inventory.waypoint.teleport.balance")
+    val WAYPOINT_TELEPORT_MUST_VISIT = InventoryTranslation(tl, "inventory.waypoint.teleport.mustVisit")
     val WAYPOINT_SELECT_BEACON_COLOR = ItemTranslation(tl, "inventory.waypoint.selectBeaconColor")
     val WAYPOINT_GET_UUID = ItemTranslation(tl, "inventory.waypoint.getUuid")
     val WAYPOINT_EDIT_PERMISSION = ItemTranslation(tl, "inventory.waypoint.editPermission")

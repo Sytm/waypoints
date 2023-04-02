@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.config.pointers
 
 import de.md5lukas.waypoints.util.getStringNotNull
-import de.md5lukas.waypoints.util.translateColorCodes
 import org.bukkit.configuration.ConfigurationSection
 
 class ActionBarConfiguration {
@@ -18,14 +17,8 @@ class ActionBarConfiguration {
         }
 
     var indicatorColor: String = ""
-        private set(value) {
-            field = value.translateColorCodes()
-        }
 
     var normalColor: String = ""
-        private set(value) {
-            field = value.translateColorCodes()
-        }
 
     var section: String = ""
         private set

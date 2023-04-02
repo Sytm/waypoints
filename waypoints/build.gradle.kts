@@ -16,7 +16,7 @@ repositories {
 
     maven("https://repo.codemc.io/repository/maven-public/")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.minebench.de/")
     maven("https://jitpack.io")
     maven("https://libraries.minecraft.net")
@@ -41,7 +41,8 @@ dependencies {
     val squareMapVersion: String by project
     val blueMapVersion: String by project
 
-    implementation("org.spigotmc:spigot-api:$spigotVersion")
+    implementation("io.papermc.paper:paper-api:$spigotVersion")
+    implementation("net.kyori:adventure-text-minimessage:4.13.0")
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":utils"))

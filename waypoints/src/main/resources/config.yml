@@ -219,12 +219,12 @@ pointers:
     recalculateEveryNthInterval: 5
 
     # Color of the boss bar
-    # Available values: PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
-    barColor: BLUE
+    # Available values: pink, blue, red, green, yellow, purple, white
+    barColor: blue
 
     # Style of the boss bar
-    # Available values: SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
-    barStyle: SOLID
+    # Available values: progress, notched_6, notched_10, notched_12, notched_20
+    barStyle: progress
 
     title: " · · ◈ · · ◈ · · O · · ◈ · · ◈ · · S · · ◈ · · ◈ · · W · · ◈ · · ◈ · · N"
 

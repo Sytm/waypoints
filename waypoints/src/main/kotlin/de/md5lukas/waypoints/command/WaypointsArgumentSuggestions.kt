@@ -5,7 +5,6 @@ import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.util.Formatters
 import de.md5lukas.waypoints.util.containsNonWordCharacter
 import de.md5lukas.waypoints.util.runTaskAsync
 import dev.jorel.commandapi.SuggestionInfo
@@ -47,8 +46,8 @@ class WaypointsArgumentSuggestions(
             } else info.currentArg
 
             if (allowGlobals) {
-                val publicPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PUBLIC.text + "/"
-                val permissionPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PERMISSION.text + "/"
+                val publicPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PUBLIC.rawText + "/"
+                val permissionPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PERMISSION.rawText + "/"
                 arrayOf(publicPrefix, permissionPrefix).forEach {
                     if (it.startsWith(query, true)) {
                         builder.suggest(formatSuggestion(it))
@@ -58,13 +57,13 @@ class WaypointsArgumentSuggestions(
                     if (shouldDiscard(sender, it.t)) {
                         return@forEach
                     }
-                    builder.suggest(formatSuggestion("$publicPrefix${it.indexedName}"), it.t.getTooltip())
+                    builder.suggest(formatSuggestion("$publicPrefix${it.indexedName}"), it.t.getTooltip(sender))
                 }
                 plugin.api.permissionWaypoints.searchWaypoints(query.removePrefix(permissionPrefix), sender).forEach {
                     if (shouldDiscard(sender, it.t)) {
                         return@forEach
                     }
-                    builder.suggest(formatSuggestion("$permissionPrefix${it.indexedName}"), it.t.getTooltip())
+                    builder.suggest(formatSuggestion("$permissionPrefix${it.indexedName}"), it.t.getTooltip(sender))
                 }
             }
             if (sender is Player) {
@@ -72,7 +71,7 @@ class WaypointsArgumentSuggestions(
                     if (shouldDiscard(sender, it.t)) {
                         return@forEach
                     }
-                    builder.suggest(formatSuggestion(it.indexedName), it.t.getTooltip())
+                    builder.suggest(formatSuggestion(it.indexedName), it.t.getTooltip(sender))
                 }
             }
             future.complete(builder.build())
@@ -86,7 +85,9 @@ class WaypointsArgumentSuggestions(
         name
     }
 
-    private fun Waypoint.getTooltip(): Message = Tooltip.messageFromString(createdAt.format(Formatters.SHORT_DATE_TIME_FORMATTER))
+    private fun Waypoint.getTooltip(sender: CommandSender): Message = plugin.apiExtensions.run {
+        Tooltip.messageFromAdventureComponent(plugin.translations.COMMAND_SEARCH_TOOLTIP.withReplacements(*getResolvers(sender as? Player)))
+    }
 
     private fun shouldDiscard(sender: CommandSender, waypoint: Waypoint) =
         waypoint.location.world === null || filter?.invoke(sender, waypoint) == false

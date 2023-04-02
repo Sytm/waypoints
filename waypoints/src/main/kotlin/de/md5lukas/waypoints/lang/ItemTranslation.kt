@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.lang
 
-import de.md5lukas.waypoints.util.runtimeReplace
-import de.md5lukas.waypoints.util.splitDescriptionStringToList
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -12,31 +11,24 @@ class ItemTranslation(
     private val fixedMaterial: Material? = null,
 ) {
 
-    val displayName: String
+    private val rawDisplayName: String
         get() = translationLoader["$key.displayName"]
 
-    val description: String
+    private val rawDescription: String
         get() = translationLoader["$key.description"]
 
     val material: Material
         get() = fixedMaterial ?: translationLoader.plugin.waypointsConfig.inventory.getMaterial(key + if (appendItemSuffix) ".item" else "")
 
     val item: ItemStack
-        get() = getItem(displayName, description, false)
+        get() = getItem()
 
-    private fun getItem(displayName: String, description: String, trimDescription: Boolean) = ItemStack(material).also {
+    fun getItem(vararg resolvers: TagResolver): ItemStack = ItemStack(material).also {
         it.itemMeta = it.itemMeta!!.also { itemMeta ->
-            itemMeta.setDisplayName(displayName)
-            itemMeta.lore = splitDescriptionStringToList(
-                if (trimDescription) {
-                    description.trim()
-                } else {
-                    description
-                }
-            )
+            itemMeta.displayName(translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))
+            itemMeta.lore(rawDescription.lineSequence().map { line ->
+                translationLoader.itemMiniMessage.deserialize(line, *resolvers)
+            }.toMutableList())
         }
     }
-
-    fun getItem(map: Map<String, String>, trimDescription: Boolean = false): ItemStack =
-        getItem(displayName.runtimeReplace(map), description.runtimeReplace(map), trimDescription)
 }

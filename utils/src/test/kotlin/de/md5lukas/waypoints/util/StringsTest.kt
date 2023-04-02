@@ -4,36 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class StringsTest {
-
-    val testString = "$[prefix] $[color] > Hello \${player}, time to meet \${other}"
-
-    @Test
-    fun `aotReplace() with no values`() {
-        assertEquals(testString, testString.aotReplace(emptyMap()))
-    }
-
-    @Test
-    fun `aotReplace() with values`() {
-        assertEquals(
-            "Waypoints green > Hello \${player}, time to meet \${other}",
-            testString.aotReplace(mapOf("prefix" to "Waypoints", "color" to "green"))
-        )
-    }
-
-    @Test
-    fun `runtimeReplace() with no values`() {
-        assertEquals(testString, testString.runtimeReplace(emptyMap()))
-    }
-
-    @Test
-    fun `runtimeReplace() with values`() {
-        assertEquals(
-            "$[prefix] $[color] > Hello Steve, time to meet Alex",
-            testString.runtimeReplace(mapOf("player" to "Steve", "other" to "Alex"))
-        )
-    }
-
-    @Test
+        @Test
     fun `isMinecraftUsername() with too short username`() {
         assertEquals(false, "12".isMinecraftUsername())
     }

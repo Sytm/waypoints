@@ -158,7 +158,7 @@ class WaypointsPlugin : JavaPlugin() {
                     TimeUnit.HOURS -> if (isPlural) TEXT_DURATION_HOURS else TEXT_DURATION_HOUR
                     TimeUnit.DAYS -> if (isPlural) TEXT_DURATION_DAYS else TEXT_DURATION_DAY
                     else -> throw UnsupportedOperationException("The TimeUnit $timeUnit is not supported")
-                }.text
+                }.rawText
             }
         }
     }

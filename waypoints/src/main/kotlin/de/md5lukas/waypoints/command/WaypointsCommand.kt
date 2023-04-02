@@ -7,17 +7,17 @@ import de.md5lukas.waypoints.util.*
 import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.arguments.LiteralArgument.of
 import dev.jorel.commandapi.kotlindsl.*
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
-import java.util.*
 
 class WaypointsCommand(private val plugin: WaypointsPlugin) {
 
     private val translations = plugin.translations
 
     fun register() {
-        val labelMap = Collections.singletonMap("label", "waypoints")
+        val labelResolver = Placeholder.unparsed("label", "waypoints")
 
         commandTree("waypoints") {
             withPermission(WaypointsPermissions.COMMAND_PERMISSION)
@@ -33,37 +33,37 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     translations.COMMAND_HELP_HEADER.send(sender)
 
                     if (sender is Player)
-                        translations.COMMAND_HELP_GUI.send(sender, labelMap)
+                        translations.COMMAND_HELP_GUI.send(sender, labelResolver)
 
-                    translations.COMMAND_HELP_HELP.send(sender, labelMap)
+                    translations.COMMAND_HELP_HELP.send(sender, labelResolver)
 
                     if (sender is Player) {
-                        translations.COMMAND_HELP_SELECT.send(sender, labelMap)
-                        translations.COMMAND_HELP_DESELECT.send(sender, labelMap)
-                        translations.COMMAND_HELP_TELEPORT.send(sender, labelMap)
+                        translations.COMMAND_HELP_SELECT.send(sender, labelResolver)
+                        translations.COMMAND_HELP_DESELECT.send(sender, labelResolver)
+                        translations.COMMAND_HELP_TELEPORT.send(sender, labelResolver)
                         if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
-                            translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelMap)
+                            translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelResolver)
                         }
                         if (plugin.waypointsConfig.general.features.globalWaypoints) {
                             if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
-                                translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelMap)
+                                translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelResolver)
                             }
                             if (sender.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
-                                translations.COMMAND_HELP_SET_PERMISSION.send(sender, labelMap)
+                                translations.COMMAND_HELP_SET_PERMISSION.send(sender, labelResolver)
                             }
                         }
                         if (sender.hasPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)) {
-                            translations.COMMAND_HELP_SET_TEMPORARY.send(sender, labelMap)
+                            translations.COMMAND_HELP_SET_TEMPORARY.send(sender, labelResolver)
                         }
                         if (sender.hasPermission(WaypointsPermissions.COMMAND_OTHER)) {
-                            translations.COMMAND_HELP_OTHER.send(sender, labelMap)
+                            translations.COMMAND_HELP_OTHER.send(sender, labelResolver)
                         }
                     }
                     if (sender.hasPermission(WaypointsPermissions.COMMAND_STATISTICS)) {
-                        translations.COMMAND_HELP_STATISTICS.send(sender, labelMap)
+                        translations.COMMAND_HELP_STATISTICS.send(sender, labelResolver)
                     }
                     if (sender.hasPermission(WaypointsPermissions.COMMAND_RELOAD)) {
-                        translations.COMMAND_HELP_RELOAD.send(sender, labelMap)
+                        translations.COMMAND_HELP_RELOAD.send(sender, labelResolver)
                     }
                 }
             }
@@ -78,7 +78,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                             translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
                         } else {
                             plugin.api.pointerManager.enable(player, waypoint)
-                            translations.COMMAND_SELECT_SELECTED.send(player, mapOf("name" to waypoint.name))
+                            translations.COMMAND_SELECT_SELECTED.send(player, Placeholder.unparsed("name", waypoint.name))
                         }
                     }
                     anyExecutor { sender, _ ->
@@ -203,20 +203,18 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     with(plugin.api.statistics) {
                         translations.COMMAND_STATISTICS_MESSAGE.send(
                             sender,
-                            mapOf(
-                                "dbFileSize" to databaseSize.humanReadableByteCountBin(),
+                            "db_file_size" placeholder databaseSize.humanReadableByteCountBin(),
 
-                                "totalWaypoints" to totalWaypoints.toString(),
-                                "privateWaypoints" to privateWaypoints.toString(),
-                                "deathWaypoints" to deathWaypoints.toString(),
-                                "publicWaypoints" to publicWaypoints.toString(),
-                                "permissionWaypoints" to permissionWaypoints.toString(),
+                            "total_waypoints" placeholder totalWaypoints,
+                            "private_waypoints" placeholder privateWaypoints,
+                            "death_waypoints" placeholder deathWaypoints,
+                            "public_waypoints" placeholder publicWaypoints,
+                            "permission_waypoints" placeholder permissionWaypoints,
 
-                                "totalFolders" to totalFolders.toString(),
-                                "privateFolders" to privateFolders.toString(),
-                                "publicFolders" to publicFolders.toString(),
-                                "permissionFolders" to permissionFolders.toString(),
-                            )
+                            "total_folders" placeholder totalFolders,
+                            "private_folders" placeholder privateFolders,
+                            "public_folders" placeholder publicFolders,
+                            "permission_folders" placeholder permissionFolders,
                         )
                     }
                 }

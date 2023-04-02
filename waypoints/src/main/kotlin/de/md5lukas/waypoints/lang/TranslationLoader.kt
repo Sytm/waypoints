@@ -2,9 +2,11 @@ package de.md5lukas.waypoints.lang
 
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.events.ConfigReloadEvent
-import de.md5lukas.waypoints.util.aotReplace
 import de.md5lukas.waypoints.util.registerEvents
-import de.md5lukas.waypoints.util.translateColorCodes
+import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.event.EventHandler
@@ -16,6 +18,22 @@ import java.util.logging.Level
 class TranslationLoader(
     val plugin: WaypointsPlugin,
 ) : Listener {
+
+    val itemMiniMessage = MiniMessage.builder().run {
+        tags(TagResolver.builder().run {
+            resolver(StandardTags.defaults())
+            build()
+        })
+        postProcessor {
+            if (it.hasDecoration(TextDecoration.ITALIC)) {
+                it
+            } else {
+                it.decoration(TextDecoration.ITALIC, false)
+            }.compact()
+        }
+
+        build()
+    }
 
     private val defaultLanguage = "en"
 
@@ -47,15 +65,15 @@ class TranslationLoader(
     private fun processConfiguration(languageConfig: FileConfiguration): Map<String, String> {
         val map = HashMap<String, String>()
 
-        languageConfig.getKeys(true).forEach {
-            if (languageConfig.isString(it)) {
-                map[it] = languageConfig.getString(it)!!.translateColorCodes()
-            }
+        // TODO maybe revisit?
+        val isNewLine = { it: Char ->
+            it == '\n' || it == '\r'
         }
 
-
-        map.entries.forEach {
-            it.setValue(it.value.aotReplace(map))
+        languageConfig.getKeys(true).forEach {
+            if (languageConfig.isString(it)) {
+                map[it] = languageConfig.getString(it)!!.trimEnd(isNewLine)
+            }
         }
 
         return map
