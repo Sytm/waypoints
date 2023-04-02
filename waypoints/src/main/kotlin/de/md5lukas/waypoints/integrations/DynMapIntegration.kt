@@ -50,7 +50,7 @@ class DynMapIntegration(
                 plugin.translations.INTEGRATIONS_MAPS_LABEL.rawText,
                 null,
                 false
-            ); // id, label, iconlimit, persistent
+            ) // id, label, iconlimit, persistent
 
             plugin.api.publicWaypoints.allWaypoints.forEach {
                 createMarker(it)
@@ -114,7 +114,7 @@ class DynMapIntegration(
     }
 
     private fun getMarkerForWaypoint(waypoint: Waypoint, directIcon: String? = null): MarkerIcon {
-        val icon = directIcon ?: waypoint.getCustomData(CUSTOM_DATA_KEY);
+        val icon = directIcon ?: waypoint.getCustomData(CUSTOM_DATA_KEY)
         return if (icon === null) {
             defaultMarkerIcon
         } else {

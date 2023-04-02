@@ -120,10 +120,13 @@ class TranslationLoader(
         return translations[key] ?: throw IllegalArgumentException("The key $key is not present in the translation file for the language $loadedLanguage")
     }
 
+    private val warned: MutableSet<String> = mutableSetOf()
+
     operator fun contains(key: String): Boolean {
         val contains = key in translations
-        if (!contains) {
+        if (!contains && key !in warned) {
             plugin.logger.log(Level.WARNING, "The translation key $key is missing in the translation file for the language $loadedLanguage, but not required")
+            warned += key
         }
         return contains
     }
@@ -131,5 +134,6 @@ class TranslationLoader(
     @EventHandler
     private fun onConfigReload(e: ConfigReloadEvent) {
         loadLanguage(e.config.general.language)
+        warned.clear()
     }
 }
