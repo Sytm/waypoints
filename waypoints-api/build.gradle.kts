@@ -11,12 +11,13 @@ description = "Waypoints api"
 repositories {
     mavenCentral()
 
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
+val spigotVersion: String by project
+
 dependencies {
-    val spigotVersion: String by project
-    api("org.spigotmc:spigot-api:$spigotVersion")
+    api("io.papermc.paper:paper-api:$spigotVersion")
 
     api(kotlin("stdlib-jdk8"))
 }
@@ -34,7 +35,8 @@ val sourcesJar by tasks.creating(Jar::class) {
 val dokkaHtml by tasks.getting(DokkaTask::class) {
     dokkaSourceSets {
         configureEach {
-            externalDocumentationLink("https://hub.spigotmc.org/javadocs/spigot/", "https://hub.spigotmc.org/javadocs/spigot/element-list")
+            val majorVersion = spigotVersion.split('.').let { "${it[0]}.${it[1]}" }
+            externalDocumentationLink("https://jd.papermc.io/paper/$majorVersion/", "https://jd.papermc.io/paper/$majorVersion/element-list")
         }
     }
 }
