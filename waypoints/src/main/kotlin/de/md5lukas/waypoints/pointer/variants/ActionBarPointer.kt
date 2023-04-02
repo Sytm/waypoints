@@ -21,8 +21,8 @@ class ActionBarPointer(
             if (translatedTarget !== null) {
                 if (config.showDistanceEnabled && player.isSneaking) {
                     plugin.translations.POINTERS_ACTION_BAR_DISTANCE.withReplacements(
-                        "distance3D" placeholder player.location.distance(translatedTarget),
-                        "heightDifference" placeholder (player.location.y - trackable.location.y)
+                        "distance_3d" placeholder player.location.distance(translatedTarget),
+                        "height_difference" placeholder (player.location.y - trackable.location.y)
                     )
                 } else {
                     // TODO properly convert to adventure

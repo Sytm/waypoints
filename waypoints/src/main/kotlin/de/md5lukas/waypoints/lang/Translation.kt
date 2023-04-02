@@ -7,7 +7,9 @@ import org.bukkit.command.CommandSender
 
 class Translation(
     private val translationLoader: TranslationLoader,
-    private val key: String
+    private val key: String,
+    private val prefix: Translation? = null,
+    private val miniMessage: MiniMessage = MiniMessage.miniMessage()
 ) {
 
     val text: Component
@@ -20,7 +22,7 @@ class Translation(
 
     private fun staticComponent(): Component {
         if (!::staticMessage.isInitialized) {
-            staticMessage = MiniMessage.miniMessage().deserialize(rawText)
+            staticMessage = prependPrefix(miniMessage.deserialize(rawText))
         }
         return staticMessage
     }
@@ -28,7 +30,7 @@ class Translation(
     fun withReplacements(vararg resolvers: TagResolver): Component = if (resolvers.isEmpty()) {
         staticComponent()
     } else {
-        MiniMessage.miniMessage().deserialize(rawText, *resolvers)
+        prependPrefix(miniMessage.deserialize(rawText, *resolvers))
     }
 
     fun send(commandSender: CommandSender) {
@@ -37,5 +39,11 @@ class Translation(
 
     fun send(commandSender: CommandSender, vararg resolvers: TagResolver) {
         commandSender.sendMessage(withReplacements(*resolvers))
+    }
+
+    private fun prependPrefix(component: Component) = if (prefix === null) {
+        component
+    } else {
+        prefix.text.append(component)
     }
 }

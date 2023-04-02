@@ -37,14 +37,14 @@ class APIExtensions(
         }.getItem(
             "name" placeholder name,
             "description" placeholder (description ?: ""),
-            "createdAt" placeholder createdAt,
+            "created_at" placeholder createdAt,
             "world" placeholder (location.world?.let { worldTranslations.getWorldName(it) } ?: translations.TEXT_WORLD_NOT_FOUND.text),
             "x" placeholder location.x,
             "y" placeholder location.y,
             "z" placeholder location.z,
-            "blockX" placeholder location.blockX,
-            "blockY" placeholder location.blockY,
-            "blockZ" placeholder location.blockZ,
+            "block_x" placeholder location.blockX,
+            "block_y" placeholder location.blockY,
+            "block_z" placeholder location.blockZ,
             if (player.world == location.world) {
                 "distance" placeholder MathHelper.distance2D(player.location, location).format()
             } else {
@@ -120,7 +120,7 @@ class APIExtensions(
         }.getItem(
             "name" placeholder name,
             "description" placeholder (description ?: ""),
-            "createdAt" placeholder createdAt,
+            "created_at" placeholder createdAt,
             "amount" placeholder fetchedAmount
         )
 
