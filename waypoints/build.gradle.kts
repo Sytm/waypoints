@@ -75,8 +75,7 @@ dependencies {
     implementation("com.github.BlueMap-Minecraft:BlueMapAPI:$blueMapVersion")
 }
 
-tasks.register("createResourceIndex", ResourceIndexTask::class.java) {
-}
+tasks.register<ResourceIndexTask>("createResourceIndex")
 
 tasks.withType<ProcessResources> {
     dependsOn("createResourceIndex")
@@ -88,7 +87,7 @@ tasks.withType<ProcessResources> {
 
     filteringCharset = "UTF-8"
 
-    filesMatching("plugin.yml") {
+    filesMatching("paper-plugin.yml") {
         var apiVersion = spigotVersion.substringBefore('-')
         if (apiVersion.count { it == '.' } > 1) {
             apiVersion = apiVersion.substringBeforeLast('.')
@@ -96,8 +95,12 @@ tasks.withType<ProcessResources> {
 
         expand(
             "version" to project.version,
-            "kotlinVersion" to getKotlinPluginVersion(),
             "apiVersion" to apiVersion,
+        )
+    }
+    filesMatching("dependencies") {
+        expand(
+            "kotlinVersion" to getKotlinPluginVersion(),
             "commandApiVersion" to commandApiVersion,
         )
     }

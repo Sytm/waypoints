@@ -1,24 +1,32 @@
 name: Waypoints
-author: Md5Lukas
+authors:
+  - Md5Lukas
 main: de.md5lukas.waypoints.WaypointsPlugin
+loader: de.md5lukas.waypoints.WaypointsLoader
 version: ${version}
 
 website: https://github.com/Sytm/waypoints
 
 api-version: ${apiVersion}
 
-libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
-  - dev.jorel:commandapi-shade:${commandApiVersion}
-  - dev.jorel:commandapi-kotlin:${commandApiVersion}
+dependencies:
+  - name: Vault
+    required: false
+  - name: dynmap
+    required: false
+  - name: ProtocolLib
+    required: false
+  - name: squaremap
+    required: false
+  - name: BlueMap
+    required: false
 
-softdepend:
-  - Vault
-  - dynmap
-  - ProtocolLib
-  - squaremap
-  - BlueMap
-
+load-after:
+  - name: Vault
+  - name: dynmap
+  - name: ProtocolLib
+  - name: squaremap
+  - name: BlueMap
 
 permissions:
   waypoints.*:
