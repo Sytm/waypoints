@@ -172,4 +172,8 @@ class WaypointImpl private constructor(
     override fun hashCode(): Int {
         return id.hashCode()
     }
+
+    override fun toString(): String {
+        return "WaypointImpl(id=$id, type=$type, owner=$owner, location=$location, fullPath='$fullPath')"
+    }
 }

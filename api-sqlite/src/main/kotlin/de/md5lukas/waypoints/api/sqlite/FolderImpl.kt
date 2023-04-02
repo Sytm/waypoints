@@ -109,4 +109,9 @@ internal class FolderImpl private constructor(
     override fun hashCode(): Int {
         return id.hashCode()
     }
+
+    override fun toString(): String {
+        return "FolderImpl(id=$id, type=$type, owner=$owner, name='$name')"
+    }
+
 }

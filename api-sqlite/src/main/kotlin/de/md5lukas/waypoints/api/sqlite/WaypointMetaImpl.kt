@@ -55,4 +55,8 @@ class WaypointMetaImpl private constructor(
         result = 31 * result + owner.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "WaypointMetaImpl(waypoint=$waypoint, owner=$owner, teleportations=$teleportations, visited=$visited)"
+    }
 }
