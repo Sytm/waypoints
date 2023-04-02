@@ -6,7 +6,7 @@ repositories {
     mavenCentral()
 
     maven("https://repo.md5lukas.de/releases/")
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 
@@ -15,7 +15,7 @@ dependencies {
     val md5CommonsVersion: String by project
     val junitVersion: String by project
 
-    api("org.spigotmc:spigot-api:$spigotVersion")
+    api("io.papermc.paper:paper-api:$spigotVersion")
     api(kotlin("stdlib-jdk8"))
     implementation("de.md5lukas:md5-commons:$md5CommonsVersion")
 

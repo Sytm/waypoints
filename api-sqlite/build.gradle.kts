@@ -8,7 +8,7 @@ plugins {
 repositories {
     mavenCentral()
 
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.md5lukas.de/public/")
 }
 
@@ -22,7 +22,7 @@ dependencies {
     val mockBukkitVersion: String by project
     val sqliteDriverVersion: String by project
 
-    api("org.spigotmc:spigot-api:$spigotVersion")
+    api("io.papermc.paper:paper-api:$spigotVersion")
 
     implementation("de.md5lukas:sqlite-kotlin-helper:$sqliteHelperVersion")
 

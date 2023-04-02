@@ -96,14 +96,7 @@ fun isLocationOutOfBounds(plugin: Plugin, location: Location): Boolean {
         return true
     }
 
-    // TODO: Remove once 1.20 is out
-    val validYValues = if (isMinecraftVersionEqualOrLaterThan(plugin, 18, 0)) {
-        -64..320
-    } else {
-        0..256
-    }
-
-    return location.y.roundToInt() !in validYValues
+    return location.y.roundToInt() !in -64..320
 }
 
 fun isMinecraftVersionEqualOrLaterThan(plugin: Plugin, major: Int, minor: Int = 0): Boolean {

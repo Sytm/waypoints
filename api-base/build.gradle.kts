@@ -5,12 +5,12 @@ plugins {
 repositories {
     mavenCentral()
 
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
     val spigotVersion: String by project
-    api("org.spigotmc:spigot-api:$spigotVersion")
+    api("io.papermc.paper:paper-api:$spigotVersion")
 
     implementation(kotlin("stdlib-jdk8"))
     api(project(":waypoints-api"))
