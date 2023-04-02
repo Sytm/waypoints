@@ -9,7 +9,6 @@ import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.util.*
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.event.ClickEvent
 import net.wesjd.anvilgui.AnvilGUI
 
@@ -262,14 +261,15 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                         wpGUI.plugin.teleportManager.isTeleportEnabled(wpGUI.targetData, waypoint)) && waypoint.location.world !== null
             ) {
                 GUIItem(
-                    wpGUI.translations.WAYPOINT_TELEPORT.getItem(
-                        "payment_notice" placeholder (wpGUI.plugin.teleportManager.getTeleportCostDescription(wpGUI.viewer, waypoint) ?: Component.empty()),
-                        if (wpGUI.plugin.teleportManager.isAllowedToTeleportToWaypoint(wpGUI.viewer, waypoint)) {
-                            "must_visit" placeholder ""
-                        } else {
-                            "must_visit" placeholder wpGUI.translations.WAYPOINT_TELEPORT_MUST_VISIT.text
+                    wpGUI.translations.WAYPOINT_TELEPORT.getItem().also { stack ->
+                        val currentLore = stack.lore()!!
+                        wpGUI.plugin.teleportManager.getTeleportCostDescription(wpGUI.viewer, waypoint)?.let { currentLore += it }
+                        if (!wpGUI.plugin.teleportManager.isAllowedToTeleportToWaypoint(wpGUI.viewer, waypoint)) {
+                            currentLore += wpGUI.translations.WAYPOINT_TELEPORT_MUST_VISIT.text
                         }
-                    )
+                        stack.lore(currentLore)
+                    }
+
                 ) {
                     if (wpGUI.plugin.teleportManager.isAllowedToTeleportToWaypoint(wpGUI.viewer, waypoint)) {
                         wpGUI.viewer.closeInventory()
