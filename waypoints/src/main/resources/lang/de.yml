@@ -52,6 +52,14 @@ command:
       permission: "Eingeschränkt"
     notFound:
       waypoint: "<red>Es konnte kein Wegpunkt mit dieser Suchanfrage gefunden werden."
+    # Set the text of the floating hologram here.
+    # name: Name of the waypoint
+    # createdAt: Date at which the waypoint was created
+    # world: World where the waypoint is located at
+    # x, y, z: Coordinates of the waypoint
+    # block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
+    # distance: Distance in blocks to the player
+    tooltip: "<created_at:'dd.MM.uuuu kk:mm'>"
 
     select:
       selected: "<gray>Wegpunkt <yellow><name> <gray>ausgewählt."

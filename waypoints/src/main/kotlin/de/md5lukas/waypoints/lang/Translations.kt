@@ -43,6 +43,7 @@ class Translations(
 
     val COMMAND_SEARCH_PREFIX_PUBLIC = Translation(tl, "command.search.prefix.public")
     val COMMAND_SEARCH_PREFIX_PERMISSION = Translation(tl, "command.search.prefix.permission")
+    val COMMAND_SEARCH_TOOLTIP = Translation(tl, "command.search.tooltip")
     val COMMAND_SEARCH_NOT_FOUND_WAYPOINT = Translation(tl, "command.search.notFound.waypoint", PREFIX)
 
     val COMMAND_SELECT_SELECTED = Translation(tl, "command.select.selected", PREFIX)
