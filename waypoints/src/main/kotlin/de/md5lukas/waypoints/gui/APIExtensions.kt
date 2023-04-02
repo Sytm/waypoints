@@ -34,23 +34,7 @@ class APIExtensions(
             Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
             Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
             Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
-        }.getItem(
-            "name" placeholder name,
-            "description" placeholder (description ?: ""),
-            "created_at" placeholder createdAt,
-            "world" placeholder (location.world?.let { worldTranslations.getWorldName(it) } ?: translations.TEXT_WORLD_NOT_FOUND.text),
-            "x" placeholder location.x,
-            "y" placeholder location.y,
-            "z" placeholder location.z,
-            "block_x" placeholder location.blockX,
-            "block_y" placeholder location.blockY,
-            "block_z" placeholder location.blockZ,
-            if (player.world == location.world) {
-                "distance" placeholder MathHelper.distance2D(player.location, location).format()
-            } else {
-                "distance" placeholder translations.TEXT_DISTANCE_OTHER_WORLD.text
-            },
-        )
+        }.getItem(*getResolvers(player))
 
         material?.also {
             stack.type = it
@@ -58,6 +42,24 @@ class APIExtensions(
 
         return stack
     }
+
+    fun Waypoint.getResolvers(player: Player?) = arrayOf(
+        "name" placeholder name,
+        "description" placeholder (description ?: ""),
+        "created_at" placeholder createdAt,
+        "world" placeholder (location.world?.let { worldTranslations.getWorldName(it) } ?: translations.TEXT_WORLD_NOT_FOUND.text),
+        "x" placeholder location.x,
+        "y" placeholder location.y,
+        "z" placeholder location.z,
+        "block_x" placeholder location.blockX,
+        "block_y" placeholder location.blockY,
+        "block_z" placeholder location.blockZ,
+        if (player !== null && player.world === location.world) {
+            "distance" placeholder MathHelper.distance2D(player.location, location).format()
+        } else {
+            "distance" placeholder translations.TEXT_DISTANCE_OTHER_WORLD.text
+        }
+    )
 
     fun Waypoint.getIconMaterial(): Material = material ?: when (type) {
         Type.DEATH -> translations.WAYPOINT_ICON_DEATH
