@@ -12,15 +12,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class ResourceIndexTask extends DefaultTask {
 
     @InputDirectory
-    abstract DirectoryProperty getResources();
+    public abstract DirectoryProperty getResources();
 
     @OutputFile
-    abstract RegularFileProperty getIndexFile();
+    public abstract RegularFileProperty getIndexFile();
 
     @Inject
     public ResourceIndexTask() {
@@ -30,14 +29,14 @@ public abstract class ResourceIndexTask extends DefaultTask {
 
     @TaskAction
     void createIndex() throws IOException {
-        List<String> paths = new ArrayList<>();
+        var paths = new ArrayList<String>();
         getResources().getAsFileTree().visit(fileVisitDetails -> {
             if (!fileVisitDetails.isDirectory()) {
                 paths.add(fileVisitDetails.getPath());
             }
         });
-        try (FileWriter out = new FileWriter(getIndexFile().getAsFile().get(), StandardCharsets.UTF_8)) {
-            for (String path : paths) {
+        try (var out = new FileWriter(getIndexFile().getAsFile().get(), StandardCharsets.UTF_8)) {
+            for (var path : paths) {
                 out.write(path);
                 out.write('\n');
             }
