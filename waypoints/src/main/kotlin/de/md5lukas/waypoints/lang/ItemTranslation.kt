@@ -1,6 +1,5 @@
 package de.md5lukas.waypoints.lang
 
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
@@ -26,8 +25,10 @@ class ItemTranslation(
 
     fun getItem(vararg resolvers: TagResolver): ItemStack = ItemStack(material).also {
         it.itemMeta = it.itemMeta!!.also { itemMeta ->
-            itemMeta.displayName(MiniMessage.miniMessage().deserialize(rawDisplayName, *resolvers))
-            itemMeta.lore(rawDescription.splitToSequence('\n').map { line -> MiniMessage.miniMessage().deserialize(line, *resolvers) }.toMutableList())
+            itemMeta.displayName(translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))
+            itemMeta.lore(rawDescription.splitToSequence('\n').map { line ->
+                translationLoader.itemMiniMessage.deserialize(line, *resolvers)
+            }.toMutableList())
         }
     }
 }

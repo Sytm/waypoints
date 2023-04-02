@@ -106,13 +106,13 @@ class HologramPointer(
             "x" placeholder location.x,
             "y" placeholder location.y,
             "z" placeholder location.z,
-            "blockX" placeholder location.blockX,
-            "blockY" placeholder location.blockY,
-            "blockZ" placeholder location.blockZ,
+            "block_x" placeholder location.blockX,
+            "block_y" placeholder location.blockY,
+            "block_z" placeholder location.blockZ,
         )
         if (this is Waypoint) {
             resolvers += "name" placeholder name
-            resolvers += "createdAt" placeholder createdAt
+            resolvers += "created_at" placeholder createdAt
         }
         if (this is PlayerTrackable) {
             resolvers += "name" placeholder this.player.displayName()

@@ -42,9 +42,9 @@ class PlayerTrackingPage(
                 "x" placeholder player.location.x,
                 "y" placeholder player.location.y,
                 "z" placeholder player.location.z,
-                "blockX" placeholder player.location.blockX,
-                "blockY" placeholder player.location.blockY,
-                "blockZ" placeholder player.location.blockZ,
+                "block_x" placeholder player.location.blockX,
+                "block_y" placeholder player.location.blockY,
+                "block_z" placeholder player.location.blockZ,
                 if (wpGUI.viewer.world === player.world) {
                     "distance" placeholder MathHelper.distance2D(wpGUI.viewer.location, player.location).format()
                 } else {

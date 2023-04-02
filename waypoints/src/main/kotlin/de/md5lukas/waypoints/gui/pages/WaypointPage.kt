@@ -263,11 +263,11 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             ) {
                 GUIItem(
                     wpGUI.translations.WAYPOINT_TELEPORT.getItem(
-                        "paymentNotice" placeholder (wpGUI.plugin.teleportManager.getTeleportCostDescription(wpGUI.viewer, waypoint) ?: Component.empty()),
+                        "payment_notice" placeholder (wpGUI.plugin.teleportManager.getTeleportCostDescription(wpGUI.viewer, waypoint) ?: Component.empty()),
                         if (wpGUI.plugin.teleportManager.isAllowedToTeleportToWaypoint(wpGUI.viewer, waypoint)) {
-                            "mustVisit" placeholder ""
+                            "must_visit" placeholder ""
                         } else {
-                            "mustVisit" placeholder wpGUI.translations.WAYPOINT_TELEPORT_MUST_VISIT.text
+                            "must_visit" placeholder wpGUI.translations.WAYPOINT_TELEPORT_MUST_VISIT.text
                         }
                     )
                 ) {

@@ -23,6 +23,7 @@ import kotlin.math.min
 
 class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
+    // TODO payment notice + must visit rework
     private val pendingTeleports = HashMap<Player, BukkitTask>()
 
     init {
@@ -114,7 +115,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
             if (remainingMillis > 0) {
                 val remainingCooldown = DurationFormatter.formatDuration(player, remainingMillis)
 
-                plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(player, "remainingCooldown" placeholder remainingCooldown)
+                plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(player, "remaining_cooldown" placeholder remainingCooldown)
 
                 return
             }
@@ -132,8 +133,8 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                 if (!canTeleport) {
                     plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_XP.send(
                         player,
-                        "currentLevel" placeholder player.level,
-                        "requiredLevel" placeholder ceil(price).toInt()
+                        "current_level" placeholder player.level,
+                        "required_level" placeholder ceil(price).toInt()
 
                     )
                 }
@@ -146,8 +147,8 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                 if (!canTeleport) {
                     plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE.send(
                         player,
-                        "currentBalance" placeholder balance,
-                        "requiredBalance" placeholder price
+                        "current_balance" placeholder balance,
+                        "required_balance" placeholder price
                     )
                 }
                 canTeleport

@@ -203,18 +203,18 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     with(plugin.api.statistics) {
                         translations.COMMAND_STATISTICS_MESSAGE.send(
                             sender,
-                            "dbFileSize" placeholder databaseSize.humanReadableByteCountBin(),
+                            "db_file_size" placeholder databaseSize.humanReadableByteCountBin(),
 
-                            "totalWaypoints" placeholder totalWaypoints,
-                            "privateWaypoints" placeholder privateWaypoints,
-                            "deathWaypoints" placeholder deathWaypoints,
-                            "publicWaypoints" placeholder publicWaypoints,
-                            "permissionWaypoints" placeholder permissionWaypoints,
+                            "total_waypoints" placeholder totalWaypoints,
+                            "private_waypoints" placeholder privateWaypoints,
+                            "death_waypoints" placeholder deathWaypoints,
+                            "public_waypoints" placeholder publicWaypoints,
+                            "permission_waypoints" placeholder permissionWaypoints,
 
-                            "totalFolders" placeholder totalFolders,
-                            "privateFolders" placeholder privateFolders,
-                            "publicFolders" placeholder publicFolders,
-                            "permissionFolders" placeholder permissionFolders,
+                            "total_folders" placeholder totalFolders,
+                            "private_folders" placeholder privateFolders,
+                            "public_folders" placeholder publicFolders,
+                            "permission_folders" placeholder permissionFolders,
                         )
                     }
                 }

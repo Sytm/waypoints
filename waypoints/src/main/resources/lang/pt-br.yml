@@ -1,5 +1,5 @@
-prefix: "&b&lWaypoints &e&l>&r"
-scriptPrefix: "&b&lWaypoints&aScript &e&l>&r"
+prefix: "<aqua><bold>Waypoints <yellow><bold>><reset> "
+scriptPrefix: "<aqua><bold>Waypoints<green>Script <yellow><bold>><reset> "
 
 worlds:
   world: "Overworld"
@@ -7,58 +7,58 @@ worlds:
   world_the_end: "The End"
 
 command:
-  notAPlayer: "$[prefix] &cVocê deve ser um player para usar esse comando."
+  notAPlayer: "<red>Você deve ser um player para usar esse comando."
 
   script:
     help:
-      header: "$[scriptPrefix] &7&nAjuda"
-      deselectWaypoint: "&7 - &e/${label} deselectWaypoint <Player-Name> &7&l|&r&7 Remover seleção de waypoint de um player"
-      selectWaypoint: "&7 - &e/${label} selectWaypoint <Player-Name> <Waypoint-UUID> &7&l|&r&7 Setar seleção de waypoint de um player"
+      header: "<gray><underlined>Ajuda"
+      deselectWaypoint: "<gray> - <yellow>/<label> deselectWaypoint <Player-Name> <gray><bold>|<reset><gray> Remover seleção de waypoint de um player"
+      selectWaypoint: "<gray> - <yellow>/<label> selectWaypoint <Player-Name> <Waypoint-UUID> <gray><bold>|<reset><gray> Setar seleção de waypoint de um player"
 
     selectWaypoint:
       # uuid: ID of the waypoint that could not be found
-      waypointNotFound: "$[scriptPrefix] &cWaypoint com UUID &e${uuid}&c não encontrada."
+      waypointNotFound: "<red>Waypoint com UUID <yellow><uuid><red> não encontrada."
 
   help:
-    header: "$[prefix] &7&nAjuda"
-    gui: "&7 - &e/${label} &7&l|&r&7 Abrir a interface de waypoints"
-    help: "&7 - &e/${label} help &7&l|&r&7 Mostrar ajuda"
+    header: "<gray><underlined>Ajuda"
+    gui: "<gray> - <yellow>/<label> <gray><bold>|<reset><gray> Abrir a interface de waypoints"
+    help: "<gray> - <yellow>/<label> help <gray><bold>|<reset><gray> Mostrar ajuda"
     set:
-      private: "&7 - &e/${label} set <Name> &7&l|&r&7 Criar nova waypoint"
-      public: "&7 - &e/${label} setPublic <Name> &7&l|&r&7 Criar nova waypoint pública"
-      permission: "&7 - &e/${label} setPermission <Permission> <Name> &7&l|&r&7 Criar nova waypoint usando permissões"
-    other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 Ver waypoints de outro player"
-    statistics: "&7 - &e/${label} statistics &7&l|&r&7 Ver estatísticas do banco de dados"
-    import: "&7 - &e/${label} import &7&l|&r&7 Importar waypoints do Waypoints V2"
+      private: "<gray> - <yellow>/<label> set <Name> <gray><bold>|<reset><gray> Criar nova waypoint"
+      public: "<gray> - <yellow>/<label> setPublic <Name> <gray><bold>|<reset><gray> Criar nova waypoint pública"
+      permission: "<gray> - <yellow>/<label> setPermission <Permission> <Name> <gray><bold>|<reset><gray> Criar nova waypoint usando permissões"
+    other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> Ver waypoints de outro player"
+    statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> Ver estatísticas do banco de dados"
+    import: "<gray> - <yellow>/<label> import <gray><bold>|<reset><gray> Importar waypoints do Waypoints V2"
 
   other:
-    playerNoWaypoints: "$[prefix] &cEsse player não tem waypoints."
+    playerNoWaypoints: "<red>Esse player não tem waypoints."
 
   statistics:
-    # dbFileSize: Size of the database in SI Units
-    # totalWaypoints: Total amount of waypoints
-    # privateWaypoints: Amount of private waypoints
-    # deathWaypoints: Amount of death waypoints
-    # publicWaypoints: Amount of public waypoints
-    # permissionWaypoints: Amount of permission waypoints
-    # totalFolders: Total amount of folders
-    # privateFolders: Amount of private folders
-    # publicFolders: Amount of public folders
-    # permissionFolders: Amount of permission folders
+    # db_file_size: Size of the database in SI Units
+    # total_waypoints: Total amount of waypoints
+    # private_waypoints: Amount of private waypoints
+    # death_waypoints: Amount of death waypoints
+    # public_waypoints: Amount of public waypoints
+    # permission_waypoints: Amount of permission waypoints
+    # total_folders: Total amount of folders
+    # private_folders: Amount of private folders
+    # public_folders: Amount of public folders
+    # permission_folders: Amount of permission folders
     message: |
-      $[prefix] &7Database-Statistics
-      &7Filesize: &e${dbFileSize}
+      <gray>Database-Statistics
+      <gray>Filesize: <yellow><db_file_size>
 
-      &7Total waypoints: &e${totalWaypoints}
-      &7Private waypoints: &e${privateWaypoints}
-      &7Death waypoints: &e${deathWaypoints}
-      &7Public waypoints: &e${publicWaypoints}
-      &7Permission waypoints: &e${permissionWaypoints}
+      <gray>Total waypoints: <yellow><total_waypoints>
+      <gray>Private waypoints: <yellow><private_waypoints>
+      <gray>Death waypoints: <yellow><death_waypoints>
+      <gray>Public waypoints: <yellow><public_waypoints>
+      <gray>Permission waypoints: <yellow><permission_waypoints>
 
-      &7Total folders: &e${totalFolders}
-      &7Private folders: &e${privateFolders}
-      &7Public folders: &e${publicFolders}
-      &7Permission folders: &e${permissionFolders}
+      <gray>Total folders: <yellow><total_folders>
+      <gray>Private folders: <yellow><private_folders>
+      <gray>Public folders: <yellow><public_folders>
+      <gray>Permission folders: <yellow><permission_folders>
 
 text:
   duration:
@@ -88,85 +88,85 @@ text:
     created_descending: "Data de criação (Descendente)"
 
   beaconColors:
-    clear: "&7Sem cor"
-    light_gray: "&7Cinza claro"
-    gray: "&7Cinza"
-    pink: "&7Rosa"
-    lime: "&7Lima"
-    yellow: "&7Amarelo"
-    light_blue: "&7Azul claro"
-    magenta: "&7Magenta"
-    orange: "&7Laranja"
-    white: "&7Branco"
-    black: "&7Preto"
-    red: "&7Vermelho"
-    green: "&7Verde"
-    brown: "&7Marrom"
-    blue: "&7Azul"
-    cyan: "&7Ciano"
-    purple: "&7Roxo"
+    clear: "<gray>Sem cor"
+    light_gray: "<gray>Cinza claro"
+    gray: "<gray>Cinza"
+    pink: "<gray>Rosa"
+    lime: "<gray>Lima"
+    yellow: "<gray>Amarelo"
+    light_blue: "<gray>Azul claro"
+    magenta: "<gray>Magenta"
+    orange: "<gray>Laranja"
+    white: "<gray>Branco"
+    black: "<gray>Preto"
+    red: "<gray>Vermelho"
+    green: "<gray>Verde"
+    brown: "<gray>Marrom"
+    blue: "<gray>Azul"
+    cyan: "<gray>Ciano"
+    purple: "<gray>Roxo"
 
 message:
   waypoint:
     create:
       coordinates:
         invalidFormat: |
-          $[prefix] &cFormato para coordenadas:
-          &a102/35/-238
+          <red>Formato para coordenadas:
+          <green>102/35/-238
     limitReached:
-      private: "$[prefix] &cVocê alcançou o limite de waypoints."
+      private: "<red>Você alcançou o limite de waypoints."
     nameDuplicate:
-      private: "$[prefix] &cNomes duplicados não são permitidos."
-      public: "$[prefix] &cNomes duplicados não são permitidos."
-      permission: "$[prefix] &cNomes duplicados não são permitidos."
+      private: "<red>Nomes duplicados não são permitidos."
+      public: "<red>Nomes duplicados não são permitidos."
+      permission: "<red>Nomes duplicados não são permitidos."
     setSuccess:
-      private: "$[prefix] &7Waypoint criada com sucesso."
-      public: "$[prefix] &7Waypoint criada com sucesso."
-      permission: "$[prefix] &7Waypoint criada com sucesso."
+      private: "<gray>Waypoint criada com sucesso."
+      public: "<gray>Waypoint criada com sucesso."
+      permission: "<gray>Waypoint criada com sucesso."
     # name: Name of the waypoint
-    getUuid: "$[prefix] &7Clique nessa mensagem para copiar a UUID da waypoint &e${name}&7."
-    newIconInvalid: "$[prefix] &cEsse item não pode ser um ícone."
+    getUuid: "<gray>Clique nessa mensagem para copiar a UUID da waypoint <yellow><name><gray>."
+    newIconInvalid: "<red>Esse item não pode ser um ícone."
 
   folder:
     limitReached:
-      private: "$[prefix] &cLimite de pastas alcançado."
+      private: "<red>Limite de pastas alcançado."
     nameDuplicate:
-      private: "$[prefix] &cPastas com nomes duplicados não são permitidas."
-      public: "$[prefix] &cPastas com nomes duplicados não são permitidas."
-      permission: "$[prefix] &cPastas com nomes duplicados não são permitidas."
+      private: "<red>Pastas com nomes duplicados não são permitidas."
+      public: "<red>Pastas com nomes duplicados não são permitidas."
+      permission: "<red>Pastas com nomes duplicados não são permitidas."
     createSuccess:
-      private: "$[prefix] &7Pasta criada com sucesso."
-      public: "$[prefix] &7Pasta criada com sucesso."
-      permission: "$[prefix] &7Pasta criada com sucesso."
-    newIconInvalid: "$[prefix] &cEsse item não pode ser um ícone."
+      private: "<gray>Pasta criada com sucesso."
+      public: "<gray>Pasta criada com sucesso."
+      permission: "<gray>Pasta criada com sucesso."
+    newIconInvalid: "<red>Esse item não pode ser um ícone."
 
   teleport:
-    # remainingCooldown: Time left until player can teleport again
-    onCooldown: "$[prefix] &cVocê não pode teleportar por &e${remainingCooldown}&c."
+    # remaining_cooldown: Time left until player can teleport again
+    onCooldown: "<red>Você não pode teleportar por <yellow><remaining_cooldown><red>."
     notEnough:
-      # currentLevel: Level of the player
-      # requiredLevel: Level required for teleportation
+      # current_level: Level of the player
+      # required_level: Level required for teleportation
       xp: |
-        $[prefix] &cVocê não tem level suficiente para teleportar.
-        &cLevel necessário: &e${requiredLevel}
-      # currentBalance: Vault balance of the player
-      # requiredBalance: Vault balance required for teleportation
+        <red>Você não tem level suficiente para teleportar.
+        <red>Level necessário: <yellow><required_level>
+      # current_balance: Vault balance of the player
+      # required_balance: Vault balance required for teleportation
       balance: |
-        $[prefix] &cVocê não tem money suficiente para teleportar.
-        &cRequired balance: &a${requiredBalance}
+        <red>Você não tem money suficiente para teleportar.
+        <red>Required balance: <green><required_balance>
     standStill:
       # duration: Amount of time the player needs to stand still
-      notice: "$[prefix] &7Você precisa ficar parado por &e${duration}&7."
-      moved: "$[prefix] &cVocê se moveu e o teleporte foi cancelado."
+      notice: "<gray>Você precisa ficar parado por <yellow><duration><gray>."
+      moved: "<red>Você se moveu e o teleporte foi cancelado."
 
 pointers:
   actionBar:
     # current: Translated name of the world the player is in
     # correct: Translated name of the world the waypoint is in
-    wrongWorld: "&cVocê está no mundo &a${current}&c, mas a waypoint está em &a${correct}"
-    # distance3D: Distance to the waypoint in blocks
-    # heightDifference: Height difference between player and waypoint. Positive when to high, negative when to low
-    distance: "&7Você está a &e${distance3D}&7 blocos de distância"
+    wrongWorld: "<red>Você está no mundo <green><current><red>, mas a waypoint está em <green><correct>"
+    # distance_3d: Distance to the waypoint in blocks
+    # height_difference: Height difference between player and waypoint. Positive when to high, negative when to low
+    distance: "<gray>Você está a <yellow><distance_3d><gray> blocos de distância"
 
   hologram:
     # Set the text of the floating hologram here.
@@ -174,12 +174,12 @@ pointers:
     # createdAt: Date at which the waypoint was created
     # world: World where the waypoint is located at
     # x, y, z: Coordinates of the waypoint
-    # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
-    private: "&5${name} (${distance}m)"
-    death: "&cMorte ${createdAt} (${distance}m)"
-    public: "&b${name} (${distance}m)"
-    permission: "&d${name} (${distance}m)"
-    playerTracking: "&9${name} &r&9(${distance}m)"
+    # block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
+    private: "<dark_purple><name> (<distance>m)"
+    death: "<red>Morte <created_at:'dd.MM.uuuu kk:mm'> (<distance>m)"
+    public: "<aqua><name> (<distance>m)"
+    permission: "<light_purple><name> (<distance>m)"
+    playerTracking: "<blue><name> <reset><blue>(<distance>m)"
 
 integrations:
   dynmap:
@@ -188,174 +188,176 @@ integrations:
 
 inventory:
   title:
-    self: "&8Suas waypoints"
+    self: "<dark_gray>Suas waypoints"
     # name: Name of the other player
-    other: "&8Waypoints do &9${name}"
+    other: "<dark_gray>Waypoints do <blue><name>"
 
   general:
     previous:
-      displayName: "&ePágina anterior"
+      displayName: "<yellow>Página anterior"
       description: ""
     next:
-      displayName: "&ePágina seguinte"
+      displayName: "<yellow>Página seguinte"
       description: ""
     back:
-      displayName: "&eVoltar"
+      displayName: "<yellow>Voltar"
       description: ""
 
   background:
     private:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
     death:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
     public:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
     permission:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
 
   overview:
-    # selectionList: The list showing available and the active options
     cycleSort:
-      displayName: "&eOrdenar por"
-      description: "\n${selectionList}"
-      activeColor: "&6"
-      inactiveColor: "&7"
+      displayName: "<yellow>Ordenar por"
+      description: ""
+      activeColor: "<gold>"
+      inactiveColor: "<gray>"
 
     toggleGlobals:
       visible:
-        displayName: "&eWaypoints globais estão visíveis"
-        description: "&7Clique para esconder elas"
+        displayName: "<yellow>Waypoints globais estão visíveis"
+        description: "<gray>Clique para esconder elas"
       hidden:
-        displayName: "&eWaypoints globais estão escondidas"
-        description: "&7Clique para mostrar elas"
+        displayName: "<yellow>Waypoints globais estão escondidas"
+        description: "<gray>Clique para mostrar elas"
 
     deselect:
-      displayName: "&eDeselecionar waypoint"
-      description: "&7A direção não está mais sendo mostrada a você"
+      displayName: "<yellow>Deselecionar waypoint"
+      description: "<gray>A direção não está mais sendo mostrada a você"
     setWaypoint:
-      displayName: "&eCriar nova waypoint"
+      displayName: "<yellow>Criar nova waypoint"
       description: |
-        &7A waypoint será criada na pasta atual
+        <gray>A waypoint será criada na pasta atual
         
-        &7Usando &eshift-click&7, você cria uma waypoint
-        &7com coordenadas desse jeito:
-        &a102/35/-238
+        <gray>Usando <yellow>shift-click<gray>, você cria uma waypoint
+        <gray>com coordenadas desse jeito:
+        <green>102/35/-238
     createFolder:
-      displayName: "&eCriar nova pasta"
+      displayName: "<yellow>Criar nova pasta"
       description: ""
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:
     public:
-      displayName: "&bWaypoints públicas"
-      description: "&7Quantidade: &6${amount}"
+      displayName: "<aqua>Waypoints públicas"
+      description: "<gray>Quantidade: <gold><amount>"
     permission:
-      displayName: "&dWaypoints restritas"
-      description: "&7Disponíveis para você: &6${amount}"
+      displayName: "<light_purple>Waypoints restritas"
+      description: "<gray>Disponíveis para você: <gold><amount>"
 
   waypoint:
     # name: Name of the waypoint
     # createdAt: Date at which the waypoint was created
     # world: World where the waypoint is located at
     # x, y, z: Coordinates of the waypoint
-    # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
+    # block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
     # distance: Distance in blocks to the player
     icon:
       description: &waypointDescription |
-        &7Mundo: &6${world}
-        &7X: &6${blockX}
-        &7Y: &6${blockY}
-        &7Z: &6${blockZ}
-        &7Distância: &6${distance}
+        <gray>Mundo: <gold><world>
+        <gray>X: <gold><block_x>
+        <gray>Y: <gold><block_y>
+        <gray>Z: <gold><block_z>
+        <gray>Distância: <gold><distance>
 
-        &7Criado em: &6${createdAt}
+        <gray>Criado em: <gold><created_at:'dd.MM.uuuu kk:mm'>
 
       private:
-        displayName: "&5${name}"
+        displayName: "<dark_purple><name>"
         description: *waypointDescription
       death:
-        displayName: "&cMorte ${createdAt}"
+        displayName: "<red>Morte <created_at:'dd.MM.uuuu kk:mm'>"
         description: |
-          &7Mundo: &6${world}
-          &7X: &6${blockX}
-          &7Y: &6${blockY}
-          &7Z: &6${blockZ}
-          &7Distância: &6${distance}
+          <gray>Mundo: <gold><world>
+          <gray>X: <gold><block_x>
+          <gray>Y: <gold><block_y>
+          <gray>Z: <gold><block_z>
+          <gray>Distância: <gold><distance>
       public:
-        displayName: "&b${name}"
+        displayName: "<aqua><name>"
         description: *waypointDescription
       permission:
-        displayName: "&d${name}"
+        displayName: "<light_purple><name>"
         description: *waypointDescription
 
     select:
-      displayName: "&eSelecionar waypoint"
-      description: "&7Clique para definir sua waypoint ativa"
+      displayName: "<yellow>Selecionar waypoint"
+      description: "<gray>Clique para definir sua waypoint ativa"
     delete:
-      displayName: "&4Deletar waypoint"
+      displayName: "<dark_red>Deletar waypoint"
       description: ""
       question:
-        displayName: "&7Quer mesmo deletar &e${name}&7?"
+        displayName: "<gray>Quer mesmo deletar <yellow><name><gray>?"
         description: ""
       confirm:
-        displayName: "&cSim, deletar &e${name}&c!"
+        displayName: "<red>Sim, deletar <yellow><name><red>!"
         description: ""
       cancel:
-        displayName: "&aNão, não delete &e${name}&a."
+        displayName: "<green>Não, não delete <yellow><name><green>."
         description: ""
     rename:
-      displayName: "&eRenomear waypoint"
+      displayName: "<yellow>Renomear waypoint"
       description: ""
     moveToFolder:
-      displayName: "&eMover waypoint para uma pasta"
+      displayName: "<yellow>Mover waypoint para uma pasta"
       description: |
-        &7Coloque a waypoint em uma pasta,
+        <gray>Coloque a waypoint em uma pasta,
         ou remove da pasta atual
     teleport:
-      displayName: "&eTeleportar para waypoint"
-      # paymentNotice: A payment notice informing the player how much the teleportation will cost him, or if it is free nothing
-      description: "${paymentNotice}"
+      displayName: "<yellow>Teleportar para waypoint"
+      # payment_notice: A payment notice informing the player how much the teleportation will cost him, or if it is free nothing
+      # must_visit: This text is added if the player must visit the waypoint beforehand to be able to teleport to it
+      description: |
+        <payment_notice>
+        <must_visit>
       # levels: The amount of levels required for teleportation
-      xpLevel: "&7Você precisa de &e${levels}&7 levels para teleportar."
+      xpLevel: "<gray>Você precisa de <yellow><levels><gray> levels para teleportar."
       # balance: The amount of balance required for teleportation
-      balance: "&7Você precisa de &e${balance}&7 money para teleportar."
+      balance: "<gray>Você precisa de <yellow><balance><gray> money para teleportar."
     selectBeaconColor:
-      displayName: "&eMudar cor do beam"
+      displayName: "<yellow>Mudar cor do beam"
       description: ""
     getUuid:
-      displayName: "&eCopiar UUID da waypoint"
-      description: "&7Envia uma mensagem clicável para copiar a UUID"
+      displayName: "<yellow>Copiar UUID da waypoint"
+      description: "<gray>Envia uma mensagem clicável para copiar a UUID"
     editPermission:
-      displayName: "&eMudar permissão requerida"
-      description: "&7Permissão atual é &e${permission}"
+      displayName: "<yellow>Mudar permissão requerida"
+      description: "<gray>Permissão atual é <yellow><permission>"
     make:
       public:
-        displayName: "&eTornar waypoint pública"
+        displayName: "<yellow>Tornar waypoint pública"
         description: ""
         question:
-          displayName: "&7Quer mesmo tornar &e${name}&7 pública?"
+          displayName: "<gray>Quer mesmo tornar <yellow><name><gray> pública?"
           description: ""
         confirm:
-          displayName: "&cSim, torne &e${name}&c pública!"
+          displayName: "<red>Sim, torne <yellow><name><red> pública!"
           description: ""
         cancel:
-          displayName: "&aNão, não torne &e${name}&a pública."
+          displayName: "<green>Não, não torne <yellow><name><green> pública."
           description: ""
       permission:
-        displayName: "&eTornar waypoint de permissão"
+        displayName: "<yellow>Tornar waypoint de permissão"
         description: ""
         question:
-          displayName: "&7Quer mesmo tornar&e${name}&7 waypoint de permissão?"
+          displayName: "<gray>Quer mesmo tornar<yellow><name><gray> waypoint de permissão?"
           description: ""
         confirm:
-          displayName: "&cSim, torne &e${name}&c uma waypoint de permissão!"
+          displayName: "<red>Sim, torne <yellow><name><red> uma waypoint de permissão!"
           description: ""
         cancel:
-          displayName: "&aNão, não torne &e${name}&a uma waypoint de permissão."
+          displayName: "<green>Não, não torne <yellow><name><green> uma waypoint de permissão."
           description: ""
 
 
@@ -366,36 +368,36 @@ inventory:
 
   folder:
     # name: Name of the folder
-    # createdAt: Date at which the folder was created
+    # created_at: Date at which the folder was created
     # amount: Amount of waypoints visible to the player
     icon:
       private:
-        displayName: "&5${name}"
-        description: "&7Waypoints nessa pasta: &6${amount}"
+        displayName: "<dark_purple><name>"
+        description: "<gray>Waypoints nessa pasta: <gold><amount>"
       death:
-        displayName: "&cDeaths"
-        description: "&7Waypoints nessa pasta: &6${amount}"
+        displayName: "<red>Deaths"
+        description: "<gray>Waypoints nessa pasta: <gold><amount>"
       public:
-        displayName: "&b${name}"
-        description: "&7Waypoints nessa pasta: &6${amount}"
+        displayName: "<aqua><name>"
+        description: "<gray>Waypoints nessa pasta: <gold><amount>"
       permission:
-        displayName: "&d${name}"
-        description: "&7Waypoints nessa pasta: &6${amount}"
+        displayName: "<light_purple><name>"
+        description: "<gray>Waypoints nessa pasta: <gold><amount>"
 
     delete:
-      displayName: "&4Deletar pasta"
+      displayName: "<dark_red>Deletar pasta"
       description: ""
       question:
-        displayName: "&7Quer mesmo deletar a pasta &e${name}&7?"
+        displayName: "<gray>Quer mesmo deletar a pasta <yellow><name><gray>?"
         description: ""
       confirm:
-        displayName: "&cSim, delete a pasta &e${name}&c!"
+        displayName: "<red>Sim, delete a pasta <yellow><name><red>!"
         description: ""
       cancel:
-        displayName: "&aNão, não delete a pasta &e${name}&a."
+        displayName: "<green>Não, não delete a pasta <yellow><name><green>."
         description: ""
     rename:
-      displayName: "&eRenomear pasta"
+      displayName: "<yellow>Renomear pasta"
       description: ""
 
     create:
@@ -403,18 +405,18 @@ inventory:
 
   selectFolder:
     noFolder:
-      displayName: "&eNenhuma pasta"
-      description: "&7Mover essa waypoint para o menu principal"
+      displayName: "<yellow>Nenhuma pasta"
+      description: "<gray>Mover essa waypoint para o menu principal"
 
   selectBeaconColor:
     moveLeft:
-      displayName: "&eMover para esquerda"
+      displayName: "<yellow>Mover para esquerda"
       description: ""
     moveRight:
-      displayName: "&eMover para direita"
+      displayName: "<yellow>Mover para direita"
       description: ""
 
   confirm:
     background:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
