@@ -68,7 +68,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         )
     }
 
-    fun getTeleportCostDescription(player: Player, waypoint: Waypoint): Component? {
+    fun getTeleportCostDescription(player: Player, waypoint: Waypoint): List<Component>? {
         val config = getTeleportConfig(waypoint)
 
         if (player.hasPermission(getTeleportPermission(waypoint))) {

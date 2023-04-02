@@ -26,7 +26,7 @@ class ItemTranslation(
     fun getItem(vararg resolvers: TagResolver): ItemStack = ItemStack(material).also {
         it.itemMeta = it.itemMeta!!.also { itemMeta ->
             itemMeta.displayName(translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))
-            itemMeta.lore(rawDescription.splitToSequence('\n').map { line ->
+            itemMeta.lore(rawDescription.lineSequence().map { line ->
                 translationLoader.itemMiniMessage.deserialize(line, *resolvers)
             }.toMutableList())
         }
