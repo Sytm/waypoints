@@ -114,14 +114,12 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                         } else {
                             translations.COMMAND_SCRIPT_UUID_HEADER.send(sender)
                             result.forEach {
-                                val message = translations.COMMAND_SCRIPT_UUID_RESULT.withReplacements(
-                                    "name" placeholder it.name,
-                                    "folder" placeholder (it.folder?.name ?: "null"),
+                                sender.sendMessage(
+                                    translations.COMMAND_SCRIPT_UUID_RESULT.withReplacements(
+                                        "name" placeholder it.name,
+                                        "folder" placeholder (it.folder?.name ?: "null"),
+                                    ).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, it.id.toString()))
                                 )
-
-                                message.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, it.id.toString()))
-
-                                sender.sendMessage(message)
                             }
                         }
                     }
