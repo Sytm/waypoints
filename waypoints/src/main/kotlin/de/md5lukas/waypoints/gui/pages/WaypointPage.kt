@@ -70,12 +70,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             },
             'i' to if (wpGUI.viewer.hasPermission(WaypointsPermissions.COMMAND_SCRIPTING) && isNotDeathWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_GET_UUID.item) {
-                    val message = wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements("name" placeholder waypoint.name)
-
-                    // We can do this without copying because when replacements are passed in the component is freshly created
-                    message.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, waypoint.id.toString()))
-
-                    wpGUI.viewer.sendMessage(message)
+                    wpGUI.viewer.sendMessage(
+                        wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements("name" placeholder waypoint.name)
+                            .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, waypoint.id.toString()))
+                    )
                     wpGUI.viewer.closeInventory()
                 }
             } else {
