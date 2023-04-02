@@ -41,7 +41,7 @@ open class ListingPage<T>(
         val pageContent = listingContent.page(listingPage)
         for (row in 0..3) {
             for (column in 0..8) {
-                val content = pageContent.getOrNull(row * 8 + column)
+                val content = pageContent.getOrNull(row * 9 + column)
                 if (content == null) {
                     grid[row][column] = GUIContent.AIR
                 } else {
