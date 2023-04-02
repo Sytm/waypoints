@@ -60,7 +60,7 @@ class BlueMapIntegration(
     }
 
     private fun getMarkerSet(world: World) = markerSets.computeIfAbsent(world) {
-        val markerSet = MarkerSet(plugin.translations.INTEGRATIONS_MAPS_LABEL.text)
+        val markerSet = MarkerSet(plugin.translations.INTEGRATIONS_MAPS_LABEL.rawText)
         api.getWorld(world).ifPresent { blueMapWorld ->
             blueMapWorld.maps.forEach {
                 it.markerSets["waypoints_public"] = markerSet

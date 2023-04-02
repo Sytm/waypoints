@@ -2,6 +2,8 @@ package de.md5lukas.waypoints.packets
 
 import com.comphenix.protocol.wrappers.WrappedChatComponent
 import com.comphenix.protocol.wrappers.WrappedDataValue
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -10,7 +12,7 @@ import java.util.*
 class Hologram(
     player: Player,
     location: Location,
-    var text: String
+    var text: Component
 ) : ClientSideEntity(
     player,
     location,
@@ -18,7 +20,7 @@ class Hologram(
 ) {
 
     private val wrappedText
-        get() = Optional.of(WrappedChatComponent.fromLegacyText(text).handle)
+        get() = Optional.of(WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(text)).handle)
 
     override fun modifyMetadataValues(spawn: Boolean, dataValues: MutableList<WrappedDataValue>) {
         dataValues += WrappedDataValue(2, optChatSerializer, wrappedText)

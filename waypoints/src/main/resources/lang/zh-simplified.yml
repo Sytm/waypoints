@@ -1,5 +1,5 @@
-prefix: "&b&lWaypoints &e&l>&r"
-scriptPrefix: "&b&lWaypoints&aScript &e&l>&r"
+prefix: "<aqua><bold>Waypoints <yellow><bold>><reset> "
+scriptPrefix: "<aqua><bold>Waypoints<green>Script <yellow><bold>><reset> "
 
 worlds:
   world: "主世界"
@@ -7,63 +7,63 @@ worlds:
   world_the_end: "末地"
 
 command:
-  notAPlayer: "$[prefix] &c你必须是玩家才可执行此命令."
+  notAPlayer: "<red>你必须是玩家才可执行此命令."
 
   script:
     help:
-      header: "$[scriptPrefix] &7&n帮助界面"
-      deselectWaypoint: "&7 - &e/${label} deselectWaypoint <玩家名称> &7&l|&r&7 为玩家删除选择的路径点"
-      selectWaypoint: "&7 - &e/${label} selectWaypoint <玩家名称> <Waypoint-UUID> &7&l|&r&7 为玩家设置一个将要去到的路径点"
+      header: "<gray><underlined>帮助界面"
+      deselectWaypoint: "<gray> - <yellow>/<label> deselectWaypoint <玩家名称> <gray><bold>|<reset><gray> 为玩家删除选择的路径点"
+      selectWaypoint: "<gray> - <yellow>/<label> selectWaypoint <玩家名称> <Waypoint-UUID> <gray><bold>|<reset><gray> 为玩家设置一个将要去到的路径点"
 
     selectWaypoint:
       # uuid: ID of the waypoint that could not be found
-      waypointNotFound: "$[scriptPrefix] &c找不到 UUID 为 &e${uuid}&c 的路径点."
+      waypointNotFound: "<red>找不到 UUID 为 <yellow><uuid><red> 的路径点."
 
   help:
-    header: "$[prefix] &7&n帮助界面"
-    gui: "&7 - &e/${label} &7&l|&r&7 打开路径点 GUI"
-    help: "&7 - &e/${label} help &7&l|&r&7 显示该帮助界面"
+    header: "<gray><underlined>帮助界面"
+    gui: "<gray> - <yellow>/<label> <gray><bold>|<reset><gray> 打开路径点 GUI"
+    help: "<gray> - <yellow>/<label> help <gray><bold>|<reset><gray> 显示该帮助界面"
     set:
-      private: "&7 - &e/${label} set <路径点名称> &7&l|&r&7 创建一个新的路径点"
-      public: "&7 - &e/${label} setPublic <路径点名称> &7&l|&r&7 创建一个新的公开路径点"
-      permission: "&7 - &e/${label} setPermission <Permission> <路径点名称> &7&l|&r&7 创建一个新的权限路径点"
-      temporary: "&7 - &e/${label} setTemporary <X> <Y> <Z> &7&l|&r&7 标记一个未保存的路径点"
-    other: "&7 - &e/${label} other <Name|UUID> &7&l|&r&7 查看其他玩家的路径点"
-    statistics: "&7 - &e/${label} statistics &7&l|&r&7 查看数据库统计信息"
-    import: "&7 - &e/${label} import &7&l|&r&7 从 Waypoints V2 版本导入路径点数据"
-    reload: "&7 - &e/${label} reload &7&l|&r&7 重载配置文件"
+      private: "<gray> - <yellow>/<label> set <路径点名称> <gray><bold>|<reset><gray> 创建一个新的路径点"
+      public: "<gray> - <yellow>/<label> setPublic <路径点名称> <gray><bold>|<reset><gray> 创建一个新的公开路径点"
+      permission: "<gray> - <yellow>/<label> setPermission <Permission> <路径点名称> <gray><bold>|<reset><gray> 创建一个新的权限路径点"
+      temporary: "<gray> - <yellow>/<label> setTemporary <X> <Y> <Z> <gray><bold>|<reset><gray> 标记一个未保存的路径点"
+    other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> 查看其他玩家的路径点"
+    statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> 查看数据库统计信息"
+    import: "<gray> - <yellow>/<label> import <gray><bold>|<reset><gray> 从 Waypoints V2 版本导入路径点数据"
+    reload: "<gray> - <yellow>/<label> reload <gray><bold>|<reset><gray> 重载配置文件"
 
   other:
-    playerNoWaypoints: "$[prefix] &c指定玩家无现有路径点."
+    playerNoWaypoints: "<red>指定玩家无现有路径点."
 
   statistics:
-    # dbFileSize: Size of the database in SI Units
-    # totalWaypoints: Total amount of waypoints
-    # privateWaypoints: Amount of private waypoints
-    # deathWaypoints: Amount of death waypoints
-    # publicWaypoints: Amount of public waypoints
-    # permissionWaypoints: Amount of permission waypoints
-    # totalFolders: Total amount of folders
-    # privateFolders: Amount of private folders
-    # publicFolders: Amount of public folders
-    # permissionFolders: Amount of permission folders
+    # db_file_size: Size of the database in SI Units
+    # total_waypoints: Total amount of waypoints
+    # private_waypoints: Amount of private waypoints
+    # death_waypoints: Amount of death waypoints
+    # public_waypoints: Amount of public waypoints
+    # permission_waypoints: Amount of permission waypoints
+    # total_folders: Total amount of folders
+    # private_folders: Amount of private folders
+    # public_folders: Amount of public folders
+    # permission_folders: Amount of permission folders
     message: |
-      $[prefix] &7数据库统计
-      &7文件大小: &e${dbFileSize}
+      <gray>数据库统计
+      <gray>文件大小: <yellow><db_file_size>
 
-      &7总路径点数: &e${totalWaypoints}
-      &7私有路径点数: &e${privateWaypoints}
-      &7死亡路径点数: &e${deathWaypoints}
-      &7公开路径点数: &e${publicWaypoints}
-      &7权限路径点数: &e${permissionWaypoints}
+      <gray>总路径点数: <yellow><total_waypoints>
+      <gray>私有路径点数: <yellow><private_waypoints>
+      <gray>死亡路径点数: <yellow><death_waypoints>
+      <gray>公开路径点数: <yellow><public_waypoints>
+      <gray>权限路径点数: <yellow><permission_waypoints>
 
-      &7总路径点组数: &e${totalFolders}
-      &7私有路径点组数: &e${privateFolders}
-      &7公开路径点组数: &e${publicFolders}
-      &7权限路径点组数: &e${permissionFolders}
+      <gray>总路径点组数: <yellow><total_folders>
+      <gray>私有路径点组数: <yellow><private_folders>
+      <gray>公开路径点组数: <yellow><public_folders>
+      <gray>权限路径点组数: <yellow><permission_folders>
 
   reload:
-    finished: "$[prefix] &7配置文件已成功重载."
+    finished: "<gray>配置文件已成功重载."
 
 text:
   duration:
@@ -93,92 +93,92 @@ text:
     created_descending: "创建时间 (降序)"
 
   beaconColors:
-    clear: "&7无颜色"
-    light_gray: "&7淡灰"
-    gray: "&7灰"
-    pink: "&7粉"
-    lime: "&7黄绿"
-    yellow: "&7黄"
-    light_blue: "&7淡蓝"
-    magenta: "&7品红"
-    orange: "&7橙"
-    white: "&7白"
-    black: "&7黑"
-    red: "&7红"
-    green: "&7绿"
-    brown: "&7棕"
-    blue: "&7蓝"
-    cyan: "&7青"
-    purple: "&7紫"
+    clear: "<gray>无颜色"
+    light_gray: "<gray>淡灰"
+    gray: "<gray>灰"
+    pink: "<gray>粉"
+    lime: "<gray>黄绿"
+    yellow: "<gray>黄"
+    light_blue: "<gray>淡蓝"
+    magenta: "<gray>品红"
+    orange: "<gray>橙"
+    white: "<gray>白"
+    black: "<gray>黑"
+    red: "<gray>红"
+    green: "<gray>绿"
+    brown: "<gray>棕"
+    blue: "<gray>蓝"
+    cyan: "<gray>青"
+    purple: "<gray>紫"
 
 message:
   waypoint:
     create:
-#      worldUnavailable: "$[prefix] &cIn world you are in waypoints are unavailable."
+      #      worldUnavailable: "<red>In world you are in waypoints are unavailable."
       coordinates:
-        outOfBounds: "$[prefix] &c创建路径点的位置过远."
+        outOfBounds: "<red>创建路径点的位置过远."
         invalidFormat: |
-          $[prefix] &c指定坐标需为以下格式:
-          &a102/35/-238
+          <red>指定坐标需为以下格式:
+          <green>102/35/-238
     limitReached:
-      private: "$[prefix] &c你不能再创建更多的路径点了."
+      private: "<red>你不能再创建更多的路径点了."
     nameDuplicate:
-      private: "$[prefix] &c私有路径点不允许重名."
-      public: "$[prefix] &c公开路径点不允许重名."
-      permission: "$[prefix] &c权限路径点不允许重名."
+      private: "<red>私有路径点不允许重名."
+      public: "<red>公开路径点不允许重名."
+      permission: "<red>权限路径点不允许重名."
     setSuccess:
-      private: "$[prefix] &7路径点已成功创建."
-      public: "$[prefix] &7公开路径点已成功创建."
-      permission: "$[prefix] &7权限路径点已成功创建."
+      private: "<gray>路径点已成功创建."
+      public: "<gray>公开路径点已成功创建."
+      permission: "<gray>权限路径点已成功创建."
     # name: Name of the waypoint
-    getUuid: "$[prefix] &7点击此消息可获取路径点 &e${name} &7的 UUID."
-    newIconInvalid: "$[prefix] &c尝试用作路径点图标的物品未在允许列表内."
+    getUuid: "<gray>点击此消息可获取路径点 <yellow><name> <gray>的 UUID."
+    newIconInvalid: "<red>尝试用作路径点图标的物品未在允许列表内."
 
   folder:
     limitReached:
-      private: "$[prefix] &c你不能再创建更多的路径点组了."
+      private: "<red>你不能再创建更多的路径点组了."
     nameDuplicate:
-      private: "$[prefix] &c私有路径点组不允许重名."
-      public: "$[prefix] &c公开路径点组不允许重名."
-      permission: "$[prefix] &c权限路径点组不允许重名."
+      private: "<red>私有路径点组不允许重名."
+      public: "<red>公开路径点组不允许重名."
+      permission: "<red>权限路径点组不允许重名."
     createSuccess:
-      private: "$[prefix] &7私有路径点组已成功创建."
-      public: "$[prefix] &7公开路径点组已成功创建."
-      permission: "$[prefix] &7权限路径点组已成功创建."
-    newIconInvalid: "$[prefix] &c尝试用作路径点组图标的物品未在允许列表内."
+      private: "<gray>私有路径点组已成功创建."
+      public: "<gray>公开路径点组已成功创建."
+      permission: "<gray>权限路径点组已成功创建."
+    newIconInvalid: "<red>尝试用作路径点组图标的物品未在允许列表内."
 
   teleport:
-    # remainingCooldown: Time left until player can teleport again
-    onCooldown: "$[prefix] &c你仍需等待 &e${remainingCooldown}&c 秒后才可以再次传送."
+    # remaining_cooldown: Time left until player can teleport again
+    onCooldown: "<red>你仍需等待 <yellow><remaining_cooldown><red> 秒后才可以再次传送."
     notEnough:
-      # currentLevel: Level of the player
-      # requiredLevel: Level required for teleportation
+      # current_level: Level of the player
+      # required_level: Level required for teleportation
       xp: |
-        $[prefix] &c你没有足够的等级用于传送.
-        &c需要等级: &e${requiredLevel}
-      # currentBalance: Vault balance of the player
-      # requiredBalance: Vault balance required for teleportation
+        <red>你没有足够的等级用于传送.
+        <red>需要等级: <yellow><required_level>
+      # current_balance: Vault balance of the player
+      # required_balance: Vault balance required for teleportation
       balance: |
-        $[prefix] &c你没有足够的钱用于传送.
-        &c需要金币: &a${requiredBalance}
+        <red>你没有足够的钱用于传送.
+        <red>需要金币: <green><required_balance>
     standStill:
       # duration: Amount of time the player needs to stand still
-      notice: "$[prefix] &7你需要在 &e${duration}&7 秒内保持禁止."
-      moved: "$[prefix] &c传送过程中出现移动, 传送请求已取消."
+      notice: "<gray>你需要在 <yellow><duration><gray> 秒内保持禁止."
+      moved: "<red>传送过程中出现移动, 传送请求已取消."
 
   tracking:
-    playerNoLongerOnline: "$[prefix] &c玩家不在线."
-    trackableRequired: "$[prefix] &c若要追踪其他玩家, 你自己必须取消隐身状态."
-    notification: "$[prefix] &7玩家 &e${name}&7 正在追踪你."
+    playerNoLongerOnline: "<red>玩家不在线."
+    trackableRequired: "<red>若要追踪其他玩家, 你自己必须取消隐身状态."
+    notification: "<gray>玩家 <yellow><name><gray> 正在追踪你."
 
 pointers:
   actionBar:
     # current: Translated name of the world the player is in
     # correct: Translated name of the world the waypoint is in
-    wrongWorld: "&c你当前位于世界 &a${current}&c, 但路径点在世界 &a${correct}"
-    # distance3D: Distance to the waypoint in blocks
-    # heightDifference: Height difference between player and waypoint. Positive when to high, negative when to low
-    distance: "&7你距离你的目的地还有 &e${distance3D}&7 格远"
+    wrongWorld: "<red>你当前位于世界 <green><current><red>, 但路径点在世界 <green><correct>"
+    # distance_3d: Distance to the waypoint in blocks
+    # height_difference: Height difference between player and waypoint. Positive when to high, negative when to low
+    distance: "<gray>你距离你的目的地还有 <yellow><distance_3d><gray> 格远"
 
   hologram:
     # Set the text of the floating hologram here.
@@ -186,13 +186,13 @@ pointers:
     # createdAt: Date at which the waypoint was created
     # world: World where the waypoint is located at
     # x, y, z: Coordinates of the waypoint
-    # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
-    private: "&5${name} (${distance}m)"
-    death: "&c死亡位置 ${createdAt} (${distance}m)"
-    public: "&b${name} (${distance}m)"
-    permission: "&d${name} (${distance}m)"
-    temporary: "&5临时路径点 (${distance}m)"
-    playerTracking: "&9${name} &r&9(${distance}m)"
+    # block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
+    private: "<dark_purple><name> (<distance>m)"
+    death: "<red>死亡位置 <created_at:'dd.MM.uuuu kk:mm'> (<distance>m)"
+    public: "<aqua><name> (<distance>m)"
+    permission: "<light_purple><name> (<distance>m)"
+    temporary: "<dark_purple>临时路径点 (<distance>m)"
+    playerTracking: "<blue><name> <reset><blue>(<distance>m)"
 
 integrations:
   maps:
@@ -200,178 +200,176 @@ integrations:
 
 inventory:
   title:
-    self: "&8你的路径点"
+    self: "<dark_gray>你的路径点"
     # name: Name of the other player
-    other: "&8玩家 &9${name} &8的路径点"
+    other: "<dark_gray>玩家 <blue><name> <dark_gray>的路径点"
 
   general:
     previous:
-      displayName: "&e前一页"
+      displayName: "<yellow>前一页"
       description: ""
     next:
-      displayName: "&e后一页"
+      displayName: "<yellow>后一页"
       description: ""
     back:
-      displayName: "&e返回"
+      displayName: "<yellow>返回"
       description: ""
 
   background:
     private:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
     death:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
     public:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
     permission:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
 
   overview:
-    # selectionList: The list showing available and the active options
     cycleSort:
-      displayName: "&e排序选择"
-      description: "\n${selectionList}"
-      activeColor: "&6"
-      inactiveColor: "&7"
+      displayName: "<yellow>排序选择"
+      description: ""
+      activeColor: "<gold>"
+      inactiveColor: "<gray>"
 
     toggleGlobals:
       visible:
-        displayName: "&e全局路径点可见"
-        description: "&7点击隐藏"
+        displayName: "<yellow>全局路径点可见"
+        description: "<gray>点击隐藏"
       hidden:
-        displayName: "&e全局路径点隐藏"
-        description: "&7点击显示"
+        displayName: "<yellow>全局路径点隐藏"
+        description: "<gray>点击显示"
 
     deselect:
-      displayName: "&e取消选择路径点"
-      description: "&7导航消息将不再提醒"
+      displayName: "<yellow>取消选择路径点"
+      description: "<gray>导航消息将不再提醒"
     setWaypoint:
-      displayName: "&e创建一个新的路径点"
+      displayName: "<yellow>创建一个新的路径点"
       description: |
-        &7路径点将会创建在当前的路径点组内
+        <gray>路径点将会创建在当前的路径点组内
         
-        &7若按下 &eshift+左键&7, 你可使用坐标创建路径点, 例如:
-        &a102/35/-238
+        <gray>若按下 <yellow>shift+左键<gray>, 你可使用坐标创建路径点, 例如:
+        <green>102/35/-238
     createFolder:
-      displayName: "&e创建新路径点组"
+      displayName: "<yellow>创建新路径点组"
       description: ""
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:
     public:
-      displayName: "&b公开路径点"
-      description: "&7数量: &6${amount}"
+      displayName: "<aqua>公开路径点"
+      description: "<gray>数量: <gold><amount>"
     permission:
-      displayName: "&d权限路径点"
-      description: "&7你可见的: &6${amount}"
+      displayName: "<light_purple>权限路径点"
+      description: "<gray>你可见的: <gold><amount>"
     tracking:
-      displayName: "&a玩家"
-      description: "&7追踪其他玩家"
+      displayName: "<green>玩家"
+      description: "<gray>追踪其他玩家"
 
   waypoint:
     # name: Name of the waypoint
     # createdAt: Date at which the waypoint was created
     # world: World where the waypoint is located at
     # x, y, z: Coordinates of the waypoint
-    # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
+    # block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
     # distance: Distance in blocks to the player
     icon:
       description: &waypointDescription |
-        &7世界: &6${world}
-        &7X: &6${blockX}
-        &7Y: &6${blockY}
-        &7Z: &6${blockZ}
-        &7距离: &6${distance}
+        <gray>世界: <gold><world>
+        <gray>X: <gold><block_x>
+        <gray>Y: <gold><block_y>
+        <gray>Z: <gold><block_z>
+        <gray>距离: <gold><distance>
 
-        &7创建时间: &6${createdAt}
+        <gray>创建时间: <gold><created_at:'dd.MM.uuuu kk:mm'>
 
       private:
-        displayName: "&5${name}"
+        displayName: "<dark_purple><name>"
         description: *waypointDescription
       death:
-        displayName: "&c死亡位置 ${createdAt}"
+        displayName: "<red>死亡位置 <created_at:'dd.MM.uuuu kk:mm'>"
         description: |
-          &7世界: &6${world}
-          &7X: &6${blockX}
-          &7Y: &6${blockY}
-          &7Z: &6${blockZ}
-          &7距离: &6${distance}
+          <gray>世界: <gold><world>
+          <gray>X: <gold><block_x>
+          <gray>Y: <gold><block_y>
+          <gray>Z: <gold><block_z>
+          <gray>距离: <gold><distance>
       public:
-        displayName: "&b${name}"
+        displayName: "<aqua><name>"
         description: *waypointDescription
       permission:
-        displayName: "&d${name}"
+        displayName: "<light_purple><name>"
         description: *waypointDescription
 
     select:
-      displayName: "&e选择路径点"
-      description: "&7点击设置该路径点为你的目的地"
+      displayName: "<yellow>选择路径点"
+      description: "<gray>点击设置该路径点为你的目的地"
     delete:
-      displayName: "&4删除路径点"
+      displayName: "<dark_red>删除路径点"
       description: ""
       question:
-        displayName: "&7你真的要删除路径点 &e${name} &7吗?"
+        displayName: "<gray>你真的要删除路径点 <yellow><name> <gray>吗?"
         description: ""
       confirm:
-        displayName: "&c是的, 删除 &e${name}&c!"
+        displayName: "<red>是的, 删除 <yellow><name><red>!"
         description: ""
       cancel:
-        displayName: "&a不是, 不要删除 &e${name}&a."
+        displayName: "<green>不是, 不要删除 <yellow><name><green>."
         description: ""
     rename:
-      displayName: "&e重命名路径点"
+      displayName: "<yellow>重命名路径点"
       description: ""
     moveToFolder:
-      displayName: "&e将路径点移动至路径点组"
+      displayName: "<yellow>将路径点移动至路径点组"
       description: |
-        &7将路径点移动至路径点组内, 或移出路径点组
+        <gray>将路径点移动至路径点组内, 或移出路径点组
     teleport:
-      displayName: "&e传送至该路径点"
-      # paymentNotice: A payment notice informing the player how much the teleportation will cost him, or if it is free nothing
-      description: "${paymentNotice}"
+      displayName: "<yellow>传送至该路径点"
+      description: ""
       # levels: The amount of levels required for teleportation
-      xpLevel: "&7你需要 &e${levels}&7 级来传送至该路径点."
+      xpLevel: "<gray>你需要 <yellow><levels><gray> 级来传送至该路径点."
       # balance: The amount of balance required for teleportation
-      balance: "&7你需要 &e${balance}&7 金币来传送至该路径点."
+      balance: "<gray>你需要 <yellow><balance><gray> 金币来传送至该路径点."
     selectBeaconColor:
-      displayName: "&e修改信标颜色"
+      displayName: "<yellow>修改信标颜色"
       description: ""
     getUuid:
-      displayName: "&e获取路径点 UUID"
-      description: "&7向聊天栏发送该路径点的 UUID"
+      displayName: "<yellow>获取路径点 UUID"
+      description: "<gray>向聊天栏发送该路径点的 UUID"
     editPermission:
-      displayName: "&e修改所需权限"
-      description: "&7当前所需权限为 &e${permission}"
+      displayName: "<yellow>修改所需权限"
+      description: "<gray>当前所需权限为 <yellow><permission>"
     make:
       public:
-        displayName: "&e修改为公开路径点"
+        displayName: "<yellow>修改为公开路径点"
         description: ""
         question:
-          displayName: "&7你确定要开放路径点 &e${name}&7 吗?"
+          displayName: "<gray>你确定要开放路径点 <yellow><name><gray> 吗?"
           description: ""
         confirm:
-          displayName: "&c是的, 我要开放路径点 &e${name}&c!"
+          displayName: "<red>是的, 我要开放路径点 <yellow><name><red>!"
           description: ""
         cancel:
-          displayName: "&a不是, 我不想开放路径点 &e${name}&a."
+          displayName: "<green>不是, 我不想开放路径点 <yellow><name><green>."
           description: ""
       permission:
-        displayName: "&e修改为权限路径点"
+        displayName: "<yellow>修改为权限路径点"
         description: ""
         question:
-          displayName: "&7你确定要将路径点 &e${name}&7 修改为权限路径点吗?"
+          displayName: "<gray>你确定要将路径点 <yellow><name><gray> 修改为权限路径点吗?"
           description: ""
         confirm:
-          displayName: "&c是的, 我要将路径点 &e${name}&c 修改为权限路径点!"
+          displayName: "<red>是的, 我要将路径点 <yellow><name><red> 修改为权限路径点!"
           description: ""
         cancel:
-          displayName: "&a不是, 我不想将路径点 &e${name}&a 修改为权限路径点."
+          displayName: "<green>不是, 我不想将路径点 <yellow><name><green> 修改为权限路径点."
           description: ""
     changeMapIcon:
-      displayName: "&e修改卫星地图上的显示图标"
+      displayName: "<yellow>修改卫星地图上的显示图标"
       description: ""
 
     create:
@@ -381,36 +379,36 @@ inventory:
 
   folder:
     # name: Name of the folder
-    # createdAt: Date at which the folder was created
+    # created_at: Date at which the folder was created
     # amount: Amount of waypoints visible to the player
     icon:
       private:
-        displayName: "&5${name}"
-        description: "&7路径点组中的路径点数: &6${amount}"
+        displayName: "<dark_purple><name>"
+        description: "<gray>路径点组中的路径点数: <gold><amount>"
       death:
-        displayName: "&cDeaths"
-        description: "&7路径点组中的路径点数: &6${amount}"
+        displayName: "<red>Deaths"
+        description: "<gray>路径点组中的路径点数: <gold><amount>"
       public:
-        displayName: "&b${name}"
-        description: "&7路径点组中的路径点数: &6${amount}"
+        displayName: "<aqua><name>"
+        description: "<gray>路径点组中的路径点数: <gold><amount>"
       permission:
-        displayName: "&d${name}"
-        description: "&7路径点组中的路径点数: &6${amount}"
+        displayName: "<light_purple><name>"
+        description: "<gray>路径点组中的路径点数: <gold><amount>"
 
     delete:
-      displayName: "&4删除路径点组"
+      displayName: "<dark_red>删除路径点组"
       description: ""
       question:
-        displayName: "&7你真的要删除路径点组 &e${name} &7吗?"
+        displayName: "<gray>你真的要删除路径点组 <yellow><name> <gray>吗?"
         description: ""
       confirm:
-        displayName: "&c是, 删除路径点组 &e${name}&c!"
+        displayName: "<red>是, 删除路径点组 <yellow><name><red>!"
         description: ""
       cancel:
-        displayName: "&a否, 不要删除路径点组 &e${name}&a."
+        displayName: "<green>否, 不要删除路径点组 <yellow><name><green>."
         description: ""
     rename:
-      displayName: "&e重命名路径点组"
+      displayName: "<yellow>重命名路径点组"
       description: ""
 
     create:
@@ -418,44 +416,44 @@ inventory:
 
   selectFolder:
     noFolder:
-      displayName: "&e无路径点组"
-      description: "&7将此路径点移动至根目录下"
+      displayName: "<yellow>无路径点组"
+      description: "<gray>将此路径点移动至根目录下"
 
   selectBeaconColor:
     moveLeft:
-      displayName: "&e移动至左侧"
+      displayName: "<yellow>移动至左侧"
       description: ""
     moveRight:
-      displayName: "&e移动至右侧"
+      displayName: "<yellow>移动至右侧"
       description: ""
 
   confirm:
     background:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
 
   tracking:
     background:
-      displayName: "&0-"
+      displayName: "<black>-"
       description: ""
     trackable:
       enabled:
-        displayName: "&7自身可见"
-        description: "&7其他玩家可追踪你"
+        displayName: "<gray>自身可见"
+        description: "<gray>其他玩家可追踪你"
       disabled:
-        displayName: "&7自身隐藏"
-        description: "&7其他玩家不可追踪你"
+        displayName: "<gray>自身隐藏"
+        description: "<gray>其他玩家不可追踪你"
     refresh:
-      displayName: "&7更新玩家列表"
+      displayName: "<gray>更新玩家列表"
       description: ""
 
     # name: Name of the player
     # world: World where the player is located at
     # x, y, z: Coordinates of the player
-    # blockX, blockY, blockZ: Coordinates of the block nearest to the player
+    # block_x, block_y, block_z: Coordinates of the block nearest to the player
     # distance: Distance in blocks to the player
     player:
-      displayName: "&a${name}"
+      displayName: "<green><name>"
       description: |
-        &7世界: &6${world}
-        &7距离: &6${distance}
+        <gray>世界: <gold><world>
+        <gray>距离: <gold><distance>

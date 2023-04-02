@@ -1,10 +1,7 @@
 package de.md5lukas.waypoints.config.pointers
 
 import de.md5lukas.waypoints.util.getStringNotNull
-import de.md5lukas.waypoints.util.translateColorCodes
-import net.md_5.bungee.api.ChatColor
-import org.bukkit.boss.BarColor
-import org.bukkit.boss.BarStyle
+import net.kyori.adventure.bossbar.BossBar
 import org.bukkit.configuration.ConfigurationSection
 
 class BossBarConfiguration {
@@ -18,10 +15,10 @@ class BossBarConfiguration {
     var recalculateEveryNthInterval: Int = 0
         private set
 
-    var barColor: BarColor = BarColor.PINK
+    var barColor: BossBar.Color = BossBar.Color.PINK
         private set
 
-    var barStyle: BarStyle = BarStyle.SOLID
+    var barStyle: BossBar.Overlay = BossBar.Overlay.PROGRESS
         private set
 
     var title: String = ""
@@ -43,9 +40,10 @@ class BossBarConfiguration {
 
         recalculateEveryNthInterval = cfg.getInt("recalculateEveryNthInterval")
 
-        barColor = cfg.getStringNotNull("barColor").let { BarColor.valueOf(it) }
 
-        barStyle = cfg.getStringNotNull("barStyle").let { BarStyle.valueOf(it) }
+        barColor = cfg.getStringNotNull("barColor").let { BossBar.Color.NAMES.valueOrThrow(it) }
+
+        barStyle = cfg.getStringNotNull("barStyle").let { BossBar.Overlay.NAMES.valueOrThrow(it) }
 
         title = cfg.getStringNotNull("title")
 
@@ -55,8 +53,8 @@ class BossBarConfiguration {
             throw IllegalArgumentException("The indicator cannot be already contained in the title for the boss bar pointer")
         }
 
-        indicatorColor = "${ChatColor.RESET}${cfg.getStringNotNull("indicatorColor").translateColorCodes()}"
+        indicatorColor = "&r${cfg.getStringNotNull("indicatorColor")}"
 
-        normalColor = "${ChatColor.RESET}${cfg.getStringNotNull("normalColor").translateColorCodes()}"
+        normalColor = "&r${cfg.getStringNotNull("normalColor")}"
     }
 }
