@@ -2,33 +2,26 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import de.md5lukas.resourceindex.ResourceIndexTask
 import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow")
     id("com.modrinth.minotaur") version "2.+"
+    id("xyz.jpenilla.run-paper") version "2.+"
 }
 
 description = "Waypoints plugin"
 
 repositories {
-    mavenCentral()
+    maven("https://repo.codemc.io/repository/maven-public/") // AnvilGUI
+    maven("https://jitpack.io") // BlueMap
+    maven("https://libraries.minecraft.net") // Brigadier
 
-    maven("https://repo.codemc.io/repository/maven-public/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
-    maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.minebench.de/")
-    maven("https://jitpack.io")
-    maven("https://libraries.minecraft.net")
-
-    maven("https://repo.mikeprimm.com/")
-
-    maven("https://repo.dmulloy2.net/repository/public/")
-
-    maven("https://repo.md5lukas.de/public/")
+    maven("https://repo.mikeprimm.com/") // DynMap
 }
 
-val spigotVersion: String by project
+val paperVersion: String by project
 val commandApiVersion: String by project
 
 dependencies {
@@ -41,8 +34,7 @@ dependencies {
     val squareMapVersion: String by project
     val blueMapVersion: String by project
 
-    implementation("io.papermc.paper:paper-api:$spigotVersion")
-    implementation("net.kyori:adventure-text-minimessage:4.13.0")
+    implementation("io.papermc.paper:paper-api:$paperVersion")
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":utils"))
@@ -80,18 +72,16 @@ tasks.register<ResourceIndexTask>("createResourceIndex")
 tasks.withType<ProcessResources> {
     dependsOn("createResourceIndex")
 
+    val apiVersion = paperVersion.split('.').let { "${it[0]}.${it[1]}" }
+
     inputs.property("version", project.version)
-    inputs.property("spigotVersion", spigotVersion)
+    inputs.property("apiVersion", apiVersion)
     inputs.property("kotlinVersion", getKotlinPluginVersion())
     inputs.property("commandApiVersion", commandApiVersion)
 
     filteringCharset = "UTF-8"
 
     filesMatching("paper-plugin.yml") {
-        var apiVersion = spigotVersion.substringBefore('-')
-        if (apiVersion.count { it == '.' } > 1) {
-            apiVersion = apiVersion.substringBeforeLast('.')
-        }
 
         expand(
             "version" to project.version,
@@ -149,6 +139,11 @@ tasks.withType<ShadowJar> {
     relocate("org.bstats", "de.md5lukas.waypoints.bstats")
 }
 
+tasks.withType<RunServer> {
+    dependsOn("jar")
+    minecraftVersion(paperVersion.substringBefore('-'))
+}
+
 modrinth {
     val modrinthToken: String? by project
 
@@ -158,8 +153,8 @@ modrinth {
     versionType.set("release")
     uploadFile.set(tasks.shadowJar as Any)
 
-    gameVersions.addAll("1.19.3", "1.18.2", "1.17.1")
-    loaders.addAll("spigot", "paper")
+    gameVersions.addAll(paperVersion.substringBefore('-'))
+    loaders.addAll("paper")
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
 

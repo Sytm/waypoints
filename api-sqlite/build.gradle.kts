@@ -5,15 +5,8 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-repositories {
-    mavenCentral()
-
-    maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.md5lukas.de/public/")
-}
-
 dependencies {
-    val spigotVersion: String by project
+    val paperVersion: String by project
 
     val md5CommonsVersion: String by project
     val sqliteHelperVersion: String by project
@@ -22,7 +15,7 @@ dependencies {
     val mockBukkitVersion: String by project
     val sqliteDriverVersion: String by project
 
-    api("io.papermc.paper:paper-api:$spigotVersion")
+    api("io.papermc.paper:paper-api:$paperVersion")
 
     implementation("de.md5lukas:sqlite-kotlin-helper:$sqliteHelperVersion")
 

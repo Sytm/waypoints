@@ -2,15 +2,9 @@ plugins {
     kotlin("jvm")
 }
 
-repositories {
-    mavenCentral()
-
-    maven("https://repo.papermc.io/repository/maven-public/")
-}
-
 dependencies {
-    val spigotVersion: String by project
-    api("io.papermc.paper:paper-api:$spigotVersion")
+    val paperVersion: String by project
+    api("io.papermc.paper:paper-api:$paperVersion")
 
     implementation(kotlin("stdlib-jdk8"))
     api(project(":waypoints-api"))

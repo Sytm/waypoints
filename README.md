@@ -135,10 +135,10 @@ tracked player.
 ## Configuration
 
 Almost everything is configurable. To have a look at the current configuration file
-click [here](https://github.com/Sytm/waypoints/blob/v3/master/waypoints/src/main/resources/config.yml)
+click [here](https://github.com/Sytm/waypoints/blob/v4/master/waypoints/src/main/resources/config.yml)
 
 Also, you can change every piece of text to other languages or just change the colors.
-[English Translation File](https://github.com/Sytm/waypoints/blob/v3/master/waypoints/src/main/resources/lang/en.yml)
+[English Translation File](https://github.com/Sytm/waypoints/blob/v4/master/waypoints/src/main/resources/lang/en.yml)
 
 ## Additional notes
 
@@ -157,10 +157,8 @@ This plugin is licensed under the MIT license. For more information on it, you c
 ### Supported Minecraft versions
 
 Because I don't have the time or motivation to support a lot of versions, and it is generally advised to update to the latest Minecraft/Spigot versions only the
-last 3 major updates with the latest builds are supported.
-
-At the time of writing this would be 1.19.3, 1.18.2 and 1.17.1, but not 1.18, 1.16.4 or 1.15.2.
+latest Minecraft version is supported
 <!-- modrinth_exclude.end -->
 ### Java version
 
-Java 16 is the minimum required version.
+Java 17 is the minimum required version.
