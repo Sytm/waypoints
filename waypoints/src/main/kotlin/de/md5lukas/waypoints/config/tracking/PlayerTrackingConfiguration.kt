@@ -1,7 +1,8 @@
 package de.md5lukas.waypoints.config.tracking
 
-import org.bukkit.configuration.ConfigurationSection
+import de.md5lukas.konfig.Configurable
 
+@Configurable
 class PlayerTrackingConfiguration {
 
     var enabled = false
@@ -15,11 +16,4 @@ class PlayerTrackingConfiguration {
 
     var notification = false
         private set
-
-    fun loadFromConfiguration(cfg: ConfigurationSection) {
-        enabled = cfg.getBoolean("enabled")
-        toggleable = cfg.getBoolean("toggleable")
-        trackingRequiresTrackable = cfg.getBoolean("trackingRequiresTrackable")
-        notification = cfg.getBoolean("notification")
-    }
 }
