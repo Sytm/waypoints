@@ -1,24 +1,31 @@
 package de.md5lukas.waypoints.config.inventory
 
+import de.md5lukas.konfig.Configurable
+import de.md5lukas.konfig.ExportConfigurationSection
+import de.md5lukas.konfig.SkipConfig
 import de.md5lukas.waypoints.util.getStringNotNull
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 
+@Configurable
 class InventoryConfiguration {
 
-    private lateinit var rootConfig: ConfigurationSection
+    @SkipConfig
+    private var _rootConfig: ConfigurationSection? = null
+
+    @ExportConfigurationSection(true)
+    private var rootConfig: ConfigurationSection
+        set(value) {
+            _rootConfig = value
+            materialCache.clear()
+        }
+        get() = _rootConfig!!
+
 
     private val materialCache = HashMap<String, Material>()
 
     var disableFolderSizes: Boolean = false
         private set
-
-    fun loadFromConfiguration(cfg: ConfigurationSection) {
-        rootConfig = cfg.root!!
-        materialCache.clear()
-
-        disableFolderSizes = cfg.getBoolean("disableFolderSizes")
-    }
 
     fun getMaterial(path: String): Material {
         val cached = materialCache[path]

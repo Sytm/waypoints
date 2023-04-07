@@ -1,7 +1,8 @@
 package de.md5lukas.waypoints.config.general
 
-import org.bukkit.configuration.ConfigurationSection
+import de.md5lukas.konfig.Configurable
 
+@Configurable
 class UUIDCacheConfiguration {
 
     var maxSize: Long = 0
@@ -9,9 +10,4 @@ class UUIDCacheConfiguration {
 
     var expireAfter: Long = 0
         private set
-
-    fun loadFromConfiguration(cfg: ConfigurationSection) {
-        maxSize = cfg.getLong("maxSize")
-        expireAfter = cfg.getLong("expireAfter")
-    }
 }
