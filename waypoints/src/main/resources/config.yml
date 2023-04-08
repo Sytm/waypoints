@@ -27,6 +27,15 @@ general:
     # Set to "false" to disable death waypoints
     deathWaypoints: true
 
+  # Specify additional aliases for the two commands Waypoints uses in case other plugins overwrite them
+  commands:
+    waypoints:
+      aliases:
+        - wp
+    waypointsscript:
+      aliases:
+        - wps
+
   # Automatically select the last death waypoint upon death
   pointToDeathWaypointOnDeath:
     enabled: true

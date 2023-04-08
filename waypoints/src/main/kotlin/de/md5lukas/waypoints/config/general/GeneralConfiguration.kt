@@ -13,9 +13,11 @@ class GeneralConfiguration {
     var worldNotFound: WorldNotFoundAction = WorldNotFoundAction.SHOW
         private set
 
-        val uuidCache = UUIDCacheConfiguration()
+    val uuidCache = UUIDCacheConfiguration()
 
     val features = FeaturesConfiguration()
+
+    val commands = CommandsConfiguration()
 
     val waypoints = LimitConfiguration()
 
@@ -41,6 +43,8 @@ class GeneralConfiguration {
         uuidCache.loadFromConfiguration(cfg.getConfigurationSectionNotNull("uuidCache"))
 
         features.loadFromConfiguration(cfg.getConfigurationSectionNotNull("features"))
+
+        commands.loadFromConfiguration(cfg.getConfigurationSectionNotNull("commands"))
 
         waypoints.loadFromConfiguration(cfg.getConfigurationSectionNotNull("waypoints"))
 
