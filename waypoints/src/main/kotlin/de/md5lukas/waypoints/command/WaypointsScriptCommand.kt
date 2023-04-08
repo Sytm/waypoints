@@ -24,7 +24,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
 
         commandTree("waypointsscript") {
             withPermission(WaypointsPermissions.COMMAND_SCRIPTING)
-            withAliases("wps")
+            withAliases(*plugin.waypointsConfig.general.commands.waypointsScriptAliases.toTypedArray())
             anyExecutor { sender, _ ->
                 translations.COMMAND_SCRIPT_HELP_HEADER.send(sender)
                 translations.COMMAND_SCRIPT_HELP_DESELECT_WAYPOINT.send(sender, labelMap)
