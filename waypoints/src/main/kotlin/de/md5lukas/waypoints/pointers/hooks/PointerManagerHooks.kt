@@ -9,7 +9,6 @@ import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.util.placeholder
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Player
@@ -57,7 +56,7 @@ class PointerManagerHooks(private val plugin: WaypointsPlugin) : Hooks {
                 is TemporaryWaypointTrackable -> plugin.translations.POINTERS_HOLOGRAM_TEMPORARY
                 is PlayerTrackable -> plugin.translations.POINTERS_HOLOGRAM_PLAYER_TRACKING
                 else -> null
-            }?.withReplacements(*trackable.getReplacements(player)) ?: trackable.hologramText?.let { LegacyComponentSerializer.legacySection().deserialize(it) }
+            }?.withReplacements(*trackable.getReplacements(player)) ?: trackable.hologramText
 
         private fun Trackable.getReplacements(player: Player): Array<TagResolver> {
             val resolvers = mutableListOf(

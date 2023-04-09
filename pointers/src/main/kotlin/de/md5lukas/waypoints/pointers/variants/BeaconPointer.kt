@@ -2,9 +2,9 @@ package de.md5lukas.waypoints.pointers.variants
 
 import de.md5lukas.waypoints.pointers.*
 import de.md5lukas.waypoints.pointers.config.BeaconConfiguration
-import de.md5lukas.waypoints.util.blockEquals
-import de.md5lukas.waypoints.util.highestBlock
-import de.md5lukas.waypoints.util.sendActualBlock
+import de.md5lukas.waypoints.pointers.util.blockEquals
+import de.md5lukas.waypoints.pointers.util.highestBlock
+import de.md5lukas.waypoints.pointers.util.sendActualBlock
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player

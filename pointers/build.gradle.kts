@@ -18,8 +18,8 @@ dependencies {
     api("io.papermc.paper:paper-api:$paperVersion")
     api(kotlin("stdlib-jdk8"))
 
-    implementation("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")
-    implementation(project(":utils"))
+    // Even implementation() leaks this optional dependency down to api-sqlite shadowJar task
+    compileOnly("com.comphenix.protocol:ProtocolLib:$protocolLibVersion")
 }
 
 kotlin {

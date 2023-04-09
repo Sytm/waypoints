@@ -4,7 +4,7 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.ActionBarConfiguration
-import de.md5lukas.waypoints.util.getAngleToTarget
+import de.md5lukas.waypoints.pointers.util.getAngleToTarget
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Location
 import org.bukkit.entity.Player

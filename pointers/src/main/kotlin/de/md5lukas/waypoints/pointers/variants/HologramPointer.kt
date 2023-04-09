@@ -6,7 +6,7 @@ import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.HologramConfiguration
 import de.md5lukas.waypoints.pointers.packets.Hologram
 import de.md5lukas.waypoints.pointers.packets.SmoothFloatingItem
-import de.md5lukas.waypoints.util.minus
+import de.md5lukas.waypoints.pointers.util.minus
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.entity.Player

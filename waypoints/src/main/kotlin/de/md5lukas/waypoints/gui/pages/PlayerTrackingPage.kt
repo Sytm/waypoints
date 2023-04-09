@@ -7,6 +7,7 @@ import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.TrackableToggleItem
+import de.md5lukas.waypoints.pointers.PlayerTrackable
 import de.md5lukas.waypoints.util.format
 import de.md5lukas.waypoints.util.placeholder
 import org.bukkit.entity.Player
@@ -62,9 +63,7 @@ class PlayerTrackingPage(
                 wpGUI.translations.MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE.send(wpGUI.viewer)
             } else {
                 wpGUI.viewer.closeInventory()
-                wpGUI.plugin.pointerManager.let {
-                    it.enable(wpGUI.viewer, it.trackableOf(player))
-                }
+                wpGUI.plugin.pointerManager.enable(wpGUI.viewer, PlayerTrackable(player))
                 if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
                     wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(player, "name" placeholder wpGUI.viewer.displayName())
                 }

@@ -14,9 +14,7 @@ dependencies {
     api("io.papermc.paper:paper-api:$paperVersion")
 
     api(kotlin("stdlib-jdk8"))
-    api(project(":pointers")) {
-        isTransitive = false
-    }
+    api(project(":pointers"))
 }
 
 kotlin {

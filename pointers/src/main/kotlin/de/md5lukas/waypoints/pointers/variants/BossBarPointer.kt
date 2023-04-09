@@ -4,9 +4,8 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.BossBarConfiguration
-import de.md5lukas.waypoints.util.getAngleToTarget
-import de.md5lukas.waypoints.util.loopingSubstring
-import de.md5lukas.waypoints.util.normalizeAngleTo360
+import de.md5lukas.waypoints.pointers.util.getAngleToTarget
+import de.md5lukas.waypoints.pointers.util.normalizeAngleTo360
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
@@ -89,4 +88,12 @@ internal class BossBarPointer(
     }
 
     private class BarData(val bossBar: BossBar, var counter: Int, var currentTitle: String)
+
+    private fun String.loopingSubstring(size: Int, offset: Int): String {
+        val modOffset = Math.floorMod(offset, length)
+
+        val overhang = kotlin.math.max(0, (size + modOffset) - length)
+
+        return substring(modOffset, kotlin.math.min(length, modOffset + size)) + substring(0, overhang)
+    }
 }
