@@ -2,7 +2,7 @@ package de.md5lukas.waypoints.command
 
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.BeaconColor
+import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.util.isLocationOutOfBounds
 import de.md5lukas.waypoints.util.placeholder
 import de.md5lukas.waypoints.util.searchWaypoints
@@ -37,7 +37,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                     anyExecutor { _, args ->
                         val player = args[0] as Player
 
-                        plugin.api.pointerManager.disable(player)
+                        plugin.pointerManager.disable(player)
                     }
                 }
             }
@@ -55,7 +55,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                                 return@anyExecutor
                             }
 
-                            plugin.api.pointerManager.enable(player, waypoint)
+                            plugin.pointerManager.enable(player, waypoint)
                         }
                     }
                 }
@@ -67,10 +67,10 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                             val player = args[0] as Player
                             val target = args[1] as Location
 
-                            if (isLocationOutOfBounds(plugin, target)) {
+                            if (isLocationOutOfBounds(target)) {
                                 translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
                             } else {
-                                plugin.api.pointerManager.let {
+                                plugin.pointerManager.let {
                                     it.enable(player, it.temporaryWaypointTrackableOf(target))
                                 }
                             }
@@ -90,10 +90,10 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                                     return@anyExecutor
                                 }
 
-                                if (isLocationOutOfBounds(plugin, target)) {
+                                if (isLocationOutOfBounds(target)) {
                                     translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
                                 } else {
-                                    plugin.api.pointerManager.let {
+                                    plugin.pointerManager.let {
                                         it.enable(player, it.temporaryWaypointTrackableOf(target, beaconColor))
                                     }
                                 }

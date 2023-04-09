@@ -85,30 +85,31 @@ internal class WaypointsPlayerImpl private constructor(
     }
 
     override val deathFolder: Folder = DeathFolderImpl(dm, id)
-
-    override fun setCompassTarget(location: Location) {
-        dm.connection.update(
-            "INSERT INTO compass_storage(playerId, world, x, y, z) VALUES (?, ?, ?, ?, ?) ON CONFLICT(playerId) DO UPDATE SET world = ?, x = ?, y = ?, z = ?;",
-            id.toString(),
-            location.world!!.name,
-            location.x,
-            location.y,
-            location.z,
-            location.world!!.name,
-            location.x,
-            location.y,
-            location.z,
-        )
-    }
-
-    override fun getCompassTarget(): Location? = dm.connection.selectFirst("SELECT * FROM compass_storage WHERE playerId = ?;", id.toString()) {
-        Location(
-            dm.plugin.server.getWorld(getString("world"))!!,
-            getDouble("x"),
-            getDouble("y"),
-            getDouble("z"),
-        )
-    }
+    override var compassTarget: Location?
+        get() = dm.connection.selectFirst("SELECT * FROM compass_storage WHERE playerId = ?;", id.toString()) {
+            Location(
+                dm.plugin.server.getWorld(getString("world"))!!,
+                getDouble("x"),
+                getDouble("y"),
+                getDouble("z"),
+            )
+        }
+        set(value) {
+            value?.let { location ->
+                dm.connection.update(
+                    "INSERT INTO compass_storage(playerId, world, x, y, z) VALUES (?, ?, ?, ?, ?) ON CONFLICT(playerId) DO UPDATE SET world = ?, x = ?, y = ?, z = ?;",
+                    id.toString(),
+                    location.world!!.name,
+                    location.x,
+                    location.y,
+                    location.z,
+                    location.world!!.name,
+                    location.x,
+                    location.y,
+                    location.z,
+                )
+            }
+        }
 
     private var lastSelectedWaypointID = lastSelectedWaypoint
         set(value) {

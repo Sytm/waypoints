@@ -10,6 +10,7 @@ import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.events.ConfigReloadEvent
+import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
 import de.md5lukas.waypoints.gui.APIExtensions
 import de.md5lukas.waypoints.integrations.BlueMapIntegration
@@ -19,7 +20,8 @@ import de.md5lukas.waypoints.integrations.VaultIntegration
 import de.md5lukas.waypoints.lang.TranslationLoader
 import de.md5lukas.waypoints.lang.Translations
 import de.md5lukas.waypoints.lang.WorldTranslations
-import de.md5lukas.waypoints.pointer.PointerManagerImpl
+import de.md5lukas.waypoints.pointers.PointerManager
+import de.md5lukas.waypoints.pointers.hooks.PointerManagerHooks
 import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.callEvent
@@ -49,6 +51,7 @@ class WaypointsPlugin : JavaPlugin() {
     val apiExtensions: APIExtensions by lazy {
         APIExtensions(this)
     }
+    lateinit var pointerManager: PointerManager
 
     private lateinit var translationLoader: TranslationLoader
     lateinit var translations: Translations
@@ -114,15 +117,18 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun initDatabase() {
-        databaseManager = SQLiteManager(this, waypointsConfig.database, File(dataFolder, "waypoints.db"), PointerManagerImpl(this))
+        databaseManager = SQLiteManager(this, waypointsConfig.database, File(dataFolder, "waypoints.db"))
 
         databaseManager.initDatabase()
 
         api = databaseManager.api
+
+        pointerManager = PointerManager(this, PointerManagerHooks(this), waypointsConfig.pointers)
     }
 
     private fun initApiServiceProvider() {
         server.servicesManager.register(WaypointsAPI::class.java, api, this, ServicePriority.Normal)
+        server.servicesManager.register(PointerManager::class.java, pointerManager, this, ServicePriority.Normal)
     }
 
     private fun initTranslations() {
@@ -191,6 +197,7 @@ class WaypointsPlugin : JavaPlugin() {
 
     private fun registerEvents() {
         registerEvents(WaypointsListener(this))
+        registerEvents(PointerEvents(this))
     }
 
     private fun startMetrics() {
@@ -228,22 +235,22 @@ class WaypointsPlugin : JavaPlugin() {
             (server.pluginManager.getPlugin("ProtocolLib") !== null).toString()
         })
         metrics.addCustomChart(SimplePie("actionbar_pointer_enabled") {
-            waypointsConfig.pointer.actionBar.enabled.toString()
+            waypointsConfig.pointers.actionBar.enabled.toString()
         })
         metrics.addCustomChart(SimplePie("bossbar_pointer_enabled") {
-            waypointsConfig.pointer.bossBar.enabled.toString()
+            waypointsConfig.pointers.bossBar.enabled.toString()
         })
         metrics.addCustomChart(SimplePie("beacon_pointer_enabled") {
-            waypointsConfig.pointer.beacon.enabled.toString()
+            waypointsConfig.pointers.beacon.enabled.toString()
         })
         metrics.addCustomChart(SimplePie("blinking_block_pointer_enabled") {
-            waypointsConfig.pointer.blinkingBlock.enabled.toString()
+            waypointsConfig.pointers.blinkingBlock.enabled.toString()
         })
         metrics.addCustomChart(SimplePie("compass_pointer_enabled") {
-            waypointsConfig.pointer.compass.enabled.toString()
+            waypointsConfig.pointers.compass.enabled.toString()
         })
         metrics.addCustomChart(SimplePie("particle_pointer_enabled") {
-            waypointsConfig.pointer.particle.enabled.toString()
+            waypointsConfig.pointers.particle.enabled.toString()
         })
     }
 

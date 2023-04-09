@@ -112,7 +112,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
             },
             'd' to if (isOverview) {
                 GUIItem(wpGUI.translations.OVERVIEW_DESELECT.item) {
-                    wpGUI.plugin.api.pointerManager.disable(wpGUI.viewer)
+                    wpGUI.plugin.pointerManager.disable(wpGUI.viewer)
                 }
             } else {
                 background
@@ -190,7 +190,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                                 if (location === null) {
                                     wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(wpGUI.viewer)
                                     AnvilGUI.ResponseAction.replaceInputText(coordinates)
-                                } else if (isLocationOutOfBounds(wpGUI.plugin, location)) {
+                                } else if (isLocationOutOfBounds(location)) {
                                     wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(wpGUI.viewer)
                                     AnvilGUI.ResponseAction.replaceInputText(coordinates)
                                 } else {

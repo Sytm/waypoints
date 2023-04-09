@@ -38,7 +38,6 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":utils"))
-    implementation(project(":packets"))
     implementation(project(":waypoints-api"))
     implementation(project(":api-base"))
     implementation(project(":api-sqlite", "shadow"))
@@ -114,13 +113,14 @@ tasks.withType<ShadowJar> {
         exclude(dependency("net.wesjd:anvilgui"))
 
         exclude(project(":waypoints-api"))
+        exclude(project(":utils"))
     }
 
     exclude("META-INF/")
 
     dependencies {
         include(project(":utils"))
-        include(project(":packets"))
+        include(project(":pointers"))
         include(project(":waypoints-api"))
         include(project(":api-base"))
         include(project(":api-sqlite"))

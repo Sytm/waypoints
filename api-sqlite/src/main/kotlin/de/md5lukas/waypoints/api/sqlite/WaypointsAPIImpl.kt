@@ -7,7 +7,6 @@ import java.util.*
 
 internal class WaypointsAPIImpl(
     private val dm: SQLiteManager,
-    override val pointerManager: PointerManager
 ) : WaypointsAPI {
 
     override fun getWaypointPlayer(uuid: UUID): WaypointsPlayer = dm.instanceCache.playerData.get(uuid) {

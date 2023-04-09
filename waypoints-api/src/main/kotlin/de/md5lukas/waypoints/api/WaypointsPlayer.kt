@@ -85,21 +85,13 @@ interface WaypointsPlayer : WaypointHolder {
      * It is set to `null` if the player either reaches the waypoint or deselects it manually.
      * Only if the player disconnects it will be saved.
      *
-     * @see [PointerManager]
+     * @see [de.md5lukas.waypoints.pointers.PointerManager]
      */
     var lastSelectedWaypoint: Waypoint?
 
     /**
-     * Sets the compass target the player currently has before it got overwritten by the compass pointer
+     * The compass target the player currently has before it got overwritten by the compass pointer
      *
-     * @param location The location of the compass target to save
      */
-    fun setCompassTarget(location: Location)
-
-    /**
-     * Gets the compass target the player had before it got overwritten by the compass pointer.
-     *
-     * @return The location that got saved or null
-     */
-    fun getCompassTarget(): Location?
+    var compassTarget: Location?
 }

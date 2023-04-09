@@ -4,9 +4,9 @@ import de.md5lukas.commons.collections.LoopAroundList
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
-import de.md5lukas.waypoints.api.BeaconColor
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
+import de.md5lukas.waypoints.pointers.BeaconColor
 import org.bukkit.inventory.ItemStack
 
 class SelectBeaconColorPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePage(wpGUI, wpGUI.extendApi { waypoint.type.getBackgroundItem() }) {

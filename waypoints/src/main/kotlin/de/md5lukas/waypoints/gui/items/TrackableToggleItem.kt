@@ -2,7 +2,7 @@ package de.md5lukas.waypoints.gui.items
 
 import de.md5lukas.kinvs.items.GUICycleItem
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import de.md5lukas.waypoints.pointer.PlayerTrackable
+import de.md5lukas.waypoints.pointers.PlayerTrackable
 
 class TrackableToggleItem(wpGUI: WaypointsGUI) : GUICycleItem<Boolean>(
     listOf(
@@ -11,7 +11,7 @@ class TrackableToggleItem(wpGUI: WaypointsGUI) : GUICycleItem<Boolean>(
     ), {
         wpGUI.viewerData.canBeTracked = it
         if (!it) {
-            val pm = wpGUI.plugin.api.pointerManager
+            val pm = wpGUI.plugin.pointerManager
             pm.disableAll(wpGUI.viewer.uniqueId)
             if (wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable && pm.getCurrentTarget(wpGUI.viewer) is PlayerTrackable) {
                 pm.disable(wpGUI.viewer)
