@@ -2,12 +2,16 @@ package de.md5lukas.waypoints.api.sqlite
 
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.api.*
+import de.md5lukas.waypoints.api.Folder
+import de.md5lukas.waypoints.api.Type
+import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.WaypointMeta
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
+import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.util.callEvent
 import org.bukkit.Location
 import org.bukkit.Material

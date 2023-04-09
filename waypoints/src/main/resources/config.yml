@@ -42,11 +42,6 @@ general:
     # Overwrites the current selected waypoint with the death waypoint
     overwriteCurrent: false
 
-  # Connected worlds in this list allow the translation of the coordinates 1:8, so you can for example navigate in the nether to a waypoint in the overworld
-  connectedWorlds:
-    - overworld: world
-      nether: world_the_nether
-
   # Specify in which worlds waypoints can be created
   # Players with the permission waypoints.modify.anywhere can place waypoints wherever they want.
   # Automatic waypoint-creation in disabled worlds will not occur
@@ -196,6 +191,10 @@ playerTracking:
 pointers:
   # Automatically deselects the waypoint when the player gets into the defined radius. Set to zero to disable
   disableWhenReachedRadius: 5
+
+  # Connected worlds in this list allow the translation of the coordinates 1:8, so you can for example navigate in the nether to a waypoint in the overworld
+  connectedWorlds:
+    world: world_the_nether
 
   actionBar:
     enabled: false

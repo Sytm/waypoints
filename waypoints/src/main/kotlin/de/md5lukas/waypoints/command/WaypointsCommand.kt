@@ -77,7 +77,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                         if (waypoint == null) {
                             translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
                         } else {
-                            plugin.api.pointerManager.enable(player, waypoint)
+                            plugin.pointerManager.enable(player, waypoint)
                             translations.COMMAND_SELECT_SELECTED.send(player, Placeholder.unparsed("name", waypoint.name))
                         }
                     }
@@ -88,7 +88,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
             }
             literalArgument("deselect") {
                 playerExecutor { player, _ ->
-                    plugin.api.pointerManager.disable(player)
+                    plugin.pointerManager.disable(player)
                     translations.COMMAND_DESELECT_DONE.send(player)
                 }
                 anyExecutor { sender, _ ->
@@ -169,10 +169,10 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     playerExecutor { player, args ->
                         val location = args[0] as Location
 
-                        if (isLocationOutOfBounds(plugin, location)) {
+                        if (isLocationOutOfBounds(location)) {
                             translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
                         } else {
-                            plugin.api.pointerManager.let {
+                            plugin.pointerManager.let {
                                 it.enable(player, it.temporaryWaypointTrackableOf(location))
                             }
                         }

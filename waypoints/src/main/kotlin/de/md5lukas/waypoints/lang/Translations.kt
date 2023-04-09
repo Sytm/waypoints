@@ -1,7 +1,7 @@
 package de.md5lukas.waypoints.lang
 
-import de.md5lukas.waypoints.api.BeaconColor
 import de.md5lukas.waypoints.api.OverviewSort
+import de.md5lukas.waypoints.pointers.BeaconColor
 import org.bukkit.Material
 
 @Suppress("PropertyName")

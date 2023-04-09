@@ -5,11 +5,9 @@ import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.util.checkWorldAvailability
 import de.md5lukas.waypoints.util.runTask
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerRespawnEvent
 
 class WaypointsListener(
     private val plugin: WaypointsPlugin
@@ -33,19 +31,6 @@ class WaypointsListener(
             plugin.runTask {
                 // Run in next tick to hopefully fix https://github.com/Sytm/waypoints/issues/86
                 WaypointsGUI(plugin, e.player, e.player.uniqueId)
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    private fun onPlayerRespawn(e: PlayerRespawnEvent) {
-        if (plugin.waypointsConfig.general.features.deathWaypoints && plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.enabled
-            && checkWorldAvailability(plugin, e.respawnLocation.world!!)
-        ) {
-            plugin.api.getWaypointPlayer(e.player.uniqueId).deathFolder.waypoints.maxByOrNull { it.createdAt }?.let {
-                if (plugin.api.pointerManager.getCurrentTarget(e.player) === null || plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.overwriteCurrent) {
-                    plugin.api.pointerManager.enable(e.player, it)
-                }
             }
         }
     }

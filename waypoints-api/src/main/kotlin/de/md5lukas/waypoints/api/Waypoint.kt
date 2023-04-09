@@ -1,6 +1,8 @@
 package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
+import de.md5lukas.waypoints.pointers.BeaconColor
+import de.md5lukas.waypoints.pointers.StaticTrackable
 import org.bukkit.Location
 import org.bukkit.Material
 import java.util.*

@@ -59,9 +59,4 @@ interface WaypointsAPI {
      * Get access to some interesting statistics of total waypoints and folders.
      */
     val statistics: Statistics
-
-    /**
-     * Get access to the pointer manager with which you can show direction indicators to players.
-     */
-    val pointerManager: PointerManager
 }

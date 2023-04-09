@@ -17,7 +17,6 @@ class SQLiteManager(
     plugin: Plugin,
     databaseConfiguration: DatabaseConfiguration,
     val file: File?,
-    pointerManager: PointerManager,
     disableInstanceCache: Boolean = false,
 ) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache) {
 
@@ -30,7 +29,7 @@ class SQLiteManager(
     }
 
     override val api: WaypointsAPI by lazy {
-        WaypointsAPIImpl(this, pointerManager)
+        WaypointsAPIImpl(this)
     }
 
     override val connection: Connection
