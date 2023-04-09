@@ -2,9 +2,6 @@ package de.md5lukas.waypoints.pointers
 
 import de.md5lukas.waypoints.pointers.config.PointerConfiguration
 import de.md5lukas.waypoints.pointers.variants.*
-import de.md5lukas.waypoints.util.callEvent
-import de.md5lukas.waypoints.util.registerEvents
-import de.md5lukas.waypoints.util.runTask
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
@@ -27,7 +24,7 @@ class PointerManager(
 ) : Listener {
 
     init {
-        plugin.registerEvents(this)
+        plugin.server.pluginManager.registerEvents(this, plugin)
     }
 
     private val availablePointers: List<(PointerConfiguration) -> Pointer?> = listOf(
@@ -157,18 +154,11 @@ class PointerManager(
         }
     }
 
-    fun trackableOf(player: Player) = PlayerTrackable(player)
-
-    fun trackableOf(location: Location): StaticTrackable = BasicStaticTrackable(location)
-
-    fun temporaryWaypointTrackableOf(location: Location, beaconColor: BeaconColor? = null): StaticTrackable =
-        TemporaryWaypointTrackable(location, beaconColor)
-
     fun getCurrentTarget(player: Player): Trackable? = activePointers[player]?.trackable
 
     private fun show(player: Player, pointer: ActivePointer) {
         val trackable = pointer.trackable
-        plugin.callEvent(TrackableSelectEvent(player, trackable))
+        plugin.server.pluginManager.callEvent(TrackableSelectEvent(player, trackable))
         enabledPointers.forEach {
             it.show(player, pointer.trackable, pointer.translatedTarget)
         }
@@ -176,7 +166,7 @@ class PointerManager(
 
     private fun hide(player: Player, pointer: ActivePointer) {
         val trackable = pointer.trackable
-        plugin.callEvent(TrackableDeselectEvent(player, trackable))
+        plugin.server.pluginManager.callEvent(TrackableDeselectEvent(player, trackable))
         enabledPointers.forEach {
             it.hide(player, pointer.trackable, pointer.translatedTarget)
         }
@@ -184,11 +174,14 @@ class PointerManager(
 
     @EventHandler
     private fun onPlayerJoin(e: PlayerJoinEvent) {
-        plugin.runTask { // Run this in the next tick, because otherwise the compass pointer errors because the player doesn't have a current compass target yet
-            hooks.loadActiveTrackable(e.player)?.let {
-                enable(e.player, it)
+        plugin.server.scheduler.runTask(
+            plugin,
+            Runnable { // Run this in the next tick, because otherwise the compass pointer errors because the player doesn't have a current compass target yet
+                hooks.loadActiveTrackable(e.player)?.let {
+                    enable(e.player, it)
+                }
             }
-        }
+        )
     }
 
     @EventHandler

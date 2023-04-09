@@ -13,6 +13,7 @@ import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.util.callEvent
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
 import java.sql.ResultSet
@@ -160,7 +161,7 @@ class WaypointImpl private constructor(
 
     override val guiType: GUIType = GUIType.WAYPOINT
 
-    override val hologramText: String? = null
+    override val hologramText: Component? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

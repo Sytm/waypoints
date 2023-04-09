@@ -4,7 +4,6 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.CompassConfiguration
-import de.md5lukas.waypoints.util.runTaskAsync
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
@@ -18,9 +17,9 @@ internal class CompassPointer(
 
     override fun show(player: Player, trackable: Trackable, translatedTarget: Location?) {
         val currentCompassTarget = player.compassTarget
-        pointerManager.plugin.runTaskAsync {
+        pointerManager.plugin.server.scheduler.runTaskAsynchronously(pointerManager.plugin, Runnable {
             pointerManager.hooks.saveCompassTarget(player, currentCompassTarget)
-        }
+        })
         update(player, trackable, translatedTarget)
     }
 
@@ -39,11 +38,11 @@ internal class CompassPointer(
     }
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        pointerManager.plugin.runTaskAsync {
+        pointerManager.plugin.server.scheduler.runTaskAsynchronously(pointerManager.plugin, Runnable {
             pointerManager.hooks.loadCompassTarget(player)?.let {
                 player.compassTarget = it
             }
-        }
+        })
         if (config.netherSupport && (translatedTarget ?: trackable.location).world?.environment === World.Environment.NETHER) {
             player.inventory.filter { it?.type === Material.COMPASS }.forEach {
                 val meta = it.itemMeta as CompassMeta

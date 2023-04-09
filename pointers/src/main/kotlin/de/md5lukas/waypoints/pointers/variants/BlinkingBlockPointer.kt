@@ -5,7 +5,7 @@ import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.StaticTrackable
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.BlinkingBlockConfiguration
-import de.md5lukas.waypoints.util.sendActualBlock
+import de.md5lukas.waypoints.pointers.util.sendActualBlock
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*

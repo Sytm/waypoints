@@ -3,6 +3,7 @@ package de.md5lukas.waypoints.command
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.pointers.BeaconColor
+import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.util.isLocationOutOfBounds
 import de.md5lukas.waypoints.util.placeholder
 import de.md5lukas.waypoints.util.searchWaypoints
@@ -70,9 +71,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                             if (isLocationOutOfBounds(target)) {
                                 translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
                             } else {
-                                plugin.pointerManager.let {
-                                    it.enable(player, it.temporaryWaypointTrackableOf(target))
-                                }
+                                plugin.pointerManager.enable(player, TemporaryWaypointTrackable(target))
                             }
                         }
                         argument(
@@ -93,9 +92,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                                 if (isLocationOutOfBounds(target)) {
                                     translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
                                 } else {
-                                    plugin.pointerManager.let {
-                                        it.enable(player, it.temporaryWaypointTrackableOf(target, beaconColor))
-                                    }
+                                    plugin.pointerManager.enable(player, TemporaryWaypointTrackable(target, beaconColor))
                                 }
                             }
                         }

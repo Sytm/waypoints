@@ -2,13 +2,11 @@ package de.md5lukas.waypoints.util
 
 import com.google.common.math.DoubleMath
 import org.bukkit.Location
-import org.bukkit.block.Block
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
-import org.bukkit.util.Vector
 import kotlin.math.roundToInt
 
 inline fun Plugin.runTask(crossinline block: () -> Unit) {
@@ -43,29 +41,6 @@ private fun ConfigurationSection.getFullPath(path: String): String =
     } else {
         "$currentPath.$path"
     }
-
-operator fun Vector.div(d: Int) = Vector(
-    this.x / d,
-    this.y / d,
-    this.z / d,
-)
-
-operator fun Vector.div(d: Double) = Vector(
-    this.x / d,
-    this.y / d,
-    this.z / d,
-)
-
-
-operator fun Vector.minus(other: Vector) = subtract(other)
-
-fun Location.blockEquals(other: Location): Boolean =
-    this.world == other.world && this.blockX == other.blockX && this.blockY == other.blockY && this.blockZ == other.blockZ
-
-val Location.highestBlock: Block
-    get() = world!!.getHighestBlockAt(this)
-
-fun Player.sendActualBlock(location: Location) = this.sendBlockChange(location, location.block.blockData)
 
 fun Player.teleportKeepOrientation(location: Location) {
     val target = location.clone()

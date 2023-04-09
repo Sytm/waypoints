@@ -4,7 +4,7 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.ParticleConfiguration
-import de.md5lukas.waypoints.util.div
+import de.md5lukas.waypoints.pointers.util.div
 import org.bukkit.Location
 import org.bukkit.entity.Player
 

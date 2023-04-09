@@ -1,9 +1,9 @@
-package de.md5lukas.waypoints.util
+package de.md5lukas.waypoints.pointers.util
 
 import org.bukkit.Location
 import kotlin.math.atan2
 
-fun normalizeAngleTo360(angle: Float): Float {
+internal fun normalizeAngleTo360(angle: Float): Float {
     var normalizedAngle = angle
 
     while (normalizedAngle < 0)
@@ -15,5 +15,5 @@ fun normalizeAngleTo360(angle: Float): Float {
     return normalizedAngle
 }
 
-fun getAngleToTarget(origin: Location, target: Location): Float =
+internal fun getAngleToTarget(origin: Location, target: Location): Float =
     Math.toDegrees(atan2(origin.z - target.z, origin.x - target.x)).toFloat()
