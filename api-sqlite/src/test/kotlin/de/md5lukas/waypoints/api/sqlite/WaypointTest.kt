@@ -5,6 +5,7 @@ import be.seeseemelk.mockbukkit.ServerMock
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
+import de.md5lukas.waypoints.pointers.BeaconColor
 import org.bukkit.Material
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertAll
@@ -19,7 +20,7 @@ class WaypointTest {
     @BeforeTest
     fun createAPI() {
         server = MockBukkit.mock()
-        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, DummyPointerManager, true)
+        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true)
         manager.initDatabase()
         api = manager.api
     }

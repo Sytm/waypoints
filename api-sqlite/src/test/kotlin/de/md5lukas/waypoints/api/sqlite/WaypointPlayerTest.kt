@@ -24,7 +24,7 @@ class WaypointPlayerTest {
     @BeforeTest
     fun createAPI() {
         server = MockBukkit.mock()
-        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, DummyPointerManager, true)
+        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true)
         manager.initDatabase()
         api = manager.api
     }
@@ -64,7 +64,7 @@ class WaypointPlayerTest {
     fun newPlayerHasNoCompassTarget() {
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
-        assertNull(player.getCompassTarget())
+        assertNull(player.compassTarget)
     }
 
     @Test
@@ -73,9 +73,9 @@ class WaypointPlayerTest {
 
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
-        player.setCompassTarget(location)
+        player.compassTarget = location
 
-        assertEquals(location, player.getCompassTarget())
+        assertEquals(location, player.compassTarget)
     }
 
     @Test
@@ -85,10 +85,10 @@ class WaypointPlayerTest {
 
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
-        player.setCompassTarget(location)
-        player.setCompassTarget(location2)
+        player.compassTarget = location
+        player.compassTarget = location2
 
-        assertEquals(location2, player.getCompassTarget())
+        assertEquals(location2, player.compassTarget)
     }
 
     @ParameterizedTest
