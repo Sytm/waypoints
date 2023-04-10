@@ -278,8 +278,8 @@ pointers:
     # The interval in game ticks when the compass target should be updated. Only relevant when tracking players
     interval: 20
 
-    # Allows the compass to function in the nether, but interferes with lodestone compass functionality
-    netherSupport: true
+    # Allows the compass to function in the nether, but interferes with lodestone compass functionality and may produce glitched compasses
+    netherSupport: false
 
   particle:
     enabled: false

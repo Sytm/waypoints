@@ -3,11 +3,13 @@ package de.md5lukas.waypoints.events
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
+import de.md5lukas.waypoints.pointers.PlayerTrackable
 import de.md5lukas.waypoints.util.checkWorldAvailability
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 
 class PointerEvents(
@@ -45,7 +47,20 @@ class PointerEvents(
 
     @EventHandler
     private fun onWaypointDelete(e: WaypointPostDeleteEvent) {
-        pointerManager.disableAll(e.waypoint.id)
+        pointerManager.disableAll {
+            if (it is Waypoint) {
+                it.id == e.waypoint.id
+            } else false
+        }
+    }
+
+    @EventHandler
+    private fun onPlayerQuit(e: PlayerQuitEvent) {
+        pointerManager.disableAll {
+            if (it is PlayerTrackable) {
+                it.player == e.player
+            } else false
+        }
     }
 
     @EventHandler
