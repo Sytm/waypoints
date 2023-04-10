@@ -15,8 +15,15 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
-import java.util.*
 
+/**
+ * The PointerManager handles the creation of the selected PointerTypes and manages their tasks
+ *
+ * @constructor Creates a new PointerManager
+ * @property plugin The plugin to register the tasks for
+ * @property hooks The callbacks this library requires to be implemented by the caller
+ * @property configuration The configuration for the pointers
+ */
 class PointerManager(
     internal val plugin: Plugin,
     internal val hooks: Hooks,
@@ -92,7 +99,6 @@ class PointerManager(
 
     private val activePointers: MutableMap<Player, ActivePointer> = HashMap()
 
-
     private fun setupPointers() {
         availablePointers.forEach { supplier ->
             supplier(configuration)?.let { pointer ->
@@ -105,6 +111,11 @@ class PointerManager(
         }
     }
 
+    /**
+     * Safely shuts down all pointers, recreates them based on the new configuration and restarts them
+     *
+     * @param newConfiguration The new configuration to use
+     */
     fun applyNewConfiguration(newConfiguration: PointerConfiguration) {
         enabledPointerTasks.forEach(BukkitTask::cancel)
         enabledPointerTasks.clear()
@@ -124,7 +135,14 @@ class PointerManager(
         }
     }
 
-    fun enable(player: Player, trackable: Trackable) {
+    /**
+     * Enables the pointer for a player towards the provided trackable.
+     *
+     * This will call [Hooks.saveActiveTrackable] to save this new active trackable
+     */
+    fun enable(player: Player, trackable: Trackable) = enable(player, trackable, true)
+
+    private fun enable(player: Player, trackable: Trackable, save: Boolean) {
         if (trackable.location.world === null) {
             throw IllegalStateException("The waypoint to activate the pointers to has no world available")
         }
@@ -134,9 +152,16 @@ class PointerManager(
             hide(player, oldPointer)
         }
         show(player, newPointer)
-        hooks.saveActiveTrackable(player, trackable)
+        if (save) {
+            hooks.saveActiveTrackable(player, trackable)
+        }
     }
 
+    /**
+     * Disables the pointer for the given player.
+     *
+     * This will call [Hooks.saveActiveTrackable]
+     */
     fun disable(player: Player) = disable(player, true)
 
     private fun disable(player: Player, save: Boolean) {
@@ -148,12 +173,20 @@ class PointerManager(
         }
     }
 
-    fun disableAll(id: UUID) {
-        activePointers.filter { it.value.trackable.id == id }.forEach {
+    /**
+     * Disables all pointers where the trackable matches the [predicate].
+     *
+     * This will call [Hooks.saveActiveTrackable] for every player.
+     */
+    fun disableAll(predicate: (Trackable) -> Boolean) {
+        activePointers.filter { predicate(it.value.trackable) }.forEach {
             disable(it.key)
         }
     }
 
+    /**
+     * Gets the current trackable for the player or <code>null</code> if there is none
+     */
     fun getCurrentTarget(player: Player): Trackable? = activePointers[player]?.trackable
 
     private fun show(player: Player, pointer: ActivePointer) {
@@ -178,7 +211,7 @@ class PointerManager(
             plugin,
             Runnable { // Run this in the next tick, because otherwise the compass pointer errors because the player doesn't have a current compass target yet
                 hooks.loadActiveTrackable(e.player)?.let {
-                    enable(e.player, it)
+                    enable(e.player, it, false)
                 }
             }
         )
@@ -222,28 +255,89 @@ class PointerManager(
         setupPointers()
     }
 
+    /**
+     * Hooks that get called by the [PointerManager] and some pointers
+     */
     interface Hooks {
+        /**
+         * Hooks required by the action bar pointer
+         */
         val actionBarHooks: ActionBar
 
+        /**
+         * Hooks required by the hologram pointer
+         */
         val hologramHooks: Hologram
 
+        /**
+         * Save the provided trackable, if possible, to a non-volatile storage.
+         *
+         * @param player The player that had the trackable enabled
+         * @param tracked The new trackable or <code>null</code> if it has been disabled
+         */
         fun saveActiveTrackable(player: Player, tracked: Trackable?)
 
+        /**
+         * Load the last active trackable from non-volatile storage.
+         *
+         * This is called when a player joins the server and on server startup
+         *
+         * @param player The player that had the trackable enabled
+         * @return The last trackable or <code>null</code> if it has been disabled
+         */
         fun loadActiveTrackable(player: Player): Trackable?
 
+        /**
+         * Save the last active compass target of a player to non-volatile storage.
+         *
+         * @param player The player to store the compass location for
+         * @param location The compass location the player previously had set
+         */
         fun saveCompassTarget(player: Player, location: Location)
 
+        /**
+         * Load the last compass target from non-volatile storage.
+         *
+         * @param player The player to load the compass location for
+         * @return The previous compass target or <code>null</code> if there is none
+         */
         fun loadCompassTarget(player: Player): Location?
 
         interface ActionBar {
+            /**
+             * Format a message for the player to show him the distance to his target.
+             * Only called if [de.md5lukas.waypoints.pointers.config.ActionBarConfiguration.showDistanceEnabled] is set to true.
+             *
+             * @param player The player that will see this message
+             * @param distance3D The distance between the player and the target taking every axis into account
+             * @param heightDifference The height difference between the player and the target. Positive if the player is higher up
+             * @return The formatted message
+             */
             fun formatDistanceMessage(player: Player, distance3D: Double, heightDifference: Double): Component
 
+            /**
+             * Format a message for the player to show him if he is in an incorrect world.
+             *
+             * @param player The player that will see this message
+             * @param current The world the player is in at the moment
+             * @param correct The world the player must travel to
+             */
             fun formatWrongWorldMessage(player: Player, current: World, correct: World): Component
         }
 
         interface Hologram {
+            /**
+             * Format the hologram text for the given player
+             *
+             * @param player The player that will see the hologram
+             * @param trackable The trackable that will be called with
+             * @return The formatted hologram text or null if no hologram is available
+             */
             fun formatHologramText(player: Player, trackable: Trackable): Component?
 
+            /**
+             * Get the material for the provided trackable
+             */
             fun getIconMaterial(trackable: Trackable): Material?
         }
     }

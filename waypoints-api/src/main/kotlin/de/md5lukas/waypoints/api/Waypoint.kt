@@ -14,7 +14,7 @@ interface Waypoint : GUIDisplayable, StaticTrackable {
      *
      * @see [WaypointsAPI.getWaypointByID] For getting any waypoint based on this ID
      */
-    override val id: UUID
+    val id: UUID
 
     /**
      * The UUID of the owner of this waypoint if this waypoint is either of type [Type.PRIVATE] or a [Type.DEATH], null otherwise
