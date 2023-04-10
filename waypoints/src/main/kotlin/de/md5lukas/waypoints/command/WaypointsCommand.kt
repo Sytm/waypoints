@@ -4,6 +4,7 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
+import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.*
 import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.arguments.LiteralArgument.of
@@ -78,7 +79,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                         if (waypoint == null) {
                             translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
                         } else {
-                            plugin.pointerManager.enable(player, waypoint)
+                            plugin.pointerManager.enable(player, WaypointTrackable(plugin, waypoint))
                             translations.COMMAND_SELECT_SELECTED.send(player, Placeholder.unparsed("name", waypoint.name))
                         }
                     }
@@ -173,7 +174,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                         if (isLocationOutOfBounds(location)) {
                             translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
                         } else {
-                            plugin.pointerManager.enable(player, TemporaryWaypointTrackable(location))
+                            plugin.pointerManager.enable(player, TemporaryWaypointTrackable(plugin, location))
                         }
                     }
                     anyExecutor { sender, _ ->

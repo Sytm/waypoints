@@ -4,6 +4,7 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.pointers.PlayerTrackable
+import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.checkWorldAvailability
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -26,7 +27,7 @@ class PointerEvents(
         ) {
             plugin.api.getWaypointPlayer(e.player.uniqueId).deathFolder.waypoints.maxByOrNull { it.createdAt }?.let {
                 if (pointerManager.getCurrentTarget(e.player) === null || plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.overwriteCurrent) {
-                    pointerManager.enable(e.player, it)
+                    pointerManager.enable(e.player, WaypointTrackable(plugin, it))
                 }
             }
         }
