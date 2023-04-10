@@ -4,7 +4,6 @@ import de.md5lukas.waypoints.pointers.config.PointerConfiguration
 import de.md5lukas.waypoints.pointers.variants.*
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -265,11 +264,6 @@ class PointerManager(
         val actionBarHooks: ActionBar
 
         /**
-         * Hooks required by the hologram pointer
-         */
-        val hologramHooks: Hologram
-
-        /**
          * Save the provided trackable, if possible, to a non-volatile storage.
          *
          * @param player The player that had the trackable enabled
@@ -323,22 +317,6 @@ class PointerManager(
              * @param correct The world the player must travel to
              */
             fun formatWrongWorldMessage(player: Player, current: World, correct: World): Component
-        }
-
-        interface Hologram {
-            /**
-             * Format the hologram text for the given player
-             *
-             * @param player The player that will see the hologram
-             * @param trackable The trackable that will be called with
-             * @return The formatted hologram text or null if no hologram is available
-             */
-            fun formatHologramText(player: Player, trackable: Trackable): Component?
-
-            /**
-             * Get the material for the provided trackable
-             */
-            fun getIconMaterial(trackable: Trackable): Material?
         }
     }
 }

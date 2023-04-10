@@ -9,7 +9,6 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
-import de.md5lukas.waypoints.util.format
 import de.md5lukas.waypoints.util.placeholder
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -55,10 +54,10 @@ class APIExtensions(
         "block_y" placeholder location.blockY,
         "block_z" placeholder location.blockZ,
         if (player !== null && player.world === location.world) {
-            "distance" placeholder MathHelper.distance2D(player.location, location).format()
+            "distance" placeholder player.location.distance(location)
         } else {
             "distance" placeholder translations.TEXT_DISTANCE_OTHER_WORLD.text
-        }
+        },
     )
 
     fun Waypoint.getIconMaterial(): Material = material ?: when (type) {

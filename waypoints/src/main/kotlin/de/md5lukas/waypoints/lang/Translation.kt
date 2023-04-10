@@ -1,9 +1,9 @@
 package de.md5lukas.waypoints.lang
 
+import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
-import org.bukkit.command.CommandSender
 
 class Translation(
     private val translationLoader: TranslationLoader,
@@ -33,12 +33,12 @@ class Translation(
         prependPrefix(miniMessage.deserialize(rawText, *resolvers))
     }
 
-    fun send(commandSender: CommandSender) {
-        commandSender.sendMessage(staticComponent())
+    fun send(audience: Audience) {
+        audience.sendMessage(staticComponent())
     }
 
-    fun send(commandSender: CommandSender, vararg resolvers: TagResolver) {
-        commandSender.sendMessage(withReplacements(*resolvers))
+    fun send(audience: Audience, vararg resolvers: TagResolver) {
+        audience.sendMessage(withReplacements(*resolvers))
     }
 
     private fun prependPrefix(component: Component) = if (prefix === null) {

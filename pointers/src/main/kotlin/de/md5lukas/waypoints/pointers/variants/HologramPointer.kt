@@ -10,7 +10,6 @@ import de.md5lukas.waypoints.pointers.util.minus
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import java.util.*
 
 internal class HologramPointer(
@@ -24,7 +23,7 @@ internal class HologramPointer(
         if (translatedTarget === null)
             return
 
-        val hologramText = pointerManager.hooks.hologramHooks.formatHologramText(player, trackable)
+        val hologramText = trackable.getHologramText(player)
 
         if (hologramText === null)
             return
@@ -73,11 +72,11 @@ internal class HologramPointer(
             val hologram = Hologram(player, location, hologramText).also { it.spawn() }
             val item =
                 if (config.iconEnabled) {
-                    pointerManager.hooks.hologramHooks.getIconMaterial(trackable)?.let { material ->
+                    trackable.hologramItem?.let { itemStack ->
                         SmoothFloatingItem(
                             player,
                             location,
-                            ItemStack(material)
+                            itemStack,
                         ).also { it.spawn() }
                     }
                 } else null

@@ -12,7 +12,11 @@ class TrackableToggleItem(wpGUI: WaypointsGUI) : GUICycleItem<Boolean>(
         wpGUI.viewerData.canBeTracked = it
         if (!it) {
             val pm = wpGUI.plugin.pointerManager
-            pm.disableAll(wpGUI.viewer.uniqueId)
+            pm.disableAll { trackable ->
+                if (trackable is PlayerTrackable) {
+                    trackable.player == wpGUI.viewer
+                } else false
+            }
             if (wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable && pm.getCurrentTarget(wpGUI.viewer) is PlayerTrackable) {
                 pm.disable(wpGUI.viewer)
             }

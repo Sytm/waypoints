@@ -8,6 +8,7 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
+import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.*
 import net.kyori.adventure.text.event.ClickEvent
 import net.wesjd.anvilgui.AnvilGUI
@@ -173,7 +174,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             's' to if (waypoint.location.world !== null) {
                 GUIItem(wpGUI.translations.WAYPOINT_SELECT.item) {
                     wpGUI.viewer.closeInventory()
-                    wpGUI.plugin.pointerManager.enable(wpGUI.viewer, waypoint)
+                    wpGUI.plugin.pointerManager.enable(wpGUI.viewer, WaypointTrackable(wpGUI.plugin, waypoint))
                 }
             } else {
                 background

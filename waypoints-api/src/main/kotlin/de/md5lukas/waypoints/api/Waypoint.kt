@@ -2,12 +2,11 @@ package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.pointers.BeaconColor
-import de.md5lukas.waypoints.pointers.StaticTrackable
 import org.bukkit.Location
 import org.bukkit.Material
 import java.util.*
 
-interface Waypoint : GUIDisplayable, StaticTrackable {
+interface Waypoint : GUIDisplayable {
 
     /**
      * The unique ID of the waypoint.
@@ -51,12 +50,12 @@ interface Waypoint : GUIDisplayable, StaticTrackable {
      */
     var material: Material?
 
-    override var beaconColor: BeaconColor?
+    var beaconColor: BeaconColor?
 
     /**
      * The location the waypoint has been created at
      */
-    override val location: Location
+    val location: Location
 
     /**
      * Get access to metadata unique for each player - waypoint combination.

@@ -13,4 +13,5 @@ interface StaticTrackable : Trackable {
      * The color of the beacon pointer uses. If it is null the beacon beam will be the same as [BeaconColor.CLEAR]
      */
     val beaconColor: BeaconColor?
+        get() = null
 }

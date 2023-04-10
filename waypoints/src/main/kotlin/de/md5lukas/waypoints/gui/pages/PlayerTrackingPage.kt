@@ -63,7 +63,7 @@ class PlayerTrackingPage(
                 wpGUI.translations.MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE.send(wpGUI.viewer)
             } else {
                 wpGUI.viewer.closeInventory()
-                wpGUI.plugin.pointerManager.enable(wpGUI.viewer, PlayerTrackable(player))
+                wpGUI.plugin.pointerManager.enable(wpGUI.viewer, PlayerTrackable(wpGUI.plugin, player))
                 if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
                     wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(player, "name" placeholder wpGUI.viewer.displayName())
                 }
