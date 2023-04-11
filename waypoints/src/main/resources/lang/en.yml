@@ -210,9 +210,9 @@ pointers:
     # current: Translated name of the world the player is in
     # correct: Translated name of the world the waypoint is in
     wrongWorld: "<red>You are currently in the world <green><current><red>, but the waypoint is in <green><correct>"
-    # distance_3d: Distance to the waypoint in blocks
+    # distance: Distance to the waypoint in blocks
     # height_difference: Height difference between player and waypoint. Positive when to high, negative when to low
-    distance: "<gray>You are <yellow><distance_3d><gray> blocks away from your target"
+    distance: "<gray>You are <yellow><distance:'.0'><gray> blocks away from your target"
 
   hologram:
     # Set the text of the floating hologram here.
@@ -221,12 +221,12 @@ pointers:
     # world: World where the waypoint is located at
     # x, y, z: Coordinates of the waypoint
     # block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
-    private: "<dark_purple><name> (<distance>m)"
-    death: "<red>Death <created_at:'dd.MM.uuuu kk:mm'> (<distance>m)"
-    public: "<aqua><name> (<distance>m)"
-    permission: "<light_purple><name> (<distance>m)"
-    temporary: "<dark_purple>Temporary Waypoint (<distance>m)"
-    playerTracking: "<blue><name> <reset><blue>(<distance>m)"
+    private: "<dark_purple><name> (<distance:'.0'>m)"
+    death: "<red>Death <created_at:'dd.MM.uuuu kk:mm'> (<distance:'.0'>m)"
+    public: "<aqua><name> (<distance:'.0'>m)"
+    permission: "<light_purple><name> (<distance:'.0'>m)"
+    temporary: "<dark_purple>Temporary Waypoint (<distance:'.0'>m)"
+    playerTracking: "<blue><name> <reset><blue>(<distance:'.0'>m)"
 
 integrations:
   maps:
@@ -318,7 +318,7 @@ inventory:
         <gray>X: <gold><block_x>
         <gray>Y: <gold><block_y>
         <gray>Z: <gold><block_z>
-        <gray>Distance: <gold><distance>
+        <gray>Distance: <gold><distance:'.0'>
 
         <gray>Created at: <gold><created_at:'dd.MM.uuuu kk:mm'>
 
@@ -332,7 +332,7 @@ inventory:
           <gray>X: <gold><block_x>
           <gray>Y: <gold><block_y>
           <gray>Z: <gold><block_z>
-          <gray>Distance: <gold><distance>
+          <gray>Distance: <gold><distance:'.0'>
       public:
         displayName: "<aqua><name>"
         description: *waypointDescription
@@ -495,4 +495,4 @@ inventory:
       displayName: "<green><name>"
       description: |
         <gray>World: <gold><world>
-        <gray>Distance: <gold><distance>
+        <gray>Distance: <gold><distance:'.0'>
