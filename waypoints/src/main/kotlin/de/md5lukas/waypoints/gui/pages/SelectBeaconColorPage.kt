@@ -33,7 +33,7 @@ class SelectBeaconColorPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint)
                 meta.displayName(pair.second.text)
             }
             list.add(GUIItem(item) {
-                waypoint.beaconColor = if (pair.first == BeaconColor.CLEAR) null else pair.first
+                waypoint.beaconColor = if (pair.first == BeaconColor.CLEAR) null else pair.first.material
                 wpGUI.goBack()
             })
         }

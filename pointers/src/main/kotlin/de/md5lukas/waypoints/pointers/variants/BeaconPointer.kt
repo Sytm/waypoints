@@ -16,7 +16,7 @@ internal class BeaconPointer(
     private val config: BeaconConfiguration,
 ) : Pointer(pointerManager, config.interval) {
 
-    private val BEACON = Material.BEACON.createBlockData()
+    private val beacon = Material.BEACON.createBlockData()
 
     private val activeBeacons: MutableMap<UUID, Location> = HashMap()
 
@@ -75,7 +75,7 @@ internal class BeaconPointer(
         }
         loc.y--
         if (create) {
-            player.sendBlockChange(loc, BEACON)
+            player.sendBlockChange(loc, beacon)
         } else {
             player.sendActualBlock(loc)
         }

@@ -38,6 +38,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":utils"))
+    implementation(project(":pointers"))
     implementation(project(":waypoints-api"))
     implementation(project(":api-base"))
     implementation(project(":api-sqlite", "shadow"))

@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
-import de.md5lukas.waypoints.pointers.BeaconColor
 import org.bukkit.Location
 import org.bukkit.Material
 import java.util.*
@@ -50,7 +49,7 @@ interface Waypoint : GUIDisplayable {
      */
     var material: Material?
 
-    var beaconColor: BeaconColor?
+    var beaconColor: Material?
 
     /**
      * The location the waypoint has been created at

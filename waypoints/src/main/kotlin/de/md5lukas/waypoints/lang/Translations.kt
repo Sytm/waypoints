@@ -82,7 +82,7 @@ class Translations(
     val TEXT_DISTANCE_OTHER_WORLD = Translation(tl, "text.distance.otherWorld")
 
     val TEXT_BEACON_COLORS = BeaconColor.values().map {
-        it to Translation(tl, "text.beaconColors.${it.name.lowercase()}")
+        it to Translation(tl, "text.beaconColors.${it.name.lowercase()}", miniMessage = tl.itemMiniMessage)
     }
 
     val WAYPOINT_CREATE_WORLD_UNAVAILABLE = Translation(tl, "message.waypoint.create.worldUnavailable", PREFIX)
