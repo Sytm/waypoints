@@ -30,7 +30,6 @@ command:
       temporary: "<gray> - <yellow>/<label> setTemporary <X> <Y> <Z> <gray><bold>|<reset><gray> 标记一个未保存的路径点"
     other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> 查看其他玩家的路径点"
     statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> 查看数据库统计信息"
-    import: "<gray> - <yellow>/<label> import <gray><bold>|<reset><gray> 从 Waypoints V2 版本导入路径点数据"
     reload: "<gray> - <yellow>/<label> reload <gray><bold>|<reset><gray> 重载配置文件"
 
   other:

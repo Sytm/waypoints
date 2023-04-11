@@ -2,13 +2,17 @@ package de.md5lukas.waypoints.config.pointers
 
 import de.md5lukas.waypoints.pointers.config.ActionBarConfiguration
 import de.md5lukas.waypoints.util.getStringNotNull
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.configuration.ConfigurationSection
 
 class ActionBarConfigurationImpl : RepeatingPointerConfigurationImpl(), ActionBarConfiguration {
 
-    override var indicatorColor: String = ""
+    override var indicatorColor: Style = Style.empty()
+        private set
 
-    override var normalColor: String = ""
+    override var normalColor: Style = Style.empty()
+        private set
 
     override var section: String = ""
         private set
@@ -45,10 +49,9 @@ class ActionBarConfigurationImpl : RepeatingPointerConfigurationImpl(), ActionBa
     override fun loadFromConfiguration(cfg: ConfigurationSection) {
         super.loadFromConfiguration(cfg)
         with(cfg) {
+            indicatorColor = MiniMessage.miniMessage().deserialize(getStringNotNull("indicatorColor")).style()
 
-            indicatorColor = getStringNotNull("indicatorColor")
-
-            normalColor = getStringNotNull("normalColor")
+            normalColor = MiniMessage.miniMessage().deserialize(getStringNotNull("normalColor")).style()
 
             section = getStringNotNull("section")
 

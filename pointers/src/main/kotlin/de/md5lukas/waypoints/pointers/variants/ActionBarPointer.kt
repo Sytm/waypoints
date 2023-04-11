@@ -5,7 +5,8 @@ import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.ActionBarConfiguration
 import de.md5lukas.waypoints.pointers.util.getAngleToTarget
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import de.md5lukas.waypoints.pointers.util.textComponent
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import kotlin.math.roundToInt
@@ -26,12 +27,10 @@ internal class ActionBarPointer(
                     )
                 } else {
                     // TODO properly convert to adventure
-                    LegacyComponentSerializer.legacyAmpersand().deserialize(
-                        generateDirectionIndicator(
-                            deltaAngleToTarget(
-                                player.location,
-                                translatedTarget
-                            )
+                    generateDirectionIndicator(
+                        deltaAngleToTarget(
+                            player.location,
+                            translatedTarget
                         )
                     )
                 }
@@ -41,18 +40,26 @@ internal class ActionBarPointer(
         )
     }
 
-    private fun generateDirectionIndicator(angle: Double): String {
+    private fun generateDirectionIndicator(angle: Double): Component {
         if (angle > config.range) {
-            return (config.indicatorColor + config.leftArrow
-                    + config.normalColor
-                    + config.section.repeat(config.amountOfSections)
-                    + config.rightArrow)
+            return textComponent {
+                style(config.indicatorColor)
+                content(config.leftArrow)
+                append(textComponent {
+                    style(config.normalColor)
+                    content(config.section.repeat(config.amountOfSections) + config.rightArrow)
+                })
+            }
         }
         if (-angle > config.range) {
-            return (config.normalColor + config.leftArrow
-                    + config.section.repeat(config.amountOfSections)
-                    + config.indicatorColor
-                    + config.rightArrow)
+            return textComponent {
+                style(config.normalColor)
+                content(config.leftArrow + config.section.repeat(config.amountOfSections))
+                append(textComponent {
+                    style(config.indicatorColor)
+                    content(config.rightArrow)
+                })
+            }
         }
 
         val percent: Double = -(angle / config.range)
@@ -61,15 +68,21 @@ internal class ActionBarPointer(
 
         nthSection += (config.amountOfSections.toDouble() / 2).roundToInt()
 
-        return (config.normalColor + config.leftArrow
-                + config.section.repeat(nthSection - 1)
-                + config.indicatorColor + config.section
-                + config.normalColor + config.section.repeat(config.amountOfSections - nthSection)
-                + config.rightArrow)
+        return textComponent {
+            style(config.normalColor)
+            content(config.leftArrow + config.section.repeat(nthSection - 1))
+            append(textComponent {
+                style(config.indicatorColor)
+                content(config.section)
+            })
+            append(textComponent {
+                content(config.section.repeat(config.amountOfSections - nthSection) + config.rightArrow)
+            })
+        }
     }
 
     /**
-     * The returned values range from -180 to 180 degrees, where as negative numbers mean you look to much left and
+     * The returned values range from -180 to 180 degrees, whereas negative numbers mean you look too much left and
      * positive numbers you look too much right
      *
      * @param location The location to calculate the angle from

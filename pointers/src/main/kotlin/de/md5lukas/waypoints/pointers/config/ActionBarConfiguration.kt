@@ -1,10 +1,12 @@
 package de.md5lukas.waypoints.pointers.config
 
+import net.kyori.adventure.text.format.Style
+
 interface ActionBarConfiguration : RepeatingPointerConfiguration {
 
-    val indicatorColor: String
+    val indicatorColor: Style
 
-    val normalColor: String
+    val normalColor: Style
 
     val section: String
 

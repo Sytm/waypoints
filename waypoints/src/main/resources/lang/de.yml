@@ -43,7 +43,6 @@ command:
       temporary: "<gray> - <yellow>/<label> setTemporary <X> <Y> <Z> <gray><bold>|<reset><gray> Erstelle einen Wegpunkt der nicht gespeichert wird"
     other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> Sieh dir die Wegpunkte von einem anderen Spieler an"
     statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> Sieh dir die Statistik der Datenbank an"
-    import: "<gray> - <yellow>/<label> import <gray><bold>|<reset><gray> Importiere Wegpunkte von Waypoints V2"
     reload: "<gray> - <yellow>/<label> reload <gray><bold>|<reset><gray> Lädt die Konfiguration neu"
 
   search:
@@ -61,11 +60,11 @@ command:
     # distance: Distance in blocks to the player
     tooltip: "<created_at:'dd.MM.uuuu kk:mm'>"
 
-    select:
-      selected: "<gray>Wegpunkt <yellow><name> <gray>ausgewählt."
+  select:
+    selected: "<gray>Wegpunkt <yellow><name> <gray>ausgewählt."
 
-    deselect:
-      done: "<gray>Aktuellen Wegpunkt abgewählt."
+  deselect:
+    done: "<gray>Aktuellen Wegpunkt abgewählt."
 
   other:
     playerNoWaypoints: "<red>Der angegebene Spieler besitzt keine Wegpunkte."

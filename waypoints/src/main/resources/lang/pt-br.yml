@@ -29,7 +29,6 @@ command:
       permission: "<gray> - <yellow>/<label> setPermission <Permission> <Name> <gray><bold>|<reset><gray> Criar nova waypoint usando permissões"
     other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> Ver waypoints de outro player"
     statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> Ver estatísticas do banco de dados"
-    import: "<gray> - <yellow>/<label> import <gray><bold>|<reset><gray> Importar waypoints do Waypoints V2"
 
   other:
     playerNoWaypoints: "<red>Esse player não tem waypoints."

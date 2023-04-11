@@ -6,6 +6,7 @@ import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.BossBarConfiguration
 import de.md5lukas.waypoints.pointers.util.getAngleToTarget
 import de.md5lukas.waypoints.pointers.util.normalizeAngleTo360
+import de.md5lukas.waypoints.pointers.util.textComponent
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
@@ -62,14 +63,14 @@ internal class BossBarPointer(
         val offsetIndicatorIndex = Math.floorMod(indicatorIndex - offset, rawTitle.length)
 
         barData.bossBar.name(
-            Component.text {
-                it.style(config.normalColor)
-                it.content(orientedTitle.substring(0, offsetIndicatorIndex))
-                it.append(Component.text { indicator ->
-                    indicator.style(config.indicatorColor)
-                    indicator.content(config.indicator)
+            textComponent {
+                style(config.normalColor)
+                content(orientedTitle.substring(0, offsetIndicatorIndex))
+                append(textComponent {
+                    style(config.indicatorColor)
+                    content(config.indicator)
                 })
-                it.append(Component.text(orientedTitle.substring(min(orientedTitle.length, offsetIndicatorIndex + 1))))
+                append(Component.text(orientedTitle.substring(min(orientedTitle.length, offsetIndicatorIndex + 1))))
             }
         )
     }

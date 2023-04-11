@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.config.general
 
 import de.md5lukas.waypoints.util.getConfigurationSectionNotNull
-import de.md5lukas.waypoints.util.getListNotNull
 import de.md5lukas.waypoints.util.getStringNotNull
 import org.bukkit.configuration.ConfigurationSection
 
@@ -29,8 +28,6 @@ class GeneralConfiguration {
 
     val teleport = TeleportConfiguration()
 
-    val connectedWorlds = ConnectedWorldsConfiguration()
-
     val availableWorldsConfiguration = AvailableWorldsConfiguration()
 
     val pointToDeathWaypointOnDeath = PointToDeathWaypointOnDeathConfiguration()
@@ -55,8 +52,6 @@ class GeneralConfiguration {
         openWithItem.loadFromConfiguration(cfg.getConfigurationSectionNotNull("openWithItem"))
 
         teleport.loadFromConfiguration(cfg.getConfigurationSectionNotNull("teleport"))
-
-        connectedWorlds.loadFromConfiguration(cfg.getListNotNull("connectedWorlds"))
 
         availableWorldsConfiguration.loadFromConfiguration(cfg.getConfigurationSectionNotNull("availableWorlds"))
 

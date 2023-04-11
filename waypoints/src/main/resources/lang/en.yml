@@ -43,7 +43,6 @@ command:
       temporary: "<gray> - <yellow>/<label> setTemporary <X> <Y> <Z> <gray><bold>|<reset><gray> Target a waypoint that is not saved"
     other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> View the waypoints of another player"
     statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> View the statistics of the database"
-    import: "<gray> - <yellow>/<label> import <gray><bold>|<reset><gray> Import waypoints from Waypoints V2"
     reload: "<gray> - <yellow>/<label> reload <gray><bold>|<reset><gray> Reload the configuration"
 
   search:
