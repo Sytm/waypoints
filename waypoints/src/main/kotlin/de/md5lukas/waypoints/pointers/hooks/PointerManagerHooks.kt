@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.pointers.hooks
 
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.pointers.PointerManager.Hooks
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.WaypointTrackable
@@ -18,8 +17,8 @@ class PointerManagerHooks(private val plugin: WaypointsPlugin) : Hooks {
     override fun saveActiveTrackable(player: Player, tracked: Trackable?) {
         if (tracked === null) {
             plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = null
-        } else if (tracked is Waypoint) {
-            plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = tracked
+        } else if (tracked is WaypointTrackable) {
+            plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = tracked.waypoint
         }
     }
 
