@@ -234,11 +234,11 @@ pointers:
     # Available values: progress, notched_6, notched_10, notched_12, notched_20
     barStyle: progress
 
-    title: " · · ◈ · · ◈ · · O · · ◈ · · ◈ · · S · · ◈ · · ◈ · · W · · ◈ · · ◈ · · N"
+    title: " · · ◈ · · ◈ · · E · · ◈ · · ◈ · · S · · ◈ · · ◈ · · W · · ◈ · · ◈ · · N"
 
     indicator: "⬛"
-    indicatorColor: "&4"
-    normalColor: "&f"
+    indicatorColor: "<dark_red>"
+    normalColor: "<white>"
 
   beacon:
     enabled: true

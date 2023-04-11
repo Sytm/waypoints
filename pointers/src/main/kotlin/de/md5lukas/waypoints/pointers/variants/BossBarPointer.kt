@@ -8,10 +8,11 @@ import de.md5lukas.waypoints.pointers.util.getAngleToTarget
 import de.md5lukas.waypoints.pointers.util.normalizeAngleTo360
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 internal class BossBarPointer(
@@ -30,8 +31,6 @@ internal class BossBarPointer(
             return
         }
 
-        // TODO properly convert to adventure
-
         val barData = bossBars.computeIfAbsent(player.uniqueId) {
             BarData(
                 BossBar.bossBar(
@@ -43,42 +42,36 @@ internal class BossBarPointer(
                     player.showBossBar(it)
                 },
                 0,
-                rawTitle,
+                0f,
             )
         }
+
         // Don't calculate the position of the indicator everytime in favour to make the compass update smoother
         barData.counter = (barData.counter + 1) % config.recalculateEveryNthInterval
         if (barData.counter == 0) {
-
             // Subtract 90° from the returned angle because Minecraft yaw is rotated by 90°
-            val angleToTarget = normalizeAngleTo360(getAngleToTarget(player.location, translatedTarget) - 90)
-
-            // Subtract 1 from the index to, because otherwise the indicator is always one too much to the right
-            val replaceIndex = Math.floorMod((angleToTarget / 360 * rawTitle.length).roundToInt() - 1, rawTitle.length)
-
-            val titleBuilder = StringBuilder(rawTitle)
-            titleBuilder[replaceIndex] = config.indicator
-
-            barData.currentTitle = titleBuilder.toString()
+            barData.angle = normalizeAngleTo360(getAngleToTarget(player.location, translatedTarget) - 90)
         }
 
         val playerAngle = normalizeAngleTo360(player.location.yaw)
-        val offset = playerAngle / 360 * rawTitle.length
-        val orientedTitle = StringBuilder(barData.currentTitle.loopingSubstring(rawTitle.length - 1, offset.roundToInt()))
+        val offset = (playerAngle / 360 * rawTitle.length).roundToInt()
+        val orientedTitle = config.title.loopingSubstring(rawTitle.length - 1, offset)
 
-        // Add colors after orienting the title because they would interfere with the substrings sizes and offsets
-        val indicatorIndex = orientedTitle.indexOf(config.indicator)
+        // Subtract 1 from the index to, because otherwise the indicator is always one too much to the right
+        val indicatorIndex = (barData.angle / 360 * rawTitle.length).roundToInt() - 1
+        val offsetIndicatorIndex = Math.floorMod(indicatorIndex - offset, rawTitle.length)
 
-        if (indicatorIndex >= 0) {
-            orientedTitle.insert(indicatorIndex + 1, config.normalColor)
-            orientedTitle.insert(indicatorIndex, config.indicatorColor)
-        }
-        // If the indicator is not the first character (or not contained at all) we need to color everything before of it
-        if (indicatorIndex != 0) {
-            orientedTitle.insert(0, config.normalColor)
-        }
-
-        barData.bossBar.name(LegacyComponentSerializer.legacyAmpersand().deserialize(orientedTitle.toString()))
+        barData.bossBar.name(
+            Component.text {
+                it.style(config.normalColor)
+                it.content(orientedTitle.substring(0, offsetIndicatorIndex))
+                it.append(Component.text { indicator ->
+                    indicator.style(config.indicatorColor)
+                    indicator.content(config.indicator)
+                })
+                it.append(Component.text(orientedTitle.substring(min(orientedTitle.length, offsetIndicatorIndex + 1))))
+            }
+        )
     }
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
@@ -87,13 +80,13 @@ internal class BossBarPointer(
         }
     }
 
-    private class BarData(val bossBar: BossBar, var counter: Int, var currentTitle: String)
+    private class BarData(val bossBar: BossBar, var counter: Int, var angle: Float)
 
     private fun String.loopingSubstring(size: Int, offset: Int): String {
         val modOffset = Math.floorMod(offset, length)
 
-        val overhang = kotlin.math.max(0, (size + modOffset) - length)
+        val overhang = max(0, (size + modOffset) - length)
 
-        return substring(modOffset, kotlin.math.min(length, modOffset + size)) + substring(0, overhang)
+        return substring(modOffset, min(length, modOffset + size)) + substring(0, overhang)
     }
 }

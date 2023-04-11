@@ -4,6 +4,8 @@ import de.md5lukas.waypoints.pointers.config.BossBarConfiguration
 import de.md5lukas.waypoints.util.getStringNotNull
 import net.kyori.adventure.bossbar.BossBar.Color
 import net.kyori.adventure.bossbar.BossBar.Overlay
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.configuration.ConfigurationSection
 
 class BossBarConfigurationImpl : RepeatingPointerConfigurationImpl(), BossBarConfiguration {
@@ -20,13 +22,13 @@ class BossBarConfigurationImpl : RepeatingPointerConfigurationImpl(), BossBarCon
     override var title: String = ""
         private set
 
-    override var indicator: Char = '#'
+    override var indicator: String = "#"
         private set
 
-    override var indicatorColor: String = ""
+    override var indicatorColor: Style = Style.empty()
         private set
 
-    override var normalColor: String = ""
+    override var normalColor: Style = Style.empty()
         private set
 
     override fun loadFromConfiguration(cfg: ConfigurationSection) {
@@ -41,15 +43,11 @@ class BossBarConfigurationImpl : RepeatingPointerConfigurationImpl(), BossBarCon
 
             title = getStringNotNull("title")
 
-            indicator = getStringNotNull("indicator").first()
+            indicator = getStringNotNull("indicator").first().toString()
 
-            if (indicator in title) {
-                throw IllegalArgumentException("The indicator cannot be already contained in the title for the boss bar pointer")
-            }
+            indicatorColor = MiniMessage.miniMessage().deserialize(getStringNotNull("indicatorColor")).style()
 
-            indicatorColor = "&r${getStringNotNull("indicatorColor")}"
-
-            normalColor = "&r${getStringNotNull("normalColor")}"
+            normalColor = MiniMessage.miniMessage().deserialize(getStringNotNull("normalColor")).style()
         }
     }
 }

@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.pointers.config
 
 import net.kyori.adventure.bossbar.BossBar.Color
 import net.kyori.adventure.bossbar.BossBar.Overlay
+import net.kyori.adventure.text.format.Style
 
 interface BossBarConfiguration : RepeatingPointerConfiguration {
 
@@ -13,9 +14,9 @@ interface BossBarConfiguration : RepeatingPointerConfiguration {
 
     val title: String
 
-    val indicator: Char
+    val indicator: String
 
-    val indicatorColor: String
+    val indicatorColor: Style
 
-    val normalColor: String
+    val normalColor: Style
 }
