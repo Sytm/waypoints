@@ -201,9 +201,9 @@ pointers:
 
     interval: 20
     # The indicator color is used to show where the waypoint is by changing the color of one of the sections
-    indicatorColor: "&4&l"
+    indicatorColor: "<bold><dark_red>"
     # The background color for the sections
-    normalColor: "&7&l"
+    normalColor: "<bold><gray>"
     # Character to use as the colored direction indicators
     section: "⬛"
     # If you turn too much to either side these arrows are highlighted to indicator you need tp turn more
