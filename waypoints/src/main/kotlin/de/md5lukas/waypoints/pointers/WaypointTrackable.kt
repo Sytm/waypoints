@@ -6,7 +6,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-class WaypointTrackable(private val plugin: WaypointsPlugin, private val waypoint: Waypoint) : StaticTrackable {
+class WaypointTrackable(private val plugin: WaypointsPlugin, val waypoint: Waypoint) : StaticTrackable {
     override val location: Location
         get() = waypoint.location
 
