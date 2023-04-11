@@ -6,7 +6,11 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 class InventoryTranslation(
     private val translationLoader: TranslationLoader,
     private val key: String,
-) {
+) : Resettable {
+
+    init {
+        translationLoader.registerTranslationWrapper(this)
+    }
 
     val text: List<Component>
         get() = staticComponent()
@@ -14,15 +18,15 @@ class InventoryTranslation(
     val rawText: String
         get() = translationLoader[key]
 
-    private lateinit var staticMessage: List<Component>
+    private var staticMessage: List<Component>? = null
 
     private fun staticComponent(): List<Component> {
-        if (!::staticMessage.isInitialized) {
+        if (staticMessage === null) {
             staticMessage = rawText.lineSequence().map {
                 translationLoader.itemMiniMessage.deserialize(it)
             }.toList()
         }
-        return staticMessage
+        return staticMessage!!
     }
 
     fun withReplacements(vararg resolvers: TagResolver): List<Component> = if (resolvers.isEmpty()) {
@@ -31,5 +35,9 @@ class InventoryTranslation(
         rawText.lineSequence().map {
             translationLoader.itemMiniMessage.deserialize(it, *resolvers)
         }.toList()
+    }
+
+    override fun reset() {
+        staticMessage = null
     }
 }

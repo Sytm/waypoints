@@ -10,7 +10,11 @@ class Translation(
     private val key: String,
     private val prefix: Translation? = null,
     private val miniMessage: MiniMessage = MiniMessage.miniMessage()
-) {
+) : Resettable {
+
+    init {
+        translationLoader.registerTranslationWrapper(this)
+    }
 
     val text: Component
         get() = staticComponent()
@@ -18,13 +22,13 @@ class Translation(
     val rawText: String
         get() = translationLoader[key]
 
-    private lateinit var staticMessage: Component
+    private var staticMessage: Component? = null
 
     private fun staticComponent(): Component {
-        if (!::staticMessage.isInitialized) {
+        if (staticMessage === null) {
             staticMessage = prependPrefix(miniMessage.deserialize(rawText))
         }
-        return staticMessage
+        return staticMessage!!
     }
 
     fun withReplacements(vararg resolvers: TagResolver): Component = if (resolvers.isEmpty()) {
@@ -45,5 +49,9 @@ class Translation(
         component
     } else {
         prefix.text.append(component)
+    }
+
+    override fun reset() {
+        staticMessage = null
     }
 }
