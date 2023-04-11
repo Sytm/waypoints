@@ -43,6 +43,7 @@ class TranslationLoader(
 
     private lateinit var loadedLanguage: String
     private lateinit var translations: Map<String, String>
+    private val translationWrappers = mutableListOf<Resettable>()
 
     private val bundledLanguages: List<String> = plugin.getResource("resourceIndex")!!.bufferedReader(StandardCharsets.UTF_8).useLines { seq ->
         seq.filter {
@@ -135,5 +136,10 @@ class TranslationLoader(
     private fun onConfigReload(e: ConfigReloadEvent) {
         loadLanguage(e.config.general.language)
         warned.clear()
+        translationWrappers.forEach(Resettable::reset)
+    }
+
+    fun registerTranslationWrapper(resettable: Resettable) {
+        translationWrappers.add(resettable)
     }
 }
