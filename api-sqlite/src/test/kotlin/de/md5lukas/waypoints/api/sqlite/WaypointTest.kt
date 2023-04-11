@@ -5,7 +5,6 @@ import be.seeseemelk.mockbukkit.ServerMock
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
-import de.md5lukas.waypoints.pointers.BeaconColor
 import org.bukkit.Material
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertAll
@@ -56,7 +55,7 @@ class WaypointTest {
         waypoint.description = "Some description"
         waypoint.permission = "permission"
         waypoint.material = Material.GRASS_BLOCK
-        waypoint.beaconColor = BeaconColor.LIGHT_GRAY
+        waypoint.beaconColor = Material.LIGHT_GRAY_STAINED_GLASS
 
         waypoint = holder.waypoints[0]
 
@@ -69,7 +68,7 @@ class WaypointTest {
         }, {
             assertEquals(Material.GRASS_BLOCK, waypoint.material)
         }, {
-            assertEquals(BeaconColor.LIGHT_GRAY, waypoint.beaconColor)
+            assertEquals(Material.LIGHT_GRAY_STAINED_GLASS, waypoint.beaconColor)
         })
     }
 

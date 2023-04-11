@@ -7,6 +7,7 @@ import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.base.DatabaseConfiguration
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.sqlite.WaypointsAPIImpl
+import org.bukkit.Material
 import org.bukkit.plugin.Plugin
 import java.io.File
 import java.sql.Connection
@@ -21,7 +22,7 @@ class SQLiteManager(
 ) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache) {
 
 
-    private val schemaVersion: Int = 4
+    private val schemaVersion: Int = 5
     private val sqliteHelper = if (file === null) {
         SQLiteHelper()
     } else {
@@ -181,18 +182,10 @@ class SQLiteManager(
 
     private val databaseUpgrades = LinkedHashMap<Int, Connection.() -> Unit>().also {
         it[1] = {
-            update(
-                """
-                ALTER TABLE player_data ADD COLUMN lastSelectedWaypoint TEXT REFERENCES waypoints (id) ON DELETE SET NULL;
-            """
-            )
+            update("ALTER TABLE player_data ADD COLUMN lastSelectedWaypoint TEXT REFERENCES waypoints (id) ON DELETE SET NULL;")
         }
         it[2] = {
-            update(
-                """
-                ALTER TABLE player_data ADD COLUMN canBeTracked BOOLEAN NOT NULL DEFAULT 0;
-            """
-            )
+            update("ALTER TABLE player_data ADD COLUMN canBeTracked BOOLEAN NOT NULL DEFAULT 0;")
         }
         it[3] = {
             select("SELECT playerId, type, cooldownUntil FROM player_cooldown;") {
@@ -204,11 +197,30 @@ class SQLiteManager(
             update("DROP TABLE player_cooldown;")
         }
         it[4] = {
-            update(
-                """
-                ALTER TABLE waypoint_meta ADD COLUMN visited BOOLEAN NOT NULL DEFAULT 0;
-            """
-            )
+            update("ALTER TABLE waypoint_meta ADD COLUMN visited BOOLEAN NOT NULL DEFAULT 0;")
+        }
+        it[5] = {
+            mapOf(
+                "CLEAR" to Material.GLASS.name,
+                "LIGHT_GRAY" to Material.LIGHT_GRAY_STAINED_GLASS.name,
+                "GRAY" to Material.GRAY_STAINED_GLASS.name,
+                "PINK" to Material.PINK_STAINED_GLASS.name,
+                "LIME" to Material.LIME_STAINED_GLASS.name,
+                "YELLOW" to Material.YELLOW_STAINED_GLASS.name,
+                "LIGHT_BLUE" to Material.LIGHT_BLUE_STAINED_GLASS.name,
+                "MAGENTA" to Material.MAGENTA_STAINED_GLASS.name,
+                "ORANGE" to Material.ORANGE_STAINED_GLASS.name,
+                "WHITE" to Material.WHITE_STAINED_GLASS.name,
+                "BLACK" to Material.BLACK_STAINED_GLASS.name,
+                "RED" to Material.RED_STAINED_GLASS.name,
+                "GREEN" to Material.GREEN_STAINED_GLASS.name,
+                "BROWN" to Material.BROWN_STAINED_GLASS.name,
+                "BLUE" to Material.BLUE_STAINED_GLASS.name,
+                "CYAN" to Material.CYAN_STAINED_GLASS.name,
+                "PURPLE" to Material.PURPLE_STAINED_GLASS.name,
+            ).forEach { (old, new) ->
+                update("UPDATE waypoints SET beaconColor = ? WHERE beaconColor = ?;", new, old)
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.pointers
 
 import org.bukkit.Material
+import java.util.*
 
 /**
  * This class represents all possible beacon beam colors that can be created with one colored glass block
@@ -95,5 +96,13 @@ enum class BeaconColor(val material: Material) {
 
     val blockData by lazy {
         material.createBlockData()
+    }
+
+    companion object {
+        private val entries: List<BeaconColor> = Collections.unmodifiableList(BeaconColor.values().toList())
+
+        fun byMaterial(material: Material) = this.entries.firstOrNull {
+            it.material === material
+        }
     }
 }

@@ -11,7 +11,6 @@ import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
-import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.util.callEvent
 import org.bukkit.Location
 import org.bukkit.Material
@@ -31,7 +30,7 @@ class WaypointImpl private constructor(
     description: String?,
     permission: String?,
     material: Material?,
-    beaconColor: BeaconColor?,
+    beaconColor: Material?,
 ) : Waypoint {
 
     constructor(dm: DatabaseManager, row: ResultSet) : this(
@@ -53,7 +52,7 @@ class WaypointImpl private constructor(
         description = row.getString("description"),
         permission = row.getString("permission"),
         material = row.getString("material")?.let { Material.valueOf(it) },
-        beaconColor = row.getString("beaconColor")?.let { BeaconColor.valueOf(it) }
+        beaconColor = row.getString("beaconColor")?.let { Material.valueOf(it) }
     )
 
     private var folderId: UUID? = folder
@@ -100,7 +99,7 @@ class WaypointImpl private constructor(
             field = value
             set("material", value?.name)
         }
-    override var beaconColor: BeaconColor? = beaconColor
+    override var beaconColor: Material? = beaconColor
         set(value) {
             field = value
             set("beaconColor", value?.name)
@@ -166,9 +165,7 @@ class WaypointImpl private constructor(
 
         other as Waypoint
 
-        if (id != other.id) return false
-
-        return true
+        return id == other.id
     }
 
     override fun hashCode(): Int {
