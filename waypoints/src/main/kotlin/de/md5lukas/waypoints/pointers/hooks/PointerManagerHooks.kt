@@ -34,7 +34,7 @@ class PointerManagerHooks(private val plugin: WaypointsPlugin) : Hooks {
     private inner class ActionBarPointerHooks : Hooks.ActionBar {
         override fun formatDistanceMessage(player: Player, distance3D: Double, heightDifference: Double): Component =
             plugin.translations.POINTERS_ACTION_BAR_DISTANCE.withReplacements(
-                "distance_3d" placeholder distance3D,
+                "distance" placeholder distance3D,
                 "height_difference" placeholder heightDifference,
             )
 

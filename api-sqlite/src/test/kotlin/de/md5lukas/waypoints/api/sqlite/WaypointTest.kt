@@ -159,7 +159,7 @@ class WaypointTest {
             val waypoint2 = holder.createWaypoint("Test 2", server.createLocation("world", 1, 2, 3))
 
             waypoint1.setCustomData("some key", "some data")
-            waypoint2.setCustomData("some key", "some other data");
+            waypoint2.setCustomData("some key", "some other data")
             assertEquals("some data", waypoint1.getCustomData("some key"))
             assertEquals("some other data", waypoint2.getCustomData("some key"))
 

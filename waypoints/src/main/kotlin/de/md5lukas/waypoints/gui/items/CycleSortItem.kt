@@ -3,7 +3,7 @@ package de.md5lukas.waypoints.gui.items
 import de.md5lukas.kinvs.items.GUICycleItem
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import net.kyori.adventure.text.Component
+import de.md5lukas.waypoints.util.text
 
 class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) : GUICycleItem<OverviewSort>(
     getOverviewSortCycleValues(wpGUI),
@@ -22,14 +22,14 @@ class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) : GUIC
     private companion object {
         fun getOverviewSortCycleValues(wpGUI: WaypointsGUI) = OverviewSort.values().map { current ->
             val additionalLines = wpGUI.translations.OVERVIEW_CYCLE_SORT_OPTIONS.map {
-                Component.text { builder ->
+                text {
                     val copyFrom = if (it.first === current) {
                         wpGUI.translations.OVERVIEW_CYCLE_SORT_ACTIVE_COLOR
                     } else {
                         wpGUI.translations.OVERVIEW_CYCLE_SORT_INACTIVE_COLOR
                     }.text
-                    builder.style(copyFrom.style())
-                    builder.content(it.second.rawText)
+                    style(copyFrom.style())
+                    content(it.second.rawText)
                 }
             }.toList()
 
