@@ -11,10 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import java.time.OffsetDateTime
 import java.util.*
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.assertEquals
-import kotlin.test.assertNull
+import kotlin.test.*
 
 class WaypointPlayerTest {
 
@@ -58,6 +55,60 @@ class WaypointPlayerTest {
         player = api.getWaypointPlayer(id) // Recreate WaypointsPlayer, to fetch value
 
         assertEquals(sortBy, player.sortBy)
+    }
+
+    @Test
+    fun newPlayerHasNoSelectedWaypoints() {
+        val player = api.getWaypointPlayer(UUID.randomUUID())
+
+        assertTrue(player.selectedWaypoints.isEmpty())
+    }
+
+    @Test
+    fun oneSelectedWaypointIsSaved() {
+        val player = api.getWaypointPlayer(UUID.randomUUID())
+
+        val selected = listOf(player.createWaypoint("Test", server.createLocation("world", 1, 2, 3)))
+
+        player.selectedWaypoints = selected
+
+        assertEquals(selected, player.selectedWaypoints)
+    }
+
+    @Test
+    fun multipleSelectedWaypointAreSaved() {
+        val player = api.getWaypointPlayer(UUID.randomUUID())
+
+        val selected = listOf(
+            player.createWaypoint("Test 1", server.createLocation("world", 1, 2, 3)),
+            player.createWaypoint("Test 2", server.createLocation("world", 2, 3, 4)),
+            player.createWaypoint("Test 3", server.createLocation("world", 3, 4, 5))
+        )
+
+        player.selectedWaypoints = selected
+
+        assertEquals(selected, player.selectedWaypoints)
+    }
+
+    @Test
+    fun selectedWaypointAreOverwritten() {
+        val player = api.getWaypointPlayer(UUID.randomUUID())
+
+        val selected = mutableListOf(
+            player.createWaypoint("Test 1", server.createLocation("world", 1, 2, 3)),
+            player.createWaypoint("Test 2", server.createLocation("world", 2, 3, 4)),
+            player.createWaypoint("Test 3", server.createLocation("world", 3, 4, 5)),
+        )
+
+        player.selectedWaypoints = selected
+
+        assertEquals(selected, player.selectedWaypoints)
+
+        selected.removeAt(1)
+
+        player.selectedWaypoints = selected
+
+        assertEquals(selected, player.selectedWaypoints)
     }
 
     @Test

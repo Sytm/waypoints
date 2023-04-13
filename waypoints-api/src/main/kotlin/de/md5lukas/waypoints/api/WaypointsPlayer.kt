@@ -81,13 +81,11 @@ interface WaypointsPlayer : WaypointHolder {
     val deathFolder: Folder
 
     /**
-     * The last waypoint the player got direction indicators for.
-     * It is set to `null` if the player either reaches the waypoint or deselects it manually.
-     * Only if the player disconnects it will be saved.
+     * All the concurrent Waypoints the player has selected
      *
      * @see [de.md5lukas.waypoints.pointers.PointerManager]
      */
-    var lastSelectedWaypoint: Waypoint?
+    var selectedWaypoints: List<Waypoint>
 
     /**
      * The compass target the player currently has before it got overwritten by the compass pointer
