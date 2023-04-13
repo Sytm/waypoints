@@ -233,9 +233,7 @@ internal open class WaypointHolderImpl(
 
         other as WaypointHolder
 
-        if (type != other.type) return false
-
-        return true
+        return type == other.type
     }
 
     override fun hashCode(): Int {

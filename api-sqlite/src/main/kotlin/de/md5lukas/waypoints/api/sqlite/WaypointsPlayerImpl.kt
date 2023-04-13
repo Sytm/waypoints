@@ -137,9 +137,7 @@ internal class WaypointsPlayerImpl private constructor(
 
         other as WaypointsPlayer
 
-        if (id != other.id) return false
-
-        return true
+        return id == other.id
     }
 
     override fun hashCode(): Int {
