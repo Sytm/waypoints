@@ -1,6 +1,8 @@
 package de.md5lukas.waypoints.api.sqlite
 
+import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
+import de.md5lukas.jdbc.setValues
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.base.DatabaseManager
@@ -15,7 +17,6 @@ internal class WaypointsPlayerImpl private constructor(
     showGlobals: Boolean,
     sortBy: OverviewSort,
     canBeTracked: Boolean,
-    lastSelectedWaypoint: UUID?
 ) : WaypointHolderImpl(dm, Type.PRIVATE, id), WaypointsPlayer {
 
     constructor(dm: DatabaseManager, row: ResultSet) : this(
@@ -24,7 +25,6 @@ internal class WaypointsPlayerImpl private constructor(
         showGlobals = row.getBoolean("showGlobals"),
         sortBy = OverviewSort.valueOf(row.getString("sortBy")),
         canBeTracked = row.getBoolean("canBeTracked"),
-        lastSelectedWaypoint = row.getString("lastSelectedWaypoint")?.let(UUID::fromString),
     )
 
     override var showGlobals: Boolean = showGlobals
@@ -111,20 +111,22 @@ internal class WaypointsPlayerImpl private constructor(
             }
         }
 
-    private var lastSelectedWaypointID = lastSelectedWaypoint
+    override var selectedWaypoints: List<Waypoint>
+        get() = dm.connection.select(
+            "SELECT * FROM waypoints INNER JOIN selected_waypoints ON waypoints.id = selected_waypoints.waypointId WHERE selected_waypoints.playerId = ?;",
+            id.toString()
+        ) {
+            getInt("index") to WaypointImpl(dm, this)
+        }.apply { sortWith(compareBy { it.first }) }.map { it.second }
         set(value) {
-            field = value
-            set("lastSelectedWaypoint", value?.toString())
-        }
-
-    override var lastSelectedWaypoint: Waypoint?
-        get() = lastSelectedWaypointID?.let { uuid ->
-            dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?;", uuid.toString()) {
-                WaypointImpl(dm, this)
+            dm.connection.update("DELETE FROM selected_waypoints WHERE playerId = ?;", id.toString())
+            dm.connection.prepareStatement("INSERT INTO selected_waypoints VALUES (?, ?, ?);").also {
+                value.forEachIndexed { index, waypoint ->
+                    it.setValues(id.toString(), waypoint.id.toString(), index)
+                    it.addBatch()
+                }
+                it.executeBatch()
             }
-        }
-        set(value) {
-            lastSelectedWaypointID = value?.id
         }
 
     private fun set(column: String, value: Any?) {
@@ -145,6 +147,6 @@ internal class WaypointsPlayerImpl private constructor(
     }
 
     override fun toString(): String {
-        return "WaypointsPlayerImpl(showGlobals=$showGlobals, sortBy=$sortBy, canBeTracked=$canBeTracked, lastSelectedWaypointID=$lastSelectedWaypointID) ${super.toString()}"
+        return "WaypointsPlayerImpl(showGlobals=$showGlobals, sortBy=$sortBy, canBeTracked=$canBeTracked) ${super.toString()}"
     }
 }

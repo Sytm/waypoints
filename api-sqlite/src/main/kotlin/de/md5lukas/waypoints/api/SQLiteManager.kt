@@ -141,6 +141,19 @@ class SQLiteManager(
             )
             update(
                 """
+                CREATE TABLE IF NOT EXISTS selected_waypoints (
+                  playerId TEXT NOT NULL,
+                  waypointId TEXT NOT NULL,
+                  'index' INTEGER NOT NULL,
+                  
+                  PRIMARY KEY (playerId, waypointId),
+                  FOREIGN KEY (playerId) REFERENCES player_data(id) ON DELETE CASCADE,
+                  FOREIGN KEY (waypointId) REFERENCES waypoints(id) ON DELETE CASCADE
+                );
+            """
+            )
+            update(
+                """
                 CREATE TABLE IF NOT EXISTS waypoint_custom_data (
                   waypointId TEXT NOT NULL,
                   key TEXT NOT NULL,

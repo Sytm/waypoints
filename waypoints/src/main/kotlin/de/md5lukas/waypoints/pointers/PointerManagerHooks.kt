@@ -1,9 +1,7 @@
-package de.md5lukas.waypoints.pointers.hooks
+package de.md5lukas.waypoints.pointers
 
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.pointers.PointerManager.Hooks
-import de.md5lukas.waypoints.pointers.Trackable
-import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.placeholder
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
@@ -16,14 +14,14 @@ class PointerManagerHooks(private val plugin: WaypointsPlugin) : Hooks {
 
     override fun saveActiveTrackable(player: Player, tracked: Trackable?) {
         if (tracked === null) {
-            plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = null
+            plugin.api.getWaypointPlayer(player.uniqueId).selectedWaypoints = emptyList()
         } else if (tracked is WaypointTrackable) {
-            plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint = tracked.waypoint
+            plugin.api.getWaypointPlayer(player.uniqueId).selectedWaypoints = listOf(tracked.waypoint)
         }
     }
 
     override fun loadActiveTrackable(player: Player): Trackable? =
-        plugin.api.getWaypointPlayer(player.uniqueId).lastSelectedWaypoint?.let { WaypointTrackable(plugin, it) }
+        plugin.api.getWaypointPlayer(player.uniqueId).selectedWaypoints.firstOrNull()?.let { WaypointTrackable(plugin, it) }
 
     override fun saveCompassTarget(player: Player, location: Location) {
         plugin.api.getWaypointPlayer(player.uniqueId).compassTarget = location

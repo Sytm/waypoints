@@ -21,7 +21,7 @@ import de.md5lukas.waypoints.lang.TranslationLoader
 import de.md5lukas.waypoints.lang.Translations
 import de.md5lukas.waypoints.lang.WorldTranslations
 import de.md5lukas.waypoints.pointers.PointerManager
-import de.md5lukas.waypoints.pointers.hooks.PointerManagerHooks
+import de.md5lukas.waypoints.pointers.PointerManagerHooks
 import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.callEvent
