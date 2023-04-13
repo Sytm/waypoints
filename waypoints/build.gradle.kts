@@ -88,7 +88,7 @@ tasks.withType<ProcessResources> {
             "apiVersion" to apiVersion,
         )
     }
-    filesMatching("dependencies") {
+    filesMatching("dependencies.yml") {
         expand(
             "kotlinVersion" to getKotlinPluginVersion(),
             "commandApiVersion" to commandApiVersion,

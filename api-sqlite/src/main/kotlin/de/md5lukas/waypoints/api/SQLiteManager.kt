@@ -200,6 +200,7 @@ class SQLiteManager(
         it[2] = {
             update("ALTER TABLE player_data ADD COLUMN canBeTracked BOOLEAN NOT NULL DEFAULT 0;")
         }
+        @Suppress("SqlResolve") // Table has been deleted, duh
         it[3] = {
             select("SELECT playerId, type, cooldownUntil FROM player_cooldown;") {
                 update(
