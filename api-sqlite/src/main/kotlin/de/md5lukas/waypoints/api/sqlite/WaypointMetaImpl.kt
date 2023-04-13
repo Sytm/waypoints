@@ -45,9 +45,7 @@ class WaypointMetaImpl private constructor(
         other as WaypointMeta
 
         if (waypoint != other.waypoint) return false
-        if (owner != other.owner) return false
-
-        return true
+        return owner == other.owner
     }
 
     override fun hashCode(): Int {

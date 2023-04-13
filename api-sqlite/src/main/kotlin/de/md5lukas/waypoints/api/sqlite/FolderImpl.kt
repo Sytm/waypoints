@@ -101,9 +101,7 @@ internal class FolderImpl private constructor(
 
         other as Folder
 
-        if (id != other.id) return false
-
-        return true
+        return id == other.id
     }
 
     override fun hashCode(): Int {
