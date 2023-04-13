@@ -2,7 +2,7 @@ name: Waypoints
 authors:
   - Md5Lukas
 main: de.md5lukas.waypoints.WaypointsPlugin
-loader: de.md5lukas.waypoints.WaypointsLoader
+loader: de.md5lukas.waypoints.DependencyYmlLoader
 version: ${version}
 
 website: https://github.com/Sytm/waypoints

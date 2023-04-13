@@ -1,3 +1,0 @@
-org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
-dev.jorel:commandapi-shade:${commandApiVersion}
-dev.jorel:commandapi-kotlin:${commandApiVersion}
