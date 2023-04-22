@@ -18,7 +18,6 @@ import xyz.jpenilla.squaremap.api.marker.MarkerOptions
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
-import java.util.logging.Level
 import javax.imageio.ImageIO
 
 class SquareMapIntegration(
@@ -40,7 +39,7 @@ class SquareMapIntegration(
             return false
         }
 
-        plugin.logger.log(Level.INFO, "Found squaremap plugin")
+        plugin.slF4JLogger.info("Found squaremap plugin")
 
         extractIcons()
 

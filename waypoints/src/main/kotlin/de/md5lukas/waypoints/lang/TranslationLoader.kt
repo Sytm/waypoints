@@ -13,7 +13,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import java.io.File
 import java.nio.charset.StandardCharsets
-import java.util.logging.Level
 
 class TranslationLoader(
     val plugin: WaypointsPlugin,
@@ -126,7 +125,7 @@ class TranslationLoader(
     operator fun contains(key: String): Boolean {
         val contains = key in translations
         if (!contains && key !in warned) {
-            plugin.logger.log(Level.WARNING, "The translation key $key is missing in the translation file for the language $loadedLanguage, but not required")
+            plugin.slF4JLogger.warn("The translation key {} is missing in the translation file for the language {}, but not required", key, loadedLanguage)
             warned += key
         }
         return contains

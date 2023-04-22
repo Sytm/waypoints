@@ -13,7 +13,6 @@ import de.md5lukas.waypoints.util.registerEvents
 import org.bukkit.World
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import java.util.logging.Level
 
 class BlueMapIntegration(
     private val plugin: WaypointsPlugin,
@@ -34,7 +33,7 @@ class BlueMapIntegration(
             }
 
             plugin.registerEvents(this)
-            plugin.logger.log(Level.INFO, "Delayed initialization of BlueMap integration completed")
+            plugin.slF4JLogger.info("Delayed initialization of BlueMap integration completed")
         }
 
         return true

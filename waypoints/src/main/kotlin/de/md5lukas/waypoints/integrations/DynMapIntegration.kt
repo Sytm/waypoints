@@ -15,7 +15,6 @@ import org.dynmap.markers.MarkerAPI
 import org.dynmap.markers.MarkerIcon
 import org.dynmap.markers.MarkerSet
 import java.util.*
-import java.util.logging.Level
 
 /**
  * For docs see:
@@ -40,7 +39,7 @@ class DynMapIntegration(
             return false
         }
 
-        plugin.logger.log(Level.INFO, "Found DynMap plugin")
+        plugin.slF4JLogger.info("Found DynMap plugin")
         try {
             markerApi = (dynmapPluginInstance as DynmapAPI).markerAPI
             defaultMarkerIcon = markerApi.getMarkerIcon(plugin.waypointsConfig.integrations.dynmap.icon)
@@ -58,7 +57,7 @@ class DynMapIntegration(
 
             plugin.registerEvents(this)
         } catch (_: ClassNotFoundException) {
-            plugin.logger.log(Level.WARNING, "The DynMap plugin has been found, but plugin instance class could not be found")
+            plugin.slF4JLogger.error("The DynMap plugin has been found, but plugin instance class could not be found")
             return false
         }
         return true
@@ -121,7 +120,7 @@ class DynMapIntegration(
             val customIcon: MarkerIcon? = markerApi.getMarkerIcon(icon)
 
             if (customIcon === null) {
-                plugin.logger.log(Level.SEVERE, "The public waypoint ${waypoint.name} has the icon with the name '$icon', but that icon does not exist!")
+                plugin.slF4JLogger.error("The public waypoint {} has the icon with the name '{}', but that icon does not exist!", waypoint.name, icon)
                 defaultMarkerIcon
             } else {
                 customIcon

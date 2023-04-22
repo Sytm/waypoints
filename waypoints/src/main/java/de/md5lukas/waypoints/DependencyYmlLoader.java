@@ -20,7 +20,6 @@ public class DependencyYmlLoader implements PluginLoader {
         var resolver = new MavenLibraryResolver();
 
         var declaration = (Map<String, ?>) new Yaml().load(this.getClass().getClassLoader().getResourceAsStream("dependencies.yml"));
-        System.out.println(declaration);
 
         for (var repository : (List<Map<String, String>>) declaration.get("repositories")) {
             resolver.addRepository(new RemoteRepository.Builder(
