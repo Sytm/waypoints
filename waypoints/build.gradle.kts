@@ -103,7 +103,7 @@ kotlin {
 
 tasks.withType<KotlinCompile> {
     // To make sure we have an explicit dependency on the project itself because otherwise we will get a warning that we only depend on an output file and not the project itself
-    dependsOn(project(":api-sqlite").tasks.jar)
+    dependsOn(project(":api-sqlite").tasks.shadowJar)
 }
 
 tasks.withType<ShadowJar> {
