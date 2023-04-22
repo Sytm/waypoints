@@ -12,6 +12,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings({ "UnstableApiUsage", "unused" })
 public class DependencyYmlLoader implements PluginLoader {
 
     @SuppressWarnings("unchecked")
