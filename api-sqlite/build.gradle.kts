@@ -27,6 +27,7 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
     testImplementation("com.github.seeseemelk:MockBukkit-v1.19:$mockBukkitVersion")
+    testRuntimeOnly("org.spigotmc:spigot-api:$paperVersion")
     testRuntimeOnly("org.xerial:sqlite-jdbc:$sqliteDriverVersion")
 }
 
