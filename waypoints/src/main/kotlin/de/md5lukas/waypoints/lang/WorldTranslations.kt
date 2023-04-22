@@ -6,7 +6,6 @@ import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import java.util.logging.Level
 
 class WorldTranslations(
     private val tl: TranslationLoader
@@ -27,7 +26,7 @@ class WorldTranslations(
             Component.text(tl[key])
         } else {
             warned.add(world)
-            tl.plugin.logger.log(Level.WARNING, "The world ${world.name} has no translation present. Using actual name as a fallback.")
+            tl.plugin.slF4JLogger.warn("The world {} has no translation present. Using actual name as a fallback.", world.name)
             Component.text(world.name)
         }
     }

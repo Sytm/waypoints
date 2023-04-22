@@ -35,7 +35,6 @@ import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.util.concurrent.TimeUnit
-import java.util.logging.Level
 
 class WaypointsPlugin : JavaPlugin() {
 
@@ -82,7 +81,6 @@ class WaypointsPlugin : JavaPlugin() {
     override fun onEnable() {
         CommandAPI.onEnable(this)
 
-        logger.level = Level.FINE
         loadConfiguration()
         initDatabase()
         initApiServiceProvider()

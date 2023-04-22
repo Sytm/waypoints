@@ -13,7 +13,6 @@ import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.concurrent.CompletableFuture
-import java.util.logging.Level
 
 class WaypointsArgumentSuggestions(
     private val plugin: WaypointsPlugin,
@@ -32,7 +31,7 @@ class WaypointsArgumentSuggestions(
             // The server has been reloaded and this reference to the plugin is outdated.
             if (reloadError) {
                 reloadError = false
-                plugin.logger.log(Level.SEVERE, "The server has been reloaded, which breaks the command completion. Consider restarting")
+                plugin.slF4JLogger.error("The server has been reloaded, which breaks the command completion. Consider restarting")
             }
             return builder.buildFuture()
         }
