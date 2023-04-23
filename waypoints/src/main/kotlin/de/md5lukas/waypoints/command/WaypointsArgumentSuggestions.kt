@@ -7,8 +7,8 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.util.containsNonWordCharacter
 import de.md5lukas.waypoints.util.runTaskAsync
+import dev.jorel.commandapi.BukkitTooltip
 import dev.jorel.commandapi.SuggestionInfo
-import dev.jorel.commandapi.Tooltip
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -19,12 +19,12 @@ class WaypointsArgumentSuggestions(
     private val textMode: Boolean,
     private val allowGlobals: Boolean,
     private val filter: ((CommandSender, Waypoint) -> Boolean)? = null,
-) : ArgumentSuggestions {
+) : ArgumentSuggestions<CommandSender> {
 
     private var reloadError = true
 
     override fun suggest(
-        info: SuggestionInfo,
+        info: SuggestionInfo<CommandSender>,
         builder: SuggestionsBuilder
     ): CompletableFuture<Suggestions> {
         if (!plugin.isEnabled) {
@@ -85,7 +85,7 @@ class WaypointsArgumentSuggestions(
     }
 
     private fun Waypoint.getTooltip(sender: CommandSender): Message = plugin.apiExtensions.run {
-        Tooltip.messageFromAdventureComponent(plugin.translations.COMMAND_SEARCH_TOOLTIP.withReplacements(*getResolvers(sender as? Player)))
+        BukkitTooltip.messageFromAdventureComponent(plugin.translations.COMMAND_SEARCH_TOOLTIP.withReplacements(*getResolvers(sender as? Player)))
     }
 
     private fun shouldDiscard(sender: CommandSender, waypoint: Waypoint) =
