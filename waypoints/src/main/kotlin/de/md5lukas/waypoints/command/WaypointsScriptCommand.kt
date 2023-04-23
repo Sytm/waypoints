@@ -65,27 +65,17 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
             literalArgument("temporaryWaypoint") {
                 playerArgument("player") {
                     locationArgument("target") {
-                        anyExecutor { sender, args ->
-                            val player = args[0] as Player
-                            val target = args[1] as Location
-
-                            if (isLocationOutOfBounds(target)) {
-                                translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
-                            } else {
-                                plugin.pointerManager.enable(player, TemporaryWaypointTrackable(plugin, target))
-                            }
-                        }
-                        argument(
+                        optionalArgument(
                             StringArgument("beaconcolor")
                                 .replaceSuggestions(ArgumentSuggestions.strings(BeaconColor.values().map { it.name }.toList()))
                         ) {
                             anyExecutor { sender, args ->
                                 val player = args[0] as Player
                                 val target = args[1] as Location
-                                val beaconColorString = args[2] as String
+                                val beaconColorString = args[2] as? String
 
                                 val beaconColor = BeaconColor.values().firstOrNull { it.name.equals(beaconColorString, true) }
-                                if (beaconColor === null) {
+                                if (beaconColorString !== null && beaconColor === null) {
                                     translations.COMMAND_SCRIPT_TEMPORARY_WAYPOINT_BEACON_COLOR_NOT_FOUND.send(sender)
                                     return@anyExecutor
                                 }

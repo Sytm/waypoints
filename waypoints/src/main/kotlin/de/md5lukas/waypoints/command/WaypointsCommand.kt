@@ -7,7 +7,6 @@ import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.*
 import dev.jorel.commandapi.arguments.GreedyStringArgument
-import dev.jorel.commandapi.arguments.LiteralArgument.of
 import dev.jorel.commandapi.kotlindsl.*
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Location
@@ -125,7 +124,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            permission(of("set"), WaypointsPermissions.MODIFY_PRIVATE) {
+            literalArgument("set") {
+                withPermission(WaypointsPermissions.MODIFY_PRIVATE)
                 greedyStringArgument("name") {
                     playerExecutor { player, args ->
                         val name = args[0] as String
@@ -138,7 +138,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                 }
             }
             if (plugin.waypointsConfig.general.features.globalWaypoints) {
-                permission(of("setPublic"), WaypointsPermissions.MODIFY_PUBLIC) {
+                literalArgument("setPublic") {
+                    withPermission(WaypointsPermissions.MODIFY_PUBLIC)
                     greedyStringArgument("name") {
                         playerExecutor { player, args ->
                             val name = args[0] as String
@@ -150,7 +151,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                         }
                     }
                 }
-                permission(of("setPermission"), WaypointsPermissions.MODIFY_PERMISSION) {
+                literalArgument("setPermission") {
+                    withPermission(WaypointsPermissions.MODIFY_PERMISSION)
                     stringArgument("permission") {
                         greedyStringArgument("name") {
                             playerExecutor { player, args ->
@@ -166,7 +168,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            permission(of("setTemporary"), WaypointsPermissions.TEMPORARY_WAYPOINT) {
+            literalArgument("setTemporary") {
+                withPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)
                 locationArgument("target") {
                     playerExecutor { player, args ->
                         val location = args[0] as Location
@@ -182,7 +185,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            permission(of("other"), WaypointsPermissions.COMMAND_OTHER) {
+            literalArgument("other") {
+                withPermission(WaypointsPermissions.COMMAND_OTHER)
                 offlinePlayerArgument("target") {
                     playerExecutor { player, args ->
                         val otherUUID = (args[0] as OfflinePlayer).uniqueId
@@ -198,7 +202,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            permission(of("statistics"), WaypointsPermissions.COMMAND_STATISTICS) {
+            literalArgument("statistics") {
+                withPermission(WaypointsPermissions.COMMAND_STATISTICS)
                 anyExecutor { sender, _ ->
                     with(plugin.api.statistics) {
                         translations.COMMAND_STATISTICS_MESSAGE.send(
@@ -219,7 +224,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     }
                 }
             }
-            permission(of("reload"), WaypointsPermissions.COMMAND_RELOAD) {
+            literalArgument("reload") {
+                withPermission(WaypointsPermissions.COMMAND_RELOAD)
                 anyExecutor { sender, _ ->
                     plugin.reloadConfiguration()
                     translations.COMMAND_RELOAD_FINISHED.send(sender)
