@@ -3,22 +3,17 @@ plugins {
 }
 
 dependencies {
-    val paperVersion: String by project
-    val md5CommonsVersion: String by project
-    val junitVersion: String by project
-
-    api("io.papermc.paper:paper-api:$paperVersion")
+    api(libs.paper)
     api(kotlin("stdlib-jdk8"))
-    implementation("de.md5lukas:md5-commons:$md5CommonsVersion")
+    implementation(libs.md5Commons)
 
     // Test dependencies
     testImplementation(kotlin("test-junit5"))
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation(libs.junitJupiter)
 }
 
 kotlin {
-    val jvmTarget: String by project
-    jvmToolchain(jvmTarget.toInt())
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
 
 tasks.withType<Test> {

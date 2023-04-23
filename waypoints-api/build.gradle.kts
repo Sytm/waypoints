@@ -2,23 +2,19 @@ import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.dokka")
+    alias(libs.plugins.dokka)
     `maven-publish`
 }
 
 description = "Waypoints api"
 
-val paperVersion: String by project
-
 dependencies {
-    api("io.papermc.paper:paper-api:$paperVersion")
-
+    api(libs.paper)
     api(kotlin("stdlib-jdk8"))
 }
 
 kotlin {
-    val jvmTarget: String by project
-    jvmToolchain(jvmTarget.toInt())
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
 
 val sourcesJar by tasks.creating(Jar::class) {
@@ -29,7 +25,7 @@ val sourcesJar by tasks.creating(Jar::class) {
 val dokkaHtml by tasks.getting(DokkaTask::class) {
     dokkaSourceSets {
         configureEach {
-            val majorVersion = paperVersion.split('.').let { "${it[0]}.${it[1]}" }
+            val majorVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
             externalDocumentationLink("https://jd.papermc.io/paper/$majorVersion/", "https://jd.papermc.io/paper/$majorVersion/element-list")
         }
     }

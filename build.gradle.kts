@@ -1,7 +1,5 @@
 plugins {
-    kotlin("jvm") apply false
-    id("com.github.johnrengelman.shadow") apply false
-    id("org.jetbrains.dokka") apply false
+    kotlin("jvm") version libs.versions.kotlin apply false
 }
 
 subprojects {
