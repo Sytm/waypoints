@@ -6,9 +6,9 @@ import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
     kotlin("jvm")
-    id("com.github.johnrengelman.shadow")
-    id("com.modrinth.minotaur") version "2.+"
-    id("xyz.jpenilla.run-paper") version "2.+"
+    alias(libs.plugins.shadow)
+    alias(libs.plugins.minotaur)
+    alias(libs.plugins.runPaper)
 }
 
 description = "Waypoints plugin"
@@ -21,20 +21,8 @@ repositories {
     maven("https://repo.mikeprimm.com/") // DynMap
 }
 
-val paperVersion: String by project
-val commandApiVersion: String by project
-
 dependencies {
-    val md5CommonsVersion: String by project
-    val kinvsVersion: String by project
-    val anvilGUIVersion: String by project
-    val bstatsVersion: String by project
-    val vaultVersion: String by project
-    val dynmapVersion: String by project
-    val squareMapVersion: String by project
-    val blueMapVersion: String by project
-
-    implementation("io.papermc.paper:paper-api:$paperVersion")
+    implementation(libs.paper)
     implementation(kotlin("stdlib-jdk8"))
 
     implementation(project(":utils"))
@@ -44,27 +32,25 @@ dependencies {
     implementation(project(":api-sqlite", "shadow"))
 
     // Dependencies on own projects
-    implementation("de.md5lukas:md5-commons:$md5CommonsVersion")
-    implementation("de.md5lukas:kinvs:$kinvsVersion")
+    implementation(libs.md5Commons)
+    implementation(libs.kinvs)
 
     // Required dependencies
-    implementation("net.wesjd:anvilgui:$anvilGUIVersion")
-    implementation("org.bstats:bstats-bukkit:$bstatsVersion")
-    implementation("dev.jorel:commandapi-bukkit-shade:$commandApiVersion")
-    implementation("dev.jorel:commandapi-bukkit-kotlin:$commandApiVersion")
-    implementation("com.mojang:brigadier:1.0.18")
+    implementation(libs.anvilGui)
+    implementation(libs.bStats)
+    implementation(libs.bundles.commandApi)
 
     // Optional dependencies
-    implementation("com.github.MilkBowl:VaultAPI:$vaultVersion")
+    implementation(libs.vaultApi)
 
-    implementation("us.dynmap:DynmapCoreAPI:$dynmapVersion:all")
-    implementation("us.dynmap:dynmap-api:$dynmapVersion:unshaded") {
+    implementation(variantOf(libs.dynmap.coreApi) { classifier("all") })
+    implementation(variantOf(libs.dynmap.api) { classifier("unshaded") }) {
         isTransitive = false
     }
 
-    implementation("xyz.jpenilla:squaremap-api:$squareMapVersion")
+    implementation(libs.squaremapApi)
 
-    implementation("com.github.BlueMap-Minecraft:BlueMapAPI:$blueMapVersion")
+    implementation(libs.bluemapApi)
 }
 
 tasks.register<ResourceIndexTask>("createResourceIndex")
@@ -72,7 +58,8 @@ tasks.register<ResourceIndexTask>("createResourceIndex")
 tasks.withType<ProcessResources> {
     dependsOn("createResourceIndex")
 
-    val apiVersion = paperVersion.split('.').let { "${it[0]}.${it[1]}" }
+    val apiVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
+    val commandApiVersion = libs.versions.commandApi.get()
 
     inputs.property("version", project.version)
     inputs.property("apiVersion", apiVersion)
@@ -82,7 +69,6 @@ tasks.withType<ProcessResources> {
     filteringCharset = "UTF-8"
 
     filesMatching("paper-plugin.yml") {
-
         expand(
             "version" to project.version,
             "apiVersion" to apiVersion,
@@ -97,13 +83,12 @@ tasks.withType<ProcessResources> {
 }
 
 kotlin {
-    val jvmTarget: String by project
-    jvmToolchain(jvmTarget.toInt())
+    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
 }
 
 tasks.withType<KotlinCompile> {
     // To make sure we have an explicit dependency on the project itself because otherwise we will get a warning that we only depend on an output file and not the project itself
-    dependsOn(project(":api-sqlite").tasks.shadowJar)
+    dependsOn(project(":api-sqlite").tasks["shadowJar"])
 }
 
 tasks.withType<ShadowJar> {
@@ -142,7 +127,7 @@ tasks.withType<ShadowJar> {
 
 tasks.withType<RunServer> {
     dependsOn("jar")
-    minecraftVersion(paperVersion.substringBefore('-'))
+    minecraftVersion(libs.versions.paper.get().substringBefore('-'))
 }
 
 modrinth {
@@ -154,7 +139,7 @@ modrinth {
     versionType.set("release")
     uploadFile.set(tasks.shadowJar as Any)
 
-    gameVersions.addAll(paperVersion.substringBefore('-'))
+    gameVersions.addAll(libs.versions.paper.get().substringBefore('-'))
     loaders.addAll("paper")
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
