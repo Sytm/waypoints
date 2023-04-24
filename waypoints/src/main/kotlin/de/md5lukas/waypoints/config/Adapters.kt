@@ -2,6 +2,8 @@ package de.md5lukas.waypoints.config
 
 import de.md5lukas.commons.time.DurationParser
 import de.md5lukas.konfig.RegisteredTypeAdapter
+import net.kyori.adventure.text.format.Style
+import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData
@@ -35,4 +37,10 @@ object DurationAdapter : RegisteredTypeAdapter.Static<Duration>(Duration::class)
         section.getString(path)?.let {
             Duration.ofMillis(DurationParser.parseDuration(it, TimeUnit.MILLISECONDS))
         }
+}
+
+object StyleAdapter : RegisteredTypeAdapter.Static<Style>(Style::class) {
+
+    override fun get(section: ConfigurationSection, path: String) =
+        section.getString(path)?.let { MiniMessage.miniMessage().deserialize(it).style() }
 }

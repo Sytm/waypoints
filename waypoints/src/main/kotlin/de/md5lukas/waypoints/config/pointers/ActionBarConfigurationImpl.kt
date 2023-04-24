@@ -4,7 +4,6 @@ import de.md5lukas.konfig.ConfigPath
 import de.md5lukas.konfig.Configurable
 import de.md5lukas.waypoints.pointers.config.ActionBarConfiguration
 import net.kyori.adventure.text.format.Style
-import net.kyori.adventure.text.minimessage.MiniMessage
 
 @Configurable
 class ActionBarConfigurationImpl : RepeatingPointerConfigurationImpl(), ActionBarConfiguration {
@@ -13,6 +12,9 @@ class ActionBarConfigurationImpl : RepeatingPointerConfigurationImpl(), ActionBa
         private set
 
     override var normalColor: Style = Style.empty()
+        private set
+
+    override var section: String = ""
         private set
 
     @ConfigPath("arrow.left")
