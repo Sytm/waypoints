@@ -22,4 +22,6 @@ object WaypointsPermissions {
 
     const val TRACKING_ENABLED = "waypoints.tracking.enabled"
     const val TRACKING_TRACK_ALL = "waypoints.tracking.trackAll"
+
+    const val UPDATE_NOTIFICATION = "waypoints.updateNotification"
 }

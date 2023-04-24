@@ -130,6 +130,8 @@ tracked player.
 
 `waypoints.tracking.trackAll` - Allows the player to track players that are hidden
 
+`waypoints.updateNotification` - The player receives a notification after a server restart if a new Version is found
+
 *: These permissions are granted to all players by default
 
 ## Configuration

@@ -9,6 +9,9 @@ class GeneralConfiguration {
     var language: String = ""
         private set
 
+    var updateChecker: Boolean = true
+        private set
+
     var worldNotFound: WorldNotFoundAction = WorldNotFoundAction.SHOW
         private set
 
@@ -34,6 +37,8 @@ class GeneralConfiguration {
 
     fun loadFromConfiguration(cfg: ConfigurationSection) {
         language = cfg.getStringNotNull("language")
+
+        updateChecker = cfg.getBoolean("updateChecker")
 
         worldNotFound = WorldNotFoundAction.valueOf(cfg.getStringNotNull("worldNotFound"))
 

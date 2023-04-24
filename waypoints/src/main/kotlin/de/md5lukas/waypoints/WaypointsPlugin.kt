@@ -24,6 +24,7 @@ import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.PointerManagerHooks
 import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.TeleportManager
+import de.md5lukas.waypoints.util.UpdateChecker
 import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.registerEvents
 import dev.jorel.commandapi.CommandAPI
@@ -256,6 +257,9 @@ class WaypointsPlugin : JavaPlugin() {
         val scheduler = server.scheduler
         // Run once every day
         scheduler.runTaskTimerAsynchronously(this, CleanDatabaseTask(this), 20 * 60 * 60 * 24, 20 * 60 * 60 * 24)
+        if (waypointsConfig.general.updateChecker) {
+            scheduler.runTaskAsynchronously(this, UpdateChecker(this, "Sytm", "waypoints"))
+        }
     }
     //</editor-fold>
 
