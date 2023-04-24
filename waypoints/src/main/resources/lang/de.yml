@@ -6,6 +6,13 @@ worlds:
   world_nether: "Nether"
   world_the_end: "Das Ende"
 
+update:
+  error: "<red>Es konnten nicht die aktuellsten Veröffentlichung geladen werden"
+  upToDate: "<green>Es wird die aktuellste Version von Waypoints verwendet"
+  outdated: |
+    <gray>Waypoints Version <yellow><latest></yellow> ist verfügbar.
+    Schau dir die Veröffentlichung hier an: <yellow><link></yellow>
+
 command:
   notAPlayer: "<red>Du musst ein Spieler sein um diesen Befehl benutzen zu können."
 

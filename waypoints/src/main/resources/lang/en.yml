@@ -6,6 +6,13 @@ worlds:
   world_nether: "Nether"
   world_the_end: "The End"
 
+update:
+  error: "<red>Could not retrieve latest release data"
+  upToDate: "<green>The latest version of Waypoints is used"
+  outdated: |
+    <gray>The version <yellow><latest></yellow> for Waypoints is available.
+    Checkout the release here: <yellow><link></yellow>
+
 command:
   notAPlayer: "<red>You must be a player to use this command."
 

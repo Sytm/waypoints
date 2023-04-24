@@ -48,6 +48,7 @@ permissions:
       - waypoints.teleport.permission
       - waypoints.tracking.enabled
       - waypoints.tracking.trackAll
+      - waypoints.updateNotification
 
   waypoints.command.scripting: { }
   waypoints.command.use:
@@ -73,3 +74,5 @@ permissions:
   waypoints.tracking.enabled:
     default: true
   waypoints.tracking.trackAll: { }
+
+  waypoints.updateNotification: { }

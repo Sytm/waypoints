@@ -11,6 +11,10 @@ class Translations(
     val PREFIX = Translation(tl, "prefix")
     val SCRIPT_PREFIX = Translation(tl, "scriptPrefix")
 
+    val UPDATE_COULD_NOT_CHECK = Translation(tl, "update.error")
+    val UPDATE_USING_LATEST_VERSION = Translation(tl, "update.upToDate")
+    val UPDATE_NEW_VERSION_AVAILABLE = Translation(tl, "update.outdated")
+
     val COMMAND_NOT_A_PLAYER = Translation(tl, "command.notAPlayer", PREFIX)
 
     val COMMAND_SCRIPT_HELP_HEADER = Translation(tl, "command.script.help.header", SCRIPT_PREFIX)
