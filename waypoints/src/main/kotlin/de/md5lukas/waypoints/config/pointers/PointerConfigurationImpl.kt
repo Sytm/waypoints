@@ -2,15 +2,21 @@ package de.md5lukas.waypoints.config.pointers
 
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
+import de.md5lukas.konfig.ConfigPath
+import de.md5lukas.konfig.Configurable
+import de.md5lukas.konfig.TypeAdapter
+import de.md5lukas.konfig.UseAdapter
 import de.md5lukas.waypoints.pointers.config.PointerConfiguration
-import de.md5lukas.waypoints.util.getConfigurationSectionNotNull
 import org.bukkit.configuration.ConfigurationSection
 
+@Configurable
 class PointerConfigurationImpl : PointerConfiguration {
 
+    @ConfigPath("disableWhenReachedRadius")
     override var disableWhenReachedRadiusSquared = 0
         private set
 
+    @UseAdapter(BiMapAdapter::class)
     override var connectedWorlds: BiMap<String, String> = HashBiMap.create(0)
         private set
 
@@ -28,23 +34,21 @@ class PointerConfigurationImpl : PointerConfiguration {
 
     override val bossBar = BossBarConfigurationImpl()
 
-    fun loadFromConfiguration(cfg: ConfigurationSection) {
-        disableWhenReachedRadiusSquared = cfg.getInt("disableWhenReachedRadius").let { it * it }
+    private class BiMapAdapter : TypeAdapter<BiMap<String, String>> {
+        override fun get(section: ConfigurationSection, path: String): BiMap<String, String>? {
+            val subSection = section.getConfigurationSection(path)
 
-        connectedWorlds = cfg.getConfigurationSectionNotNull("connectedWorlds").let { subSection ->
-            val map = HashBiMap.create<String, String>()
-            subSection.getKeys(false).forEach {
-                map[it] = subSection.getString(it)
+            if (subSection === null) {
+                return null
             }
-            map
-        }
 
-        actionBar.loadFromConfiguration(cfg.getConfigurationSectionNotNull("actionBar"))
-        beacon.loadFromConfiguration(cfg.getConfigurationSectionNotNull("beacon"))
-        blinkingBlock.loadFromConfiguration(cfg.getConfigurationSectionNotNull("blinkingBlock"))
-        compass.loadFromConfiguration(cfg.getConfigurationSectionNotNull("compass"))
-        particle.loadFromConfiguration(cfg.getConfigurationSectionNotNull("particle"))
-        hologram.loadFromConfiguration(cfg.getConfigurationSectionNotNull("hologram"))
-        bossBar.loadFromConfiguration(cfg.getConfigurationSectionNotNull("bossBar"))
+            return subSection.getKeys(false).let {
+                val map = HashBiMap.create<String, String>(it.size)
+                it.forEach { primary ->
+                    map[primary] = subSection.getString(primary)
+                }
+                map
+            }
+        }
     }
 }

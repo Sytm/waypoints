@@ -34,6 +34,7 @@ dependencies {
     // Dependencies on own projects
     implementation(libs.md5Commons)
     implementation(libs.kinvs)
+    implementation(libs.konfig)
 
     // Required dependencies
     implementation(libs.anvilGui)
@@ -113,6 +114,7 @@ tasks.withType<ShadowJar> {
 
         include(dependency("de.md5lukas:md5-commons"))
         include(dependency("de.md5lukas:kinvs"))
+        include(dependency("de.md5lukas:spigot-konfig"))
 
         include(dependency("net.wesjd:anvilgui"))
         include(dependency("org.bstats::"))

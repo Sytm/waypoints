@@ -37,7 +37,7 @@ class PointerEvents(
     private fun onMove(e: PlayerMoveEvent) {
         val pointer = plugin.pointerManager.getCurrentTarget(e.player) as? Waypoint ?: return
 
-        val visitedRadius = plugin.waypointsConfig.general.teleport.visitedRadius
+        val visitedRadius = plugin.waypointsConfig.general.teleport.visitedRadiusSquared
 
         if (e.player.world === pointer.location.world) {
             if (e.player.location.distanceSquared(pointer.location) <= visitedRadius) {

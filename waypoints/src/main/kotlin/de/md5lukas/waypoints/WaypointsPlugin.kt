@@ -9,10 +9,7 @@ import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
-import de.md5lukas.waypoints.config.BlockDataAdapter
-import de.md5lukas.waypoints.config.DurationAdapter
-import de.md5lukas.waypoints.config.MaterialListAdapter
-import de.md5lukas.waypoints.config.WaypointsConfiguration
+import de.md5lukas.waypoints.config.*
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
@@ -110,6 +107,7 @@ class WaypointsPlugin : JavaPlugin() {
             MaterialListAdapter,
             BlockDataAdapter,
             DurationAdapter,
+            StyleAdapter,
         )
     )
 

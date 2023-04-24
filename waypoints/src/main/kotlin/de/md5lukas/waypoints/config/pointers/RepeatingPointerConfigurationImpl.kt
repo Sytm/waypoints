@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.config.pointers
 
 import de.md5lukas.waypoints.pointers.config.RepeatingPointerConfiguration
-import org.bukkit.configuration.ConfigurationSection
 
 abstract class RepeatingPointerConfigurationImpl : RepeatingPointerConfiguration {
 
@@ -15,9 +14,4 @@ abstract class RepeatingPointerConfigurationImpl : RepeatingPointerConfiguration
             }
             field = value
         }
-
-    open fun loadFromConfiguration(cfg: ConfigurationSection) {
-        enabled = cfg.getBoolean("enabled")
-        interval = cfg.getInt("interval")
-    }
 }

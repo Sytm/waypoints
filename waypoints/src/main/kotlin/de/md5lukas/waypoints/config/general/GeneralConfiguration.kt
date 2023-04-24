@@ -1,9 +1,6 @@
 package de.md5lukas.waypoints.config.general
 
 import de.md5lukas.konfig.Configurable
-import de.md5lukas.konfig.TypeAdapter
-import de.md5lukas.konfig.UseAdapter
-import org.bukkit.configuration.ConfigurationSection
 
 @Configurable
 class GeneralConfiguration {
@@ -33,7 +30,7 @@ class GeneralConfiguration {
 
     val teleport = TeleportConfiguration()
 
-    val availableWorldsConfiguration = AvailableWorldsConfiguration()
+    val availableWorlds = AvailableWorldsConfiguration()
 
     val pointToDeathWaypointOnDeath = PointToDeathWaypointOnDeathConfiguration()
 }
