@@ -25,7 +25,7 @@ import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.callEvent
 import de.md5lukas.waypoints.util.registerEvents
 import dev.jorel.commandapi.CommandAPI
-import dev.jorel.commandapi.CommandAPIConfig
+import dev.jorel.commandapi.CommandAPIBukkitConfig
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
@@ -73,11 +73,11 @@ class WaypointsPlugin : JavaPlugin() {
     private lateinit var metrics: Metrics
 
     override fun onLoad() {
-        CommandAPI.onLoad(CommandAPIConfig().silentLogs(true))
+        CommandAPI.onLoad(CommandAPIBukkitConfig(this).silentLogs(true))
     }
 
     override fun onEnable() {
-        CommandAPI.onEnable(this)
+        CommandAPI.onEnable()
 
         logger.level = Level.FINE
         loadConfiguration()

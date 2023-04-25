@@ -57,8 +57,8 @@ dependencies {
     // Required dependencies
     implementation("net.wesjd:anvilgui:$anvilGUIVersion")
     implementation("org.bstats:bstats-bukkit:$bstatsVersion")
-    implementation("dev.jorel:commandapi-shade:$commandApiVersion")
-    implementation("dev.jorel:commandapi-kotlin:$commandApiVersion")
+    implementation("dev.jorel:commandapi-bukkit-shade:$commandApiVersion")
+    implementation("dev.jorel:commandapi-bukkit-kotlin:$commandApiVersion")
     implementation("com.mojang:brigadier:1.0.18")
 
     // Optional dependencies
