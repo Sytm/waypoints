@@ -120,8 +120,9 @@ tasks.withType<ShadowJar> {
         include(dependency("org.bstats::"))
     }
 
-    relocate("de.md5lukas.commons", "de.md5lukas.waypoints.commons")
-    relocate("de.md5lukas.kinvs", "de.md5lukas.waypoints.kinvs")
+    arrayOf("commons", "kinvs", "konfig").forEach {
+        relocate("de.md5lukas.$it", "de.md5lukas.waypoints.$it")
+    }
 
     relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
     relocate("org.bstats", "de.md5lukas.waypoints.bstats")

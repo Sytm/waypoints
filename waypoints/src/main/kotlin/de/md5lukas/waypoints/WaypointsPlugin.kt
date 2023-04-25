@@ -78,6 +78,7 @@ class WaypointsPlugin : JavaPlugin() {
 
     override fun onLoad() {
         CommandAPI.onLoad(CommandAPIBukkitConfig(this).silentLogs(true))
+        Konfig.preloadClasses<WaypointsConfiguration>()
     }
 
     override fun onEnable() {
