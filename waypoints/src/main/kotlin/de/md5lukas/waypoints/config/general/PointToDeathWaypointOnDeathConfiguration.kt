@@ -1,7 +1,8 @@
 package de.md5lukas.waypoints.config.general
 
-import org.bukkit.configuration.ConfigurationSection
+import de.md5lukas.konfig.Configurable
 
+@Configurable
 class PointToDeathWaypointOnDeathConfiguration {
 
     var enabled = false
@@ -9,9 +10,4 @@ class PointToDeathWaypointOnDeathConfiguration {
 
     var overwriteCurrent = false
         private set
-
-    fun loadFromConfiguration(cfg: ConfigurationSection) {
-        enabled = cfg.getBoolean("enabled")
-        overwriteCurrent = cfg.getBoolean("overwriteCurrent")
-    }
 }

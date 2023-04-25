@@ -34,6 +34,7 @@ dependencies {
     // Dependencies on own projects
     implementation(libs.md5Commons)
     implementation(libs.kinvs)
+    implementation(libs.konfig)
 
     // Required dependencies
     implementation(libs.anvilGui)
@@ -113,13 +114,15 @@ tasks.withType<ShadowJar> {
 
         include(dependency("de.md5lukas:md5-commons"))
         include(dependency("de.md5lukas:kinvs"))
+        include(dependency("de.md5lukas:spigot-konfig"))
 
         include(dependency("net.wesjd:anvilgui"))
         include(dependency("org.bstats::"))
     }
 
-    relocate("de.md5lukas.commons", "de.md5lukas.waypoints.commons")
-    relocate("de.md5lukas.kinvs", "de.md5lukas.waypoints.kinvs")
+    arrayOf("commons", "kinvs", "konfig").forEach {
+        relocate("de.md5lukas.$it", "de.md5lukas.waypoints.$it")
+    }
 
     relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
     relocate("org.bstats", "de.md5lukas.waypoints.bstats")
