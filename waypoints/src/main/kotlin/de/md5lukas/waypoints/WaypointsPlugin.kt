@@ -3,12 +3,13 @@ package de.md5lukas.waypoints
 import de.md5lukas.commons.time.DurationFormatter
 import de.md5lukas.commons.uuid.UUIDCacheSettings
 import de.md5lukas.commons.uuid.UUIDUtils
+import de.md5lukas.konfig.Konfig
 import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
-import de.md5lukas.waypoints.config.WaypointsConfiguration
+import de.md5lukas.waypoints.config.*
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
@@ -77,6 +78,7 @@ class WaypointsPlugin : JavaPlugin() {
 
     override fun onLoad() {
         CommandAPI.onLoad(CommandAPIBukkitConfig(this).silentLogs(true))
+        Konfig.preloadClasses<WaypointsConfiguration>()
     }
 
     override fun onEnable() {
@@ -101,16 +103,25 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     //<editor-fold desc="onEnable Methods">
+    private val konfig = Konfig(
+        listOf(
+            MaterialListAdapter,
+            BlockDataAdapter,
+            DurationAdapter,
+            StyleAdapter,
+        )
+    )
+
     private fun loadConfiguration() {
         saveDefaultConfig()
         waypointsConfig = WaypointsConfiguration()
-        waypointsConfig.loadFromConfiguration(config)
+        konfig.deserializeInto(config, waypointsConfig)
     }
 
     fun reloadConfiguration() {
         saveDefaultConfig()
         reloadConfig()
-        waypointsConfig.loadFromConfiguration(config)
+        konfig.deserializeInto(config, waypointsConfig)
 
         callEvent(ConfigReloadEvent(waypointsConfig))
     }

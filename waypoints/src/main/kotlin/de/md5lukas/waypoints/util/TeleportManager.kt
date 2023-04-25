@@ -46,7 +46,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         val config = getTeleportConfig(waypoint)
         return when {
             config.paymentType === TeleportPaymentType.DISABLED -> false
-            waypoint.type !== Type.DEATH || !config.onlyLastWaypoint -> true
+            waypoint.type !== Type.DEATH || config.onlyLastWaypoint == false -> true
             else -> {
                 player.deathFolder.waypoints.maxByOrNull { it.createdAt } == waypoint
             }
@@ -94,7 +94,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         if (!isTeleportEnabled(plugin.api.getWaypointPlayer(player.uniqueId), waypoint))
             return false
         val config = getTeleportConfig(waypoint)
-        if (!config.mustVisit)
+        if (config.mustVisit?.not() != false)
             return true
         return waypoint.getWaypointMeta(player.uniqueId).visited
     }

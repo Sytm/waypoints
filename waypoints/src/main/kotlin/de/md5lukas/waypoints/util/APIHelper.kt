@@ -33,7 +33,7 @@ fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material): Boo
 }
 
 fun checkWorldAvailability(plugin: WaypointsPlugin, world: World): Boolean {
-    val config = plugin.waypointsConfig.general.availableWorldsConfiguration
+    val config = plugin.waypointsConfig.general.availableWorlds
     return when (config.type) {
         FilterType.WHITELIST -> world.name.lowercase() in config.worlds
         FilterType.BLACKLIST -> world.name.lowercase() !in config.worlds
@@ -119,7 +119,7 @@ private fun creationPreChecks(plugin: WaypointsPlugin, player: Player, location:
 
 private fun checkVisited(plugin: WaypointsPlugin, waypoint: Waypoint, player: Player) {
     if (player.world === waypoint.location.world
-        && player.location.distanceSquared(waypoint.location) <= plugin.waypointsConfig.general.teleport.visitedRadius
+        && player.location.distanceSquared(waypoint.location) <= plugin.waypointsConfig.general.teleport.visitedRadiusSquared
     ) {
         waypoint.getWaypointMeta(player.uniqueId).visited = true
     }

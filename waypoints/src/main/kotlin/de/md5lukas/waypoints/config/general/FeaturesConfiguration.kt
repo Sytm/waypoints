@@ -1,7 +1,8 @@
 package de.md5lukas.waypoints.config.general
 
-import org.bukkit.configuration.ConfigurationSection
+import de.md5lukas.konfig.Configurable
 
+@Configurable
 class FeaturesConfiguration {
 
     var globalWaypoints = true
@@ -9,9 +10,4 @@ class FeaturesConfiguration {
 
     var deathWaypoints = true
         private set
-
-    fun loadFromConfiguration(cfg: ConfigurationSection) {
-        globalWaypoints = cfg.getBoolean("globalWaypoints")
-        deathWaypoints = cfg.getBoolean("deathWaypoints")
-    }
 }

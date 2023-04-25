@@ -1,13 +1,17 @@
 package de.md5lukas.waypoints.config.pointers
 
+import de.md5lukas.konfig.ConfigPath
+import de.md5lukas.konfig.Configurable
+import de.md5lukas.konfig.SkipConfig
 import de.md5lukas.waypoints.pointers.config.HologramConfiguration
-import org.bukkit.configuration.ConfigurationSection
 
+@Configurable
 class HologramConfigurationImpl : RepeatingPointerConfigurationImpl(), HologramConfiguration {
 
     override var distanceFromPlayer: Int = 0
         private set
 
+    @SkipConfig
     override val distanceFromPlayerSquared: Int
         get() = distanceFromPlayer * distanceFromPlayer
 
@@ -17,24 +21,11 @@ class HologramConfigurationImpl : RepeatingPointerConfigurationImpl(), HologramC
     override var hologramHeightOffset: Double = 0.0
         private set
 
+    @ConfigPath("icon.enabled")
     override var iconEnabled: Boolean = false
         private set
 
+    @ConfigPath("icon.offset")
     override var iconOffset: Double = 0.0
         private set
-
-    override fun loadFromConfiguration(cfg: ConfigurationSection) {
-        super.loadFromConfiguration(cfg)
-        with(cfg) {
-            distanceFromPlayer = getInt("distanceFromPlayer")
-
-            preventOcclusion = getBoolean("preventOcclusion")
-
-            hologramHeightOffset = getDouble("hologramHeightOffset")
-
-            iconEnabled = getBoolean("icon.enabled")
-
-            iconOffset = getDouble("icon.offset")
-        }
-    }
 }
