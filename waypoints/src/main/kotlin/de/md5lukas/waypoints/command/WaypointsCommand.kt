@@ -18,7 +18,6 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
     private val translations = plugin.translations
 
     fun register() {
-        val labelResolver = Placeholder.unparsed("label", "waypoints")
 
         commandTree("waypoints") {
             withPermission(WaypointsPermissions.COMMAND_PERMISSION)
@@ -30,7 +29,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                 translations.COMMAND_NOT_A_PLAYER.send(sender)
             }
             literalArgument("help") {
-                anyExecutor { sender, _ ->
+                anyExecutor { sender, args ->
+                    val labelResolver = args.labelResolver
                     translations.COMMAND_HELP_HEADER.send(sender)
 
                     if (sender is Player)

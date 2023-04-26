@@ -6,6 +6,7 @@ import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.isLocationOutOfBounds
+import de.md5lukas.waypoints.util.labelResolver
 import de.md5lukas.waypoints.util.placeholder
 import de.md5lukas.waypoints.util.searchWaypoints
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
@@ -22,17 +23,16 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
     private val translations = plugin.translations
 
     fun register() {
-        val labelMap = "label" placeholder "waypointsscript"
-
         commandTree("waypointsscript") {
             withPermission(WaypointsPermissions.COMMAND_SCRIPTING)
             withAliases(*plugin.waypointsConfig.general.commands.waypointsScriptAliases.toTypedArray())
-            anyExecutor { sender, _ ->
+            anyExecutor { sender, args ->
+                val labelResolver = args.labelResolver
                 translations.COMMAND_SCRIPT_HELP_HEADER.send(sender)
-                translations.COMMAND_SCRIPT_HELP_DESELECT_WAYPOINT.send(sender, labelMap)
-                translations.COMMAND_SCRIPT_HELP_SELECT_WAYPOINT.send(sender, labelMap)
-                translations.COMMAND_SCRIPT_HELP_TEMPORARY_WAYPOINT.send(sender, labelMap)
-                translations.COMMAND_SCRIPT_HELP_UUID.send(sender, labelMap)
+                translations.COMMAND_SCRIPT_HELP_DESELECT_WAYPOINT.send(sender, labelResolver)
+                translations.COMMAND_SCRIPT_HELP_SELECT_WAYPOINT.send(sender, labelResolver)
+                translations.COMMAND_SCRIPT_HELP_TEMPORARY_WAYPOINT.send(sender, labelResolver)
+                translations.COMMAND_SCRIPT_HELP_UUID.send(sender, labelResolver)
             }
             literalArgument("deselectWaypoint") {
                 playerArgument("player") {
