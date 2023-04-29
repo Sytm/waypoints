@@ -15,6 +15,7 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse.BodyHandlers
 import java.util.*
 
+@Suppress("UnstableApiUsage")
 class UpdateChecker(
     private val plugin: WaypointsPlugin,
     private val owner: String,
@@ -24,7 +25,6 @@ class UpdateChecker(
     private val notified = mutableSetOf<UUID>()
     private lateinit var message: Component
 
-    @Suppress("UnstableApiUsage")
     override fun run() {
         val latestData = latestRelease
 
@@ -64,6 +64,7 @@ class UpdateChecker(
                 .uri(URI.create("https://api.github.com/repos/%s/%s/releases/latest".format(owner, repository)))
                 .header("Accept", "application/vnd.github+json")
                 .header("X-GitHub-Api-Version", " 2022-11-28")
+                .header("User-Agent", "Plugin Update Checker (${plugin.pluginMeta.displayName})")
                 .GET()
                 .build()
 
