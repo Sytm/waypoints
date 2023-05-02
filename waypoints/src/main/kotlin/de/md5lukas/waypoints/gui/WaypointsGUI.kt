@@ -17,7 +17,9 @@ import de.md5lukas.waypoints.gui.pages.*
 import de.md5lukas.waypoints.util.*
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import java.util.*
 
 class WaypointsGUI(
@@ -79,20 +81,24 @@ class WaypointsGUI(
     }
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
-        AnvilGUI.Builder().plugin(plugin).text(translations.FOLDER_CREATE_ENTER_NAME.rawText).onComplete { (name) ->
-            val result = when (waypointHolder.type) {
-                Type.PRIVATE -> createFolderPrivate(plugin, viewer, name)
-                Type.PUBLIC -> createFolderPublic(plugin, viewer, name)
-                Type.PERMISSION -> createFolderPermission(plugin, viewer, name)
-                else -> throw IllegalStateException("Cannot create folders of the type ${waypointHolder.type}")
-            }
+        AnvilGUI.Builder().plugin(plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = translations.FOLDER_CREATE_ENTER_NAME.rawText })
+            .onClick { slot, (name) ->
+                if (slot != AnvilGUI.Slot.OUTPUT)
+                    return@onClick emptyList()
 
-            return@onComplete when (result) {
-                NameTaken -> AnvilGUI.ResponseAction.replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.rawText)
-                LimitReached, is SuccessFolder -> AnvilGUI.ResponseAction.close()
-                else -> throw IllegalStateException("Invalid return value $result")
-            }.asSingletonList()
-        }.onClose {
+                val result = when (waypointHolder.type) {
+                    Type.PRIVATE -> createFolderPrivate(plugin, viewer, name)
+                    Type.PUBLIC -> createFolderPublic(plugin, viewer, name)
+                    Type.PERMISSION -> createFolderPermission(plugin, viewer, name)
+                    else -> throw IllegalStateException("Cannot create folders of the type ${waypointHolder.type}")
+                }
+
+                return@onClick when (result) {
+                    NameTaken -> replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.rawText)
+                    LimitReached, is SuccessFolder -> AnvilGUI.ResponseAction.close()
+                    else -> throw IllegalStateException("Invalid return value $result")
+                }.asSingletonList()
+            }.onClose {
             (gui.activePage as BasePage).update()
             plugin.runTask {
                 gui.open()
@@ -105,47 +111,51 @@ class WaypointsGUI(
 
         var name: String? = null
         var permission: String? = null
-        AnvilGUI.Builder().plugin(plugin).text(translations.WAYPOINT_CREATE_ENTER_NAME.rawText).onComplete { (enteredText) ->
-            if (name == null) {
-                name = enteredText
+        AnvilGUI.Builder().plugin(plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = translations.WAYPOINT_CREATE_ENTER_NAME.rawText })
+            .onClick { slot, (enteredText) ->
+                if (slot != AnvilGUI.Slot.OUTPUT)
+                    return@onClick emptyList()
 
-                if (type == Type.PERMISSION && permission == null) {
-                    return@onComplete AnvilGUI.ResponseAction.replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText).asSingletonList()
-                }
-            } else if (type == Type.PERMISSION && permission == null) {
-                permission = enteredText
-            }
+                if (name == null) {
+                    name = enteredText
 
-            val result = name!!.let { name ->
-                when (type) {
-                    Type.PRIVATE -> createWaypointPrivate(plugin, viewer, name, location)
-                    Type.PUBLIC -> createWaypointPublic(plugin, viewer, name, location)
-                    Type.PERMISSION -> createWaypointPermission(plugin, viewer, name, permission!!, location)
-                    else -> throw IllegalArgumentException("Cannot create waypoints with the gui of the type $type")
-                }
-            }
-
-            return@onComplete when (result) {
-                LimitReached -> AnvilGUI.ResponseAction.close().asSingletonList()
-                NameTaken -> {
-                    name = null
-                    AnvilGUI.ResponseAction.replaceInputText(translations.WAYPOINT_CREATE_ENTER_NAME.rawText).asSingletonList()
+                    if (type == Type.PERMISSION && permission == null) {
+                        return@onClick replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText).asSingletonList()
+                    }
+                } else if (type == Type.PERMISSION && permission == null) {
+                    permission = enteredText
                 }
 
-                is SuccessWaypoint -> {
-                    folder?.let {
-                        result.waypoint.folder = it
-                        open(GUIFolderPage(this, folder))
+                val result = name!!.let { name ->
+                    when (type) {
+                        Type.PRIVATE -> createWaypointPrivate(plugin, viewer, name, location)
+                        Type.PUBLIC -> createWaypointPublic(plugin, viewer, name, location)
+                        Type.PERMISSION -> createWaypointPermission(plugin, viewer, name, permission!!, location)
+                        else -> throw IllegalArgumentException("Cannot create waypoints with the gui of the type $type")
+                    }
+                }
+
+                return@onClick when (result) {
+                    LimitReached -> AnvilGUI.ResponseAction.close().asSingletonList()
+                    NameTaken -> {
+                        name = null
+                        replaceInputText(translations.WAYPOINT_CREATE_ENTER_NAME.rawText).asSingletonList()
                     }
 
-                    waypoint = result.waypoint
+                    is SuccessWaypoint -> {
+                        folder?.let {
+                            result.waypoint.folder = it
+                            open(GUIFolderPage(this, folder))
+                        }
 
-                    AnvilGUI.ResponseAction.close().asSingletonList()
+                        waypoint = result.waypoint
+
+                        AnvilGUI.ResponseAction.close().asSingletonList()
+                    }
+
+                    else -> throw IllegalStateException("Invalid return value $result")
                 }
-
-                else -> throw IllegalStateException("Invalid return value $result")
-            }
-        }.onClose {
+            }.onClose {
             val capturedWaypoint = waypoint
 
             if (capturedWaypoint == null) {

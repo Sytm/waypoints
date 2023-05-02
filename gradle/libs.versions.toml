@@ -18,7 +18,7 @@ sqliteHelper = { group = "de.md5lukas", name = "sqlite-kotlin-helper", version =
 konfig = { group = "de.md5lukas", name = "spigot-konfig", version = "1.0.1-SNAPSHOT" }
 
 # (external)
-anvilGui = { group = "net.wesjd", name = "anvilgui", version = "1.6.3-SNAPSHOT" }
+anvilGui = { group = "net.wesjd", name = "anvilgui", version = "1.6.4-SNAPSHOT" }
 bStats = { group = "org.bstats", name = "bstats-bukkit", version = "3.0.2" }
 commandapi-shade = { group = "dev.jorel", name = "commandapi-bukkit-shade", version.ref = "commandApi" }
 commandapi-kotlin = { group = "dev.jorel", name = "commandapi-bukkit-kotlin", version.ref = "commandApi" }

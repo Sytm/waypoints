@@ -15,6 +15,8 @@ import de.md5lukas.waypoints.gui.items.ToggleGlobalsItem
 import de.md5lukas.waypoints.util.*
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 
 class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : ListingPage<GUIDisplayable>(
     wpGUI,
@@ -150,24 +152,28 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                 if (guiFolder is Folder && canModify) {
                     GUIItem(wpGUI.translations.FOLDER_RENAME.item) {
                         wpGUI.viewer.closeInventory()
-                        AnvilGUI.Builder().plugin(wpGUI.plugin).text(guiFolder.name).onComplete { (name) ->
-                            val holder = wpGUI.getHolderForType(guiFolder.type)
+                        AnvilGUI.Builder().plugin(wpGUI.plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = guiFolder.name })
+                            .onClick { slot, (name) ->
+                                if (slot != AnvilGUI.Slot.OUTPUT)
+                                    return@onClick emptyList()
 
-                            if (checkFolderName(wpGUI.plugin, holder, name)) {
-                                guiFolder.name = name
+                                val holder = wpGUI.getHolderForType(guiFolder.type)
 
-                                updateControls()
-                            } else {
-                                when (guiFolder.type) {
-                                    Type.PRIVATE -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PRIVATE
-                                    Type.PUBLIC -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PUBLIC
-                                    Type.PERMISSION -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PERMISSION
-                                    else -> throw IllegalArgumentException("Folders of the type ${guiFolder.type} have no name")
-                                }.send(wpGUI.viewer)
-                            }
+                                if (checkFolderName(wpGUI.plugin, holder, name)) {
+                                    guiFolder.name = name
 
-                            return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
-                        }.onClose {
+                                    updateControls()
+                                } else {
+                                    when (guiFolder.type) {
+                                        Type.PRIVATE -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PRIVATE
+                                        Type.PUBLIC -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PUBLIC
+                                        Type.PERMISSION -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PERMISSION
+                                        else -> throw IllegalArgumentException("Folders of the type ${guiFolder.type} have no name")
+                                    }.send(wpGUI.viewer)
+                                }
+
+                                return@onClick AnvilGUI.ResponseAction.close().asSingletonList()
+                            }.onClose {
                             wpGUI.plugin.runTask {
                                 wpGUI.gui.open()
                             }
@@ -183,21 +189,26 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                 GUIItem(wpGUI.translations.OVERVIEW_SET_WAYPOINT.item) {
                     if (it.isShiftClick) {
                         var parsedLocation: Location? = null
-                        AnvilGUI.Builder().plugin(wpGUI.plugin).text(wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.rawText).onComplete { (coordinates) ->
-                            parsedLocation = parseLocationString(wpGUI.viewer, coordinates)
+                        AnvilGUI.Builder().plugin(wpGUI.plugin)
+                            .itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.rawText })
+                            .onClick { slot, (coordinates) ->
+                                if (slot != AnvilGUI.Slot.OUTPUT)
+                                    return@onClick emptyList()
 
-                            return@onComplete parsedLocation.let { location ->
-                                if (location === null) {
-                                    wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(wpGUI.viewer)
-                                    AnvilGUI.ResponseAction.replaceInputText(coordinates)
-                                } else if (isLocationOutOfBounds(location)) {
-                                    wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(wpGUI.viewer)
-                                    AnvilGUI.ResponseAction.replaceInputText(coordinates)
-                                } else {
-                                    AnvilGUI.ResponseAction.close()
-                                }
-                            }.asSingletonList()
-                        }.onClose {
+                                parsedLocation = parseLocationString(wpGUI.viewer, coordinates)
+
+                                return@onClick parsedLocation.let { location ->
+                                    if (location === null) {
+                                        wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(wpGUI.viewer)
+                                        replaceInputText(coordinates)
+                                    } else if (isLocationOutOfBounds(location)) {
+                                        wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(wpGUI.viewer)
+                                        replaceInputText(coordinates)
+                                    } else {
+                                        AnvilGUI.ResponseAction.close()
+                                    }
+                                }.asSingletonList()
+                            }.onClose {
                             parsedLocation.let { location ->
                                 if (location === null) {
                                     wpGUI.goBack()

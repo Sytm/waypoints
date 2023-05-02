@@ -12,6 +12,8 @@ import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.*
 import net.kyori.adventure.text.event.ClickEvent
 import net.wesjd.anvilgui.AnvilGUI
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 
 class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePage(wpGUI, wpGUI.extendApi { waypoint.type.getBackgroundItem() }) {
 
@@ -127,26 +129,30 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                             wpGUI.translations.WAYPOINT_MAKE_PERMISSION_CONFIRM_TRUE.getItem(nameResolver),
                         ) {
                             if (it) {
-                                AnvilGUI.Builder().plugin(wpGUI.plugin).text(wpGUI.translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText)
-                                    .onComplete { (permission) ->
-                                        when (val result = createWaypointPermission(wpGUI.plugin, wpGUI.viewer, waypoint.name, permission, waypoint.location)) {
-                                            is SuccessWaypoint -> {
-                                                waypoint.copyFieldsTo(result.waypoint)
-                                                waypoint.delete()
-                                                wpGUI.goBack()
-                                                wpGUI.goBack()
-                                            }
+                                AnvilGUI.Builder().plugin(wpGUI.plugin).itemLeft(ItemStack(Material.PAPER).also { stack ->
+                                    stack.plainDisplayName = wpGUI.translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText
+                                }).onClick { slot, (permission) ->
+                                    if (slot != AnvilGUI.Slot.OUTPUT)
+                                        return@onClick emptyList()
 
-                                            else -> wpGUI.goBack()
+                                    when (val result = createWaypointPermission(wpGUI.plugin, wpGUI.viewer, waypoint.name, permission, waypoint.location)) {
+                                        is SuccessWaypoint -> {
+                                            waypoint.copyFieldsTo(result.waypoint)
+                                            waypoint.delete()
+                                            wpGUI.goBack()
+                                            wpGUI.goBack()
                                         }
 
-                                        return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
-                                    }.onClose {
-                                        (wpGUI.gui.activePage as BasePage).update()
-                                        wpGUI.plugin.runTask {
-                                            wpGUI.gui.open()
-                                        }
-                                    }.open(wpGUI.viewer)
+                                        else -> wpGUI.goBack()
+                                    }
+
+                                    return@onClick AnvilGUI.ResponseAction.close().asSingletonList()
+                                }.onClose {
+                                    (wpGUI.gui.activePage as BasePage).update()
+                                    wpGUI.plugin.runTask {
+                                        wpGUI.gui.open()
+                                    }
+                                }.open(wpGUI.viewer)
                             } else {
                                 wpGUI.goBack()
                             }
@@ -158,15 +164,19 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             },
             'p' to if (waypoint.type === Type.PERMISSION && canModifyWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_EDIT_PERMISSION.getItem("permission" placeholder (waypoint.permission ?: ""))) {
-                    AnvilGUI.Builder().plugin(wpGUI.plugin).text(waypoint.permission).onComplete { (permission) ->
-                        waypoint.permission = permission
-                        return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
-                    }.onClose {
-                        updatePage()
-                        wpGUI.plugin.runTask {
-                            wpGUI.gui.open()
-                        }
-                    }.open(wpGUI.viewer)
+                    AnvilGUI.Builder().plugin(wpGUI.plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = waypoint.permission ?: "" })
+                        .onClick { slot, (permission) ->
+                            if (slot != AnvilGUI.Slot.OUTPUT)
+                                return@onClick emptyList()
+
+                            waypoint.permission = permission
+                            return@onClick AnvilGUI.ResponseAction.close().asSingletonList()
+                        }.onClose {
+                            updatePage()
+                            wpGUI.plugin.runTask {
+                                wpGUI.gui.open()
+                            }
+                        }.open(wpGUI.viewer)
                 }
             } else {
                 background
@@ -207,28 +217,32 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             'r' to if (canModifyWaypoint && isNotDeathWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_RENAME.item) {
                     wpGUI.viewer.closeInventory()
-                    AnvilGUI.Builder().plugin(wpGUI.plugin).text(waypoint.name).onComplete { (newName) ->
-                        val holder = wpGUI.getHolderForType(waypoint.type)
+                    AnvilGUI.Builder().plugin(wpGUI.plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = waypoint.name })
+                        .onClick { slot, (newName) ->
+                            if (slot != AnvilGUI.Slot.OUTPUT)
+                                return@onClick emptyList()
 
-                        if (checkWaypointName(wpGUI.plugin, holder, newName)) {
-                            waypoint.name = newName
+                            val holder = wpGUI.getHolderForType(waypoint.type)
 
-                            updatePage()
-                        } else {
-                            when (waypoint.type) {
-                                Type.PRIVATE -> wpGUI.translations.WAYPOINT_NAME_DUPLICATE_PRIVATE
-                                Type.PUBLIC -> wpGUI.translations.WAYPOINT_NAME_DUPLICATE_PUBLIC
-                                Type.PERMISSION -> wpGUI.translations.WAYPOINT_NAME_DUPLICATE_PERMISSION
-                                else -> throw IllegalArgumentException("Waypoints of the type ${waypoint.type} have no name")
-                            }.send(wpGUI.viewer)
-                        }
+                            if (checkWaypointName(wpGUI.plugin, holder, newName)) {
+                                waypoint.name = newName
 
-                        return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
-                    }.onClose {
-                        wpGUI.plugin.runTask {
-                            wpGUI.gui.open()
-                        }
-                    }.open(wpGUI.viewer)
+                                updatePage()
+                            } else {
+                                when (waypoint.type) {
+                                    Type.PRIVATE -> wpGUI.translations.WAYPOINT_NAME_DUPLICATE_PRIVATE
+                                    Type.PUBLIC -> wpGUI.translations.WAYPOINT_NAME_DUPLICATE_PUBLIC
+                                    Type.PERMISSION -> wpGUI.translations.WAYPOINT_NAME_DUPLICATE_PERMISSION
+                                    else -> throw IllegalArgumentException("Waypoints of the type ${waypoint.type} have no name")
+                                }.send(wpGUI.viewer)
+                            }
+
+                            return@onClick AnvilGUI.ResponseAction.close().asSingletonList()
+                        }.onClose {
+                            wpGUI.plugin.runTask {
+                                wpGUI.gui.open()
+                            }
+                        }.open(wpGUI.viewer)
                 }
             } else {
                 background
@@ -291,14 +305,17 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
     private fun createChangeCustomMapIconItem(customDataKey: String, defaultIcon: String) = GUIItem(wpGUI.translations.WAYPOINT_CHANGE_MAP_ICON.item) {
         wpGUI.viewer.closeInventory()
         AnvilGUI.Builder().plugin(wpGUI.plugin)
-            .text(waypoint.getCustomData(customDataKey) ?: defaultIcon)
-            .onComplete { (newIcon) ->
+            .itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = waypoint.getCustomData(customDataKey) ?: defaultIcon })
+            .onClick { slot, (newIcon) ->
+                if (slot != AnvilGUI.Slot.OUTPUT)
+                    return@onClick emptyList()
+
                 waypoint.setCustomData(
                     customDataKey, newIcon.ifBlank {
                         null
                     }
                 )
-                return@onComplete AnvilGUI.ResponseAction.close().asSingletonList()
+                return@onClick AnvilGUI.ResponseAction.close().asSingletonList()
             }.onClose {
                 wpGUI.plugin.runTask {
                     wpGUI.gui.open()
