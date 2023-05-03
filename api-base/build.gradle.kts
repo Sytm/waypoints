@@ -5,7 +5,10 @@ plugins {
 dependencies {
     api(libs.paper)
 
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
+    implementation(libs.coroutines)
+    implementation(libs.skedule)
+
     api(project(":waypoints-api"))
 }
 

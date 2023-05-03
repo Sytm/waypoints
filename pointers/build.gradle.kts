@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     api(libs.paper)
-    api(kotlin("stdlib-jdk8"))
+    api(kotlin("stdlib"))
 
     implementation(libs.protocollib)
 }

@@ -5,6 +5,8 @@ import be.seeseemelk.mockbukkit.ServerMock
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.bukkit.Material
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertAll
@@ -19,7 +21,7 @@ class WaypointTest {
     @BeforeTest
     fun createAPI() {
         server = MockBukkit.mock()
-        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true)
+        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true, Dispatchers.Unconfined)
         manager.initDatabase()
         api = manager.api
     }
@@ -30,23 +32,23 @@ class WaypointTest {
     }
 
     @TypesNoDeath
-    fun deleteWaypoint(type: Type) {
+    fun deleteWaypoint(type: Type) = runBlocking {
         val holder = api.holderOfType(type)
 
         val waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
-        assertEquals(1, holder.waypointsAmount)
+        assertEquals(1, holder.getWaypointsAmount())
 
         waypoint.delete()
 
         server.pluginManager.assertEventFired(WaypointPreDeleteEvent::class.java)
         server.pluginManager.assertEventFired(WaypointPostDeleteEvent::class.java)
 
-        assertEquals(0, holder.waypointsAmount)
+        assertEquals(0, holder.getWaypointsAmount())
     }
 
     @TypesNoDeath
-    fun propertiesSaved(type: Type) {
+    fun propertiesSaved(type: Type) = runBlocking {
         val holder = api.holderOfType(type)
 
         var waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
@@ -57,7 +59,7 @@ class WaypointTest {
         waypoint.material = Material.GRASS_BLOCK
         waypoint.beaconColor = Material.LIGHT_GRAY_STAINED_GLASS
 
-        waypoint = holder.waypoints[0]
+        waypoint = holder.getWaypoints()[0]
 
         assertAll({
             assertEquals("Other name", waypoint.name)
@@ -76,7 +78,7 @@ class WaypointTest {
     inner class WaypointsMeta {
 
         @TypesNoDeath
-        fun newMetaDefaultValues(type: Type) {
+        fun newMetaDefaultValues(type: Type) = runBlocking {
             val holder = api.holderOfType(type)
             val waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
@@ -87,7 +89,7 @@ class WaypointTest {
         }
 
         @TypesNoDeath
-        fun propertiesSaved(type: Type) {
+        fun propertiesSaved(type: Type) = runBlocking {
             val holder = api.holderOfType(type)
             val waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
@@ -100,7 +102,7 @@ class WaypointTest {
         }
 
         @TypesNoDeath
-        fun noCrossSaving(type: Type) {
+        fun noCrossSaving(type: Type) = runBlocking {
             val holder = api.holderOfType(type)
             val waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
@@ -121,7 +123,7 @@ class WaypointTest {
     inner class WaypointsCustomData {
 
         @TypesNoDeath
-        fun customDataSaved(type: Type) {
+        fun customDataSaved(type: Type) = runBlocking {
             val holder = api.holderOfType(type)
             val waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
@@ -133,7 +135,7 @@ class WaypointTest {
         }
 
         @TypesNoDeath
-        fun noInWaypointCrossSave(type: Type) {
+        fun noInWaypointCrossSave(type: Type) = runBlocking {
             val holder = api.holderOfType(type)
             val waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
@@ -152,7 +154,7 @@ class WaypointTest {
         }
 
         @TypesNoDeath
-        fun noOverWaypointCrossSave(type: Type) {
+        fun noOverWaypointCrossSave(type: Type) = runBlocking {
             val holder = api.holderOfType(type)
 
             val waypoint1 = holder.createWaypoint("Test 1", server.createLocation("world", 1, 2, 3))

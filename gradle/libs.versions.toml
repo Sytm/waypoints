@@ -7,6 +7,8 @@ commandApi = "9.0.0"
 dynmap = "3.5-SNAPSHOT"
 
 [libraries]
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.0-RC" }
+
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
 spigot = { group = "org.spigotmc", name = "spigot-api", version.ref = "paper" }
 
@@ -18,6 +20,7 @@ sqliteHelper = { group = "de.md5lukas", name = "sqlite-kotlin-helper", version =
 konfig = { group = "de.md5lukas", name = "spigot-konfig", version = "1.0.1-SNAPSHOT" }
 
 # (external)
+skedule = { group = "de.md5lukas", name = "skedule", version = "1.3.0" }
 anvilGui = { group = "net.wesjd", name = "anvilgui", version = "1.6.4-SNAPSHOT" }
 bStats = { group = "org.bstats", name = "bstats-bukkit", version = "3.0.2" }
 commandapi-shade = { group = "dev.jorel", name = "commandapi-bukkit-shade", version.ref = "commandApi" }

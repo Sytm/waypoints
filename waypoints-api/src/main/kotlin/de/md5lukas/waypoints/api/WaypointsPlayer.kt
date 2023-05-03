@@ -35,7 +35,7 @@ interface WaypointsPlayer : WaypointHolder {
      * @param type The type the cooldown is valid for
      * @return The time the cooldown expires or null
      */
-    fun getCooldownUntil(type: Type): OffsetDateTime?
+    suspend fun getCooldownUntil(type: Type): OffsetDateTime?
 
     /**
      * Set a new cooldown for the player and the time at which it expires.
@@ -43,7 +43,7 @@ interface WaypointsPlayer : WaypointHolder {
      * @param type The type the cooldown is valid for
      * @param cooldownUntil The point in time at which the cooldown should expire
      */
-    fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime)
+    suspend fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime)
 
     /**
      * Get the amount of teleportations this player has performed to the given waypoint type
@@ -51,7 +51,7 @@ interface WaypointsPlayer : WaypointHolder {
      * @param type The type the counter is applicable to
      * @return The amount of teleportations
      */
-    fun getTeleportations(type: Type): Int
+    suspend fun getTeleportations(type: Type): Int
 
     /**
      * Update the amount of teleportations the player has performed to the given waypoint type
@@ -59,12 +59,12 @@ interface WaypointsPlayer : WaypointHolder {
      * @param type The type the counter is applicable to
      * @param teleportations The new amount of teleportations
      */
-    fun setTeleportations(type: Type, teleportations: Int)
+    suspend fun setTeleportations(type: Type, teleportations: Int)
 
     /**
      * Adds a new location to the death history of the player.
      */
-    fun addDeathLocation(location: Location)
+    suspend fun addDeathLocation(location: Location)
 
     /**
      * Abstract folder representing the saved death history of the player.
@@ -85,11 +85,15 @@ interface WaypointsPlayer : WaypointHolder {
      *
      * @see [de.md5lukas.waypoints.pointers.PointerManager]
      */
-    var selectedWaypoints: List<Waypoint>
+    suspend fun getSelectedWaypoints(): List<Waypoint>
+
+    suspend fun setSelectedWaypoints(selected: List<Waypoint>)
 
     /**
      * The compass target the player currently has before it got overwritten by the compass pointer
      *
      */
-    var compassTarget: Location?
+    suspend fun getCompassTarget(): Location?
+
+    suspend fun setCompassTarget(location: Location)
 }

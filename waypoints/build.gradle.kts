@@ -23,7 +23,8 @@ repositories {
 
 dependencies {
     implementation(libs.paper)
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(kotlin("stdlib"))
+    implementation(libs.coroutines)
 
     implementation(project(":utils"))
     implementation(project(":pointers"))
@@ -37,6 +38,7 @@ dependencies {
     implementation(libs.konfig)
 
     // Required dependencies
+    implementation(libs.skedule)
     implementation(libs.anvilGui)
     implementation(libs.bStats)
     implementation(libs.bundles.commandApi)

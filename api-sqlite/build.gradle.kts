@@ -8,9 +8,11 @@ plugins {
 dependencies {
     api(libs.paper)
 
+    implementation(libs.coroutines)
+
     implementation(libs.sqliteHelper)
 
-    api(kotlin("stdlib-jdk8"))
+    api(kotlin("stdlib"))
     api(project(":api-base"))
     implementation(project(":utils"))
     implementation(libs.md5Commons)
@@ -18,7 +20,6 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
     testImplementation(libs.junitJupiter)
     testImplementation(libs.mockBukkit)
-    testRuntimeOnly(libs.spigot)
     testRuntimeOnly(libs.sqliteJdbc)
 }
 

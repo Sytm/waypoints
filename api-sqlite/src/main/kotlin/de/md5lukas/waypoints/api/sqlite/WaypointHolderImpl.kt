@@ -11,6 +11,7 @@ import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.util.asSingletonList
 import de.md5lukas.waypoints.util.callEvent
+import kotlinx.coroutines.withContext
 import org.bukkit.Location
 import org.bukkit.permissions.Permissible
 import java.time.Instant
@@ -24,54 +25,61 @@ internal open class WaypointHolderImpl(
     private val owner: UUID?,
 ) : WaypointHolder {
 
-    override val folders: List<Folder>
-        get() = dm.connection.select("SELECT * FROM folders WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
+    override suspend fun getFolders(): List<Folder> = withContext(dm.asyncDispatcher) {
+        dm.connection.select("SELECT * FROM folders WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
             val id = UUID.fromString(this.getString("id"))
             dm.instanceCache.folders.get(id) {
                 FolderImpl(dm, this)
             }
         }
+    }
 
-    override val waypoints: List<Waypoint>
-        get() = dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner IS ? AND folder IS NULL;", type.name, owner?.toString()) {
+    override suspend fun getWaypoints(): List<Waypoint> = withContext(dm.asyncDispatcher) {
+        dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner IS ? AND folder IS NULL;", type.name, owner?.toString()) {
             val id = UUID.fromString(this.getString("id"))
             dm.instanceCache.waypoints.get(id) {
                 WaypointImpl(dm, this)
             }
         }
+    }
 
-    override val allWaypoints: List<Waypoint>
-        get() = dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
+    override suspend fun getAllWaypoints(): List<Waypoint> = withContext(dm.asyncDispatcher) {
+        dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
             val id = UUID.fromString(this.getString("id"))
             dm.instanceCache.waypoints.get(id) {
                 WaypointImpl(dm, this)
             }
         }
+    }
 
-    override val waypointsAmount: Int
-        get() = dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
+    override suspend fun getWaypointsAmount(): Int = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
             getInt(1)
         }!!
+    }
 
-    override val foldersAmount: Int
-        get() = dm.connection.selectFirst("SELECT COUNT(*) FROM folders WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
+    override suspend fun getFoldersAmount(): Int = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst("SELECT COUNT(*) FROM folders WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
             getInt(1)
         }!!
+    }
 
-    override fun getWaypointsVisibleForPlayer(permissible: Permissible): Int =
+    override suspend fun getWaypointsVisibleForPlayer(permissible: Permissible): Int =
         if (type == Type.PERMISSION) {
-            dm.connection.select("SELECT permission FROM waypoints WHERE type = ?;", type.name) {
-                getString("permission")
-            }.count { permissible.hasPermission(it) }
+            withContext(dm.asyncDispatcher) {
+                dm.connection.select("SELECT permission FROM waypoints WHERE type = ?;", type.name) {
+                    getString("permission")
+                }.count { permissible.hasPermission(it) }
+            }
         } else {
-            waypointsAmount
+            getWaypointsAmount()
         }
 
-    override fun createWaypoint(name: String, location: Location): Waypoint {
+    override suspend fun createWaypoint(name: String, location: Location): Waypoint {
         return createWaypointTyped(name, location, type)
     }
 
-    internal fun createWaypointTyped(name: String, location: Location, type: Type): Waypoint {
+    internal suspend fun createWaypointTyped(name: String, location: Location, type: Type): Waypoint = withContext(dm.asyncDispatcher) {
         val id = UUID.randomUUID()
         dm.connection.update(
             "INSERT INTO waypoints(id, createdAt, type, owner, name, world, x, y, z) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
@@ -85,14 +93,14 @@ internal open class WaypointHolderImpl(
             location.y,
             location.z,
         )
-        return dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?;", id.toString()) {
+        dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?;", id.toString()) {
             WaypointImpl(dm, this)
         }!!.also {
             dm.plugin.callEvent(WaypointCreateEvent(it))
         }
     }
 
-    override fun createFolder(name: String): Folder {
+    override suspend fun createFolder(name: String): Folder = withContext(dm.asyncDispatcher) {
         val id = UUID.randomUUID()
         dm.connection.update(
             "INSERT INTO folders(id, createdAt, type, owner, name) VALUES (?, ?, ?, ?, ?);",
@@ -102,7 +110,7 @@ internal open class WaypointHolderImpl(
             owner?.toString(),
             name,
         )
-        return dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?", id.toString()) {
+        dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?", id.toString()) {
             FolderImpl(dm, this)
         }!!.also {
             dm.plugin.callEvent(FolderCreateEvent(it))
@@ -111,28 +119,32 @@ internal open class WaypointHolderImpl(
 
     override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.of("UTC"))
 
-    override fun isDuplicateWaypointName(name: String): Boolean = dm.connection.selectFirst(
-        "SELECT EXISTS(SELECT 1 FROM waypoints WHERE type = ? AND owner IS ? AND name = ? COLLATE NOCASE);",
-        type.name,
-        owner?.toString(),
-        name,
-    ) {
-        getInt(1) == 1
-    } ?: false
+    override suspend fun isDuplicateWaypointName(name: String): Boolean = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst(
+            "SELECT EXISTS(SELECT 1 FROM waypoints WHERE type = ? AND owner IS ? AND name = ? COLLATE NOCASE);",
+            type.name,
+            owner?.toString(),
+            name,
+        ) {
+            getInt(1) == 1
+        } ?: false
+    }
 
-    override fun isDuplicateFolderName(name: String): Boolean = dm.connection.selectFirst(
-        "SELECT EXISTS(SELECT 1 FROM folders WHERE type = ? AND owner IS ? AND name = ? COLLATE NOCASE);",
-        type.name,
-        owner?.toString(),
-        name,
-    ) {
-        getInt(1) == 1
-    } ?: false
+    override suspend fun isDuplicateFolderName(name: String): Boolean = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst(
+            "SELECT EXISTS(SELECT 1 FROM folders WHERE type = ? AND owner IS ? AND name = ? COLLATE NOCASE);",
+            type.name,
+            owner?.toString(),
+            name,
+        ) {
+            getInt(1) == 1
+        } ?: false
+    }
 
-    override fun searchFolders(query: String, permissible: Permissible?): List<SearchResult<out Folder>> {
+    override suspend fun searchFolders(query: String, permissible: Permissible?): List<SearchResult<out Folder>> = withContext(dm.asyncDispatcher) {
         val (reducedQuery, taggedIndex) = prepareQuery(query)
 
-        return dm.connection.selectNotNull<Folder>(
+        dm.connection.selectNotNull<Folder>(
             "SELECT * FROM folders WHERE type = ? AND owner = ? AND name LIKE ? ESCAPE '!';",
             type.name,
             owner?.toString(),
@@ -142,16 +154,16 @@ internal open class WaypointHolderImpl(
                 if (permissible !== null && this@WaypointHolderImpl.type === Type.PERMISSION && it.getAmountVisibleForPlayer(permissible) == 0)
                     return@selectNotNull null
             }
-        }.tagDuplicateSearchResults(Folder::name, reducedQuery, taggedIndex)
+        }.tagDuplicateSearchResults({ it.name }, reducedQuery, taggedIndex)
     }
 
-    override fun searchWaypoints(query: String, permissible: Permissible?): List<SearchResult<out Waypoint>> {
+    override suspend fun searchWaypoints(query: String, permissible: Permissible?): List<SearchResult<out Waypoint>> = withContext(dm.asyncDispatcher) {
         val typeString = type.name
         val ownerString = owner?.toString()
 
         val (reducedQuery, taggedIndex) = prepareQuery(query)
 
-        return if ('/' in reducedQuery) {
+        if ('/' in reducedQuery) {
             val result = reducedQuery.split('/', limit = 2)
             val folder = "${result[0]}%"
             val waypoint = "${result[1]}%"
@@ -182,7 +194,7 @@ internal open class WaypointHolderImpl(
 
                 WaypointImpl(dm, this)
             }
-        }.tagDuplicateSearchResults(Waypoint::fullPath, reducedQuery, taggedIndex)
+        }.tagDuplicateSearchResults(Waypoint::getFullPath, reducedQuery, taggedIndex)
     }
 
     private fun prepareQuery(query: String): Pair<String, Int?> {
@@ -197,21 +209,30 @@ internal open class WaypointHolderImpl(
         return reducedQuery to taggedIndex
     }
 
-    private fun <T> List<T>.tagDuplicateSearchResults(nameSelector: (T) -> String, reducedQuery: String, taggedIndex: Int?): List<SearchResult<out T>> {
-        return this.groupBy(nameSelector).flatMap { (name, tList) ->
+    private suspend fun <T> List<T>.tagDuplicateSearchResults(
+        nameSelector: suspend (T) -> String,
+        reducedQuery: String,
+        taggedIndex: Int?
+    ): List<SearchResult<out T>> {
+        val keys = mutableMapOf<T, String>()
+        this.forEach {
+            keys[it] = nameSelector(it)
+        }
+
+        return keys.entries.groupBy { it.value }.flatMap { (name, tList) ->
             if (taggedIndex !== null) {
                 if (name != reducedQuery) {
                     return@flatMap emptyList()
                 }
                 tList.getOrNull(taggedIndex)?.let { t ->
-                    return@flatMap SearchResult(t, "$name#$taggedIndex").asSingletonList()
+                    return@flatMap SearchResult(t.key, "$name#$taggedIndex").asSingletonList()
                 }
             }
             if (tList.size == 1) {
-                SearchResult(tList[0], name).asSingletonList()
+                SearchResult(tList[0].key, name).asSingletonList()
             } else {
                 tList.mapIndexed { index, t ->
-                    SearchResult(t, "$name#$index")
+                    SearchResult(t.key, "$name#$index")
                 }
             }
         }

@@ -11,6 +11,9 @@ import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.util.callEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.bukkit.Material
 import org.bukkit.permissions.Permissible
 import java.sql.ResultSet
@@ -55,42 +58,47 @@ internal class FolderImpl private constructor(
             set("material", value?.name)
         }
 
-    override val amount: Int
-        get() = dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE folder = ?;", id.toString()) {
+    override suspend fun getAmount(): Int = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE folder = ?;", id.toString()) {
             getInt(1)
         }!!
+    }
 
-    override fun getAmountVisibleForPlayer(permissible: Permissible): Int =
+    override suspend fun getAmountVisibleForPlayer(permissible: Permissible): Int =
         if (type == Type.PERMISSION) {
-            dm.connection.select("SELECT permission FROM main.waypoints WHERE folder = ?;", id.toString()) {
-                getString("permission")
-            }.count { permissible.hasPermission(it) }
+            withContext(dm.asyncDispatcher) {
+                dm.connection.select("SELECT permission FROM main.waypoints WHERE folder = ?;", id.toString()) {
+                    getString("permission")
+                }.count { permissible.hasPermission(it) }
+            }
         } else {
-            amount
+            getAmount()
         }
 
-    override val folders: List<Folder>
-        get() = emptyList()
+    override suspend fun getFolders(): List<Folder> = emptyList()
 
-    override val waypoints: List<Waypoint>
-        get() = dm.connection.select("SELECT * FROM waypoints WHERE folder = ?;", id.toString()) {
+    override suspend fun getWaypoints(): List<Waypoint> = withContext(dm.asyncDispatcher) {
+        dm.connection.select("SELECT * FROM waypoints WHERE folder = ?;", id.toString()) {
             val id = UUID.fromString(this.getString("id"))
             dm.instanceCache.waypoints.get(id) {
                 WaypointImpl(dm, this)
             }
         }
-
-    private fun set(column: String, value: Any?) {
-        dm.connection.update("UPDATE folders SET $column = ? WHERE id = ?;", value, id.toString())
     }
 
-    override fun delete() {
-        dm.plugin.callEvent(FolderPreDeleteEvent(this))
+    private fun set(column: String, value: Any?) {
+        CoroutineScope(dm.asyncDispatcher).launch {
+            dm.connection.update("UPDATE folders SET $column = ? WHERE id = ?;", value, id.toString())
+        }
+    }
+
+    override suspend fun delete() = withContext(dm.asyncDispatcher) {
+        dm.plugin.callEvent(FolderPreDeleteEvent(this@FolderImpl))
         dm.connection.update(
             "DELETE FROM folders WHERE id = ?",
             id.toString()
         )
-        dm.plugin.callEvent(FolderPostDeleteEvent(this))
+        dm.plugin.callEvent(FolderPostDeleteEvent(this@FolderImpl))
     }
 
     override val guiType: GUIType = GUIType.FOLDER

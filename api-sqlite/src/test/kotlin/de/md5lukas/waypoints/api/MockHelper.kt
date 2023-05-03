@@ -15,7 +15,7 @@ fun ServerMock.createLocation(world: String, x: Int, y: Int, z: Int): Location {
     )
 }
 
-fun WaypointsAPI.holderOfType(type: Type) = when (type) {
+suspend fun WaypointsAPI.holderOfType(type: Type) = when (type) {
     Type.PUBLIC -> publicWaypoints
     Type.PERMISSION -> permissionWaypoints
     Type.PRIVATE -> getWaypointPlayer(UUID.randomUUID())

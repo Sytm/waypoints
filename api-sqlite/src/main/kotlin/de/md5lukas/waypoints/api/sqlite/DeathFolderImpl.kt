@@ -7,6 +7,7 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.gui.GUIType
+import kotlinx.coroutines.withContext
 import org.bukkit.Material
 import org.bukkit.permissions.Permissible
 import java.time.Instant
@@ -33,23 +34,26 @@ class DeathFolderImpl(
     override var material: Material?
         get() = null
         set(_) = throw UnsupportedOperationException("Changing the name of the death folder is not supported")
-    override val amount: Int
-        get() = dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE type = ? AND owner = ?;", Type.DEATH.name, owner.toString()) {
+
+    override suspend fun getAmount(): Int = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE type = ? AND owner = ?;", Type.DEATH.name, owner.toString()) {
             getInt(1)
         }!!
+    }
 
-    override fun getAmountVisibleForPlayer(permissible: Permissible): Int = amount
+    override suspend fun getAmountVisibleForPlayer(permissible: Permissible): Int = getAmount()
 
-    override val folders: List<Folder> = emptyList()
-    override val waypoints: List<Waypoint>
-        get() = dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner = ?;", Type.DEATH.name, owner.toString()) {
+    override suspend fun getFolders(): List<Folder> = emptyList()
+    override suspend fun getWaypoints(): List<Waypoint> = withContext(dm.asyncDispatcher) {
+        dm.connection.select("SELECT * FROM waypoints WHERE type = ? AND owner = ?;", Type.DEATH.name, owner.toString()) {
             val id = UUID.fromString(this.getString("id"))
             dm.instanceCache.waypoints.get(id) {
                 WaypointImpl(dm, this)
             }
         }
+    }
 
-    override fun delete() {
+    override suspend fun delete() {
         throw UnsupportedOperationException("Changing the name of the death folder is not supported")
     }
 
