@@ -6,6 +6,9 @@ import de.md5lukas.jdbc.setValues
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.bukkit.Location
 import java.sql.ResultSet
 import java.time.OffsetDateTime
@@ -43,50 +46,60 @@ internal class WaypointsPlayerImpl private constructor(
             set("canBeTracked", value)
         }
 
-    override fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime) {
-        val until = cooldownUntil.toString()
-        dm.connection.update(
-            "INSERT INTO player_data_typed(playerId, type, cooldownUntil) VALUES (?, ?, ?) ON CONFLICT(playerId, type) DO UPDATE SET cooldownUntil = ?;",
+    override suspend fun getCooldownUntil(type: Type): OffsetDateTime? = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst(
+            "SELECT cooldownUntil FROM player_data_typed WHERE playerId = ? AND type = ?;",
             id.toString(),
             type.name,
-            until,
-            until,
-        )
+        ) {
+            OffsetDateTime.parse(getString("cooldownUntil"))
+        }
     }
 
-    override fun getCooldownUntil(type: Type): OffsetDateTime? = dm.connection.selectFirst(
-        "SELECT cooldownUntil FROM player_data_typed WHERE playerId = ? AND type = ?;",
-        id.toString(),
-        type.name,
-    ) {
-        OffsetDateTime.parse(getString("cooldownUntil"))
+    override suspend fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime) {
+        withContext(dm.asyncDispatcher) {
+            val until = cooldownUntil.toString()
+            dm.connection.update(
+                "INSERT INTO player_data_typed(playerId, type, cooldownUntil) VALUES (?, ?, ?) ON CONFLICT(playerId, type) DO UPDATE SET cooldownUntil = ?;",
+                id.toString(),
+                type.name,
+                until,
+                until,
+            )
+        }
     }
 
-    override fun setTeleportations(type: Type, teleportations: Int) {
-        dm.connection.update(
-            "INSERT INTO player_data_typed(playerId, type, teleportations) VALUES (?, ?, ?) ON CONFLICT(playerId, type) DO UPDATE SET teleportations = ?;",
+    override suspend fun getTeleportations(type: Type): Int = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst(
+            "SELECT teleportations FROM player_data_typed WHERE playerId = ? AND type = ?;",
             id.toString(),
             type.name,
-            teleportations,
-            teleportations,
-        )
+        ) {
+            getInt("teleportations")
+        } ?: 0
     }
 
-    override fun getTeleportations(type: Type): Int = dm.connection.selectFirst(
-        "SELECT teleportations FROM player_data_typed WHERE playerId = ? AND type = ?;",
-        id.toString(),
-        type.name,
-    ) {
-        getInt("teleportations")
-    } ?: 0
+    override suspend fun setTeleportations(type: Type, teleportations: Int) {
+        withContext(dm.asyncDispatcher) {
+            dm.connection.update(
+                "INSERT INTO player_data_typed(playerId, type, teleportations) VALUES (?, ?, ?) ON CONFLICT(playerId, type) DO UPDATE SET teleportations = ?;",
+                id.toString(),
+                type.name,
+                teleportations,
+                teleportations,
+            )
+        }
+    }
 
-    override fun addDeathLocation(location: Location) {
-        super.createWaypointTyped("", location, Type.DEATH)
+    override suspend fun addDeathLocation(location: Location) {
+        withContext(dm.asyncDispatcher) {
+            super.createWaypointTyped("", location, Type.DEATH)
+        }
     }
 
     override val deathFolder: Folder = DeathFolderImpl(dm, id)
-    override var compassTarget: Location?
-        get() = dm.connection.selectFirst("SELECT * FROM compass_storage WHERE playerId = ?;", id.toString()) {
+    override suspend fun getCompassTarget(): Location? = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst("SELECT * FROM compass_storage WHERE playerId = ?;", id.toString()) {
             Location(
                 dm.plugin.server.getWorld(getString("world"))!!,
                 getDouble("x"),
@@ -94,43 +107,51 @@ internal class WaypointsPlayerImpl private constructor(
                 getDouble("z"),
             )
         }
-        set(value) {
-            value?.let { location ->
-                dm.connection.update(
-                    "INSERT INTO compass_storage(playerId, world, x, y, z) VALUES (?, ?, ?, ?, ?) ON CONFLICT(playerId) DO UPDATE SET world = ?, x = ?, y = ?, z = ?;",
-                    id.toString(),
-                    location.world!!.name,
-                    location.x,
-                    location.y,
-                    location.z,
-                    location.world!!.name,
-                    location.x,
-                    location.y,
-                    location.z,
-                )
-            }
-        }
+    }
 
-    override var selectedWaypoints: List<Waypoint>
-        get() = dm.connection.select(
+    override suspend fun setCompassTarget(location: Location) {
+        withContext(dm.asyncDispatcher) {
+            dm.connection.update(
+                "INSERT INTO compass_storage(playerId, world, x, y, z) VALUES (?, ?, ?, ?, ?) ON CONFLICT(playerId) DO UPDATE SET world = ?, x = ?, y = ?, z = ?;",
+                id.toString(),
+                location.world!!.name,
+                location.x,
+                location.y,
+                location.z,
+                location.world!!.name,
+                location.x,
+                location.y,
+                location.z,
+            )
+        }
+    }
+
+    override suspend fun getSelectedWaypoints(): List<Waypoint> = withContext(dm.asyncDispatcher) {
+        dm.connection.select(
             "SELECT * FROM waypoints INNER JOIN selected_waypoints ON waypoints.id = selected_waypoints.waypointId WHERE selected_waypoints.playerId = ?;",
             id.toString()
         ) {
             getInt("index") to WaypointImpl(dm, this)
         }.apply { sortWith(compareBy { it.first }) }.map { it.second }
-        set(value) {
+    }
+
+    override suspend fun setSelectedWaypoints(selected: List<Waypoint>) {
+        withContext(dm.asyncDispatcher) {
             dm.connection.update("DELETE FROM selected_waypoints WHERE playerId = ?;", id.toString())
             dm.connection.prepareStatement("INSERT INTO selected_waypoints VALUES (?, ?, ?);").also {
-                value.forEachIndexed { index, waypoint ->
+                selected.forEachIndexed { index, waypoint ->
                     it.setValues(id.toString(), waypoint.id.toString(), index)
                     it.addBatch()
                 }
                 it.executeBatch()
             }
         }
+    }
 
     private fun set(column: String, value: Any?) {
-        dm.connection.update("UPDATE player_data SET $column = ? WHERE id = ?;", value, id)
+        CoroutineScope(dm.asyncDispatcher).launch {
+            dm.connection.update("UPDATE player_data SET $column = ? WHERE id = ?;", value, id)
+        }
     }
 
     override fun equals(other: Any?): Boolean {

@@ -1,6 +1,8 @@
 package de.md5lukas.waypoints.api.base
 
+import com.okkero.skedule.dispatcher
 import de.md5lukas.waypoints.api.WaypointsAPI
+import kotlinx.coroutines.CoroutineDispatcher
 import org.bukkit.plugin.Plugin
 import java.sql.Connection
 
@@ -8,8 +10,11 @@ abstract class DatabaseManager(
     val plugin: Plugin,
     val databaseConfiguration: DatabaseConfiguration,
     disableInstanceCache: Boolean,
+    dispatcher: CoroutineDispatcher?,
 ) {
     val instanceCache: InstanceCache = InstanceCache(disableInstanceCache)
+
+    val asyncDispatcher = dispatcher ?: plugin.dispatcher(true)
 
     abstract val api: WaypointsAPI
 

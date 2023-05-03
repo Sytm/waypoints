@@ -11,10 +11,10 @@ interface GUIFolder : GUIDisplayable {
     /**
      * Every folder contained in this displayable
      */
-    val folders: List<Folder>
+    suspend fun getFolders(): List<Folder>
 
     /**
      * Every waypoint contained in this displayable
      */
-    val waypoints: List<Waypoint>
+    suspend fun getWaypoints(): List<Waypoint>
 }

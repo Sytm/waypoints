@@ -6,21 +6,23 @@ import be.seeseemelk.mockbukkit.ServerMock
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.FolderCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlin.test.*
 
 class WaypointHolderTest {
 
-    val TEST_PERMISSION = "permission"
+    private val TEST_PERMISSION = "permission"
 
-    lateinit var server: ServerMock
-    lateinit var plugin: MockPlugin
-    lateinit var api: WaypointsAPI
+    private lateinit var server: ServerMock
+    private lateinit var plugin: MockPlugin
+    private lateinit var api: WaypointsAPI
 
     @BeforeTest
     fun createAPI() {
         server = MockBukkit.mock()
         plugin = MockBukkit.createMockPlugin()
-        val manager = SQLiteManager(plugin, DummyDatabaseConfiguration, null, true)
+        val manager = SQLiteManager(plugin, DummyDatabaseConfiguration, null, true, Dispatchers.Unconfined)
         manager.initDatabase()
         api = manager.api
     }
@@ -31,20 +33,20 @@ class WaypointHolderTest {
     }
 
     @TypesNoDeath
-    fun newHolderEmpty(type: Type) {
+    fun newHolderEmpty(type: Type) = runBlocking {
         val holder = api.holderOfType(type)
 
-        assertEquals(0, holder.waypoints.size)
-        assertEquals(0, holder.waypointsAmount)
-        assertEquals(0, holder.folders.size)
-        assertEquals(0, holder.foldersAmount)
-        assertEquals(0, holder.allWaypoints.size)
+        assertEquals(0, holder.getWaypoints().size)
+        assertEquals(0, holder.getWaypointsAmount())
+        assertEquals(0, holder.getFolders().size)
+        assertEquals(0, holder.getFoldersAmount())
+        assertEquals(0, holder.getAllWaypoints().size)
 
         assertEquals(0, holder.getWaypointsVisibleForPlayer(server.addPlayer()))
     }
 
     @TypesNoDeath
-    fun createWaypoint(type: Type) {
+    fun createWaypoint(type: Type) = runBlocking {
         val holder = api.holderOfType(type)
 
         val location = server.createLocation("world", 1, 2, 3)
@@ -56,11 +58,11 @@ class WaypointHolderTest {
         }.id
         server.pluginManager.assertEventFired(WaypointCreateEvent::class.java)
 
-        assertEquals(1, holder.waypoints.size)
-        assertEquals(1, holder.waypointsAmount)
-        assertEquals(1, holder.allWaypoints.size)
+        assertEquals(1, holder.getWaypoints().size)
+        assertEquals(1, holder.getWaypointsAmount())
+        assertEquals(1, holder.getAllWaypoints().size)
 
-        assertEquals(id, holder.waypoints[0].id)
+        assertEquals(id, holder.getWaypoints()[0].id)
 
         if (type === Type.PERMISSION) {
             assertEquals(0, holder.getWaypointsVisibleForPlayer(server.addPlayer()))
@@ -71,7 +73,7 @@ class WaypointHolderTest {
     }
 
     @TypesNoDeath
-    fun checkDuplicateWaypointNames(type: Type) {
+    fun checkDuplicateWaypointNames(type: Type) = runBlocking {
         val holder = api.holderOfType(type)
 
         val location = server.createLocation("world", 1, 2, 3)
@@ -84,20 +86,20 @@ class WaypointHolderTest {
     }
 
     @TypesNoDeath
-    fun createFolder(type: Type) {
+    fun createFolder(type: Type) = runBlocking {
         val holder = api.holderOfType(type)
 
         val id = holder.createFolder("Test").id
         server.pluginManager.assertEventFired(FolderCreateEvent::class.java)
 
-        assertEquals(1, holder.folders.size)
-        assertEquals(1, holder.foldersAmount)
+        assertEquals(1, holder.getFolders().size)
+        assertEquals(1, holder.getFoldersAmount())
 
-        assertEquals(id, holder.folders[0].id)
+        assertEquals(id, holder.getFolders()[0].id)
     }
 
     @TypesNoDeath
-    fun checkDuplicateFolderNames(type: Type) {
+    fun checkDuplicateFolderNames(type: Type) = runBlocking {
         val holder = api.holderOfType(type)
 
         holder.createFolder("Test")
@@ -108,7 +110,7 @@ class WaypointHolderTest {
     }
 
     @TypesNoDeath
-    fun moveWaypointIntoFolder(type: Type) {
+    fun moveWaypointIntoFolder(type: Type) = runBlocking {
         val holder = api.holderOfType(type)
 
         val folder = holder.createFolder("Test")
@@ -119,16 +121,16 @@ class WaypointHolderTest {
             if (type === Type.PERMISSION) {
                 it.permission = TEST_PERMISSION
             }
-            it.folder = folder
+            it.setFolder(folder)
         }
 
-        assertEquals(0, holder.waypoints.size)
-        assertEquals(1, holder.waypointsAmount)
-        assertEquals(1, holder.folders.size)
-        assertEquals(1, holder.foldersAmount)
-        assertEquals(1, holder.allWaypoints.size)
+        assertEquals(0, holder.getWaypoints().size)
+        assertEquals(1, holder.getWaypointsAmount())
+        assertEquals(1, holder.getFolders().size)
+        assertEquals(1, holder.getFoldersAmount())
+        assertEquals(1, holder.getAllWaypoints().size)
 
-        assertEquals(waypoint.folder, folder)
+        assertEquals(waypoint.getFolder(), folder)
 
         if (type === Type.PERMISSION) {
             assertEquals(0, holder.getWaypointsVisibleForPlayer(server.addPlayer()))

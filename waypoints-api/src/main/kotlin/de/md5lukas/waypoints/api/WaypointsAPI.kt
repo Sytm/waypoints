@@ -27,7 +27,7 @@ interface WaypointsAPI {
      * @param uuid The UUID of the player
      * @return true if the player has been requested before
      */
-    fun waypointsPlayerExists(uuid: UUID): Boolean
+    suspend fun waypointsPlayerExists(uuid: UUID): Boolean
 
     /**
      * Get the player-profile for the matching UUID. If the player-profile has never been requested before, a new profile will be created with default values.
@@ -35,7 +35,7 @@ interface WaypointsAPI {
      * @param uuid The UUID of the player
      * @return The player-profile
      */
-    fun getWaypointPlayer(uuid: UUID): WaypointsPlayer
+    suspend fun getWaypointPlayer(uuid: UUID): WaypointsPlayer
 
     /**
      * The abstract holder containing public waypoints and folders.
@@ -53,7 +53,7 @@ interface WaypointsAPI {
      * @param uuid The UUID of the waypoint
      * @return The waypoint if it exists
      */
-    fun getWaypointByID(uuid: UUID): Waypoint?
+    suspend fun getWaypointByID(uuid: UUID): Waypoint?
 
     /**
      * Get access to some interesting statistics of total waypoints and folders.
