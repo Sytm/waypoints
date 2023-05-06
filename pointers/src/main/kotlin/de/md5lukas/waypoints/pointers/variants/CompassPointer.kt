@@ -17,9 +17,7 @@ internal class CompassPointer(
 
     override fun show(player: Player, trackable: Trackable, translatedTarget: Location?) {
         val currentCompassTarget = player.compassTarget
-        pointerManager.plugin.server.scheduler.runTaskAsynchronously(pointerManager.plugin, Runnable {
-            pointerManager.hooks.saveCompassTarget(player, currentCompassTarget)
-        })
+        pointerManager.hooks.saveCompassTarget(player, currentCompassTarget)
         update(player, trackable, translatedTarget)
     }
 
@@ -39,7 +37,7 @@ internal class CompassPointer(
 
     override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
         pointerManager.plugin.server.scheduler.runTaskAsynchronously(pointerManager.plugin, Runnable {
-            pointerManager.hooks.loadCompassTarget(player)?.let {
+            pointerManager.hooks.loadCompassTarget(player).join()?.let { // TODO dont block
                 player.compassTarget = it
             }
         })

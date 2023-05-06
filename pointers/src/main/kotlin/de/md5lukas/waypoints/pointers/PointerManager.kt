@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.plugin.Plugin
 import org.bukkit.scheduler.BukkitTask
+import java.util.concurrent.CompletableFuture
 
 /**
  * The PointerManager handles the creation of the selected PointerTypes and manages their tasks
@@ -209,9 +210,7 @@ class PointerManager(
         plugin.server.scheduler.runTask(
             plugin,
             Runnable { // Run this in the next tick, because otherwise the compass pointer errors because the player doesn't have a current compass target yet
-                hooks.loadActiveTrackable(e.player)?.let {
-                    enable(e.player, it, false)
-                }
+                hooks.loadActiveTrackable(e.player).join()?.let { enable(e.player, it, false) } // TODO dont block
             }
         )
     }
@@ -279,7 +278,7 @@ class PointerManager(
          * @param player The player that had the trackable enabled
          * @return The last trackable or <code>null</code> if it has been disabled
          */
-        fun loadActiveTrackable(player: Player): Trackable?
+        fun loadActiveTrackable(player: Player): CompletableFuture<Trackable?>
 
         /**
          * Save the last active compass target of a player to non-volatile storage.
@@ -295,7 +294,7 @@ class PointerManager(
          * @param player The player to load the compass location for
          * @return The previous compass target or <code>null</code> if there is none
          */
-        fun loadCompassTarget(player: Player): Location?
+        fun loadCompassTarget(player: Player): CompletableFuture<Location?>
 
         interface ActionBar {
             /**

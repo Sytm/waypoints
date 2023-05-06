@@ -3,6 +3,8 @@ package de.md5lukas.waypoints.command
 import com.mojang.brigadier.Message
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
+import com.okkero.skedule.future
+import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.util.containsNonWordCharacter
@@ -18,7 +20,7 @@ class WaypointsArgumentSuggestions(
     private val plugin: WaypointsPlugin,
     private val textMode: Boolean,
     private val allowGlobals: Boolean,
-    private val filter: ((CommandSender, Waypoint) -> Boolean)? = null,
+    private val filter: (suspend (CommandSender, Waypoint) -> Boolean)? = null,
 ) : ArgumentSuggestions<CommandSender> {
 
     private var reloadError = true
@@ -37,9 +39,8 @@ class WaypointsArgumentSuggestions(
         }
 
         val sender = info.sender
-        val future = CompletableFuture<Suggestions>()
 
-        plugin.runTaskAsync {
+        return plugin.future {
             val query = if (textMode) {
                 info.currentArg.removePrefix("\"").removeSuffix("\"")
             } else info.currentArg
@@ -73,9 +74,8 @@ class WaypointsArgumentSuggestions(
                     builder.suggest(formatSuggestion(it.indexedName), it.t.getTooltip(sender))
                 }
             }
-            future.complete(builder.build())
+            builder.build()
         }
-        return future
     }
 
     private fun formatSuggestion(name: String) = if (textMode && name.containsNonWordCharacter()) {
@@ -88,6 +88,6 @@ class WaypointsArgumentSuggestions(
         BukkitTooltip.messageFromAdventureComponent(plugin.translations.COMMAND_SEARCH_TOOLTIP.withReplacements(*getResolvers(sender as? Player)))
     }
 
-    private fun shouldDiscard(sender: CommandSender, waypoint: Waypoint) =
+    private suspend fun shouldDiscard(sender: CommandSender, waypoint: Waypoint) =
         waypoint.location.world === null || filter?.invoke(sender, waypoint) == false
 }

@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.konfig)
 
     // Required dependencies
+    implementation(libs.schedulers)
     implementation(libs.skedule)
     implementation(libs.anvilGui)
     implementation(libs.bStats)
