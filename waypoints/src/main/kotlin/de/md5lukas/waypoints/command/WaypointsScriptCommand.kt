@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.command
 
+import com.okkero.skedule.skedule
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.pointers.BeaconColor
@@ -50,14 +51,16 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                             val player = args[0] as Player
                             val uuid = args[1] as UUID
 
-                            val waypoint = plugin.api.getWaypointByID(uuid)
+                            plugin.skedule(player) {
+                                val waypoint = plugin.api.getWaypointByID(uuid)
 
-                            if (waypoint == null) {
-                                translations.COMMAND_SCRIPT_SELECT_WAYPOINT_WAYPOINT_NOT_FOUND.send(sender, "uuid" placeholder uuid.toString())
-                                return@anyExecutor
+                                if (waypoint == null) {
+                                    translations.COMMAND_SCRIPT_SELECT_WAYPOINT_WAYPOINT_NOT_FOUND.send(sender, "uuid" placeholder uuid.toString())
+                                    return@skedule
+                                }
+
+                                plugin.pointerManager.enable(player, WaypointTrackable(plugin, waypoint))
                             }
-
-                            plugin.pointerManager.enable(player, WaypointTrackable(plugin, waypoint))
                         }
                     }
                 }
@@ -96,18 +99,20 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                         .replaceSuggestions(WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true))
                 ) {
                     anyExecutor { sender, args ->
-                        val result = searchWaypoints(plugin, sender, args[0] as String, true)
-                        if (result.isEmpty()) {
-                            translations.COMMAND_SCRIPT_UUID_NO_MATCH.send(sender)
-                        } else {
-                            translations.COMMAND_SCRIPT_UUID_HEADER.send(sender)
-                            result.forEach {
-                                sender.sendMessage(
-                                    translations.COMMAND_SCRIPT_UUID_RESULT.withReplacements(
-                                        "name" placeholder it.name,
-                                        "folder" placeholder (it.folder?.name ?: "null"),
-                                    ).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, it.id.toString()))
-                                )
+                        plugin.skedule {
+                            val result = searchWaypoints(plugin, sender, args[0] as String, true)
+                            if (result.isEmpty()) {
+                                translations.COMMAND_SCRIPT_UUID_NO_MATCH.send(sender)
+                            } else {
+                                translations.COMMAND_SCRIPT_UUID_HEADER.send(sender)
+                                result.forEach {
+                                    sender.sendMessage(
+                                        translations.COMMAND_SCRIPT_UUID_RESULT.withReplacements(
+                                            "name" placeholder it.name,
+                                            "folder" placeholder (it.getFolder()?.name ?: "null"),
+                                        ).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, it.id.toString()))
+                                    )
+                                }
                             }
                         }
                     }

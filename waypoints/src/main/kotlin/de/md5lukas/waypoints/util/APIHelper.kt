@@ -40,7 +40,7 @@ fun checkWorldAvailability(plugin: WaypointsPlugin, world: World): Boolean {
     }
 }
 
-fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
+suspend fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
     creationPreChecks(plugin, player, location)?.let {
         return it
     }
@@ -49,7 +49,7 @@ fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String,
 
     val waypointLimit = plugin.waypointsConfig.general.waypoints.limit
 
-    if (!player.hasPermission(WaypointsPermissions.UNLIMITED) && waypointLimit > 0 && waypointsPlayer.waypointsAmount >= waypointLimit) {
+    if (!player.hasPermission(WaypointsPermissions.UNLIMITED) && waypointLimit > 0 && waypointsPlayer.getWaypointsAmount() >= waypointLimit) {
         plugin.translations.WAYPOINT_LIMIT_REACHED_PRIVATE.send(player)
         return LimitReached
     }
@@ -66,7 +66,7 @@ fun createWaypointPrivate(plugin: WaypointsPlugin, player: Player, name: String,
     return SuccessWaypoint(waypoint)
 }
 
-fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
+suspend fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, location: Location = player.location): CreateResult {
     creationPreChecks(plugin, player, location)?.let {
         return it
     }
@@ -84,7 +84,7 @@ fun createWaypointPublic(plugin: WaypointsPlugin, player: Player, name: String, 
     return SuccessWaypoint(waypoint)
 }
 
-fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: String, permission: String, location: Location = player.location): CreateResult {
+suspend fun createWaypointPermission(plugin: WaypointsPlugin, player: Player, name: String, permission: String, location: Location = player.location): CreateResult {
     creationPreChecks(plugin, player, location)?.let {
         return it
     }
@@ -117,7 +117,7 @@ private fun creationPreChecks(plugin: WaypointsPlugin, player: Player, location:
     return null
 }
 
-private fun checkVisited(plugin: WaypointsPlugin, waypoint: Waypoint, player: Player) {
+private suspend fun checkVisited(plugin: WaypointsPlugin, waypoint: Waypoint, player: Player) {
     if (player.world === waypoint.location.world
         && player.location.distanceSquared(waypoint.location) <= plugin.waypointsConfig.general.teleport.visitedRadiusSquared
     ) {
@@ -125,12 +125,12 @@ private fun checkVisited(plugin: WaypointsPlugin, waypoint: Waypoint, player: Pl
     }
 }
 
-fun createFolderPrivate(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
+suspend fun createFolderPrivate(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
     val waypointsPlayer = plugin.api.getWaypointPlayer(player.uniqueId)
 
     val folderLimit = plugin.waypointsConfig.general.folders.limit
 
-    if (!player.hasPermission(WaypointsPermissions.UNLIMITED) && folderLimit > 0 && waypointsPlayer.foldersAmount >= folderLimit) {
+    if (!player.hasPermission(WaypointsPermissions.UNLIMITED) && folderLimit > 0 && waypointsPlayer.getFoldersAmount() >= folderLimit) {
         plugin.translations.FOLDER_LIMIT_REACHED_PRIVATE.send(player)
         return LimitReached
     }
@@ -145,7 +145,7 @@ fun createFolderPrivate(plugin: WaypointsPlugin, player: Player, name: String): 
     return SuccessFolder(folder)
 }
 
-fun createFolderPublic(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
+suspend fun createFolderPublic(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
     if (!checkFolderName(plugin, plugin.api.publicWaypoints, name)) {
         plugin.translations.FOLDER_NAME_DUPLICATE_PUBLIC.send(player)
         return NameTaken
@@ -157,7 +157,7 @@ fun createFolderPublic(plugin: WaypointsPlugin, player: Player, name: String): C
     return SuccessFolder(folder)
 }
 
-fun createFolderPermission(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
+suspend fun createFolderPermission(plugin: WaypointsPlugin, player: Player, name: String): CreateResult {
     if (!checkFolderName(plugin, plugin.api.permissionWaypoints, name)) {
         plugin.translations.FOLDER_NAME_DUPLICATE_PERMISSION.send(player)
         return NameTaken
@@ -169,7 +169,7 @@ fun createFolderPermission(plugin: WaypointsPlugin, player: Player, name: String
     return SuccessFolder(folder)
 }
 
-fun checkWaypointName(plugin: WaypointsPlugin, holder: WaypointHolder, name: String): Boolean {
+suspend fun checkWaypointName(plugin: WaypointsPlugin, holder: WaypointHolder, name: String): Boolean {
     if (when (holder.type) {
             Type.PRIVATE -> plugin.waypointsConfig.general.waypoints.allowDuplicateNamesPrivate
             Type.PUBLIC -> plugin.waypointsConfig.general.waypoints.allowDuplicateNamesPublic
@@ -183,7 +183,7 @@ fun checkWaypointName(plugin: WaypointsPlugin, holder: WaypointHolder, name: Str
     return !holder.isDuplicateWaypointName(name)
 }
 
-fun checkFolderName(plugin: WaypointsPlugin, holder: WaypointHolder, name: String): Boolean {
+suspend fun checkFolderName(plugin: WaypointsPlugin, holder: WaypointHolder, name: String): Boolean {
     if (when (holder.type) {
             Type.PRIVATE -> plugin.waypointsConfig.general.folders.allowDuplicateNamesPrivate
             Type.PUBLIC -> plugin.waypointsConfig.general.folders.allowDuplicateNamesPublic
@@ -198,7 +198,7 @@ fun checkFolderName(plugin: WaypointsPlugin, holder: WaypointHolder, name: Strin
 }
 
 
-private fun searchWaypoints0(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): List<SearchResult<out Waypoint>> {
+private suspend fun searchWaypoints0(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): List<SearchResult<out Waypoint>> {
     val publicPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PUBLIC.rawText + "/"
     val permissionPrefix = plugin.translations.COMMAND_SEARCH_PREFIX_PERMISSION.rawText + "/"
 
@@ -215,10 +215,10 @@ private fun searchWaypoints0(plugin: WaypointsPlugin, sender: CommandSender, que
     return holder.searchWaypoints(strippedQuery, sender)
 }
 
-fun searchWaypoints(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): List<Waypoint> =
+suspend fun searchWaypoints(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): List<Waypoint> =
     searchWaypoints0(plugin, sender, query, allowGlobals).map { it.t }.toList()
 
-fun searchWaypoint(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): Waypoint? =
+suspend fun searchWaypoint(plugin: WaypointsPlugin, sender: CommandSender, query: String, allowGlobals: Boolean): Waypoint? =
     searchWaypoints0(plugin, sender, query, allowGlobals).firstOrNull()?.t
 
 fun Waypoint.copyFieldsTo(waypoint: Waypoint) {

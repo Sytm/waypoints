@@ -7,7 +7,6 @@ dependencies {
 
     implementation(kotlin("stdlib"))
     implementation(libs.coroutines)
-    implementation(libs.skedule)
 
     api(project(":waypoints-api"))
 }

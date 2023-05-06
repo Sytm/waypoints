@@ -14,6 +14,7 @@ dependencies {
     api(libs.paper)
     api(kotlin("stdlib"))
 
+    implementation(libs.schedulers)
     implementation(libs.protocollib)
 }
 

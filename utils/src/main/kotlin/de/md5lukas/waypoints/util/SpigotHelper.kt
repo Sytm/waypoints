@@ -9,12 +9,9 @@ import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
 import kotlin.math.roundToInt
 
+@Deprecated("Replace with Schedulers", replaceWith = ReplaceWith("Schedulers.global(plugin).schedule()"), DeprecationLevel.ERROR)
 inline fun Plugin.runTask(crossinline block: () -> Unit) {
     server.scheduler.runTask(this, Runnable { block() })
-}
-
-inline fun Plugin.runTaskAsync(crossinline block: () -> Unit) {
-    server.scheduler.runTaskAsynchronously(this, Runnable { block() })
 }
 
 fun Plugin.callEvent(event: Event) {
