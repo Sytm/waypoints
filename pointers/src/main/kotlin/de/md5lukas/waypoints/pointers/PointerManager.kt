@@ -207,12 +207,18 @@ class PointerManager(
 
     @EventHandler
     private fun onPlayerJoin(e: PlayerJoinEvent) {
-        plugin.server.scheduler.runTask(
-            plugin,
-            Runnable { // Run this in the next tick, because otherwise the compass pointer errors because the player doesn't have a current compass target yet
-                hooks.loadActiveTrackable(e.player).join()?.let { enable(e.player, it, false) } // TODO dont block
+        hooks.loadActiveTrackable(e.player).thenAccept {
+            if (it !== null) {
+                plugin.server.scheduler.runTask(
+                    plugin,
+                    Runnable {
+                        // Run this in the next tick, because otherwise the compass pointer errors
+                        // because the player doesn't have a current compass target yet
+                        enable(e.player, it, false)
+                    }
+                )
             }
-        )
+        }
     }
 
     @EventHandler
