@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin)
 }
 
 dependencies {
     api(libs.paper)
-    api(kotlin("stdlib"))
+    api(libs.stdlib)
     implementation(libs.md5Commons)
 
     // Test dependencies

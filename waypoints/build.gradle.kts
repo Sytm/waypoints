@@ -1,11 +1,10 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import de.md5lukas.resourceindex.ResourceIndexTask
-import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin)
     alias(libs.plugins.shadow)
     alias(libs.plugins.minotaur)
     alias(libs.plugins.runPaper)
@@ -23,7 +22,7 @@ repositories {
 
 dependencies {
     implementation(libs.paper)
-    implementation(kotlin("stdlib"))
+    implementation(libs.stdlib)
     implementation(libs.coroutines)
 
     implementation(project(":utils"))
@@ -63,12 +62,15 @@ tasks.withType<ProcessResources> {
     dependsOn("createResourceIndex")
 
     val apiVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
+    val kotlinVersion = libs.versions.kotlin.get()
     val commandApiVersion = libs.versions.commandApi.get()
+    val coroutinesVersion = libs.versions.coroutines.get()
 
     inputs.property("version", project.version)
     inputs.property("apiVersion", apiVersion)
-    inputs.property("kotlinVersion", getKotlinPluginVersion())
+    inputs.property("kotlinVersion", kotlinVersion)
     inputs.property("commandApiVersion", commandApiVersion)
+    inputs.property("coroutinesVersion", coroutinesVersion)
 
     filteringCharset = "UTF-8"
 
@@ -80,8 +82,9 @@ tasks.withType<ProcessResources> {
     }
     filesMatching("dependencies.yml") {
         expand(
-            "kotlinVersion" to getKotlinPluginVersion(),
+            "kotlinVersion" to kotlinVersion,
             "commandApiVersion" to commandApiVersion,
+            "coroutinesVersion" to coroutinesVersion
         )
     }
 }
@@ -100,7 +103,7 @@ tasks.withType<ShadowJar> {
 
     minimize {
         // Exclude AnvilGUI because the version specific NMS adapters are loaded via reflection and are not directly referenced
-        exclude(dependency("net.wesjd:anvilgui"))
+        exclude(dependency(libs.anvilGui.get()))
 
         exclude(project(":waypoints-api"))
         exclude(project(":utils"))
@@ -115,21 +118,26 @@ tasks.withType<ShadowJar> {
         include(project(":api-base"))
         include(project(":api-sqlite"))
 
-        include(dependency("de.md5lukas:md5-commons"))
-        include(dependency("de.md5lukas:kinvs"))
-        include(dependency("de.md5lukas:spigot-konfig"))
+        include(dependency(libs.md5Commons.get()))
+        include(dependency(libs.kinvs.get()))
+        include(dependency(libs.konfig.get()))
 
-        include(dependency("net.wesjd:anvilgui"))
+        include(dependency(libs.schedulers.get()))
+        include(dependency(libs.skedule.get()))
+        include(dependency(libs.anvilGui.get()))
         include(dependency("org.bstats::"))
     }
 
-    arrayOf("commons", "kinvs", "konfig").forEach {
+    arrayOf("commons", "kinvs", "konfig", "schedulers").forEach {
         relocate("de.md5lukas.$it", "de.md5lukas.waypoints.$it")
     }
 
+    relocate("com.okkero.skedule", "de.md5lukas.waypoints.skedule")
     relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
     relocate("org.bstats", "de.md5lukas.waypoints.bstats")
 }
+
+// runPaper.folia.registerTask() CommandAPI is still non-functional on folia
 
 tasks.withType<RunServer> {
     dependsOn("jar")

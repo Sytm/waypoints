@@ -1,7 +1,7 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin)
     alias(libs.plugins.dokka)
     `maven-publish`
 }
@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     api(libs.paper)
-    api(kotlin("stdlib"))
+    api(libs.stdlib)
 
     implementation(libs.schedulers)
     implementation(libs.protocollib)

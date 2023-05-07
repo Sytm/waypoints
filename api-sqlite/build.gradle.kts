@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin)
     alias(libs.plugins.shadow)
 }
 
@@ -12,7 +12,7 @@ dependencies {
 
     implementation(libs.sqliteHelper)
 
-    api(kotlin("stdlib"))
+    api(libs.stdlib)
     api(project(":api-base"))
     implementation(project(":utils"))
     implementation(libs.md5Commons)
@@ -31,7 +31,7 @@ tasks.withType<ShadowJar> {
     archiveClassifier.set("")
 
     dependencies {
-        include(dependency("de.md5lukas:sqlite-kotlin-helper"))
+        include(dependency(libs.sqliteHelper.get()))
     }
 
     relocate("de.md5lukas.jdbc", "de.md5lukas.waypoints.api.sqlite.jdbc")

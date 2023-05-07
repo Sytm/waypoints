@@ -1,5 +1,6 @@
 [versions]
 kotlin = "1.8.20"
+coroutines = "1.7.0-RC"
 jvmToolchain = "17"
 paper = "1.19.4-R0.1-SNAPSHOT"
 commandApi = "9.0.0"
@@ -7,6 +8,7 @@ commandApi = "9.0.0"
 dynmap = "3.5-SNAPSHOT"
 
 [libraries]
+stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.0-RC" }
 
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
@@ -54,6 +56,7 @@ sqliteJdbc = { group = "org.xerial", name = "sqlite-jdbc", version = "3.36.0.3" 
 
 
 [plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 shadow = { id = "com.github.johnrengelman.shadow", version = "8.+" }
 dokka = { id = "org.jetbrains.dokka", version = "1.+" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.+" }
