@@ -129,7 +129,8 @@ class PlayerTrackingPage(
         }
     }
 
-    suspend fun init() {
+    override suspend fun init() {
+        super.init()
         updateListingInInventory()
         updateControls(false)
     }

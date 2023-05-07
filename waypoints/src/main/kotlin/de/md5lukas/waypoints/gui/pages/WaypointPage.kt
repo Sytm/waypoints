@@ -217,7 +217,11 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
             },
             'f' to if (canModifyWaypoint && isNotDeathWaypoint) {
                 GUIItem(wpGUI.translations.WAYPOINT_MOVE_TO_FOLDER.item) {
-                    wpGUI.open(MoveToFolderPage(wpGUI, waypoint))
+                    wpGUI.skedule {
+                        val page = MoveToFolderPage(wpGUI, waypoint).apply { init() }
+                        switchContext(SynchronizationContext.SYNC)
+                        wpGUI.open(page)
+                    }
                 }
             } else {
                 background

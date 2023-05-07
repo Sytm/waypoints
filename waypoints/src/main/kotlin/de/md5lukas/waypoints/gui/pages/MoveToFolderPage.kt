@@ -61,7 +61,8 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : Li
         )
     }
 
-    suspend fun init() {
+    override suspend fun init() {
+        super.init()
         updateListingInInventory()
         updateControls()
     }

@@ -7,6 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.plugin.Plugin
+import java.util.concurrent.CompletableFuture
 import kotlin.math.roundToInt
 
 @Deprecated("Replace with Schedulers", replaceWith = ReplaceWith("Schedulers.global(plugin).schedule()"), DeprecationLevel.ERROR)
@@ -39,11 +40,11 @@ private fun ConfigurationSection.getFullPath(path: String): String =
         "$currentPath.$path"
     }
 
-fun Player.teleportKeepOrientation(location: Location) {
+fun Player.teleportKeepOrientation(location: Location): CompletableFuture<Boolean> {
     val target = location.clone()
     target.pitch = this.location.pitch
     target.yaw = this.location.yaw
-    this.teleport(target)
+    return this.teleportAsync(target)
 }
 
 fun parseLocationString(player: Player, input: String): Location? {

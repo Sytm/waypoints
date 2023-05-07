@@ -258,7 +258,8 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
         }
     }
 
-    suspend fun init() {
+    override suspend fun init() {
+        super.init()
         updateListingInInventory()
         updateControls(false)
     }

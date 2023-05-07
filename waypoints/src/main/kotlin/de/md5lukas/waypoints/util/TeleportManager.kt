@@ -7,6 +7,7 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.config.general.TeleportPaymentType
+import kotlinx.coroutines.future.await
 import kotlinx.coroutines.time.delay as delayTime
 import net.kyori.adventure.text.Component
 import org.bukkit.entity.Player
@@ -14,7 +15,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import org.bukkit.scheduler.BukkitTask
 import java.time.Duration
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -105,7 +105,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
     suspend fun teleportPlayerToWaypoint(player: Player, waypoint: Waypoint) {
         cancelRunningTeleport(player)
-        if (player.hasPermission(getTeleportPermission(waypoint))) {
+        if (player.hasPermission(getTeleportPermission(waypoint)) && false) {
             player.teleportKeepOrientation(waypoint.location)
             return
         }
@@ -168,9 +168,10 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                 val id = teleportIds.getAndIncrement()
                 pendingTeleports[player] = id
                 delayTime(standStillTime)
-                if (pendingTeleports.remove(player) != id) {
+                if (pendingTeleports[player] != id) {
                     return
                 }
+                pendingTeleports.remove(player)
             }
 
             if (canTeleport() &&
@@ -179,33 +180,47 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
                     TeleportPaymentType.FREE -> true
                     TeleportPaymentType.XP -> {
                         player.giveExpLevels((-price).toInt())
-                        incrementTeleportations(player, waypoint)
+                        modifyTeleportations(player, waypoint, 1)
                         true
                     }
 
                     TeleportPaymentType.VAULT -> {
-                        incrementTeleportations(player, waypoint)
+                        modifyTeleportations(player, waypoint, 1)
                         plugin.vaultIntegration.withdraw(player, price)
                     }
                 }
             ) {
-                player.teleportKeepOrientation(waypoint.location)
+                val success = player.teleportKeepOrientation(waypoint.location).await()
 
-                val cooldown = config.cooldown
+                if (success) {
+                    val cooldown = config.cooldown
 
-                if (cooldown.toSeconds() > 0) {
-                    playerData.setCooldownUntil(waypoint.type, OffsetDateTime.now().plus(cooldown))
+                    if (cooldown.toSeconds() > 0) {
+                        playerData.setCooldownUntil(waypoint.type, OffsetDateTime.now().plus(cooldown))
+                    }
+                } else {
+                    when (config.paymentType) {
+                        TeleportPaymentType.XP -> {
+                            player.giveExpLevels(price.toInt())
+                            modifyTeleportations(player, waypoint, 1)
+                        }
+                        TeleportPaymentType.VAULT -> {
+                            modifyTeleportations(player, waypoint, 1)
+                            plugin.vaultIntegration.deposit(player, price)
+                        }
+                        else -> {}
+                    }
                 }
             }
         }
     }
 
-    private suspend fun incrementTeleportations(player: Player, waypoint: Waypoint) {
+    private suspend fun modifyTeleportations(player: Player, waypoint: Waypoint, delta: Int) {
         if (getTeleportConfig(waypoint).perCategory) {
             val playerData = plugin.api.getWaypointPlayer(player.uniqueId)
-            playerData.setTeleportations(waypoint.type, playerData.getTeleportations(waypoint.type) + 1)
+            playerData.setTeleportations(waypoint.type, playerData.getTeleportations(waypoint.type) + delta)
         } else {
-            waypoint.getWaypointMeta(player.uniqueId).teleportations++
+            waypoint.getWaypointMeta(player.uniqueId).teleportations += delta
         }
     }
 

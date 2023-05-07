@@ -65,24 +65,34 @@ class WaypointsGUI(
         ),
     )
 
-    fun openOverview() {
-        open(GUIFolderPage(this, targetData))
+    suspend fun openOverview() {
+        val page = GUIFolderPage(this, targetData).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
-    fun openHolder(holder: WaypointHolder) {
-        open(GUIFolderPage(this, holder))
+    suspend fun openHolder(holder: WaypointHolder) {
+        val page = GUIFolderPage(this, holder).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
-    fun openFolder(folder: Folder) {
-        open(GUIFolderPage(this, folder))
+    suspend fun openFolder(folder: Folder) {
+        val page = GUIFolderPage(this, folder).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
-    fun openWaypoint(waypoint: Waypoint) {
-        open(WaypointPage(this, waypoint))
+    suspend fun openWaypoint(waypoint: Waypoint) {
+        val page = WaypointPage(this, waypoint).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
-    fun openPlayerTracking() {
-        open(PlayerTrackingPage(this))
+    suspend fun openPlayerTracking() {
+        val page = PlayerTrackingPage(this).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
@@ -163,12 +173,13 @@ class WaypointsGUI(
             }.onClose {
                 val capturedWaypoint = waypoint
 
-                if (capturedWaypoint == null) {
-                    goBack()
-                } else {
-                    openWaypoint(capturedWaypoint)
-                }
-                schedule {
+                skedule {
+                    if (capturedWaypoint == null) {
+                        goBack()
+                    } else {
+                        openWaypoint(capturedWaypoint)
+                    }
+                    switchContext(SynchronizationContext.SYNC)
                     gui.open()
                 }
             }.open(viewer)
@@ -263,12 +274,14 @@ class WaypointsGUI(
     internal suspend fun toGUIContent(guiDisplayable: GUIDisplayable): GUIContent {
         return extendApi {
             GUIItem(guiDisplayable.getItem(viewer)) {
-                when (guiDisplayable) {
-                    is WaypointHolder -> openHolder(guiDisplayable)
-                    is Folder -> openFolder(guiDisplayable)
-                    is Waypoint -> openWaypoint(guiDisplayable)
-                    is PlayerTrackingDisplayable -> openPlayerTracking()
-                    else -> throw IllegalStateException("The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
+                skedule {
+                    when (guiDisplayable) {
+                        is WaypointHolder -> openHolder(guiDisplayable)
+                        is Folder -> openFolder(guiDisplayable)
+                        is Waypoint -> openWaypoint(guiDisplayable)
+                        is PlayerTrackingDisplayable -> openPlayerTracking()
+                        else -> throw IllegalStateException("The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
+                    }
                 }
             }
         }
