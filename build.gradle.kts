@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version libs.versions.kotlin apply false
+    alias(libs.plugins.kotlin) apply false
 }
 
 subprojects {
