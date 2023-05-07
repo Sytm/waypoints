@@ -27,10 +27,8 @@ open class ListingPage<T>(
         const val PAGINATION_LIST_PAGE_SIZE = 4 * 9
     }
 
-    init {
-        wpGUI.skedule {
-            listingContent = contentGetter()
-        }
+    open suspend fun init() {
+        listingContent = contentGetter()
     }
 
     protected lateinit var listingContent: PaginationList<T>
