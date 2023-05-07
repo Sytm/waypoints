@@ -20,7 +20,7 @@ class WaypointCustomDataChangeEvent(
      * The new data for the key
      */
     val data: String?
-) : Event() {
+) : Event(true) {
 
     private companion object {
         @JvmStatic // Automatically creates static getHandlerList()

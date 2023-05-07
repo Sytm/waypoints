@@ -12,7 +12,7 @@ class WaypointPreDeleteEvent(
      * The deleted waypoint
      */
     val waypoint: Waypoint
-) : Event() {
+) : Event(true) {
 
     private companion object {
         @JvmStatic // Automatically creates static getHandlerList()
