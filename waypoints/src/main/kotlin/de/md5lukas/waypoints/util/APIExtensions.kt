@@ -1,4 +1,4 @@
-package de.md5lukas.waypoints.gui
+package de.md5lukas.waypoints.util
 
 import de.md5lukas.commons.MathHelper
 import de.md5lukas.waypoints.WaypointsPermissions
@@ -9,7 +9,7 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
-import de.md5lukas.waypoints.util.placeholder
+import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -20,7 +20,7 @@ class APIExtensions(
     private val translations = plugin.translations
     private val worldTranslations = plugin.worldTranslations
 
-    fun GUIDisplayable.getItem(player: Player) = when (this) {
+    suspend fun GUIDisplayable.getItem(player: Player) = when (this) {
         is GUIFolder -> getItem(player)
         is Waypoint -> getItem(player)
         is PlayerTrackingDisplayable -> translations.ICON_TRACKING.item
@@ -74,15 +74,15 @@ class APIExtensions(
         Type.PERMISSION -> plugin.translations.POINTERS_HOLOGRAM_PERMISSION
     }
 
-    fun GUIFolder.getItem(player: Player) = when (this) {
+    suspend fun GUIFolder.getItem(player: Player) = when (this) {
         is WaypointHolder -> getItem(player)
         is Folder -> getItem(player)
         else -> throw IllegalStateException("Unknown GUIFolder subclass")
     }
 
-    fun WaypointHolder.getItem(player: Player): ItemStack {
+    suspend fun WaypointHolder.getItem(player: Player): ItemStack {
         val amountVisibleToPlayer = if (player.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
-            waypointsAmount
+            getWaypointsAmount()
         } else {
             getWaypointsVisibleForPlayer(player)
         }
@@ -102,13 +102,13 @@ class APIExtensions(
         return itemStack
     }
 
-    fun Folder.getItem(player: Player): ItemStack {
+    suspend fun Folder.getItem(player: Player): ItemStack {
         if (type === Type.DEATH) {
             return getItemDeath()
         }
 
         val fetchedAmount = if (player.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
-            amount
+            getAmount()
         } else {
             getAmountVisibleForPlayer(player)
         }
@@ -145,8 +145,8 @@ class APIExtensions(
         Type.PERMISSION -> plugin.translations.BACKGROUND_PERMISSION
     }.item
 
-    private fun Folder.getItemDeath(): ItemStack {
-        val fetchedAmount = amount
+    private suspend fun Folder.getItemDeath(): ItemStack {
+        val fetchedAmount = getAmount()
         val stack = translations.FOLDER_ICON_DEATH.getItem("amount" placeholder fetchedAmount)
 
         stack.amount = MathHelper.clamp(1, 64, fetchedAmount)

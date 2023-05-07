@@ -15,7 +15,7 @@ import de.md5lukas.waypoints.config.*
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
-import de.md5lukas.waypoints.gui.APIExtensions
+import de.md5lukas.waypoints.util.APIExtensions
 import de.md5lukas.waypoints.integrations.BlueMapIntegration
 import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration

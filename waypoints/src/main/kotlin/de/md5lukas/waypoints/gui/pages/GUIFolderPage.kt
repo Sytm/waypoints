@@ -1,5 +1,8 @@
 package de.md5lukas.waypoints.gui.pages
 
+import com.okkero.skedule.SynchronizationContext
+import com.okkero.skedule.switchContext
+import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.WaypointsPermissions
@@ -54,11 +57,13 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
     }
 
     override fun update() {
-        updateListingContent()
-        updateControls()
+        wpGUI.skedule {
+            updateListingContent()
+            updateControls()
+        }
     }
 
-    private fun updateControls(update: Boolean = true) {
+    private suspend fun updateControls(update: Boolean = true) {
         /**
          * Overview / Folder
          * p = Previous
@@ -95,9 +100,12 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                                 wpGUI.translations.FOLDER_DELETE_CONFIRM_TRUE.getItem(nameResolver),
                             ) {
                                 if (it) {
-                                    (guiFolder as Folder).delete()
-                                    wpGUI.goBack()
-                                    wpGUI.goBack()
+                                    wpGUI.skedule {
+                                        (guiFolder as Folder).delete()
+                                        switchContext(SynchronizationContext.SYNC)
+                                        wpGUI.goBack()
+                                        wpGUI.goBack()
+                                    }
                                 } else {
                                     wpGUI.goBack()
                                 }
@@ -110,7 +118,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
             },
             's' to CycleSortItem(wpGUI) {
                 listingContent.sortWith(it)
-                updateListingInInventory()
+                wpGUI.skedule {
+                    updateListingInInventory()
+                }
             },
             'd' to if (isOverview) {
                 GUIItem(wpGUI.translations.OVERVIEW_DESELECT.item) {
@@ -130,7 +140,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                             if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
                                 guiFolder.material = newMaterial
 
-                                updateControls()
+                                wpGUI.skedule {
+                                    updateControls()
+                                }
                             } else {
                                 wpGUI.translations.FOLDER_NEW_ICON_INVALID.send(wpGUI.viewer)
                             }
@@ -141,9 +153,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
             't' to if (wpGUI.isOwner && isPlayerOverview) {
                 if (wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
                     ToggleGlobalsItem(wpGUI) {
-                        listingContent = wpGUI.getListingContent(guiFolder)
-                        checkListingPageBounds()
-                        updateListingInInventory()
+                        wpGUI.skedule {
+                            updateListingContent()
+                        }
                     }
                 } else {
                     background
@@ -153,9 +165,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                     GUIItem(wpGUI.translations.FOLDER_RENAME.item) {
                         wpGUI.viewer.closeInventory()
                         AnvilGUI.Builder().plugin(wpGUI.plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = guiFolder.name })
-                            .onClick { slot, (name) ->
+                            .onClickSuspending(wpGUI.plugin) { slot, (name) ->
                                 if (slot != AnvilGUI.Slot.OUTPUT)
-                                    return@onClick emptyList()
+                                    return@onClickSuspending emptyList()
 
                                 val holder = wpGUI.getHolderForType(guiFolder.type)
 
@@ -172,12 +184,12 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                                     }.send(wpGUI.viewer)
                                 }
 
-                                return@onClick AnvilGUI.ResponseAction.close().asSingletonList()
+                                return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
                             }.onClose {
-                            wpGUI.plugin.runTask {
-                                wpGUI.gui.open()
-                            }
-                        }.open(wpGUI.viewer)
+                                wpGUI.schedule {
+                                    wpGUI.gui.open()
+                                }
+                            }.open(wpGUI.viewer)
                     }
                 } else {
                     background
@@ -209,17 +221,17 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                                     }
                                 }.asSingletonList()
                             }.onClose {
-                            parsedLocation.let { location ->
-                                if (location === null) {
-                                    wpGUI.goBack()
-                                    wpGUI.plugin.runTask {
-                                        wpGUI.gui.open()
+                                parsedLocation.let { location ->
+                                    if (location === null) {
+                                        wpGUI.goBack()
+                                        wpGUI.schedule {
+                                            wpGUI.gui.open()
+                                        }
+                                    } else {
+                                        wpGUI.openCreateWaypoint(guiFolder.type, if (guiFolder is Folder) guiFolder else null, location)
                                     }
-                                } else {
-                                    wpGUI.openCreateWaypoint(guiFolder.type, if (guiFolder is Folder) guiFolder else null, location)
                                 }
-                            }
-                        }.open(wpGUI.viewer)
+                            }.open(wpGUI.viewer)
                     } else {
                         wpGUI.openCreateWaypoint(guiFolder.type, if (guiFolder is Folder) guiFolder else null)
                     }
@@ -240,11 +252,13 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
         )
 
         if (update) {
-            wpGUI.gui.update()
+            withSynchronizationContext(SynchronizationContext.SYNC) {
+                wpGUI.gui.update()
+            }
         }
     }
 
-    init {
+    suspend fun init() {
         updateListingInInventory()
         updateControls(false)
     }
