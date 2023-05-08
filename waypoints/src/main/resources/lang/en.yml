@@ -295,7 +295,7 @@ inventory:
         
         <gray>If you <yellow>shift-click<gray>, you can create a waypoint
         <gray>by providing coordinates like this:
-        <green>102/35/-238
+        <green>102 35 -238
     createFolder:
       displayName: "<yellow>Create new folder"
       description: ""
@@ -369,7 +369,7 @@ inventory:
       displayName: "<yellow>Move waypoint into a folder"
       description: |
         <gray>Put the waypoint into a folder to group it,
-        or remove it from the current folder
+        <gray>or remove it from the current folder
     teleport:
       displayName: "<yellow>Teleport to waypoint"
       description: ""

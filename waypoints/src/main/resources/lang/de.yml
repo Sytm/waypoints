@@ -295,7 +295,7 @@ inventory:
         
         <gray>Wenn du <yellow>Shift-Klickst<gray>, kannst du einen Wegpunkt
         <gray>erstellen indem du Koordinaten so angibst:
-        <green>102/35/-238
+        <green>102 35 -238
     createFolder:
       displayName: "<yellow>Neunen Ordner erstellen"
       description: ""
@@ -369,7 +369,7 @@ inventory:
       displayName: "<yellow>Wegpunkt in einen Ordner verschieben"
       description: |
         <gray>Stecke den Wegpunkt in einen Ordner um ihn zu Gruppieren,
-        oder entferne ihn vom momentanen Ordner
+        <gray>oder entferne ihn vom momentanen Ordner
     teleport:
       displayName: "<yellow>Zum Wegpunkt teleportieren"
       description: ""

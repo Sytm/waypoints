@@ -252,7 +252,7 @@ inventory:
         <gray>路径点将会创建在当前的路径点组内
         
         <gray>若按下 <yellow>shift+左键<gray>, 你可使用坐标创建路径点, 例如:
-        <green>102/35/-238
+        <green>102 35 -238
     createFolder:
       displayName: "<yellow>创建新路径点组"
       description: ""
