@@ -1,13 +1,11 @@
 package de.md5lukas.waypoints.util
 
-import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.future
-import com.okkero.skedule.switchContext
+import de.md5lukas.schedulers.AbstractScheduler
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.wesjd.anvilgui.AnvilGUI.*
 import org.bukkit.inventory.ItemStack
-import org.bukkit.plugin.Plugin
 
 operator fun StateSnapshot.component1(): String = outputItem.plainDisplayName
 
@@ -31,12 +29,11 @@ fun replaceInputText(text: String) = ResponseAction { anvilGUI, _ ->
     }
 }
 
-inline fun Builder.onClickSuspending(plugin: Plugin, crossinline block: suspend (Int, StateSnapshot) -> List<ResponseAction>): Builder {
+inline fun Builder.onClickSuspending(scheduler: AbstractScheduler, crossinline block: suspend (Int, StateSnapshot) -> List<ResponseAction>): Builder {
+    this.mainThreadExecutor(scheduler.asExecutor(async = false))
     this.onClickAsync { slot, state ->
-        plugin.future(state.player) {
-            val result = block(slot, state)
-            switchContext(SynchronizationContext.SYNC)
-            result
+        scheduler.future {
+            block(slot, state)
         }
     }
     return this
