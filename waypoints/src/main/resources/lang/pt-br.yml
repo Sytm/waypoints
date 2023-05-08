@@ -241,7 +241,7 @@ inventory:
         
         <gray>Usando <yellow>shift-click<gray>, você cria uma waypoint
         <gray>com coordenadas desse jeito:
-        <green>102/35/-238
+        <green>102 35/ -238
     createFolder:
       displayName: "<yellow>Criar nova pasta"
       description: ""
@@ -312,7 +312,7 @@ inventory:
       displayName: "<yellow>Mover waypoint para uma pasta"
       description: |
         <gray>Coloque a waypoint em uma pasta,
-        ou remove da pasta atual
+        <gray>ou remove da pasta atual
     teleport:
       displayName: "<yellow>Teleportar para waypoint"
       description: ""
