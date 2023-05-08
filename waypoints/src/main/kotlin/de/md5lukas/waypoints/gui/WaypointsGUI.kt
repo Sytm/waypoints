@@ -7,7 +7,6 @@ import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.GUI
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
-import de.md5lukas.schedulers.NOOP
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
@@ -97,7 +96,7 @@ class WaypointsGUI(
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
         AnvilGUI.Builder().plugin(plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = translations.FOLDER_CREATE_ENTER_NAME.rawText })
-            .onClickSuspending(plugin) { slot, (name) ->
+            .onClickSuspending(scheduler) { slot, (name) ->
                 if (slot != AnvilGUI.Slot.OUTPUT)
                     return@onClickSuspending emptyList()
 
@@ -127,7 +126,7 @@ class WaypointsGUI(
         var name: String? = null
         var permission: String? = null
         AnvilGUI.Builder().plugin(plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = translations.WAYPOINT_CREATE_ENTER_NAME.rawText })
-            .onClickSuspending(plugin) { slot, (enteredText) ->
+            .onClickSuspending(scheduler) { slot, (enteredText) ->
                 if (slot != AnvilGUI.Slot.OUTPUT)
                     return@onClickSuspending emptyList()
 
@@ -175,6 +174,7 @@ class WaypointsGUI(
 
                 skedule {
                     if (capturedWaypoint == null) {
+                        switchContext(SynchronizationContext.SYNC)
                         goBack()
                     } else {
                         openWaypoint(capturedWaypoint)
@@ -293,9 +293,9 @@ class WaypointsGUI(
         Type.PERMISSION -> plugin.api.permissionWaypoints
     }
 
-    private val scheduler = Schedulers.entity(plugin, viewer)
+    internal val scheduler = Schedulers.entity(plugin, viewer)
 
-    internal fun schedule(block: Runnable) = scheduler.schedule(NOOP, block)
+    internal fun schedule(block: Runnable) = scheduler.schedule(null, block)
     internal fun skedule(sync: SynchronizationContext = SynchronizationContext.ASYNC, block: suspend CoroutineScope.() -> Unit) =
         scheduler.skedule(sync, block)
 

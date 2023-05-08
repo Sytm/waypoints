@@ -165,7 +165,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                     GUIItem(wpGUI.translations.FOLDER_RENAME.item) {
                         wpGUI.viewer.closeInventory()
                         AnvilGUI.Builder().plugin(wpGUI.plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = guiFolder.name })
-                            .onClickSuspending(wpGUI.plugin) { slot, (name) ->
+                            .onClickSuspending(wpGUI.scheduler) { slot, (name) ->
                                 if (slot != AnvilGUI.Slot.OUTPUT)
                                     return@onClickSuspending emptyList()
 

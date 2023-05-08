@@ -4,7 +4,6 @@ import de.md5lukas.commons.time.DurationFormatter
 import de.md5lukas.commons.uuid.UUIDCacheSettings
 import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.konfig.Konfig
-import de.md5lukas.schedulers.NOOP
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.WaypointsAPI
@@ -269,9 +268,9 @@ class WaypointsPlugin : JavaPlugin() {
     private fun startBackgroundTasks() {
         val scheduler = Schedulers.global(this)
         // Run once every day
-        scheduler.scheduleAtFixedRateAsync(20 * 60 * 60 * 24, 20 * 60 * 60 * 24, NOOP, CleanDatabaseTask(this))
+        scheduler.scheduleAtFixedRateAsync(20 * 60 * 60 * 24, 20 * 60 * 60 * 24, CleanDatabaseTask(this))
         if (waypointsConfig.general.updateChecker) {
-            scheduler.scheduleAsync(NOOP, UpdateChecker(this, "Sytm", "waypoints"))
+            scheduler.scheduleAsync(UpdateChecker(this, "Sytm", "waypoints"))
         }
     }
     //</editor-fold>

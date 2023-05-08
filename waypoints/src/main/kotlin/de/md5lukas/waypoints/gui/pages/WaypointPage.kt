@@ -138,7 +138,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                             if (it) {
                                 AnvilGUI.Builder().plugin(wpGUI.plugin).itemLeft(ItemStack(Material.PAPER).also { stack ->
                                     stack.plainDisplayName = wpGUI.translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText
-                                }).onClickSuspending(wpGUI.plugin) { slot, (permission) ->
+                                }).onClickSuspending(wpGUI.scheduler) { slot, (permission) ->
                                     if (slot != AnvilGUI.Slot.OUTPUT)
                                         return@onClickSuspending emptyList()
 
@@ -230,7 +230,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
                 GUIItem(wpGUI.translations.WAYPOINT_RENAME.item) {
                     wpGUI.viewer.closeInventory()
                     AnvilGUI.Builder().plugin(wpGUI.plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = waypoint.name })
-                        .onClickSuspending(wpGUI.plugin) { slot, (newName) ->
+                        .onClickSuspending(wpGUI.scheduler) { slot, (newName) ->
                             if (slot != AnvilGUI.Slot.OUTPUT)
                                 return@onClickSuspending emptyList()
 
@@ -327,7 +327,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : BasePa
         wpGUI.skedule {
             val builder = AnvilGUI.Builder().plugin(wpGUI.plugin)
                 .itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = waypoint.getCustomData(customDataKey) ?: defaultIcon })
-                .onClickSuspending(wpGUI.plugin) { slot, (newIcon) ->
+                .onClickSuspending(wpGUI.scheduler) { slot, (newIcon) ->
                     if (slot != AnvilGUI.Slot.OUTPUT)
                         return@onClickSuspending emptyList()
 
