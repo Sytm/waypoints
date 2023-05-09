@@ -26,7 +26,7 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: -Pversion=dev-${{ steps.commit.outputs.short }} test :waypoints:shadowJar
+          arguments: -Pversion=dev-${{ steps.commit.outputs.short }} check :waypoints:shadowJar
       - name: Save produced plugin Jar
         uses: actions/upload-artifact@v3
         with:

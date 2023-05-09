@@ -61,6 +61,7 @@ shadow = { id = "com.github.johnrengelman.shadow", version = "8.+" }
 dokka = { id = "org.jetbrains.dokka", version = "1.+" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.+" }
 runPaper = { id = "xyz.jpenilla.run-paper", version = "2.+" }
+spotless = { id = "com.diffplug.spotless", version = "6.+" }
 
 [bundles]
 commandApi = ["commandapi-shade", "commandapi-kotlin", "brigadier"]
