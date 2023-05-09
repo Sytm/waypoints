@@ -105,7 +105,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
     suspend fun teleportPlayerToWaypoint(player: Player, waypoint: Waypoint) {
         cancelRunningTeleport(player)
-        if (player.hasPermission(getTeleportPermission(waypoint)) && false) {
+        if (player.hasPermission(getTeleportPermission(waypoint))) {
             player.teleportKeepOrientation(waypoint.location)
             return
         }
