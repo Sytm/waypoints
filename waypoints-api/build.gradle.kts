@@ -1,75 +1,79 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-    alias(libs.plugins.kotlin)
-    alias(libs.plugins.dokka)
-    `maven-publish`
+  with(libs.plugins) {
+    alias(kotlin)
+    alias(dokka)
+  }
+  `maven-publish`
 }
 
 description = "Waypoints api"
 
 dependencies {
-    api(libs.paper)
-    api(libs.stdlib)
+  api(libs.paper)
+  api(libs.stdlib)
 }
 
-kotlin {
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-}
+kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
-val sourcesJar by tasks.creating(Jar::class) {
-    archiveClassifier.set("sources")
-    from(sourceSets.main.get().allSource)
-}
-
-val dokkaHtml by tasks.getting(DokkaTask::class) {
-    dokkaSourceSets {
-        configureEach {
-            val majorVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
-            externalDocumentationLink("https://jd.papermc.io/paper/$majorVersion/", "https://jd.papermc.io/paper/$majorVersion/element-list")
-        }
+val sourcesJar by
+    tasks.creating(Jar::class) {
+      archiveClassifier.set("sources")
+      from(sourceSets.main.get().allSource)
     }
-}
 
-val javadocJar by tasks.creating(Jar::class) {
-    dependsOn(tasks.dokkaJavadoc)
-    archiveClassifier.set("javadoc")
-    from(tasks.dokkaJavadoc)
-}
+val dokkaHtml by
+    tasks.getting(DokkaTask::class) {
+      dokkaSourceSets {
+        configureEach {
+          val majorVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
+          externalDocumentationLink(
+              "https://jd.papermc.io/paper/$majorVersion/",
+              "https://jd.papermc.io/paper/$majorVersion/element-list")
+        }
+      }
+    }
 
-val dokkaHtmlJar by tasks.creating(Jar::class) {
-    dependsOn(tasks.dokkaHtml)
-    archiveClassifier.set("dokka")
-    from(tasks.dokkaHtml)
-}
+val javadocJar by
+    tasks.creating(Jar::class) {
+      dependsOn(tasks.dokkaJavadoc)
+      archiveClassifier.set("javadoc")
+      from(tasks.dokkaJavadoc)
+    }
+
+val dokkaHtmlJar by
+    tasks.creating(Jar::class) {
+      dependsOn(tasks.dokkaHtml)
+      archiveClassifier.set("dokka")
+      from(tasks.dokkaHtml)
+    }
 
 publishing {
-    repositories {
-        maven {
-            name = "md5lukasReposilite"
+  repositories {
+    maven {
+      name = "md5lukasReposilite"
 
-            url = uri(
-                "https://repo.md5lukas.de/${
+      url =
+          uri(
+              "https://repo.md5lukas.de/${
                     if (version.toString().endsWith("-SNAPSHOT")) {
                         "snapshots"
                     } else {
                         "releases"
                     }
-                }"
-            )
+                }")
 
-            credentials(PasswordCredentials::class)
-            authentication {
-                create<BasicAuthentication>("basic")
-            }
-        }
+      credentials(PasswordCredentials::class)
+      authentication { create<BasicAuthentication>("basic") }
     }
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["kotlin"])
-            artifact(sourcesJar)
-            artifact(javadocJar)
-            artifact(dokkaHtmlJar)
-        }
+  }
+  publications {
+    create<MavenPublication>("maven") {
+      from(components["kotlin"])
+      artifact(sourcesJar)
+      artifact(javadocJar)
+      artifact(dokkaHtmlJar)
     }
+  }
 }

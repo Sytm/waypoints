@@ -4,159 +4,158 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
-    alias(libs.plugins.kotlin)
-    alias(libs.plugins.shadow)
-    alias(libs.plugins.minotaur)
-    alias(libs.plugins.runPaper)
+  with(libs.plugins) {
+    alias(kotlin)
+    alias(shadow)
+    alias(minotaur)
+    alias(runPaper)
+  }
 }
 
 description = "Waypoints plugin"
 
 repositories {
-    maven("https://repo.codemc.io/repository/maven-public/") // AnvilGUI
-    maven("https://jitpack.io") // BlueMap
-    maven("https://libraries.minecraft.net") // Brigadier
+  maven("https://repo.codemc.io/repository/maven-public/") // AnvilGUI
+  maven("https://jitpack.io") // BlueMap
+  maven("https://libraries.minecraft.net") // Brigadier
 
-    maven("https://repo.mikeprimm.com/") // DynMap
+  maven("https://repo.mikeprimm.com/") // DynMap
 }
 
 dependencies {
-    implementation(libs.paper)
-    implementation(libs.stdlib)
-    implementation(libs.coroutines)
+  implementation(libs.paper)
+  implementation(libs.stdlib)
+  implementation(libs.coroutines)
 
-    implementation(project(":utils"))
-    implementation(project(":pointers"))
-    implementation(project(":waypoints-api"))
-    implementation(project(":api-base"))
-    implementation(project(":api-sqlite", "shadow"))
+  implementation(project(":utils"))
+  implementation(project(":pointers"))
+  implementation(project(":waypoints-api"))
+  implementation(project(":api-base"))
+  implementation(project(":api-sqlite", "shadow"))
 
-    // Dependencies on own projects
-    implementation(libs.md5Commons)
-    implementation(libs.kinvs)
-    implementation(libs.konfig)
+  // Dependencies on own projects
+  implementation(libs.md5Commons)
+  implementation(libs.kinvs)
+  implementation(libs.konfig)
 
-    // Required dependencies
-    implementation(libs.schedulers)
-    implementation(libs.skedule)
-    implementation(libs.anvilGui)
-    implementation(libs.bStats)
-    implementation(libs.bundles.commandApi)
+  // Required dependencies
+  implementation(libs.schedulers)
+  implementation(libs.skedule)
+  implementation(libs.anvilGui)
+  implementation(libs.bStats)
+  implementation(libs.bundles.commandApi)
 
-    // Optional dependencies
-    implementation(libs.vaultApi)
+  // Optional dependencies
+  implementation(libs.vaultApi)
 
-    implementation(variantOf(libs.dynmap.coreApi) { classifier("all") })
-    implementation(variantOf(libs.dynmap.api) { classifier("unshaded") }) {
-        isTransitive = false
-    }
+  implementation(variantOf(libs.dynmap.coreApi) { classifier("all") })
+  implementation(variantOf(libs.dynmap.api) { classifier("unshaded") }) { isTransitive = false }
 
-    implementation(libs.squaremapApi)
+  implementation(libs.squaremapApi)
 
-    implementation(libs.bluemapApi)
+  implementation(libs.bluemapApi)
 }
 
 tasks.register<ResourceIndexTask>("createResourceIndex")
 
 tasks.withType<ProcessResources> {
-    dependsOn("createResourceIndex")
+  dependsOn("createResourceIndex")
 
-    val apiVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
-    val kotlinVersion = libs.versions.kotlin.get()
-    val commandApiVersion = libs.versions.commandApi.get()
-    val coroutinesVersion = libs.versions.coroutines.get()
+  val apiVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
+  val kotlinVersion = libs.versions.kotlin.get()
+  val commandApiVersion = libs.versions.commandApi.get()
+  val coroutinesVersion = libs.versions.coroutines.get()
 
-    inputs.property("version", project.version)
-    inputs.property("apiVersion", apiVersion)
-    inputs.property("kotlinVersion", kotlinVersion)
-    inputs.property("commandApiVersion", commandApiVersion)
-    inputs.property("coroutinesVersion", coroutinesVersion)
+  inputs.property("version", project.version)
+  inputs.property("apiVersion", apiVersion)
+  inputs.property("kotlinVersion", kotlinVersion)
+  inputs.property("commandApiVersion", commandApiVersion)
+  inputs.property("coroutinesVersion", coroutinesVersion)
 
-    filteringCharset = "UTF-8"
+  filteringCharset = "UTF-8"
 
-    filesMatching("paper-plugin.yml") {
-        expand(
-            "version" to project.version,
-            "apiVersion" to apiVersion,
-        )
-    }
-    filesMatching("dependencies.yml") {
-        expand(
-            "kotlinVersion" to kotlinVersion,
-            "commandApiVersion" to commandApiVersion,
-            "coroutinesVersion" to coroutinesVersion
-        )
-    }
+  filesMatching("paper-plugin.yml") {
+    expand(
+        "version" to project.version,
+        "apiVersion" to apiVersion,
+    )
+  }
+  filesMatching("dependencies.yml") {
+    expand(
+        "kotlinVersion" to kotlinVersion,
+        "commandApiVersion" to commandApiVersion,
+        "coroutinesVersion" to coroutinesVersion)
+  }
 }
 
-kotlin {
-    jvmToolchain(libs.versions.jvmToolchain.get().toInt())
-}
+kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
 tasks.withType<KotlinCompile> {
-    // To make sure we have an explicit dependency on the project itself because otherwise we will get a warning that we only depend on an output file and not the project itself
-    dependsOn(project(":api-sqlite").tasks["shadowJar"])
+  // To make sure we have an explicit dependency on the project itself because otherwise we will get
+  // a warning that we only depend on an output file and not the project itself
+  dependsOn(project(":api-sqlite").tasks["shadowJar"])
 }
 
 tasks.withType<ShadowJar> {
-    archiveClassifier.set("")
+  archiveClassifier.set("")
 
-    minimize {
-        // Exclude AnvilGUI because the version specific NMS adapters are loaded via reflection and are not directly referenced
-        exclude(dependency(libs.anvilGui.get()))
+  minimize {
+    // Exclude AnvilGUI because the version specific NMS adapters are loaded via reflection and are
+    // not directly referenced
+    exclude(dependency(libs.anvilGui.get()))
 
-        exclude(project(":waypoints-api"))
-        exclude(project(":utils"))
-    }
+    exclude(project(":waypoints-api"))
+    exclude(project(":utils"))
+  }
 
-    exclude("META-INF/")
+  exclude("META-INF/")
 
-    dependencies {
-        include(project(":utils"))
-        include(project(":pointers"))
-        include(project(":waypoints-api"))
-        include(project(":api-base"))
-        include(project(":api-sqlite"))
+  dependencies {
+    include(project(":utils"))
+    include(project(":pointers"))
+    include(project(":waypoints-api"))
+    include(project(":api-base"))
+    include(project(":api-sqlite"))
 
-        include(dependency(libs.md5Commons.get()))
-        include(dependency(libs.kinvs.get()))
-        include(dependency(libs.konfig.get()))
+    include(dependency(libs.md5Commons.get()))
+    include(dependency(libs.kinvs.get()))
+    include(dependency(libs.konfig.get()))
 
-        include(dependency(libs.schedulers.get()))
-        include(dependency(libs.skedule.get()))
-        include(dependency(libs.anvilGui.get()))
-        include(dependency("org.bstats::"))
-    }
+    include(dependency(libs.schedulers.get()))
+    include(dependency(libs.skedule.get()))
+    include(dependency(libs.anvilGui.get()))
+    include(dependency("org.bstats::"))
+  }
 
-    arrayOf("commons", "kinvs", "konfig", "schedulers").forEach {
-        relocate("de.md5lukas.$it", "de.md5lukas.waypoints.$it")
-    }
+  arrayOf("commons", "kinvs", "konfig", "schedulers").forEach {
+    relocate("de.md5lukas.$it", "de.md5lukas.waypoints.$it")
+  }
 
-    relocate("com.okkero.skedule", "de.md5lukas.waypoints.skedule")
-    relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
-    relocate("org.bstats", "de.md5lukas.waypoints.bstats")
+  relocate("com.okkero.skedule", "de.md5lukas.waypoints.skedule")
+  relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
+  relocate("org.bstats", "de.md5lukas.waypoints.bstats")
 }
 
 // runPaper.folia.registerTask() CommandAPI is still non-functional on folia
 
 tasks.withType<RunServer> {
-    dependsOn("jar")
-    minecraftVersion(libs.versions.paper.get().substringBefore('-'))
+  dependsOn("jar")
+  minecraftVersion(libs.versions.paper.get().substringBefore('-'))
 }
 
 modrinth {
-    val modrinthToken: String? by project
+  val modrinthToken: String? by project
 
-    token.set(modrinthToken)
+  token.set(modrinthToken)
 
-    projectId.set("waypoints")
-    versionType.set("release")
-    uploadFile.set(tasks.shadowJar as Any)
+  projectId.set("waypoints")
+  versionType.set("release")
+  uploadFile.set(tasks.shadowJar as Any)
 
-    gameVersions.addAll(libs.versions.paper.get().substringBefore('-'))
-    loaders.addAll("paper")
+  gameVersions.addAll(libs.versions.paper.get().substringBefore('-'))
+  loaders.addAll("paper")
 
-    syncBodyFrom.set(rootProject.file("README.md").readText())
+  syncBodyFrom.set(rootProject.file("README.md").readText())
 
-    debugMode.set(false)
+  debugMode.set(false)
 }
