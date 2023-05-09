@@ -12,7 +12,7 @@ class WaypointCreateEvent(
      * The just created waypoint
      */
     val waypoint: Waypoint
-) : Event() {
+) : Event(true) {
 
     private companion object {
         @JvmStatic // Automatically creates static getHandlerList()

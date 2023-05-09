@@ -12,14 +12,16 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : Li
     wpGUI.extendApi { waypoint.type.getBackgroundItem() },
     {
         PaginationList<Folder>(PAGINATION_LIST_PAGE_SIZE).also {
-            it.addAll(wpGUI.getHolderForType(waypoint.type).folders)
+            it.addAll(wpGUI.getHolderForType(waypoint.type).getFolders())
         }
     },
     { folder ->
         wpGUI.extendApi {
             GUIItem(folder.getItem(wpGUI.viewer)) {
-                waypoint.folder = folder
-                wpGUI.goBack()
+                wpGUI.skedule {
+                    waypoint.setFolder(folder)
+                    wpGUI.goBack()
+                }
             }
         }
     }
@@ -48,8 +50,10 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : Li
                 nextPage()
             },
             'g' to GUIItem(wpGUI.translations.SELECT_FOLDER_NO_FOLDER.item) {
-                waypoint.folder = null
-                wpGUI.goBack()
+                wpGUI.skedule {
+                    waypoint.setFolder(null)
+                    wpGUI.goBack()
+                }
             },
             'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) {
                 wpGUI.goBack()
@@ -57,7 +61,8 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) : Li
         )
     }
 
-    init {
+    override suspend fun init() {
+        super.init()
         updateListingInInventory()
         updateControls()
     }

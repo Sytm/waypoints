@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.integrations
 
+import com.okkero.skedule.skedule
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
@@ -47,8 +48,10 @@ class SquareMapIntegration(
 
         layerKey = Key.of("waypoints")
 
-        plugin.api.publicWaypoints.allWaypoints.forEach {
-            createMarker(it)
+        plugin.skedule {
+            plugin.api.publicWaypoints.getAllWaypoints().forEach {
+                createMarker(it)
+            }
         }
 
         plugin.registerEvents(this)
@@ -81,13 +84,15 @@ class SquareMapIntegration(
     @EventHandler
     @Suppress("UNUSED_PARAMETER")
     private fun onConfigReload(e: ConfigReloadEvent) {
-        plugin.api.publicWaypoints.allWaypoints.let { waypoints ->
-            waypoints.forEach {
-                it.removeMarker()
-            }
-            unregisterLayerProviders()
-            waypoints.forEach {
-                createMarker(it)
+        plugin.skedule {
+            plugin.api.publicWaypoints.getAllWaypoints().let { waypoints ->
+                waypoints.forEach {
+                    it.removeMarker()
+                }
+                unregisterLayerProviders()
+                waypoints.forEach {
+                    createMarker(it)
+                }
             }
         }
     }
@@ -95,7 +100,9 @@ class SquareMapIntegration(
     @EventHandler
     private fun onCreate(e: WaypointCreateEvent) {
         if (e.waypoint.type === Type.PUBLIC) {
-            createMarker(e.waypoint)
+            plugin.skedule {
+                createMarker(e.waypoint)
+            }
         }
     }
 
@@ -113,10 +120,12 @@ class SquareMapIntegration(
         }
         e.waypoint.removeMarker()
 
-        createMarker(e.waypoint)
+        plugin.skedule {
+            createMarker(e.waypoint)
+        }
     }
 
-    private fun createMarker(waypoint: Waypoint) {
+    private suspend fun createMarker(waypoint: Waypoint) {
         val worldNotNull = waypoint.location.world ?: return
 
         worldNotNull.layerProvider?.let { provider ->
@@ -127,7 +136,7 @@ class SquareMapIntegration(
         }
     }
 
-    private fun getMarkerForWaypoint(waypoint: Waypoint): Key {
+    private suspend fun getMarkerForWaypoint(waypoint: Waypoint): Key {
         val rawKey = waypoint.getCustomData(CUSTOM_DATA_KEY) ?: plugin.waypointsConfig.integrations.squaremap.icon
         var key = Key.of(rawKey)
 

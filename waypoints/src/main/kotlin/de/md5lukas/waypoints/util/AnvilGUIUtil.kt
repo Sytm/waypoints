@@ -1,10 +1,10 @@
 package de.md5lukas.waypoints.util
 
+import com.okkero.skedule.future
+import de.md5lukas.schedulers.AbstractScheduler
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
-import net.wesjd.anvilgui.AnvilGUI.StateSnapshot
-import net.wesjd.anvilgui.AnvilGUI.ResponseAction
-import net.wesjd.anvilgui.AnvilGUI.Slot
+import net.wesjd.anvilgui.AnvilGUI.*
 import org.bukkit.inventory.ItemStack
 
 operator fun StateSnapshot.component1(): String = outputItem.plainDisplayName
@@ -27,4 +27,14 @@ fun replaceInputText(text: String) = ResponseAction { anvilGUI, _ ->
         it.plainDisplayName = text
         anvilGUI.inventory.setItem(Slot.INPUT_LEFT, it)
     }
+}
+
+inline fun Builder.onClickSuspending(scheduler: AbstractScheduler, crossinline block: suspend (Int, StateSnapshot) -> List<ResponseAction>): Builder {
+    this.mainThreadExecutor(scheduler.asExecutor(async = false))
+    this.onClickAsync { slot, state ->
+        scheduler.future {
+            block(slot, state)
+        }
+    }
+    return this
 }

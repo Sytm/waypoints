@@ -4,6 +4,7 @@ import de.md5lukas.commons.time.DurationFormatter
 import de.md5lukas.commons.uuid.UUIDCacheSettings
 import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.konfig.Konfig
+import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.base.DatabaseManager
@@ -13,7 +14,7 @@ import de.md5lukas.waypoints.config.*
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
-import de.md5lukas.waypoints.gui.APIExtensions
+import de.md5lukas.waypoints.util.APIExtensions
 import de.md5lukas.waypoints.integrations.BlueMapIntegration
 import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
@@ -265,11 +266,11 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     private fun startBackgroundTasks() {
-        val scheduler = server.scheduler
+        val scheduler = Schedulers.global(this)
         // Run once every day
-        scheduler.runTaskTimerAsynchronously(this, CleanDatabaseTask(this), 20 * 60 * 60 * 24, 20 * 60 * 60 * 24)
+        scheduler.scheduleAtFixedRateAsync(20 * 60 * 60 * 24, 20 * 60 * 60 * 24, CleanDatabaseTask(this))
         if (waypointsConfig.general.updateChecker) {
-            scheduler.runTaskAsynchronously(this, UpdateChecker(this, "Sytm", "waypoints"))
+            scheduler.scheduleAsync(UpdateChecker(this, "Sytm", "waypoints"))
         }
     }
     //</editor-fold>

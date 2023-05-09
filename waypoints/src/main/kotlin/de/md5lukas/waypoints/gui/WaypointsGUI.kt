@@ -1,20 +1,22 @@
 package de.md5lukas.waypoints.gui
 
+import com.okkero.skedule.SynchronizationContext
+import com.okkero.skedule.skedule
+import com.okkero.skedule.switchContext
 import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.GUI
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
+import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.Folder
-import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.api.WaypointHolder
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.config.general.WorldNotFoundAction
 import de.md5lukas.waypoints.gui.pages.*
 import de.md5lukas.waypoints.util.*
+import kotlinx.coroutines.CoroutineScope
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import org.bukkit.Material
@@ -36,8 +38,10 @@ class WaypointsGUI(
 
     internal val isOwner = viewer.uniqueId == target
 
-    internal val viewerData = plugin.api.getWaypointPlayer(viewer.uniqueId)
-    internal val targetData = plugin.api.getWaypointPlayer(target)
+    internal lateinit var viewerData: WaypointsPlayer
+        private set
+    internal lateinit var targetData: WaypointsPlayer
+        private set
 
     internal val translations = plugin.translations
 
@@ -60,31 +64,41 @@ class WaypointsGUI(
         ),
     )
 
-    fun openOverview() {
-        open(GUIFolderPage(this, targetData))
+    suspend fun openOverview() {
+        val page = GUIFolderPage(this, targetData).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
-    fun openHolder(holder: WaypointHolder) {
-        open(GUIFolderPage(this, holder))
+    suspend fun openHolder(holder: WaypointHolder) {
+        val page = GUIFolderPage(this, holder).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
-    fun openFolder(folder: Folder) {
-        open(GUIFolderPage(this, folder))
+    suspend fun openFolder(folder: Folder) {
+        val page = GUIFolderPage(this, folder).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
-    fun openWaypoint(waypoint: Waypoint) {
-        open(WaypointPage(this, waypoint))
+    suspend fun openWaypoint(waypoint: Waypoint) {
+        val page = WaypointPage(this, waypoint).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
-    fun openPlayerTracking() {
-        open(PlayerTrackingPage(this))
+    suspend fun openPlayerTracking() {
+        val page = PlayerTrackingPage(this).apply { init() }
+        switchContext(SynchronizationContext.SYNC)
+        open(page)
     }
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
         AnvilGUI.Builder().plugin(plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = translations.FOLDER_CREATE_ENTER_NAME.rawText })
-            .onClick { slot, (name) ->
+            .onClickSuspending(scheduler) { slot, (name) ->
                 if (slot != AnvilGUI.Slot.OUTPUT)
-                    return@onClick emptyList()
+                    return@onClickSuspending emptyList()
 
                 val result = when (waypointHolder.type) {
                     Type.PRIVATE -> createFolderPrivate(plugin, viewer, name)
@@ -93,17 +107,17 @@ class WaypointsGUI(
                     else -> throw IllegalStateException("Cannot create folders of the type ${waypointHolder.type}")
                 }
 
-                return@onClick when (result) {
+                return@onClickSuspending when (result) {
                     NameTaken -> replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.rawText)
                     LimitReached, is SuccessFolder -> AnvilGUI.ResponseAction.close()
                     else -> throw IllegalStateException("Invalid return value $result")
                 }.asSingletonList()
             }.onClose {
-            (gui.activePage as BasePage).update()
-            plugin.runTask {
-                gui.open()
-            }
-        }.open(viewer)
+                (gui.activePage as BasePage).update()
+                schedule {
+                    gui.open()
+                }
+            }.open(viewer)
     }
 
     fun openCreateWaypoint(type: Type, folder: Folder?, location: Location = viewer.location) {
@@ -112,15 +126,15 @@ class WaypointsGUI(
         var name: String? = null
         var permission: String? = null
         AnvilGUI.Builder().plugin(plugin).itemLeft(ItemStack(Material.PAPER).also { it.plainDisplayName = translations.WAYPOINT_CREATE_ENTER_NAME.rawText })
-            .onClick { slot, (enteredText) ->
+            .onClickSuspending(scheduler) { slot, (enteredText) ->
                 if (slot != AnvilGUI.Slot.OUTPUT)
-                    return@onClick emptyList()
+                    return@onClickSuspending emptyList()
 
                 if (name == null) {
                     name = enteredText
 
                     if (type == Type.PERMISSION && permission == null) {
-                        return@onClick replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText).asSingletonList()
+                        return@onClickSuspending replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText).asSingletonList()
                     }
                 } else if (type == Type.PERMISSION && permission == null) {
                     permission = enteredText
@@ -135,7 +149,7 @@ class WaypointsGUI(
                     }
                 }
 
-                return@onClick when (result) {
+                return@onClickSuspending when (result) {
                     LimitReached -> AnvilGUI.ResponseAction.close().asSingletonList()
                     NameTaken -> {
                         name = null
@@ -144,7 +158,7 @@ class WaypointsGUI(
 
                     is SuccessWaypoint -> {
                         folder?.let {
-                            result.waypoint.folder = it
+                            result.waypoint.setFolder(it)
                             open(GUIFolderPage(this, folder))
                         }
 
@@ -156,17 +170,19 @@ class WaypointsGUI(
                     else -> throw IllegalStateException("Invalid return value $result")
                 }
             }.onClose {
-            val capturedWaypoint = waypoint
+                val capturedWaypoint = waypoint
 
-            if (capturedWaypoint == null) {
-                goBack()
-            } else {
-                openWaypoint(capturedWaypoint)
-            }
-            plugin.runTask {
-                gui.open()
-            }
-        }.open(viewer)
+                skedule {
+                    if (capturedWaypoint == null) {
+                        switchContext(SynchronizationContext.SYNC)
+                        goBack()
+                    } else {
+                        openWaypoint(capturedWaypoint)
+                    }
+                    switchContext(SynchronizationContext.SYNC)
+                    gui.open()
+                }
+            }.open(viewer)
     }
 
     private var firstOpen = true
@@ -194,13 +210,13 @@ class WaypointsGUI(
         gui.update()
     }
 
-    internal fun getListingContent(guiFolder: GUIFolder): PaginationList<GUIDisplayable> {
+    internal suspend fun getListingContent(guiFolder: GUIFolder): PaginationList<GUIDisplayable> {
         val content = PaginationList<GUIDisplayable>(ListingPage.PAGINATION_LIST_PAGE_SIZE)
 
         if (isOwner && guiFolder === targetData) {
             if (viewerData.showGlobals && plugin.waypointsConfig.general.features.globalWaypoints) {
                 val public = plugin.api.publicWaypoints
-                if (public.waypointsAmount > 0 || viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+                if (public.getWaypointsAmount() > 0 || viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
                     content.add(public)
                 }
                 val permission = plugin.api.permissionWaypoints
@@ -210,7 +226,7 @@ class WaypointsGUI(
             }
             if (plugin.waypointsConfig.general.features.deathWaypoints) {
                 val deathFolder = targetData.deathFolder
-                if (deathFolder.amount > 0) {
+                if (deathFolder.getAmount() > 0) {
                     content.add(deathFolder)
                 }
             }
@@ -220,32 +236,32 @@ class WaypointsGUI(
         }
 
         if (guiFolder.type == Type.PERMISSION && !viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
-            guiFolder.waypoints.forEach { waypoint ->
+            guiFolder.getWaypoints().forEach { waypoint ->
                 if (viewer.hasPermission(waypoint.permission!!)) {
                     content.add(waypoint)
                 }
             }
 
-            guiFolder.folders.forEach { folder ->
+            guiFolder.getFolders().forEach { folder ->
                 if (folder.getAmountVisibleForPlayer(viewer) > 0) {
                     content.add(folder)
                 }
             }
         } else {
-            content.addAll(guiFolder.waypoints)
+            content.addAll(guiFolder.getWaypoints())
 
-            content.addAll(guiFolder.folders)
+            content.addAll(guiFolder.getFolders())
         }
 
         if (plugin.waypointsConfig.general.worldNotFound !== WorldNotFoundAction.SHOW) {
-            content.removeAll {
+            val itr = content.iterator()
+            while (itr.hasNext()) {
+                val it = itr.next()
                 if (it is Waypoint && it.location.world === null) {
                     if (plugin.waypointsConfig.general.worldNotFound === WorldNotFoundAction.DELETE) {
                         it.delete()
                     }
-                    true
-                } else {
-                    false
+                    itr.remove()
                 }
             }
         }
@@ -255,15 +271,17 @@ class WaypointsGUI(
         return content
     }
 
-    internal fun toGUIContent(guiDisplayable: GUIDisplayable): GUIContent {
+    internal suspend fun toGUIContent(guiDisplayable: GUIDisplayable): GUIContent {
         return extendApi {
             GUIItem(guiDisplayable.getItem(viewer)) {
-                when (guiDisplayable) {
-                    is WaypointHolder -> openHolder(guiDisplayable)
-                    is Folder -> openFolder(guiDisplayable)
-                    is Waypoint -> openWaypoint(guiDisplayable)
-                    is PlayerTrackingDisplayable -> openPlayerTracking()
-                    else -> throw IllegalStateException("The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
+                skedule {
+                    when (guiDisplayable) {
+                        is WaypointHolder -> openHolder(guiDisplayable)
+                        is Folder -> openFolder(guiDisplayable)
+                        is Waypoint -> openWaypoint(guiDisplayable)
+                        is PlayerTrackingDisplayable -> openPlayerTracking()
+                        else -> throw IllegalStateException("The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
+                    }
                 }
             }
         }
@@ -275,8 +293,20 @@ class WaypointsGUI(
         Type.PERMISSION -> plugin.api.permissionWaypoints
     }
 
+    internal val scheduler = Schedulers.entity(plugin, viewer)
+
+    internal fun schedule(block: Runnable) = scheduler.schedule(null, block)
+    internal fun skedule(sync: SynchronizationContext = SynchronizationContext.ASYNC, block: suspend CoroutineScope.() -> Unit) =
+        scheduler.skedule(sync, block)
+
+
     init {
-        openOverview()
-        gui.open()
+        skedule {
+            viewerData = plugin.api.getWaypointPlayer(viewer.uniqueId)
+            targetData = plugin.api.getWaypointPlayer(target)
+            openOverview()
+            switchContext(SynchronizationContext.SYNC)
+            gui.open()
+        }
     }
 }

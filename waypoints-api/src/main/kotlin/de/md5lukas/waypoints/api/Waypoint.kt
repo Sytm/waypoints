@@ -22,7 +22,9 @@ interface Waypoint : GUIDisplayable {
     /**
      * The folder this waypoint is inside, null otherwise
      */
-    var folder: Folder?
+    suspend fun getFolder(): Folder?
+
+    suspend fun setFolder(folder: Folder?)
 
     /**
      * The name of the waypoint
@@ -32,7 +34,7 @@ interface Waypoint : GUIDisplayable {
     /**
      * The name of the waypoint, optionally prefixed with the folder name
      */
-    val fullPath: String
+    suspend fun getFullPath(): String
 
     /**
      * The description of the waypoint, null if none has been provided
@@ -62,7 +64,15 @@ interface Waypoint : GUIDisplayable {
      * @param owner The UUID of the player to get the metadata for
      * @return The unique WaypointMeta instance
      */
-    fun getWaypointMeta(owner: UUID): WaypointMeta
+    suspend fun getWaypointMeta(owner: UUID): WaypointMeta
+
+    /**
+     * Get custom data for this waypoint.
+     *
+     * @param key The key of the custom data
+     * @return The data associated with the key
+     */
+    suspend fun getCustomData(key: String): String?
 
     /**
      * Set custom data for this waypoint.
@@ -72,15 +82,7 @@ interface Waypoint : GUIDisplayable {
      * @param key The key of the custom data
      * @param data The data to save with the key
      */
-    fun setCustomData(key: String, data: String?)
-
-    /**
-     * Get custom data for this waypoint.
-     *
-     * @param key The key of the custom data
-     * @return The data associated with the key
-     */
-    fun getCustomData(key: String): String?
+    suspend fun setCustomData(key: String, data: String?)
 
     /**
      * Deletes this waypoint from the database.
@@ -88,5 +90,5 @@ interface Waypoint : GUIDisplayable {
      * First a [de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent] is triggered, in case you still need the waypoint.
      * After that the [de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent] is triggered with the waypoint removed from the database.
      */
-    fun delete()
+    suspend fun delete()
 }

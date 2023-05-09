@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.integrations
 
 import com.flowpowered.math.vector.Vector3d
+import com.okkero.skedule.skedule
 import de.bluecolored.bluemap.api.BlueMapAPI
 import de.bluecolored.bluemap.api.markers.MarkerSet
 import de.bluecolored.bluemap.api.markers.POIMarker
@@ -28,8 +29,10 @@ class BlueMapIntegration(
         BlueMapAPI.onEnable {
             api = it
 
-            plugin.api.publicWaypoints.allWaypoints.forEach { waypoint ->
-                createMarker(waypoint)
+            plugin.skedule {
+                plugin.api.publicWaypoints.getAllWaypoints().forEach { waypoint ->
+                    createMarker(waypoint)
+                }
             }
 
             plugin.registerEvents(this)

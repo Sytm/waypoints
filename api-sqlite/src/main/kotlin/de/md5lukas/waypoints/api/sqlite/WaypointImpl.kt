@@ -12,6 +12,7 @@ import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.util.callEvent
+import kotlinx.coroutines.withContext
 import org.bukkit.Location
 import org.bukkit.Material
 import java.sql.ResultSet
@@ -61,29 +62,33 @@ class WaypointImpl private constructor(
             set("folder", value)
         }
 
-    override var folder: Folder?
-        get() = folderId?.let {
+    override suspend fun getFolder(): Folder? = withContext(dm.asyncDispatcher) {
+        folderId?.let {
             dm.instanceCache.folders.get(it) {
                 dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?;", it) {
                     FolderImpl(dm, this)
                 }
             }
         }
-        set(value) {
-            if (value !== null && value.type !== type) {
-                throw IllegalArgumentException("The type of the folder (${value.type}) and the type of the waypoint ($type) does not match!")
-            }
-            folderId = value?.id
+    }
+
+    override suspend fun setFolder(folder: Folder?) {
+        if (folder !== null && folder.type !== type) {
+            throw IllegalArgumentException("The type of the folder (${folder.type}) and the type of the waypoint ($type) does not match!")
         }
+        folderId = folder?.id
+    }
+
     override var name: String = name
         set(value) {
             field = value
             set("name", value)
         }
-    override val fullPath: String
-        get() = folder?.let {
-            "${it.name}/$name"
-        } ?: name
+
+    override suspend fun getFullPath(): String = getFolder()?.let {
+        "${it.name}/$name"
+    } ?: name
+
     override var description: String? = description
         set(value) {
             field = value
@@ -105,13 +110,13 @@ class WaypointImpl private constructor(
             set("beaconColor", value?.name)
         }
 
-    override fun getWaypointMeta(owner: UUID): WaypointMeta {
+    override suspend fun getWaypointMeta(owner: UUID): WaypointMeta = withContext(dm.asyncDispatcher) {
         dm.connection.update(
             "INSERT OR IGNORE INTO waypoint_meta(waypointId, playerId) VALUES (?, ?);",
             id.toString(),
             owner.toString(),
         )
-        return dm.connection.selectFirst(
+        dm.connection.selectFirst(
             "SELECT * FROM waypoint_meta WHERE waypointId = ? AND playerId = ?;",
             id.toString(),
             owner.toString(),
@@ -120,7 +125,13 @@ class WaypointImpl private constructor(
         }!!
     }
 
-    override fun setCustomData(key: String, data: String?) {
+    override suspend fun getCustomData(key: String): String? = withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst("SELECT data FROM waypoint_custom_data WHERE waypointId = ? AND key = ?;", id.toString(), key) {
+            getString("data")
+        }
+    }
+
+    override suspend fun setCustomData(key: String, data: String?) = withContext(dm.asyncDispatcher) {
         if (data === null) {
             dm.connection.update(
                 "DELETE FROM waypoint_custom_data WHERE waypointId = ? AND key = ?;",
@@ -136,21 +147,16 @@ class WaypointImpl private constructor(
                 data,
             )
         }
-        dm.plugin.callEvent(WaypointCustomDataChangeEvent(this, key, data))
+        dm.plugin.callEvent(WaypointCustomDataChangeEvent(this@WaypointImpl, key, data))
     }
 
-    override fun getCustomData(key: String): String? =
-        dm.connection.selectFirst("SELECT data FROM waypoint_custom_data WHERE waypointId = ? AND key = ?;", id.toString(), key) {
-            getString("data")
-        }
-
-    override fun delete() {
-        dm.plugin.callEvent(WaypointPreDeleteEvent(this))
+    override suspend fun delete() = withContext(dm.asyncDispatcher) {
+        dm.plugin.callEvent(WaypointPreDeleteEvent(this@WaypointImpl))
         dm.connection.update(
             "DELETE FROM waypoints WHERE id = ?",
             id.toString()
         )
-        dm.plugin.callEvent(WaypointPostDeleteEvent(this))
+        dm.plugin.callEvent(WaypointPostDeleteEvent(this@WaypointImpl))
     }
 
     private fun set(column: String, value: Any?) {
@@ -173,6 +179,6 @@ class WaypointImpl private constructor(
     }
 
     override fun toString(): String {
-        return "WaypointImpl(id=$id, type=$type, owner=$owner, location=$location, fullPath='$fullPath')"
+        return "WaypointImpl(id=$id, type=$type, owner=$owner, location=$location, folder='$folderId')"
     }
 }

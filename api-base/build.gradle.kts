@@ -1,11 +1,13 @@
 plugins {
-    kotlin("jvm")
+    alias(libs.plugins.kotlin)
 }
 
 dependencies {
     api(libs.paper)
 
-    implementation(kotlin("stdlib-jdk8"))
+    implementation(libs.stdlib)
+    implementation(libs.coroutines)
+
     api(project(":waypoints-api"))
 }
 

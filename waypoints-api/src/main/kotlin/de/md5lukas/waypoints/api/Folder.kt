@@ -23,7 +23,7 @@ interface Folder : GUIFolder {
     override var name: String
 
     /**
-     * The description of the waypoint, null if none has been provided
+     * The description of the folder, null if none has been provided
      */
     var description: String?
 
@@ -35,20 +35,16 @@ interface Folder : GUIFolder {
     /**
      * The total amount of waypoints in this folder.
      */
-    val amount: Int
+    suspend fun getAmount(): Int
 
     /**
      * The amount of waypoints the player has permission to see in this folder if the type is [Type.PERMISSION].
-     * Otherwise, identical to [amount]
+     * Otherwise, identical to [getAmount]
      *
      * @param permissible The permissible to check the permissions against
      * @return The amount of waypoints visible for the player
      */
-    fun getAmountVisibleForPlayer(permissible: Permissible): Int
-
-    override val folders: List<Folder>
-
-    override val waypoints: List<Waypoint>
+    suspend fun getAmountVisibleForPlayer(permissible: Permissible): Int
 
     /**
      * Deletes this folder from the database.
@@ -56,5 +52,5 @@ interface Folder : GUIFolder {
      * First a [de.md5lukas.waypoints.api.event.FolderPreDeleteEvent] is triggered, in case you still need the folder.
      * After that the [de.md5lukas.waypoints.api.event.FolderPostDeleteEvent] is triggered with the waypoint removed from the database.
      */
-    fun delete()
+    suspend fun delete()
 }

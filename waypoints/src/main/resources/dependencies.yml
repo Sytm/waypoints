@@ -3,6 +3,7 @@ repositories:
     type: default
     url: https://repo.papermc.io/repository/maven-public/
 dependencies:
-  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
+  - org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}
   - org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutinesVersion}
   - dev.jorel:commandapi-bukkit-shade:${commandApiVersion}
