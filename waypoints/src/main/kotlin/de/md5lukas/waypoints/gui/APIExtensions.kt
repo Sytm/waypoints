@@ -10,6 +10,7 @@ import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.util.placeholder
+import de.md5lukas.waypoints.util.placeholderIgnoringArguments
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -56,7 +57,7 @@ class APIExtensions(
         if (player !== null && player.world === location.world) {
             "distance" placeholder player.location.distance(location)
         } else {
-            "distance" placeholder translations.TEXT_DISTANCE_OTHER_WORLD.text
+            "distance" placeholderIgnoringArguments translations.TEXT_DISTANCE_OTHER_WORLD.text
         },
     )
 

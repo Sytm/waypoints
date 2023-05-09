@@ -8,8 +8,8 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.TrackableToggleItem
 import de.md5lukas.waypoints.pointers.PlayerTrackable
-import de.md5lukas.waypoints.util.format
 import de.md5lukas.waypoints.util.placeholder
+import de.md5lukas.waypoints.util.placeholderIgnoringArguments
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 
@@ -47,9 +47,9 @@ class PlayerTrackingPage(
                 "block_y" placeholder player.location.blockY,
                 "block_z" placeholder player.location.blockZ,
                 if (wpGUI.viewer.world === player.world) {
-                    "distance" placeholder MathHelper.distance2D(wpGUI.viewer.location, player.location).format()
+                    "distance" placeholder MathHelper.distance2D(wpGUI.viewer.location, player.location)
                 } else {
-                    "distance" placeholder wpGUI.translations.TEXT_DISTANCE_OTHER_WORLD.text
+                    "distance" placeholderIgnoringArguments wpGUI.translations.TEXT_DISTANCE_OTHER_WORLD.text
                 }
             ).also { stack ->
                 stack.itemMeta = (stack.itemMeta!! as SkullMeta).also { meta ->
