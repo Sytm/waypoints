@@ -4,6 +4,8 @@ import be.seeseemelk.mockbukkit.MockBukkit
 import be.seeseemelk.mockbukkit.ServerMock
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -21,7 +23,7 @@ class WaypointPlayerTest {
     @BeforeTest
     fun createAPI() {
         server = MockBukkit.mock()
-        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true)
+        val manager = SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true, Dispatchers.Unconfined)
         manager.initDatabase()
         api = manager.api
     }
@@ -32,7 +34,7 @@ class WaypointPlayerTest {
     }
 
     @Test
-    fun showGlobalsIsSaved() {
+    fun showGlobalsIsSaved() = runBlocking {
         val id = UUID.randomUUID()
         var player = api.getWaypointPlayer(id)
 
@@ -46,7 +48,7 @@ class WaypointPlayerTest {
 
     @ParameterizedTest
     @EnumSource(OverviewSort::class)
-    fun overviewSortIsSaved(sortBy: OverviewSort) {
+    fun overviewSortIsSaved(sortBy: OverviewSort) = runBlocking {
         val id = UUID.randomUUID()
         var player = api.getWaypointPlayer(id)
 
@@ -58,25 +60,25 @@ class WaypointPlayerTest {
     }
 
     @Test
-    fun newPlayerHasNoSelectedWaypoints() {
+    fun newPlayerHasNoSelectedWaypoints() = runBlocking {
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
-        assertTrue(player.selectedWaypoints.isEmpty())
+        assertTrue(player.getSelectedWaypoints().isEmpty())
     }
 
     @Test
-    fun oneSelectedWaypointIsSaved() {
+    fun oneSelectedWaypointIsSaved() = runBlocking {
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
         val selected = listOf(player.createWaypoint("Test", server.createLocation("world", 1, 2, 3)))
 
-        player.selectedWaypoints = selected
+        player.setSelectedWaypoints(selected)
 
-        assertEquals(selected, player.selectedWaypoints)
+        assertEquals(selected, player.getSelectedWaypoints())
     }
 
     @Test
-    fun multipleSelectedWaypointAreSaved() {
+    fun multipleSelectedWaypointAreSaved() = runBlocking {
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
         val selected = listOf(
@@ -85,13 +87,13 @@ class WaypointPlayerTest {
             player.createWaypoint("Test 3", server.createLocation("world", 3, 4, 5))
         )
 
-        player.selectedWaypoints = selected
+        player.setSelectedWaypoints(selected)
 
-        assertEquals(selected, player.selectedWaypoints)
+        assertEquals(selected, player.getSelectedWaypoints())
     }
 
     @Test
-    fun selectedWaypointAreOverwritten() {
+    fun selectedWaypointAreOverwritten() = runBlocking {
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
         val selected = mutableListOf(
@@ -100,51 +102,51 @@ class WaypointPlayerTest {
             player.createWaypoint("Test 3", server.createLocation("world", 3, 4, 5)),
         )
 
-        player.selectedWaypoints = selected
+        player.setSelectedWaypoints(selected)
 
-        assertEquals(selected, player.selectedWaypoints)
+        assertEquals(selected, player.getSelectedWaypoints())
 
         selected.removeAt(1)
 
-        player.selectedWaypoints = selected
+        player.setSelectedWaypoints(selected)
 
-        assertEquals(selected, player.selectedWaypoints)
+        assertEquals(selected, player.getSelectedWaypoints())
     }
 
     @Test
-    fun newPlayerHasNoCompassTarget() {
+    fun newPlayerHasNoCompassTarget() = runBlocking {
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
-        assertNull(player.compassTarget)
+        assertNull(player.getCompassTarget())
     }
 
     @Test
-    fun compassTargetIsSaved() {
+    fun compassTargetIsSaved() = runBlocking {
         val location = server.createLocation("world", 1, 2, 3)
 
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
-        player.compassTarget = location
+        player.setCompassTarget(location)
 
-        assertEquals(location, player.compassTarget)
+        assertEquals(location, player.getCompassTarget())
     }
 
     @Test
-    fun compassTargetIsOverwritten() {
+    fun compassTargetIsOverwritten() = runBlocking {
         val location = server.createLocation("world", 1, 2, 3)
         val location2 = server.createLocation("world", 2, 3, 4)
 
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
-        player.compassTarget = location
-        player.compassTarget = location2
+        player.setCompassTarget(location)
+        player.setCompassTarget(location2)
 
-        assertEquals(location2, player.compassTarget)
+        assertEquals(location2, player.getCompassTarget())
     }
 
     @ParameterizedTest
     @EnumSource(Type::class)
-    fun newPlayerHasNoCooldown(type: Type) {
+    fun newPlayerHasNoCooldown(type: Type) = runBlocking {
         val player = api.getWaypointPlayer(UUID.randomUUID())
 
         assertNull(player.getCooldownUntil(type))
@@ -152,7 +154,7 @@ class WaypointPlayerTest {
 
     @ParameterizedTest
     @EnumSource(Type::class)
-    fun sameCooldownUntilIsReturned(type: Type) {
+    fun sameCooldownUntilIsReturned(type: Type) = runBlocking {
         val now = OffsetDateTime.now()
 
         val player = api.getWaypointPlayer(UUID.randomUUID())
@@ -164,7 +166,7 @@ class WaypointPlayerTest {
 
     @ParameterizedTest
     @EnumSource(Type::class)
-    fun cooldownIsOverwritten(type: Type) {
+    fun cooldownIsOverwritten(type: Type) = runBlocking {
         val now = OffsetDateTime.now()
         val future = now.plusHours(1)
 
@@ -179,16 +181,16 @@ class WaypointPlayerTest {
     @Nested
     inner class DeathFolderTest {
         @Test
-        fun newPlayerDeathFolderEmpty() {
+        fun newPlayerDeathFolderEmpty() = runBlocking {
             val player = api.getWaypointPlayer(UUID.randomUUID())
 
             val deathFolder = player.deathFolder
-            assertEquals(0, deathFolder.amount)
-            assertEquals(0, deathFolder.waypoints.size)
+            assertEquals(0, deathFolder.getAmount())
+            assertEquals(0, deathFolder.getWaypoints().size)
         }
 
         @Test
-        fun deathLocationSaved() {
+        fun deathLocationSaved() = runBlocking {
             val location = server.createLocation("world", 1, 2, 3)
 
             val player = api.getWaypointPlayer(UUID.randomUUID())
@@ -197,14 +199,14 @@ class WaypointPlayerTest {
             server.pluginManager.assertEventFired(WaypointCreateEvent::class.java)
 
             val deathFolder = player.deathFolder
-            assertEquals(1, deathFolder.amount)
-            val waypoints = deathFolder.waypoints
+            assertEquals(1, deathFolder.getAmount())
+            val waypoints = deathFolder.getWaypoints()
             assertEquals(1, waypoints.size)
             assertEquals(location, waypoints[0].location)
         }
 
         @Test
-        fun deathFolderCannotBeDeleted() {
+        fun deathFolderCannotBeDeleted(): Unit = runBlocking {
             assertThrows<UnsupportedOperationException> {
                 api.getWaypointPlayer(UUID.randomUUID()).deathFolder.delete()
             }

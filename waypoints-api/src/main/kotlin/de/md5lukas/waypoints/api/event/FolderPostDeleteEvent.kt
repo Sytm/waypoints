@@ -12,7 +12,7 @@ class FolderPostDeleteEvent(
      * The deleted folder
      */
     val folder: Folder
-) : Event() {
+) : Event(true) {
 
     private companion object {
         @JvmStatic // Automatically creates static getHandlerList()

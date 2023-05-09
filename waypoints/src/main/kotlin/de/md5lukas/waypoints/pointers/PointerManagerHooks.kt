@@ -1,5 +1,7 @@
 package de.md5lukas.waypoints.pointers
 
+import com.okkero.skedule.future
+import com.okkero.skedule.skedule
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.pointers.PointerManager.Hooks
 import de.md5lukas.waypoints.util.placeholder
@@ -7,27 +9,35 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.entity.Player
+import java.util.concurrent.CompletableFuture
 
 class PointerManagerHooks(private val plugin: WaypointsPlugin) : Hooks {
 
     override val actionBarHooks: Hooks.ActionBar = ActionBarPointerHooks()
 
     override fun saveActiveTrackable(player: Player, tracked: Trackable?) {
-        if (tracked === null) {
-            plugin.api.getWaypointPlayer(player.uniqueId).selectedWaypoints = emptyList()
-        } else if (tracked is WaypointTrackable) {
-            plugin.api.getWaypointPlayer(player.uniqueId).selectedWaypoints = listOf(tracked.waypoint)
+        plugin.skedule {
+            if (tracked === null) {
+                plugin.api.getWaypointPlayer(player.uniqueId).setSelectedWaypoints(emptyList())
+            } else if (tracked is WaypointTrackable) {
+                plugin.api.getWaypointPlayer(player.uniqueId).setSelectedWaypoints(listOf(tracked.waypoint))
+            }
         }
     }
 
-    override fun loadActiveTrackable(player: Player): Trackable? =
-        plugin.api.getWaypointPlayer(player.uniqueId).selectedWaypoints.firstOrNull()?.let { WaypointTrackable(plugin, it) }
-
-    override fun saveCompassTarget(player: Player, location: Location) {
-        plugin.api.getWaypointPlayer(player.uniqueId).compassTarget = location
+    override fun loadActiveTrackable(player: Player): CompletableFuture<Trackable?> = plugin.future {
+        plugin.api.getWaypointPlayer(player.uniqueId).getSelectedWaypoints().firstOrNull()?.let { WaypointTrackable(plugin, it) }
     }
 
-    override fun loadCompassTarget(player: Player) = plugin.api.getWaypointPlayer(player.uniqueId).compassTarget
+    override fun saveCompassTarget(player: Player, location: Location) {
+        plugin.skedule {
+            plugin.api.getWaypointPlayer(player.uniqueId).setCompassTarget(location)
+        }
+    }
+
+    override fun loadCompassTarget(player: Player) = plugin.future {
+        plugin.api.getWaypointPlayer(player.uniqueId).getCompassTarget()
+    }
 
     private inner class ActionBarPointerHooks : Hooks.ActionBar {
         override fun formatDistanceMessage(player: Player, distance3D: Double, heightDifference: Double): Component =

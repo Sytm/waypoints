@@ -1,5 +1,7 @@
 package de.md5lukas.waypoints.gui.pages
 
+import com.okkero.skedule.SynchronizationContext
+import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.commons.MathHelper
 import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.GUIPattern
@@ -87,11 +89,13 @@ class PlayerTrackingPage(
     }
 
     override fun update() {
-        updateListingContent()
-        updateControls()
+        wpGUI.skedule {
+            updateListingContent()
+            updateControls()
+        }
     }
 
-    private fun updateControls(update: Boolean = true) {
+    private suspend fun updateControls(update: Boolean = true) {
         applyPattern(
             controlsPattern,
             4,
@@ -106,7 +110,9 @@ class PlayerTrackingPage(
                 background
             },
             'r' to GUIItem(wpGUI.translations.TRACKING_REFRESH_LISTING.item) {
-                updateListingContent()
+                wpGUI.skedule {
+                    updateListingContent()
+                }
             },
             'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) {
                 wpGUI.goBack()
@@ -117,11 +123,14 @@ class PlayerTrackingPage(
         )
 
         if (update) {
-            wpGUI.gui.update()
+            withSynchronizationContext(SynchronizationContext.SYNC) {
+                wpGUI.gui.update()
+            }
         }
     }
 
-    init {
+    override suspend fun init() {
+        super.init()
         updateListingInInventory()
         updateControls(false)
     }

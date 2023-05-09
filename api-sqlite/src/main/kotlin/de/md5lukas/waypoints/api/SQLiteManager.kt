@@ -7,6 +7,7 @@ import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.base.DatabaseConfiguration
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.sqlite.WaypointsAPIImpl
+import kotlinx.coroutines.CoroutineDispatcher
 import org.bukkit.Material
 import org.bukkit.plugin.Plugin
 import java.io.File
@@ -19,8 +20,8 @@ class SQLiteManager(
     databaseConfiguration: DatabaseConfiguration,
     val file: File?,
     disableInstanceCache: Boolean = false,
-) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache) {
-
+    dispatcher: CoroutineDispatcher? = null
+) : DatabaseManager(plugin, databaseConfiguration, disableInstanceCache, dispatcher) {
 
     private val schemaVersion: Int = 5
     private val sqliteHelper = if (file === null) {

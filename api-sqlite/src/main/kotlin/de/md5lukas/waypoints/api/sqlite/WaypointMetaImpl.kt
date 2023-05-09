@@ -3,6 +3,8 @@ package de.md5lukas.waypoints.api.sqlite
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.WaypointMeta
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.sql.ResultSet
 import java.util.*
 
@@ -35,7 +37,9 @@ class WaypointMetaImpl private constructor(
         }
 
     private fun set(column: String, value: Any?) {
-        dm.connection.update("UPDATE waypoint_meta SET $column = ? WHERE waypointId = ? AND playerId = ?;", value, waypoint.toString(), owner.toString())
+        CoroutineScope(dm.asyncDispatcher).launch {
+            dm.connection.update("UPDATE waypoint_meta SET $column = ? WHERE waypointId = ? AND playerId = ?;", value, waypoint.toString(), owner.toString())
+        }
     }
 
     override fun equals(other: Any?): Boolean {

@@ -12,7 +12,7 @@ class FolderCreateEvent(
      * The just created folder
      */
     val folder: Folder
-) : Event() {
+) : Event(true) {
 
     private companion object {
         @JvmStatic // Automatically creates static getHandlerList()

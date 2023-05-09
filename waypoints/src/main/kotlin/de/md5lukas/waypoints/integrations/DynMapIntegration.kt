@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.integrations
 
+import com.okkero.skedule.skedule
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
@@ -51,8 +52,10 @@ class DynMapIntegration(
                 false
             ) // id, label, iconlimit, persistent
 
-            plugin.api.publicWaypoints.allWaypoints.forEach {
-                createMarker(it)
+            plugin.skedule {
+                plugin.api.publicWaypoints.getAllWaypoints().forEach {
+                    createMarker(it)
+                }
             }
 
             plugin.registerEvents(this)
@@ -69,15 +72,19 @@ class DynMapIntegration(
         if (newId != defaultMarkerIcon.markerIconID) {
             defaultMarkerIcon = markerApi.getMarkerIcon(newId)
         }
-        markerSet.markers.forEach {
-            it.markerIcon = getMarkerForWaypoint(plugin.api.getWaypointByID(UUID.fromString(it.markerID))!!)
+        plugin.skedule {
+            markerSet.markers.forEach {
+                it.markerIcon = getMarkerForWaypoint(plugin.api.getWaypointByID(UUID.fromString(it.markerID))!!)
+            }
         }
     }
 
     @EventHandler
     private fun onCreate(e: WaypointCreateEvent) {
         if (e.waypoint.type === Type.PUBLIC) {
-            createMarker(e.waypoint)
+            plugin.skedule {
+                createMarker(e.waypoint)
+            }
         }
     }
 
@@ -93,10 +100,12 @@ class DynMapIntegration(
         if (e.key != CUSTOM_DATA_KEY) {
             return
         }
-        markerSet.findMarker(e.waypoint.id.toString())?.markerIcon = getMarkerForWaypoint(e.waypoint, e.data)
+        plugin.skedule {
+            markerSet.findMarker(e.waypoint.id.toString())?.markerIcon = getMarkerForWaypoint(e.waypoint, e.data)
+        }
     }
 
-    private fun createMarker(waypoint: Waypoint) {
+    private suspend fun createMarker(waypoint: Waypoint) {
         with(waypoint.location) {
             val worldNotNull = world ?: return
             markerSet.createMarker(
@@ -112,7 +121,7 @@ class DynMapIntegration(
         }
     }
 
-    private fun getMarkerForWaypoint(waypoint: Waypoint, directIcon: String? = null): MarkerIcon {
+    private suspend fun getMarkerForWaypoint(waypoint: Waypoint, directIcon: String? = null): MarkerIcon {
         val icon = directIcon ?: waypoint.getCustomData(CUSTOM_DATA_KEY)
         return if (icon === null) {
             defaultMarkerIcon
