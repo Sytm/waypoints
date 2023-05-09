@@ -4,28 +4,21 @@ import de.md5lukas.waypoints.api.Waypoint
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 
-/**
- * This event is triggered when the custom data for a waypoint has been changed
- */
+/** This event is triggered when the custom data for a waypoint has been changed */
 class WaypointCustomDataChangeEvent(
-    /**
-     * The waypoint the custom data belongs to
-     */
+    val isAsync: Boolean,
+    /** The waypoint the custom data belongs to */
     val waypoint: Waypoint,
-    /**
-     * The key that got updated
-     */
+    /** The key that got updated */
     val key: String,
-    /**
-     * The new data for the key
-     */
+    /** The new data for the key */
     val data: String?
-) : Event(true) {
+) : Event(isAsync) {
 
-    private companion object {
-        @JvmStatic // Automatically creates static getHandlerList()
-        val handlerList = HandlerList()
-    }
+  private companion object {
+    @JvmStatic // Automatically creates static getHandlerList()
+    val handlerList = HandlerList()
+  }
 
-    override fun getHandlers(): HandlerList = handlerList
+  override fun getHandlers(): HandlerList = handlerList
 }

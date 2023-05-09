@@ -1,39 +1,42 @@
 package de.md5lukas.waypoints.api.base
 
 import de.md5lukas.waypoints.api.WaypointsAPI
-import kotlinx.coroutines.CoroutineDispatcher
+import java.sql.Connection
 import kotlinx.coroutines.Dispatchers
 import org.bukkit.plugin.Plugin
-import java.sql.Connection
 
 abstract class DatabaseManager(
     val plugin: Plugin,
     val databaseConfiguration: DatabaseConfiguration,
-    disableInstanceCache: Boolean,
-    dispatcher: CoroutineDispatcher?,
+    val testing: Boolean,
 ) {
-    val instanceCache: InstanceCache = InstanceCache(disableInstanceCache)
+  val instanceCache: InstanceCache = InstanceCache(testing)
 
-    val asyncDispatcher = dispatcher ?: Dispatchers.IO
+  val asyncDispatcher =
+      if (testing) {
+        Dispatchers.IO
+      } else {
+        Dispatchers.Unconfined
+      }
 
-    abstract val api: WaypointsAPI
+  abstract val api: WaypointsAPI
 
-    abstract val connection: Connection
+  abstract val connection: Connection
 
-    fun initDatabase() {
-        initConnection()
-        createTables()
-        upgradeDatabase()
-        cleanDatabase()
-    }
+  fun initDatabase() {
+    initConnection()
+    createTables()
+    upgradeDatabase()
+    cleanDatabase()
+  }
 
-    protected open fun initConnection() {}
+  protected open fun initConnection() {}
 
-    protected open fun createTables() {}
+  protected open fun createTables() {}
 
-    protected open fun upgradeDatabase() {}
+  protected open fun upgradeDatabase() {}
 
-    open fun cleanDatabase() {}
+  open fun cleanDatabase() {}
 
-    open fun close() {}
+  open fun close() {}
 }

@@ -7,14 +7,6 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.config.general.TeleportPaymentType
-import kotlinx.coroutines.future.await
-import kotlinx.coroutines.time.delay as delayTime
-import net.kyori.adventure.text.Component
-import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerMoveEvent
-import org.bukkit.event.player.PlayerQuitEvent
 import java.time.Duration
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -23,223 +15,230 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.ceil
 import kotlin.math.min
+import kotlinx.coroutines.future.await
+import kotlinx.coroutines.time.delay as delayTime
+import net.kyori.adventure.text.Component
+import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.player.PlayerQuitEvent
 
 class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
-    private val teleportIds = AtomicInteger()
-    private val pendingTeleports = ConcurrentHashMap<Player, Int>()
+  private val teleportIds = AtomicInteger()
+  private val pendingTeleports = ConcurrentHashMap<Player, Int>()
 
-    init {
-        plugin.registerEvents(this)
-    }
+  init {
+    plugin.registerEvents(this)
+  }
 
-    fun getTeleportPermission(waypoint: Waypoint) = when (waypoint.type) {
-        Type.PRIVATE, Type.DEATH -> WaypointsPermissions.TELEPORT_PRIVATE
+  fun getTeleportPermission(waypoint: Waypoint) =
+      when (waypoint.type) {
+        Type.PRIVATE,
+        Type.DEATH -> WaypointsPermissions.TELEPORT_PRIVATE
         Type.PUBLIC -> WaypointsPermissions.TELEPORT_PUBLIC
         Type.PERMISSION -> WaypointsPermissions.TELEPORT_PERMISSION
-    }
+      }
 
-    private fun getTeleportConfig(waypoint: Waypoint) = when (waypoint.type) {
+  private fun getTeleportConfig(waypoint: Waypoint) =
+      when (waypoint.type) {
         Type.PRIVATE -> plugin.waypointsConfig.general.teleport.private
         Type.DEATH -> plugin.waypointsConfig.general.teleport.death
         Type.PUBLIC -> plugin.waypointsConfig.general.teleport.public
         Type.PERMISSION -> plugin.waypointsConfig.general.teleport.permission
+      }
+
+  suspend fun isTeleportEnabled(player: WaypointsPlayer, waypoint: Waypoint): Boolean {
+    val config = getTeleportConfig(waypoint)
+    return when {
+      config.paymentType === TeleportPaymentType.DISABLED -> false
+      waypoint.type !== Type.DEATH || config.onlyLastWaypoint == false -> true
+      else -> {
+        player.deathFolder.getWaypoints().maxByOrNull { it.createdAt } == waypoint
+      }
     }
+  }
 
-    suspend fun isTeleportEnabled(player: WaypointsPlayer, waypoint: Waypoint): Boolean {
-        val config = getTeleportConfig(waypoint)
-        return when {
-            config.paymentType === TeleportPaymentType.DISABLED -> false
-            waypoint.type !== Type.DEATH || config.onlyLastWaypoint == false -> true
-            else -> {
-                player.deathFolder.getWaypoints().maxByOrNull { it.createdAt } == waypoint
-            }
-        }
-    }
+  private suspend fun getTeleportationPrice(player: Player, waypoint: Waypoint): Double {
+    val config = getTeleportConfig(waypoint)
 
-    private suspend fun getTeleportationPrice(player: Player, waypoint: Waypoint): Double {
-        val config = getTeleportConfig(waypoint)
-
-        val teleportations = if (config.perCategory) {
-            plugin.api.getWaypointPlayer(player.uniqueId).getTeleportations(waypoint.type)
+    val teleportations =
+        if (config.perCategory) {
+          plugin.api.getWaypointPlayer(player.uniqueId).getTeleportations(waypoint.type)
         } else {
-            waypoint.getWaypointMeta(player.uniqueId).teleportations
+          waypoint.getWaypointMeta(player.uniqueId).teleportations
         }
 
-        return min(
-            config.maxCost.toDouble(),
-            config.formula.eval(Collections.singletonMap("n", teleportations.toDouble()))
-        )
+    return min(
+        config.maxCost.toDouble(),
+        config.formula.eval(Collections.singletonMap("n", teleportations.toDouble())))
+  }
+
+  suspend fun getTeleportCostDescription(player: Player, waypoint: Waypoint): List<Component>? {
+    val config = getTeleportConfig(waypoint)
+
+    if (player.hasPermission(getTeleportPermission(waypoint))) {
+      return null
     }
 
-    suspend fun getTeleportCostDescription(player: Player, waypoint: Waypoint): List<Component>? {
-        val config = getTeleportConfig(waypoint)
+    return when (config.paymentType) {
+      TeleportPaymentType.XP ->
+          plugin.translations.WAYPOINT_TELEPORT_XP_LEVEL.withReplacements(
+              "levels" placeholder ceil(getTeleportationPrice(player, waypoint)).toInt())
+      TeleportPaymentType.VAULT ->
+          plugin.translations.WAYPOINT_TELEPORT_BALANCE.withReplacements(
+              "balance" placeholder getTeleportationPrice(player, waypoint))
+      else -> null
+    }
+  }
 
-        if (player.hasPermission(getTeleportPermission(waypoint))) {
-            return null
-        }
+  suspend fun isAllowedToTeleportToWaypoint(player: Player, waypoint: Waypoint): Boolean {
+    if (player.hasPermission(getTeleportPermission(waypoint))) return true
+    if (!isTeleportEnabled(plugin.api.getWaypointPlayer(player.uniqueId), waypoint)) return false
+    val config = getTeleportConfig(waypoint)
+    if (config.mustVisit?.not() != false) return true
+    return waypoint.getWaypointMeta(player.uniqueId).visited
+  }
 
-        return when (config.paymentType) {
-            TeleportPaymentType.XP -> plugin.translations.WAYPOINT_TELEPORT_XP_LEVEL.withReplacements(
-                "levels" placeholder ceil(getTeleportationPrice(player, waypoint)).toInt()
-            )
-
-            TeleportPaymentType.VAULT -> plugin.translations.WAYPOINT_TELEPORT_BALANCE.withReplacements(
-                "balance" placeholder getTeleportationPrice(player, waypoint)
-            )
-
-            else -> null
-        }
+  suspend fun teleportPlayerToWaypoint(player: Player, waypoint: Waypoint) {
+    cancelRunningTeleport(player)
+    if (player.hasPermission(getTeleportPermission(waypoint))) {
+      player.teleportKeepOrientation(waypoint.location)
+      return
     }
 
-    suspend fun isAllowedToTeleportToWaypoint(player: Player, waypoint: Waypoint): Boolean {
-        if (player.hasPermission(getTeleportPermission(waypoint)))
-            return true
-        if (!isTeleportEnabled(plugin.api.getWaypointPlayer(player.uniqueId), waypoint))
-            return false
-        val config = getTeleportConfig(waypoint)
-        if (config.mustVisit?.not() != false)
-            return true
-        return waypoint.getWaypointMeta(player.uniqueId).visited
+    val playerData = plugin.api.getWaypointPlayer(player.uniqueId)
+
+    val cooldownUntil = playerData.getCooldownUntil(waypoint.type)
+    if (cooldownUntil != null) {
+      val remainingMillis = Duration.between(Instant.now(), cooldownUntil).toMillis()
+      if (remainingMillis > 0) {
+        val remainingCooldown = DurationFormatter.formatDuration(player, remainingMillis)
+
+        plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(
+            player, "remaining_cooldown" placeholder remainingCooldown)
+
+        return
+      }
     }
 
-    suspend fun teleportPlayerToWaypoint(player: Player, waypoint: Waypoint) {
-        cancelRunningTeleport(player)
-        if (player.hasPermission(getTeleportPermission(waypoint))) {
-            player.teleportKeepOrientation(waypoint.location)
-            return
-        }
+    val config = getTeleportConfig(waypoint)
 
-        val playerData = plugin.api.getWaypointPlayer(player.uniqueId)
+    val price = getTeleportationPrice(player, waypoint)
 
-        val cooldownUntil = playerData.getCooldownUntil(waypoint.type)
-        if (cooldownUntil != null) {
-            val remainingMillis = Duration.between(Instant.now(), cooldownUntil).toMillis()
-            if (remainingMillis > 0) {
-                val remainingCooldown = DurationFormatter.formatDuration(player, remainingMillis)
-
-                plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(player, "remaining_cooldown" placeholder remainingCooldown)
-
-                return
+    fun canTeleport() =
+        when (config.paymentType) {
+          TeleportPaymentType.DISABLED -> false
+          TeleportPaymentType.FREE -> true
+          TeleportPaymentType.XP -> {
+            val canTeleport = player.level >= price
+            if (!canTeleport) {
+              plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_XP.send(
+                  player,
+                  "current_level" placeholder player.level,
+                  "required_level" placeholder ceil(price).toInt())
             }
+            canTeleport
+          }
+          TeleportPaymentType.VAULT -> {
+            val balance = plugin.vaultIntegration.getBalance(player)
+            val canTeleport = balance >= price
+            if (!canTeleport) {
+              plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE.send(
+                  player,
+                  "current_balance" placeholder balance,
+                  "required_balance" placeholder price)
+            }
+            canTeleport
+          }
         }
 
-        val config = getTeleportConfig(waypoint)
+    if (canTeleport()) {
+      val standStillTime = plugin.waypointsConfig.general.teleport.standStillTime
 
-        val price = getTeleportationPrice(player, waypoint)
+      if (standStillTime.toSeconds() > 0) {
+        plugin.translations.MESSAGE_TELEPORT_STAND_STILL_NOTICE.send(
+            player,
+            "duration" placeholder
+                DurationFormatter.formatDuration(player, standStillTime.toMillis()))
+        val id = teleportIds.getAndIncrement()
+        pendingTeleports[player] = id
+        delayTime(standStillTime)
+        if (pendingTeleports[player] != id) {
+          return
+        }
+        pendingTeleports.remove(player)
+      }
 
-        fun canTeleport() = when (config.paymentType) {
+      if (canTeleport() &&
+          when (config.paymentType) {
             TeleportPaymentType.DISABLED -> false
             TeleportPaymentType.FREE -> true
             TeleportPaymentType.XP -> {
-                val canTeleport = player.level >= price
-                if (!canTeleport) {
-                    plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_XP.send(
-                        player,
-                        "current_level" placeholder player.level,
-                        "required_level" placeholder ceil(price).toInt()
-                    )
-                }
-                canTeleport
+              player.giveExpLevels((-price).toInt())
+              modifyTeleportations(player, waypoint, 1)
+              true
             }
-
             TeleportPaymentType.VAULT -> {
-                val balance = plugin.vaultIntegration.getBalance(player)
-                val canTeleport = balance >= price
-                if (!canTeleport) {
-                    plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE.send(
-                        player,
-                        "current_balance" placeholder balance,
-                        "required_balance" placeholder price
-                    )
-                }
-                canTeleport
+              modifyTeleportations(player, waypoint, 1)
+              plugin.vaultIntegration.withdraw(player, price)
             }
-        }
+          }) {
+        val success = player.teleportKeepOrientation(waypoint.location).await()
 
-        if (canTeleport()) {
-            val standStillTime = plugin.waypointsConfig.general.teleport.standStillTime
+        if (success) {
+          val cooldown = config.cooldown
 
-            if (standStillTime.toSeconds() > 0) {
-                plugin.translations.MESSAGE_TELEPORT_STAND_STILL_NOTICE.send(
-                    player,
-                    "duration" placeholder DurationFormatter.formatDuration(player, standStillTime.toMillis())
-                )
-                val id = teleportIds.getAndIncrement()
-                pendingTeleports[player] = id
-                delayTime(standStillTime)
-                if (pendingTeleports[player] != id) {
-                    return
-                }
-                pendingTeleports.remove(player)
-            }
-
-            if (canTeleport() &&
-                when (config.paymentType) {
-                    TeleportPaymentType.DISABLED -> false
-                    TeleportPaymentType.FREE -> true
-                    TeleportPaymentType.XP -> {
-                        player.giveExpLevels((-price).toInt())
-                        modifyTeleportations(player, waypoint, 1)
-                        true
-                    }
-
-                    TeleportPaymentType.VAULT -> {
-                        modifyTeleportations(player, waypoint, 1)
-                        plugin.vaultIntegration.withdraw(player, price)
-                    }
-                }
-            ) {
-                val success = player.teleportKeepOrientation(waypoint.location).await()
-
-                if (success) {
-                    val cooldown = config.cooldown
-
-                    if (cooldown.toSeconds() > 0) {
-                        playerData.setCooldownUntil(waypoint.type, OffsetDateTime.now().plus(cooldown))
-                    }
-                } else {
-                    when (config.paymentType) {
-                        TeleportPaymentType.XP -> {
-                            player.giveExpLevels(price.toInt())
-                            modifyTeleportations(player, waypoint, 1)
-                        }
-                        TeleportPaymentType.VAULT -> {
-                            modifyTeleportations(player, waypoint, 1)
-                            plugin.vaultIntegration.deposit(player, price)
-                        }
-                        else -> {}
-                    }
-                }
-            }
-        }
-    }
-
-    private suspend fun modifyTeleportations(player: Player, waypoint: Waypoint, delta: Int) {
-        if (getTeleportConfig(waypoint).perCategory) {
-            val playerData = plugin.api.getWaypointPlayer(player.uniqueId)
-            playerData.setTeleportations(waypoint.type, playerData.getTeleportations(waypoint.type) + delta)
+          if (cooldown.toSeconds() > 0) {
+            playerData.setCooldownUntil(waypoint.type, OffsetDateTime.now().plus(cooldown))
+          }
         } else {
-            waypoint.getWaypointMeta(player.uniqueId).teleportations += delta
+          when (config.paymentType) {
+            TeleportPaymentType.XP -> {
+              player.giveExpLevels(price.toInt())
+              modifyTeleportations(player, waypoint, 1)
+            }
+            TeleportPaymentType.VAULT -> {
+              modifyTeleportations(player, waypoint, 1)
+              plugin.vaultIntegration.deposit(player, price)
+            }
+            else -> {}
+          }
         }
+      }
+    }
+  }
+
+  private suspend fun modifyTeleportations(player: Player, waypoint: Waypoint, delta: Int) {
+    if (getTeleportConfig(waypoint).perCategory) {
+      val playerData = plugin.api.getWaypointPlayer(player.uniqueId)
+      playerData.setTeleportations(
+          waypoint.type, playerData.getTeleportations(waypoint.type) + delta)
+    } else {
+      val meta = waypoint.getWaypointMeta(player.uniqueId)
+      meta.setTeleportations(meta.teleportations + delta)
+    }
+  }
+
+  @EventHandler
+  private fun onPlayerLeave(e: PlayerQuitEvent) {
+    cancelRunningTeleport(e.player)
+  }
+
+  @EventHandler
+  private fun onPlayerMove(e: PlayerMoveEvent) {
+    // Need to perform a fuzzy equals, because after a player stopped moving and first looks around
+    // he "snaps" to some double value that's nearby
+    if (e.from.fuzzyEquals(e.to, 0.1)) {
+      return
     }
 
-    @EventHandler
-    private fun onPlayerLeave(e: PlayerQuitEvent) {
-        cancelRunningTeleport(e.player)
+    if (cancelRunningTeleport(e.player)) {
+      plugin.translations.MESSAGE_TELEPORT_STAND_STILL_MOVED.send(e.player)
     }
+  }
 
-    @EventHandler
-    private fun onPlayerMove(e: PlayerMoveEvent) {
-        // Need to perform a fuzzy equals, because after a player stopped moving and first looks around he "snaps" to some double value that's nearby
-        if (e.from.fuzzyEquals(e.to, 0.1)) {
-            return
-        }
-
-        if (cancelRunningTeleport(e.player)) {
-            plugin.translations.MESSAGE_TELEPORT_STAND_STILL_MOVED.send(e.player)
-        }
-    }
-
-    private fun cancelRunningTeleport(player: Player): Boolean = pendingTeleports.remove(player) != null
+  private fun cancelRunningTeleport(player: Player): Boolean =
+      pendingTeleports.remove(player) != null
 }
