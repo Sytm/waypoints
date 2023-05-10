@@ -19,55 +19,52 @@ class BlueMapIntegration(
     private val plugin: WaypointsPlugin,
 ) : Listener {
 
-    private lateinit var api: BlueMapAPI
-    private val markerSets = HashMap<World, MarkerSet>()
+  private lateinit var api: BlueMapAPI
+  private val markerSets = HashMap<World, MarkerSet>()
 
-    fun setupBlueMap(): Boolean {
-        if (plugin.server.pluginManager.getPlugin("BlueMap") === null)
-            return false
+  fun setupBlueMap(): Boolean {
+    if (plugin.server.pluginManager.getPlugin("BlueMap") === null) return false
 
-        BlueMapAPI.onEnable {
-            api = it
+    BlueMapAPI.onEnable {
+      api = it
 
-            plugin.skedule {
-                plugin.api.publicWaypoints.getAllWaypoints().forEach { waypoint ->
-                    createMarker(waypoint)
-                }
-            }
+      plugin.skedule {
+        plugin.api.publicWaypoints.getAllWaypoints().forEach { waypoint -> createMarker(waypoint) }
+      }
 
-            plugin.registerEvents(this)
-            plugin.slF4JLogger.info("Delayed initialization of BlueMap integration completed")
-        }
-
-        return true
+      plugin.registerEvents(this)
+      plugin.slF4JLogger.info("Delayed initialization of BlueMap integration completed")
     }
 
-    @EventHandler
-    private fun onCreate(e: WaypointCreateEvent) {
-        if (e.waypoint.type === Type.PUBLIC) {
-            createMarker(e.waypoint)
-        }
-    }
+    return true
+  }
 
-    @EventHandler
-    private fun onDelete(e: WaypointPostDeleteEvent) {
-        if (e.waypoint.type === Type.PUBLIC) {
-            getMarkerSet(e.waypoint.location.world!!).remove(e.waypoint.id.toString())
-        }
+  @EventHandler
+  fun onCreate(e: WaypointCreateEvent) {
+    if (e.waypoint.type === Type.PUBLIC) {
+      createMarker(e.waypoint)
     }
+  }
 
-    private fun createMarker(waypoint: Waypoint) {
-        getMarkerSet(waypoint.location.world!!).markers[waypoint.id.toString()] =
-            POIMarker(waypoint.name, Vector3d(waypoint.location.x, waypoint.location.y, waypoint.location.z))
+  @EventHandler
+  fun onDelete(e: WaypointPostDeleteEvent) {
+    if (e.waypoint.type === Type.PUBLIC) {
+      getMarkerSet(e.waypoint.location.world!!).remove(e.waypoint.id.toString())
     }
+  }
 
-    private fun getMarkerSet(world: World) = markerSets.computeIfAbsent(world) {
+  private fun createMarker(waypoint: Waypoint) {
+    getMarkerSet(waypoint.location.world!!).markers[waypoint.id.toString()] =
+        POIMarker(
+            waypoint.name, Vector3d(waypoint.location.x, waypoint.location.y, waypoint.location.z))
+  }
+
+  private fun getMarkerSet(world: World) =
+      markerSets.computeIfAbsent(world) {
         val markerSet = MarkerSet(plugin.translations.INTEGRATIONS_MAPS_LABEL.rawText)
         api.getWorld(world).ifPresent { blueMapWorld ->
-            blueMapWorld.maps.forEach {
-                it.markerSets["waypoints_public"] = markerSet
-            }
+          blueMapWorld.maps.forEach { it.markerSets["waypoints_public"] = markerSet }
         }
         markerSet
-    }
+      }
 }

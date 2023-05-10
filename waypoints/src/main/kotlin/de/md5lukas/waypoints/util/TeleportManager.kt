@@ -222,12 +222,12 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
   }
 
   @EventHandler
-  private fun onPlayerLeave(e: PlayerQuitEvent) {
+  fun onPlayerLeave(e: PlayerQuitEvent) {
     cancelRunningTeleport(e.player)
   }
 
   @EventHandler
-  private fun onPlayerMove(e: PlayerMoveEvent) {
+  fun onPlayerMove(e: PlayerMoveEvent) {
     // Need to perform a fuzzy equals, because after a player stopped moving and first looks around
     // he "snaps" to some double value that's nearby
     if (e.from.fuzzyEquals(e.to, 0.1)) {
