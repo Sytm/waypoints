@@ -20,7 +20,7 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
     get() = plugin.pointerManager
 
   @EventHandler(priority = EventPriority.MONITOR)
-  private fun onPlayerRespawn(e: PlayerRespawnEvent) {
+  fun onPlayerRespawn(e: PlayerRespawnEvent) {
     plugin.skedule(e.player) {
       if (plugin.waypointsConfig.general.features.deathWaypoints &&
           plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.enabled &&
@@ -41,7 +41,7 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
   }
 
   @EventHandler
-  private fun onMove(e: PlayerMoveEvent) {
+  fun onMove(e: PlayerMoveEvent) {
     val pointer = plugin.pointerManager.getCurrentTarget(e.player) as? WaypointTrackable ?: return
 
     val visitedRadius = plugin.waypointsConfig.general.teleport.visitedRadiusSquared
@@ -56,7 +56,7 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
   }
 
   @EventHandler
-  private fun onWaypointDelete(e: WaypointPostDeleteEvent) {
+  fun onWaypointDelete(e: WaypointPostDeleteEvent) {
     pointerManager.disableAll {
       if (it is Waypoint) {
         it.id == e.waypoint.id
@@ -65,7 +65,7 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
   }
 
   @EventHandler
-  private fun onPlayerQuit(e: PlayerQuitEvent) {
+  fun onPlayerQuit(e: PlayerQuitEvent) {
     pointerManager.disableAll {
       if (it is PlayerTrackable) {
         it.player == e.player
@@ -74,7 +74,7 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
   }
 
   @EventHandler
-  private fun onConfigReload(e: ConfigReloadEvent) {
+  fun onConfigReload(e: ConfigReloadEvent) {
     pointerManager.applyNewConfiguration(e.config.pointers)
   }
 }
