@@ -3,7 +3,7 @@ kotlin = "1.8.20"
 coroutines = "1.7.0-RC"
 jvmToolchain = "17"
 paper = "1.19.4-R0.1-SNAPSHOT"
-commandApi = "9.0.0"
+commandApi = "9.0.1"
 
 dynmap = "3.5-SNAPSHOT"
 
