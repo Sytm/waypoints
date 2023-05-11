@@ -1,35 +1,13 @@
-package de.md5lukas.waypoints.api.sqlite
+package de.md5lukas.waypoints.api
 
-import be.seeseemelk.mockbukkit.MockBukkit
-import be.seeseemelk.mockbukkit.ServerMock
-import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.bukkit.Material
 import org.junit.jupiter.api.assertAll
 
-class FolderTest {
-
-  private lateinit var server: ServerMock
-  private lateinit var api: WaypointsAPI
-
-  @BeforeTest
-  fun createAPI() {
-    server = MockBukkit.mock()
-    val manager =
-        SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true)
-    manager.initDatabase()
-    api = manager.api
-  }
-
-  @AfterTest
-  fun unmock() {
-    MockBukkit.unmock()
-  }
+abstract class FolderTest : TestBase() {
 
   @TypesNoDeath
   fun deleteFolder(type: Type) = runBlocking {

@@ -1,33 +1,10 @@
-package de.md5lukas.waypoints.api.sqlite
+package de.md5lukas.waypoints.api
 
-import be.seeseemelk.mockbukkit.MockBukkit
-import be.seeseemelk.mockbukkit.ServerMock
-import de.md5lukas.waypoints.api.DummyDatabaseConfiguration
-import de.md5lukas.waypoints.api.SQLiteManager
-import de.md5lukas.waypoints.api.WaypointsAPI
-import de.md5lukas.waypoints.api.createLocation
 import java.util.*
 import kotlin.test.*
 import kotlinx.coroutines.runBlocking
 
-class WaypointsAPITest {
-
-  lateinit var server: ServerMock
-  lateinit var api: WaypointsAPI
-
-  @BeforeTest
-  fun createAPI() {
-    server = MockBukkit.mock()
-    val manager =
-        SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true)
-    manager.initDatabase()
-    api = manager.api
-  }
-
-  @AfterTest
-  fun unmock() {
-    MockBukkit.unmock()
-  }
+abstract class WaypointsAPITest : TestBase() {
 
   @Test
   fun newPlayerDoesNotExist() = runBlocking {
