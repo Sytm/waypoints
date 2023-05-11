@@ -1,7 +1,5 @@
-package de.md5lukas.waypoints.api.sqlite
+package de.md5lukas.waypoints.api
 
-import be.seeseemelk.mockbukkit.MockBukkit
-import be.seeseemelk.mockbukkit.ServerMock
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import java.time.OffsetDateTime
@@ -14,24 +12,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
-class WaypointPlayerTest {
-
-  lateinit var server: ServerMock
-  lateinit var api: WaypointsAPI
-
-  @BeforeTest
-  fun createAPI() {
-    server = MockBukkit.mock()
-    val manager =
-        SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true)
-    manager.initDatabase()
-    api = manager.api
-  }
-
-  @AfterTest
-  fun unmock() {
-    MockBukkit.unmock()
-  }
+abstract class WaypointPlayerTest : TestBase() {
 
   @Test
   fun showGlobalsIsSaved() = runBlocking {

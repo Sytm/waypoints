@@ -19,9 +19,7 @@ dependencies {
   implementation(project(":utils"))
   implementation(libs.md5Commons)
 
-  testImplementation(kotlin("test-junit5"))
-  testImplementation(libs.junitJupiter)
-  testImplementation(libs.mockBukkit)
+  testImplementation(project(":api-tests"))
   testRuntimeOnly(libs.sqliteJdbc)
 }
 

@@ -1,35 +1,15 @@
-package de.md5lukas.waypoints.api.sqlite
+package de.md5lukas.waypoints.api
 
-import be.seeseemelk.mockbukkit.MockBukkit
-import be.seeseemelk.mockbukkit.MockPlugin
-import be.seeseemelk.mockbukkit.ServerMock
-import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.FolderCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
-import kotlin.test.*
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlinx.coroutines.runBlocking
 
-class WaypointHolderTest {
+abstract class WaypointHolderTest : TestBase() {
 
   private val TEST_PERMISSION = "permission"
-
-  private lateinit var server: ServerMock
-  private lateinit var plugin: MockPlugin
-  private lateinit var api: WaypointsAPI
-
-  @BeforeTest
-  fun createAPI() {
-    server = MockBukkit.mock()
-    plugin = MockBukkit.createMockPlugin()
-    val manager = SQLiteManager(plugin, DummyDatabaseConfiguration, null, true)
-    manager.initDatabase()
-    api = manager.api
-  }
-
-  @AfterTest
-  fun unmock() {
-    MockBukkit.unmock()
-  }
 
   @TypesNoDeath
   fun newHolderEmpty(type: Type) = runBlocking {

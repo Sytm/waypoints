@@ -1,8 +1,5 @@
-package de.md5lukas.waypoints.api.sqlite
+package de.md5lukas.waypoints.api
 
-import be.seeseemelk.mockbukkit.MockBukkit
-import be.seeseemelk.mockbukkit.ServerMock
-import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import java.util.*
@@ -12,24 +9,7 @@ import org.bukkit.Material
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertAll
 
-class WaypointTest {
-
-  lateinit var server: ServerMock
-  lateinit var api: WaypointsAPI
-
-  @BeforeTest
-  fun createAPI() {
-    server = MockBukkit.mock()
-    val manager =
-        SQLiteManager(MockBukkit.createMockPlugin(), DummyDatabaseConfiguration, null, true)
-    manager.initDatabase()
-    api = manager.api
-  }
-
-  @AfterTest
-  fun unmock() {
-    MockBukkit.unmock()
-  }
+abstract class WaypointTest : TestBase() {
 
   @TypesNoDeath
   fun deleteWaypoint(type: Type) = runBlocking {
@@ -76,7 +56,7 @@ class WaypointTest {
   }
 
   @Nested
-  inner class WaypointsMeta {
+  inner class WaypointMeta {
 
     @TypesNoDeath
     fun newMetaDefaultValues(type: Type) = runBlocking {
@@ -121,7 +101,7 @@ class WaypointTest {
   }
 
   @Nested
-  inner class WaypointsCustomData {
+  inner class WaypointCustomData {
 
     @TypesNoDeath
     fun customDataSaved(type: Type) = runBlocking {
