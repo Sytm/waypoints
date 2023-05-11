@@ -136,7 +136,7 @@ tasks.withType<ShadowJar> {
   relocate("org.bstats", "de.md5lukas.waypoints.bstats")
 }
 
-// runPaper.folia.registerTask() CommandAPI is still non-functional on folia
+runPaper.folia.registerTask()
 
 tasks.withType<RunServer> {
   dependsOn("jar")
