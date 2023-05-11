@@ -14,9 +14,9 @@ abstract class DatabaseManager(
 
   val asyncDispatcher =
       if (testing) {
-        Dispatchers.IO
-      } else {
         Dispatchers.Unconfined
+      } else {
+        Dispatchers.IO
       }
 
   abstract val api: WaypointsAPI
