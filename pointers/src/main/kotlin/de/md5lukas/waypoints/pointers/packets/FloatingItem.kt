@@ -11,17 +11,19 @@ internal class FloatingItem(
     player: Player,
     location: Location,
     private val itemStack: ItemStack,
-) : ClientSideEntity(
-    player,
-    location,
-    EntityType.DROPPED_ITEM,
-) {
+) :
+    ClientSideEntity(
+        player,
+        location,
+        EntityType.DROPPED_ITEM,
+    ) {
 
-    override fun modifyMetadataValues(spawn: Boolean, dataValues: MutableList<WrappedDataValue>) {
-        if (spawn) {
-            // https://wiki.vg/Entity_metadata#Item_Entity
-            dataValues += disableGravity
-            dataValues += WrappedDataValue(8, slotSerializer, MinecraftReflection.getMinecraftItemStack(itemStack))
-        }
+  override fun modifyMetadataValues(spawn: Boolean, dataValues: MutableList<WrappedDataValue>) {
+    if (spawn) {
+      // https://wiki.vg/Entity_metadata#Item_Entity
+      dataValues += disableGravity
+      dataValues +=
+          WrappedDataValue(8, slotSerializer, MinecraftReflection.getMinecraftItemStack(itemStack))
     }
+  }
 }

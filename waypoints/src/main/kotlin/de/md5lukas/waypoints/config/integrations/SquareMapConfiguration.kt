@@ -5,12 +5,12 @@ import de.md5lukas.konfig.Configurable
 @Configurable
 class SquareMapConfiguration {
 
-    var enabled: Boolean = false
-        private set
+  var enabled: Boolean = false
+    private set
 
-    var icon: String = ""
-        private set
+  var icon: String = ""
+    private set
 
-    var iconSize: Int = 3
-        private set
+  var iconSize: Int = 3
+    private set
 }

@@ -4,21 +4,21 @@ import com.google.common.collect.BiMap
 
 interface PointerConfiguration {
 
-    val disableWhenReachedRadiusSquared: Int
+  val disableWhenReachedRadiusSquared: Int
 
-    val connectedWorlds: BiMap<String, String>
+  val connectedWorlds: BiMap<String, String>
 
-    val actionBar: ActionBarConfiguration
+  val actionBar: ActionBarConfiguration
 
-    val beacon: BeaconConfiguration
+  val beacon: BeaconConfiguration
 
-    val blinkingBlock: BlinkingBlockConfiguration
+  val blinkingBlock: BlinkingBlockConfiguration
 
-    val compass: CompassConfiguration
+  val compass: CompassConfiguration
 
-    val particle: ParticleConfiguration
+  val particle: ParticleConfiguration
 
-    val hologram: HologramConfiguration
+  val hologram: HologramConfiguration
 
-    val bossBar: BossBarConfiguration
+  val bossBar: BossBarConfiguration
 }

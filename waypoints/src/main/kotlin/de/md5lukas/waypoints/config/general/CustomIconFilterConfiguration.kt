@@ -6,9 +6,9 @@ import org.bukkit.Material
 @Configurable
 class CustomIconFilterConfiguration {
 
-    var type: FilterType = FilterType.WHITELIST
-        private set
+  var type: FilterType = FilterType.WHITELIST
+    private set
 
-    var materials: List<Material> = listOf()
-        private set
+  var materials: List<Material> = listOf()
+    private set
 }

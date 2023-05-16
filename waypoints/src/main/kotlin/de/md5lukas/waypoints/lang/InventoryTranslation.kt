@@ -8,36 +8,37 @@ class InventoryTranslation(
     private val key: String,
 ) : Resettable {
 
-    init {
-        translationLoader.registerTranslationWrapper(this)
+  init {
+    translationLoader.registerTranslationWrapper(this)
+  }
+
+  val text: List<Component>
+    get() = staticComponent()
+
+  val rawText: String
+    get() = translationLoader[key]
+
+  private var staticMessage: List<Component>? = null
+
+  private fun staticComponent(): List<Component> {
+    if (staticMessage === null) {
+      staticMessage =
+          rawText.lineSequence().map { translationLoader.itemMiniMessage.deserialize(it) }.toList()
     }
+    return staticMessage!!
+  }
 
-    val text: List<Component>
-        get() = staticComponent()
-
-    val rawText: String
-        get() = translationLoader[key]
-
-    private var staticMessage: List<Component>? = null
-
-    private fun staticComponent(): List<Component> {
-        if (staticMessage === null) {
-            staticMessage = rawText.lineSequence().map {
-                translationLoader.itemMiniMessage.deserialize(it)
-            }.toList()
-        }
-        return staticMessage!!
-    }
-
-    fun withReplacements(vararg resolvers: TagResolver): List<Component> = if (resolvers.isEmpty()) {
+  fun withReplacements(vararg resolvers: TagResolver): List<Component> =
+      if (resolvers.isEmpty()) {
         staticComponent()
-    } else {
-        rawText.lineSequence().map {
-            translationLoader.itemMiniMessage.deserialize(it, *resolvers)
-        }.toList()
-    }
+      } else {
+        rawText
+            .lineSequence()
+            .map { translationLoader.itemMiniMessage.deserialize(it, *resolvers) }
+            .toList()
+      }
 
-    override fun reset() {
-        staticMessage = null
-    }
+  override fun reset() {
+    staticMessage = null
+  }
 }

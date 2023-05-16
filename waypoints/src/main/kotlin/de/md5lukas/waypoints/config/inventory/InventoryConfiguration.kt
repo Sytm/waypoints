@@ -10,34 +10,34 @@ import org.bukkit.configuration.ConfigurationSection
 @Configurable
 class InventoryConfiguration {
 
-    @SkipConfig
-    private var _rootConfig: ConfigurationSection? = null
+  @SkipConfig private var _rootConfig: ConfigurationSection? = null
 
-    @ExportConfigurationSection(true)
-    private var rootConfig: ConfigurationSection
-        set(value) {
-            _rootConfig = value
-            materialCache.clear()
-        }
-        get() = _rootConfig!!
-
-
-    private val materialCache = HashMap<String, Material>()
-
-    var disableFolderSizes: Boolean = false
-        private set
-
-    fun getMaterial(path: String): Material {
-        val cached = materialCache[path]
-        if (cached != null) {
-            return cached
-        }
-
-        val materialString = rootConfig.getStringNotNull(path)
-        val material = Material.matchMaterial(materialString) ?: throw IllegalArgumentException("The material $materialString at $path is not valid")
-
-        materialCache[path] = material
-
-        return material
+  @ExportConfigurationSection(true)
+  private var rootConfig: ConfigurationSection
+    set(value) {
+      _rootConfig = value
+      materialCache.clear()
     }
+    get() = _rootConfig!!
+
+  private val materialCache = HashMap<String, Material>()
+
+  var disableFolderSizes: Boolean = false
+    private set
+
+  fun getMaterial(path: String): Material {
+    val cached = materialCache[path]
+    if (cached != null) {
+      return cached
+    }
+
+    val materialString = rootConfig.getStringNotNull(path)
+    val material =
+        Material.matchMaterial(materialString)
+            ?: throw IllegalArgumentException("The material $materialString at $path is not valid")
+
+    materialCache[path] = material
+
+    return material
+  }
 }

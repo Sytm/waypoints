@@ -5,9 +5,9 @@ import de.md5lukas.konfig.Configurable
 @Configurable
 class DynMapConfiguration {
 
-    var enabled: Boolean = false
-        private set
+  var enabled: Boolean = false
+    private set
 
-    var icon: String = ""
-        private set
+  var icon: String = ""
+    private set
 }

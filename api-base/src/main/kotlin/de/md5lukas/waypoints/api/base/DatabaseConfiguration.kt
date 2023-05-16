@@ -4,5 +4,5 @@ import java.time.Period
 
 interface DatabaseConfiguration {
 
-    val deathWaypointRetentionPeriod: Period
+  val deathWaypointRetentionPeriod: Period
 }

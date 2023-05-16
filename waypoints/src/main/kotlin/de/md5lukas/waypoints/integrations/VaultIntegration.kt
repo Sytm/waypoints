@@ -4,31 +4,37 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import net.milkbowl.vault.economy.Economy
 import org.bukkit.entity.Player
 
-class VaultIntegration(
-    private val plugin: WaypointsPlugin
-) {
+class VaultIntegration(private val plugin: WaypointsPlugin) {
 
-    private var economy: Economy? = null
+  private var economy: Economy? = null
 
-    fun setupEconomy(): Boolean {
-        if (plugin.server.pluginManager.getPlugin("Vault") === null) {
-            return false
-        }
-        val rsp = plugin.server.servicesManager.getRegistration(Economy::class.java) ?: return false
-
-        economy = rsp.provider
-        return true
+  fun setupEconomy(): Boolean {
+    if (plugin.server.pluginManager.getPlugin("Vault") === null) {
+      return false
     }
+    val rsp = plugin.server.servicesManager.getRegistration(Economy::class.java) ?: return false
 
-    fun withdraw(player: Player, amount: Double) =
-        (economy ?: throw IllegalStateException("There was an attempt to withdraw money via Vault without Vault being setup"))
-            .withdrawPlayer(player, amount).transactionSuccess()
+    economy = rsp.provider
+    return true
+  }
 
-    fun deposit(player: Player, amount: Double) =
-        (economy ?: throw IllegalStateException("There was an attempt to withdraw money via Vault without Vault being setup"))
-            .depositPlayer(player, amount).transactionSuccess()
+  fun withdraw(player: Player, amount: Double) =
+      (economy
+              ?: throw IllegalStateException(
+                  "There was an attempt to withdraw money via Vault without Vault being setup"))
+          .withdrawPlayer(player, amount)
+          .transactionSuccess()
 
-    fun getBalance(player: Player) =
-        (economy ?: throw IllegalStateException("There was an attempt to check the balance via Vault without Vault being setup"))
-            .getBalance(player)
+  fun deposit(player: Player, amount: Double) =
+      (economy
+              ?: throw IllegalStateException(
+                  "There was an attempt to withdraw money via Vault without Vault being setup"))
+          .depositPlayer(player, amount)
+          .transactionSuccess()
+
+  fun getBalance(player: Player) =
+      (economy
+              ?: throw IllegalStateException(
+                  "There was an attempt to check the balance via Vault without Vault being setup"))
+          .getBalance(player)
 }

@@ -2,15 +2,15 @@ package de.md5lukas.waypoints.pointers.config
 
 interface HologramConfiguration : RepeatingPointerConfiguration {
 
-    val distanceFromPlayer: Int
+  val distanceFromPlayer: Int
 
-    val distanceFromPlayerSquared: Int
+  val distanceFromPlayerSquared: Int
 
-    val preventOcclusion: Boolean
+  val preventOcclusion: Boolean
 
-    val hologramHeightOffset: Double
+  val hologramHeightOffset: Double
 
-    val iconEnabled: Boolean
+  val iconEnabled: Boolean
 
-    val iconOffset: Double
+  val iconOffset: Double
 }
