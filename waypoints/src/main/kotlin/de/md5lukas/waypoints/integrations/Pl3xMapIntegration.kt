@@ -12,38 +12,38 @@ import de.md5lukas.waypoints.util.registerEvents
 import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
+import net.pl3x.map.core.Pl3xMap
+import net.pl3x.map.core.image.IconImage
+import net.pl3x.map.core.markers.layer.SimpleLayer
+import net.pl3x.map.core.markers.marker.Marker
+import net.pl3x.map.core.markers.option.Options
 import org.bukkit.World
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.server.PluginDisableEvent
-import xyz.jpenilla.squaremap.api.*
-import xyz.jpenilla.squaremap.api.marker.Marker
-import xyz.jpenilla.squaremap.api.marker.MarkerOptions
 
-class SquareMapIntegration(private val plugin: WaypointsPlugin) : Listener {
+class Pl3xMapIntegration(private val plugin: WaypointsPlugin) : Listener {
 
   companion object Constants {
-    const val CUSTOM_DATA_KEY = "squaremap-icon"
+    const val CUSTOM_DATA_KEY = "pl3xmap-icon"
   }
 
-  private lateinit var api: Squaremap
-  private lateinit var layerKey: Key
-  private val layerProviders: MutableMap<UUID, SimpleLayerProvider?> = HashMap()
+  private lateinit var api: Pl3xMap
+  private val layerKey: String = "waypoints"
+  private val layerProviders: MutableMap<UUID, SimpleLayer?> = HashMap()
 
   private val iconFolder = File(plugin.dataFolder, "icons")
 
-  fun setupSquareMap(): Boolean {
-    if (plugin.server.pluginManager.getPlugin("squaremap") === null) {
+  fun setupPl3xMap(): Boolean {
+    if (plugin.server.pluginManager.getPlugin("Pl3xMap") === null) {
       return false
     }
 
-    plugin.slF4JLogger.info("Found squaremap plugin")
+    plugin.slF4JLogger.info("Found Pl3xMap plugin")
 
     extractIcons(plugin)
 
-    api = SquaremapProvider.get()
-
-    layerKey = Key.of("waypoints")
+    api = Pl3xMap.api()
 
     plugin.skedule { plugin.api.publicWaypoints.getAllWaypoints().forEach { createMarker(it) } }
 
@@ -102,52 +102,51 @@ class SquareMapIntegration(private val plugin: WaypointsPlugin) : Listener {
     worldNotNull.layerProvider?.let { provider ->
       val marker =
           Marker.icon(
-              BukkitAdapter.point(waypoint.location),
+              waypoint.id.toString(),
+              waypoint.location.x,
+              waypoint.location.z,
               getMarkerForWaypoint(waypoint),
-              plugin.waypointsConfig.integrations.squaremap.iconSize)
-      marker.markerOptions(MarkerOptions.builder().hoverTooltip(waypoint.name))
-      provider.addMarker(Key.of(waypoint.id.toString()), marker)
+              plugin.waypointsConfig.integrations.pl3xmap.iconSize)
+      marker.setOptions(Options.builder().tooltipContent(waypoint.name))
+      provider.addMarker(marker)
     }
   }
 
-  private suspend fun getMarkerForWaypoint(waypoint: Waypoint): Key {
-    val rawKey =
-        waypoint.getCustomData(CUSTOM_DATA_KEY)
-            ?: plugin.waypointsConfig.integrations.squaremap.icon
-    var key = Key.of(rawKey)
+  private suspend fun getMarkerForWaypoint(waypoint: Waypoint): String {
+    val key =
+        waypoint.getCustomData(CUSTOM_DATA_KEY) ?: plugin.waypointsConfig.integrations.pl3xmap.icon
 
-    if (api.iconRegistry().hasEntry(key)) {
+    if (api.iconRegistry.has(key)) {
       return key
     }
 
-    key = Key.of("waypoints-$rawKey")
+    val prefixedKey = "waypoints-$key"
 
-    if (!api.iconRegistry().hasEntry(key)) {
-      val image = File(iconFolder, "$rawKey.png")
-      api.iconRegistry().register(key, ImageIO.read(image))
+    if (!api.iconRegistry.has(prefixedKey)) {
+      val image = File(iconFolder, "$key.png")
+      api.iconRegistry.register(IconImage(prefixedKey, ImageIO.read(image), "png"))
     }
 
-    return key
+    return prefixedKey
   }
 
-  private val World.layerProvider: SimpleLayerProvider?
+  private val World.layerProvider: SimpleLayer?
     get() =
         layerProviders.computeIfAbsent(uid) {
           mapWorld?.let { mapWorld ->
-            val provider =
-                SimpleLayerProvider.builder(plugin.translations.INTEGRATIONS_MAPS_LABEL.rawText)
-                    .build()
+            val layer =
+                SimpleLayer(layerKey) { plugin.translations.INTEGRATIONS_MAPS_LABEL.rawText }
 
-            mapWorld.layerRegistry().register(layerKey, provider)
+            mapWorld.layerRegistry.register(layer)
 
-            provider
+            layer
           }
         }
 
   private fun unregisterLayerProviders() {
-    api.mapWorlds().forEach {
-      it.layerRegistry().let { registry ->
-        if (registry.hasEntry(layerKey)) {
+    api.worldRegistry.forEach {
+      it.layerRegistry.let { registry ->
+        if (registry.has(layerKey)) {
           registry.unregister(layerKey)
         }
       }
@@ -155,10 +154,10 @@ class SquareMapIntegration(private val plugin: WaypointsPlugin) : Listener {
     layerProviders.clear()
   }
 
-  private val World.mapWorld: MapWorld?
-    get() = api.getWorldIfEnabled(BukkitAdapter.worldIdentifier(this)).orElse(null)
+  private val World.mapWorld
+    get() = api.worldRegistry.get(name)
 
   private fun Waypoint.removeMarker() {
-    location.world?.layerProvider?.removeMarker(Key.of(id.toString()))
+    location.world?.layerProvider?.removeMarker(id.toString())
   }
 }

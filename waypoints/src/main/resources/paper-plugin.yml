@@ -21,6 +21,8 @@ dependencies:
     required: false
   - name: BlueMap
     required: false
+  - name: Pl3xMap
+    required: false
 
 load-after:
   - name: Vault
@@ -28,6 +30,7 @@ load-after:
   - name: ProtocolLib
   - name: squaremap
   - name: BlueMap
+  - name: Pl3xMap
 
 permissions:
   waypoints.*:
