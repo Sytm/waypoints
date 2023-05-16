@@ -238,10 +238,16 @@ class SQLiteManager(
             getInt("schemaVersion")
           }
               ?: throw IllegalStateException("Could not retrieve schema version of database")
+      if (currentSchemaVersion > schemaVersion) {
+        throw IllegalStateException(
+            "The database uses a schema that is newer than the plugin is made for (Database: $currentSchemaVersion, Plugin: $schemaVersion)")
+      }
 
-      plugin.logger.log(
-          Level.INFO,
-          "Current database schema version: $currentSchemaVersion. Required database schema version: $schemaVersion")
+      if (currentSchemaVersion != schemaVersion) {
+        plugin.logger.log(
+            Level.INFO,
+            "Current database schema version: $currentSchemaVersion. Required database schema version: $schemaVersion")
+      }
 
       databaseUpgrades.forEach { (upgradesTo, upgrade) ->
         if (currentSchemaVersion < upgradesTo) {
