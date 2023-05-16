@@ -100,8 +100,8 @@ class WaypointsGUI(
             ItemStack(Material.PAPER).also {
               it.plainDisplayName = translations.FOLDER_CREATE_ENTER_NAME.rawText
             })
-        .onClickSuspending(scheduler) { slot, (name) ->
-          if (slot != AnvilGUI.Slot.OUTPUT) return@onClickSuspending emptyList()
+        .onClickSuspending(scheduler) { slot, (isOutputInvalid, name) ->
+          if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid) return@onClickSuspending emptyList()
 
           val result =
               when (waypointHolder.type) {
@@ -138,8 +138,8 @@ class WaypointsGUI(
             ItemStack(Material.PAPER).also {
               it.plainDisplayName = translations.WAYPOINT_CREATE_ENTER_NAME.rawText
             })
-        .onClickSuspending(scheduler) { slot, (enteredText) ->
-          if (slot != AnvilGUI.Slot.OUTPUT) return@onClickSuspending emptyList()
+        .onClickSuspending(scheduler) { slot, (isOutputInvalid, enteredText) ->
+          if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid) return@onClickSuspending emptyList()
 
           if (name == null) {
             name = enteredText

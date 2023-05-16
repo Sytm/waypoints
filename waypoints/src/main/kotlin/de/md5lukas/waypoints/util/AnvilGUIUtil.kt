@@ -5,9 +5,13 @@ import de.md5lukas.schedulers.AbstractScheduler
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import net.wesjd.anvilgui.AnvilGUI.*
+import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
-operator fun StateSnapshot.component1(): String = outputItem.plainDisplayName
+operator fun StateSnapshot.component1(): Boolean =
+    outputItem === null || outputItem.type === Material.AIR
+
+operator fun StateSnapshot.component2(): String = outputItem.plainDisplayName
 
 var ItemStack.plainDisplayName: String
   get() =
@@ -22,17 +26,20 @@ var ItemStack.plainDisplayName: String
   }
 
 fun replaceInputText(text: String) = ResponseAction { anvilGUI, _ ->
-  anvilGUI.inventory.getItem(Slot.OUTPUT)!!.also {
+  anvilGUI.inventory.getItem(Slot.INPUT_LEFT)!!.let {
+    it.plainDisplayName = "_"
     it.plainDisplayName = text
-    anvilGUI.inventory.setItem(Slot.INPUT_LEFT, it)
   }
 }
+
+fun Builder.scheduler(scheduler: AbstractScheduler): Builder =
+    mainThreadExecutor(scheduler.asExecutor())
 
 inline fun Builder.onClickSuspending(
     scheduler: AbstractScheduler,
     crossinline block: suspend (Int, StateSnapshot) -> List<ResponseAction>
 ): Builder {
-  this.mainThreadExecutor(scheduler.asExecutor())
+  this.scheduler(scheduler)
   this.onClickAsync { slot, state -> scheduler.future { block(slot, state) } }
   return this
 }
