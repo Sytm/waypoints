@@ -59,7 +59,6 @@ permissions:
     default: true
   waypoints.command.other: { }
   waypoints.command.statistics: { }
-  waypoints.command.import: { }
 
   waypoints.unlimited: { }
   waypoints.temporaryWaypoint:
