@@ -15,7 +15,19 @@ import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.CycleSortItem
 import de.md5lukas.waypoints.gui.items.ToggleGlobalsItem
-import de.md5lukas.waypoints.util.*
+import de.md5lukas.waypoints.util.asSingletonList
+import de.md5lukas.waypoints.util.checkFolderName
+import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
+import de.md5lukas.waypoints.util.checkWorldAvailability
+import de.md5lukas.waypoints.util.component1
+import de.md5lukas.waypoints.util.component2
+import de.md5lukas.waypoints.util.isLocationOutOfBounds
+import de.md5lukas.waypoints.util.onClickSuspending
+import de.md5lukas.waypoints.util.parseLocationString
+import de.md5lukas.waypoints.util.placeholder
+import de.md5lukas.waypoints.util.plainDisplayName
+import de.md5lukas.waypoints.util.replaceInputText
+import de.md5lukas.waypoints.util.scheduler
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import org.bukkit.Material
@@ -151,8 +163,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                       .plugin(wpGUI.plugin)
                       .itemLeft(
                           ItemStack(Material.PAPER).also { it.plainDisplayName = guiFolder.name })
-                      .onClickSuspending(wpGUI.scheduler) { slot, (name) ->
-                        if (slot != AnvilGUI.Slot.OUTPUT) return@onClickSuspending emptyList()
+                      .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, name) ->
+                        if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                            return@onClickSuspending emptyList()
 
                         val holder = wpGUI.getHolderForType(guiFolder.type)
 
@@ -189,13 +202,15 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                   var parsedLocation: Location? = null
                   AnvilGUI.Builder()
                       .plugin(wpGUI.plugin)
+                      .scheduler(wpGUI.scheduler)
                       .itemLeft(
-                          ItemStack(Material.PAPER).also {
-                            it.plainDisplayName =
+                          ItemStack(Material.PAPER).also { stack ->
+                            stack.plainDisplayName =
                                 wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.rawText
                           })
-                      .onClick { slot, (coordinates) ->
-                        if (slot != AnvilGUI.Slot.OUTPUT) return@onClick emptyList()
+                      .onClick { slot, (isOutputInvalid, coordinates) ->
+                        if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                            return@onClick emptyList()
 
                         parsedLocation = parseLocationString(wpGUI.viewer, coordinates)
 

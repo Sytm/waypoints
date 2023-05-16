@@ -12,7 +12,19 @@ import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.pointers.WaypointTrackable
-import de.md5lukas.waypoints.util.*
+import de.md5lukas.waypoints.util.SuccessWaypoint
+import de.md5lukas.waypoints.util.asSingletonList
+import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
+import de.md5lukas.waypoints.util.checkWaypointName
+import de.md5lukas.waypoints.util.component1
+import de.md5lukas.waypoints.util.component2
+import de.md5lukas.waypoints.util.copyFieldsTo
+import de.md5lukas.waypoints.util.createWaypointPermission
+import de.md5lukas.waypoints.util.createWaypointPublic
+import de.md5lukas.waypoints.util.onClickSuspending
+import de.md5lukas.waypoints.util.placeholder
+import de.md5lukas.waypoints.util.plainDisplayName
+import de.md5lukas.waypoints.util.replaceInputText
 import net.kyori.adventure.text.event.ClickEvent
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Material
@@ -152,8 +164,11 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                                   stack.plainDisplayName =
                                       wpGUI.translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText
                                 })
-                            .onClickSuspending(wpGUI.scheduler) { slot, (permission) ->
-                              if (slot != AnvilGUI.Slot.OUTPUT) return@onClickSuspending emptyList()
+                            .onClickSuspending(wpGUI.scheduler) {
+                                slot,
+                                (isOutputInvalid, permission) ->
+                              if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                                  return@onClickSuspending emptyList()
 
                               when (val result =
                                   createWaypointPermission(
@@ -198,8 +213,9 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                             ItemStack(Material.PAPER).also {
                               it.plainDisplayName = waypoint.permission ?: ""
                             })
-                        .onClickSuspending(wpGUI.scheduler) { slot, (permission) ->
-                          if (slot != AnvilGUI.Slot.OUTPUT) return@onClickSuspending emptyList()
+                        .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, permission) ->
+                          if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                              return@onClickSuspending emptyList()
 
                           waypoint.setPermission(permission)
                           return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
@@ -283,8 +299,9 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                     .plugin(wpGUI.plugin)
                     .itemLeft(
                         ItemStack(Material.PAPER).also { it.plainDisplayName = waypoint.name })
-                    .onClickSuspending(wpGUI.scheduler) { slot, (newName) ->
-                      if (slot != AnvilGUI.Slot.OUTPUT) return@onClickSuspending emptyList()
+                    .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, newName) ->
+                      if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                          return@onClickSuspending emptyList()
 
                       val holder = wpGUI.getHolderForType(waypoint.type)
 
@@ -301,6 +318,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                               throw IllegalArgumentException(
                                   "Waypoints of the type ${waypoint.type} have no name")
                         }.send(wpGUI.viewer)
+                        return@onClickSuspending replaceInputText(newName).asSingletonList()
                       }
 
                       return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
@@ -386,8 +404,9 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                       ItemStack(Material.PAPER).also {
                         it.plainDisplayName = waypoint.getCustomData(customDataKey) ?: defaultIcon
                       })
-                  .onClickSuspending(wpGUI.scheduler) { slot, (newIcon) ->
-                    if (slot != AnvilGUI.Slot.OUTPUT) return@onClickSuspending emptyList()
+                  .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, newIcon) ->
+                    if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                        return@onClickSuspending emptyList()
 
                     waypoint.setCustomData(customDataKey, newIcon.ifBlank { null })
                     return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
