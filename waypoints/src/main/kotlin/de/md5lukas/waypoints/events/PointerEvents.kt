@@ -1,5 +1,7 @@
 package de.md5lukas.waypoints.events
 
+import com.google.common.cache.Cache
+import com.google.common.cache.CacheBuilder
 import com.okkero.skedule.skedule
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
@@ -7,6 +9,8 @@ import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.pointers.PlayerTrackable
 import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.checkWorldAvailability
+import java.util.concurrent.TimeUnit
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -21,38 +25,40 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
 
   @EventHandler(priority = EventPriority.MONITOR)
   fun onPlayerRespawn(e: PlayerRespawnEvent) {
-    plugin.skedule(e.player) {
-      if (plugin.waypointsConfig.general.features.deathWaypoints &&
-          plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.enabled &&
-          checkWorldAvailability(plugin, e.respawnLocation.world!!)) {
+    if (plugin.waypointsConfig.general.features.deathWaypoints &&
+        plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.enabled &&
+        checkWorldAvailability(plugin, e.respawnLocation.world!!)) {
+      plugin.skedule(e.player) {
         plugin.api
             .getWaypointPlayer(e.player.uniqueId)
             .deathFolder
             .getWaypoints()
             .maxByOrNull { it.createdAt }
-            ?.let {
-              if (pointerManager.getCurrentTarget(e.player) === null ||
-                  plugin.waypointsConfig.general.pointToDeathWaypointOnDeath.overwriteCurrent) {
-                pointerManager.enable(e.player, WaypointTrackable(plugin, it))
-              }
-            }
+            ?.let { pointerManager.enable(e.player, WaypointTrackable(plugin, it)) }
       }
     }
   }
 
+  private val visitedCache: Cache<Player, Waypoint> =
+      CacheBuilder.newBuilder().expireAfterAccess(10, TimeUnit.SECONDS).build()
+
   @EventHandler
   fun onMove(e: PlayerMoveEvent) {
-    val pointer = plugin.pointerManager.getCurrentTarget(e.player) as? WaypointTrackable ?: return
-
     val visitedRadius = plugin.waypointsConfig.general.teleport.visitedRadiusSquared
 
-    if (e.player.world === pointer.location.world) {
-      if (e.player.location.distanceSquared(pointer.location) <= visitedRadius) {
-        plugin.skedule(e.player) {
-          pointer.waypoint.getWaypointMeta(e.player.uniqueId).setVisisted(true)
+    plugin.pointerManager
+        .getCurrentTargets(e.player)
+        .mapNotNull(WaypointTrackable.Extract)
+        .forEach {
+          if (e.player.world === it.location.world) {
+            if (e.player.location.distanceSquared(it.location) <= visitedRadius) {
+              if (visitedCache.getIfPresent(e.player) != it) {
+                visitedCache.put(e.player, it)
+                plugin.skedule(e.player) { it.getWaypointMeta(e.player.uniqueId).setVisisted(true) }
+              }
+            }
+          }
         }
-      }
-    }
   }
 
   @EventHandler

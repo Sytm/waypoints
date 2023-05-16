@@ -1,18 +1,23 @@
 package de.md5lukas.waypoints.pointers
 
+import de.md5lukas.schedulers.AbstractScheduler
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
 internal abstract class Pointer(
     protected val pointerManager: PointerManager,
-    val interval: Int,
+    protected val player: Player,
+    protected val scheduler: AbstractScheduler,
 ) {
 
-    open fun show(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        update(player, trackable, translatedTarget)
-    }
+  abstract val interval: Int
+  abstract val supportsMultipleTargets: Boolean
 
-    open fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {}
+  open fun show(trackable: Trackable, translatedTarget: Location?) {
+    update(trackable, translatedTarget)
+  }
 
-    open fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {}
+  open fun update(trackable: Trackable, translatedTarget: Location?) {}
+
+  open fun hide(trackable: Trackable, translatedTarget: Location?) {}
 }

@@ -244,7 +244,6 @@ inventory:
         description: "<gray>点击显示"
 
     deselect:
-      displayName: "<yellow>取消选择路径点"
       description: "<gray>导航消息将不再提醒"
     setWaypoint:
       displayName: "<yellow>创建一个新的路径点"
@@ -307,6 +306,8 @@ inventory:
     select:
       displayName: "<yellow>选择路径点"
       description: "<gray>点击设置该路径点为你的目的地"
+    deselect:
+      displayName: "<yellow>取消选择路径点"
     delete:
       displayName: "<dark_red>删除路径点"
       description: ""

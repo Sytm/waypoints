@@ -232,7 +232,6 @@ inventory:
         description: "<gray>Clique para mostrar elas"
 
     deselect:
-      displayName: "<yellow>Deselecionar waypoint"
       description: "<gray>A direção não está mais sendo mostrada a você"
     setWaypoint:
       displayName: "<yellow>Criar nova waypoint"
@@ -293,6 +292,8 @@ inventory:
     select:
       displayName: "<yellow>Selecionar waypoint"
       description: "<gray>Clique para definir sua waypoint ativa"
+    deselect:
+      displayName: "<yellow>Deselecionar waypoint"
     delete:
       displayName: "<dark_red>Deletar waypoint"
       description: ""

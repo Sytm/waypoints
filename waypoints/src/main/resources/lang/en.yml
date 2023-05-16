@@ -286,7 +286,7 @@ inventory:
         description: "<gray>Click here to show them"
 
     deselect:
-      displayName: "<yellow>Deselect waypoint"
+      displayName: "<yellow>Deselect all waypoints"
       description: "<gray>The direction indicators are no longer shown to you"
     setWaypoint:
       displayName: "<yellow>Create a new waypoint"
@@ -349,7 +349,10 @@ inventory:
 
     select:
       displayName: "<yellow>Select waypoint"
-      description: "<gray>Click here to make this waypoint your active one"
+      description: "<gray>Click here to make this waypoint your primary one"
+    deselect:
+      displayName: "<yellow>Deselect this waypoint"
+      description: ""
     delete:
       displayName: "<dark_red>Delete waypoint"
       description: ""

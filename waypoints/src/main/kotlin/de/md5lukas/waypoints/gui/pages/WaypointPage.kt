@@ -218,10 +218,21 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
             },
         's' to
             if (waypoint.location.world !== null) {
-              GUIItem(wpGUI.translations.WAYPOINT_SELECT.item) {
-                wpGUI.viewer.closeInventory()
-                wpGUI.plugin.pointerManager.enable(
-                    wpGUI.viewer, WaypointTrackable(wpGUI.plugin, waypoint))
+              if (wpGUI.plugin.pointerManager.getCurrentTargets(wpGUI.viewer).any {
+                (it as? WaypointTrackable)?.waypoint == waypoint
+              }) {
+                GUIItem(wpGUI.translations.WAYPOINT_DESELECT.item) {
+                  wpGUI.plugin.pointerManager.disable(wpGUI.viewer) {
+                    WaypointTrackable.Extract(it) == waypoint
+                  }
+                  wpGUI.skedule { updatePage() }
+                }
+              } else {
+                GUIItem(wpGUI.translations.WAYPOINT_SELECT.item) {
+                  wpGUI.viewer.closeInventory()
+                  wpGUI.plugin.pointerManager.enable(
+                      wpGUI.viewer, WaypointTrackable(wpGUI.plugin, waypoint))
+                }
               }
             } else {
               background

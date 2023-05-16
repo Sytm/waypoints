@@ -5,9 +5,6 @@ import de.md5lukas.konfig.Configurable
 @Configurable
 class PointToDeathWaypointOnDeathConfiguration {
 
-    var enabled = false
-        private set
-
-    var overwriteCurrent = false
-        private set
+  var enabled = false
+    private set
 }

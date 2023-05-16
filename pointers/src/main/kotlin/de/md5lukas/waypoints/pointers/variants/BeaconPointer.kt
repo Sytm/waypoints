@@ -1,97 +1,105 @@
 package de.md5lukas.waypoints.pointers.variants
 
+import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.*
 import de.md5lukas.waypoints.pointers.config.BeaconConfiguration
 import de.md5lukas.waypoints.pointers.util.blockEquals
 import de.md5lukas.waypoints.pointers.util.highestBlock
 import de.md5lukas.waypoints.pointers.util.sendActualBlock
+import java.util.*
+import kotlin.math.max
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import java.util.*
-import kotlin.math.max
 
 internal class BeaconPointer(
     pointerManager: PointerManager,
+    player: Player,
+    scheduler: AbstractScheduler,
     private val config: BeaconConfiguration,
-) : Pointer(pointerManager, config.interval) {
+) : Pointer(pointerManager, player, scheduler) {
 
-    private val beacon = Material.BEACON.createBlockData()
+  override val interval: Int
+    get() = config.interval
 
-    private val activeBeacons: MutableMap<UUID, Location> = HashMap()
+  override val supportsMultipleTargets: Boolean
+    get() = true
 
-    override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (trackable !is StaticTrackable)
-            return
-        if (translatedTarget !== null) {
-            val distance = player.location.distanceSquared(translatedTarget)
+  private val beacon = Material.BEACON.createBlockData()
 
-            if (distance >= config.minDistanceSquared && distance < config.maxDistanceSquared) {
-                val beaconBase = translatedTarget.highestBlock.location
+  private val activeBeacons: MutableMap<Trackable, Location> = HashMap()
 
-                val lastBeaconPosition = activeBeacons[player.uniqueId]
-                if (lastBeaconPosition != null && !lastBeaconPosition.blockEquals(beaconBase)) {
-                    hide0(player, trackable, lastBeaconPosition)
-                }
+  override fun update(trackable: Trackable, translatedTarget: Location?) {
+    if (trackable !is StaticTrackable) return
+    if (translatedTarget !== null) {
+      val distance = player.location.distanceSquared(translatedTarget)
 
-                activeBeacons[player.uniqueId] = beaconBase
+      if (distance >= config.minDistanceSquared && distance < config.maxDistanceSquared) {
+        val beaconBase = translatedTarget.highestBlock.location
 
-                sendBeacon(player, beaconBase, trackable, true)
-            } else {
-                hide(player, trackable, translatedTarget)
-            }
+        val lastBeaconPosition = activeBeacons[trackable]
+        if (lastBeaconPosition != null && !lastBeaconPosition.blockEquals(beaconBase)) {
+          hide0(trackable, lastBeaconPosition)
         }
+
+        activeBeacons[trackable] = beaconBase
+
+        sendBeacon(beaconBase, trackable, true)
+      } else {
+        hide(trackable, translatedTarget)
+      }
     }
+  }
 
-    override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (trackable !is StaticTrackable)
-            return
-        hide0(player, trackable, activeBeacons.remove(player.uniqueId))
+  override fun hide(trackable: Trackable, translatedTarget: Location?) {
+    if (trackable !is StaticTrackable) return
+    hide0(trackable, activeBeacons.remove(trackable))
+  }
+
+  private fun hide0(trackable: Trackable, lastBeaconPosition: Location?) {
+    if (lastBeaconPosition != null && player.world == lastBeaconPosition.world) {
+      sendBeacon(lastBeaconPosition, trackable, false)
     }
+  }
 
-    private fun hide0(player: Player, trackable: Trackable, lastBeaconPosition: Location?) {
-        if (lastBeaconPosition != null && player.world == lastBeaconPosition.world) {
-            sendBeacon(player, lastBeaconPosition, trackable, false)
-        }
+  private fun sendBeacon(beaconBase: Location, trackable: Trackable, create: Boolean) {
+    val loc = beaconBase.clone()
+    val world = loc.world!!
+
+    loc.y = max(loc.blockY, world.minHeight + 2).toDouble()
+
+    if (create) {
+      player.sendBlockChange(
+          loc,
+          (if (trackable is StaticTrackable) {
+                trackable.beaconColor
+              } else {
+                null
+              }
+                  ?: config.getDefaultColor(trackable) ?: BeaconColor.CLEAR)
+              .blockData)
+    } else {
+      player.sendActualBlock(loc)
     }
+    loc.y--
+    if (create) {
+      player.sendBlockChange(loc, beacon)
+    } else {
+      player.sendActualBlock(loc)
+    }
+    loc.y--
 
-    private fun sendBeacon(player: Player, beaconBase: Location, trackable: Trackable, create: Boolean) {
-        val loc = beaconBase.clone()
-        val world = loc.world!!
-
-        loc.y = max(loc.blockY, world.minHeight + 2).toDouble()
-
+    // Create or remove 3x3 base platform
+    for (x in -1..1) {
+      for (z in -1..1) {
+        loc.add(x.toDouble(), 0.0, z.toDouble())
         if (create) {
-            player.sendBlockChange(
-                loc,
-                (if (trackable is StaticTrackable) {
-                    trackable.beaconColor
-                } else {
-                    null
-                } ?: config.getDefaultColor(trackable) ?: BeaconColor.CLEAR).blockData
-            )
+          player.sendBlockChange(loc, config.baseBlock)
         } else {
-            player.sendActualBlock(loc)
+          player.sendActualBlock(loc)
         }
-        loc.y--
-        if (create) {
-            player.sendBlockChange(loc, beacon)
-        } else {
-            player.sendActualBlock(loc)
-        }
-        loc.y--
-
-        // Create or remove 3x3 base platform
-        for (x in -1..1) {
-            for (z in -1..1) {
-                loc.add(x.toDouble(), 0.0, z.toDouble())
-                if (create) {
-                    player.sendBlockChange(loc, config.baseBlock)
-                } else {
-                    player.sendActualBlock(loc)
-                }
-                loc.subtract(x.toDouble(), 0.0, z.toDouble())
-            }
-        }
+        loc.subtract(x.toDouble(), 0.0, z.toDouble())
+      }
     }
+  }
 }

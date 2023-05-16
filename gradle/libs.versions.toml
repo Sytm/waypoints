@@ -1,6 +1,6 @@
 [versions]
-kotlin = "1.8.20"
-coroutines = "1.7.0-RC"
+kotlin = "1.8.21"
+coroutines = "1.7.1"
 jvmToolchain = "17"
 paper = "1.19.4-R0.1-SNAPSHOT"
 commandApi = "9.0.1"
@@ -32,7 +32,7 @@ brigadier = { group = "com.mojang", name = "brigadier", version = "1.0.18" }
 
 # Optional dependencies
 vaultApi = { group = "com.github.MilkBowl", name = "VaultAPI", version = "1.7.1" }
-protocollib = { group = "com.comphenix.protocol", name = "ProtocolLib", version = "5.0.0-SNAPSHOT" }
+protocollib = { group = "com.comphenix.protocol", name = "ProtocolLib", version = "5.0.0" }
 
 dynmap-coreApi = { group = "us.dynmap", name = "DynmapCoreAPI", version.ref = "dynmap" }
 dynmap-api = { group = "us.dynmap", name = "dynmap-api", version.ref = "dynmap" }

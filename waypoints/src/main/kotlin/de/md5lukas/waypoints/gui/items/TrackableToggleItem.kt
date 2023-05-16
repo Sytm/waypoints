@@ -18,9 +18,8 @@ class TrackableToggleItem(wpGUI: WaypointsGUI) :
                 trackable.player == wpGUI.viewer
               } else false
             }
-            if (wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable &&
-                pm.getCurrentTarget(wpGUI.viewer) is PlayerTrackable) {
-              pm.disable(wpGUI.viewer)
+            if (wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable) {
+              pm.disable(wpGUI.viewer) { trackable -> trackable is PlayerTrackable }
             }
           }
           wpGUI.gui.update()
