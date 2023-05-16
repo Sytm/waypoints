@@ -10,6 +10,7 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.integrations.DynMapIntegration
+import de.md5lukas.waypoints.integrations.Pl3xMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.SuccessWaypoint
@@ -36,7 +37,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
   private companion object {
     /**
      * w = Waypoint Icon i = Get UUID (Global waypoints only) u = Move to public folder e = Move to
-     * permission folder p = Change permission s = Select y = Dynmap custom icon c = Select beacon
+     * permission folder p = Change permission s = Select y = WebMap custom icon c = Select beacon
      * color f = Move to folder r = rename d = Delete t = Teleport b = Back
      */
     val waypointPattern =
@@ -255,16 +256,25 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
             },
         'y' to
             if (canModifyWaypoint && waypoint.type === Type.PUBLIC) {
-              if (wpGUI.plugin.dynMapIntegrationAvailable) {
-                createChangeCustomMapIconItem(
-                    DynMapIntegration.CUSTOM_DATA_KEY,
-                    wpGUI.plugin.waypointsConfig.integrations.dynmap.icon)
-              } else if (wpGUI.plugin.squareMapIntegrationAvailable) {
-                createChangeCustomMapIconItem(
-                    SquareMapIntegration.CUSTOM_DATA_KEY,
-                    wpGUI.plugin.waypointsConfig.integrations.squaremap.icon)
-              } else {
-                background
+              when {
+                wpGUI.plugin.dynMapIntegrationAvailable -> {
+                  createChangeCustomMapIconItem(
+                      DynMapIntegration.CUSTOM_DATA_KEY,
+                      wpGUI.plugin.waypointsConfig.integrations.dynmap.icon)
+                }
+                wpGUI.plugin.squareMapIntegrationAvailable -> {
+                  createChangeCustomMapIconItem(
+                      SquareMapIntegration.CUSTOM_DATA_KEY,
+                      wpGUI.plugin.waypointsConfig.integrations.squaremap.icon)
+                }
+                wpGUI.plugin.pl3xMapIntegrationAvailable -> {
+                  createChangeCustomMapIconItem(
+                      Pl3xMapIntegration.CUSTOM_DATA_KEY,
+                      wpGUI.plugin.waypointsConfig.integrations.pl3xmap.icon)
+                }
+                else -> {
+                  background
+                }
               }
             } else {
               background

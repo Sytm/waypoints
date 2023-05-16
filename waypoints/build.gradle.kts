@@ -16,10 +16,14 @@ description = "Waypoints plugin"
 
 repositories {
   maven("https://repo.codemc.io/repository/maven-public/") // AnvilGUI
-  maven("https://jitpack.io") // BlueMap
   maven("https://libraries.minecraft.net") // Brigadier
 
+  maven("https://jitpack.io") // Vault and BlueMap
   maven("https://repo.mikeprimm.com/") // DynMap
+  exclusiveContent { // Pl3xMap
+    forRepository { maven("https://api.modrinth.com/maven") }
+    filter { includeGroup("maven.modrinth") }
+  }
 }
 
 dependencies {
@@ -50,10 +54,9 @@ dependencies {
 
   implementation(variantOf(libs.dynmap.coreApi) { classifier("all") })
   implementation(variantOf(libs.dynmap.api) { classifier("unshaded") }) { isTransitive = false }
-
   implementation(libs.squaremapApi)
-
   implementation(libs.bluemapApi)
+  implementation(libs.pl3xmap)
 }
 
 tasks.register<ResourceIndexTask>("createResourceIndex")
@@ -153,7 +156,7 @@ modrinth {
   uploadFile.set(tasks.shadowJar as Any)
 
   gameVersions.addAll(libs.versions.paper.get().substringBefore('-'))
-  loaders.addAll("paper")
+  loaders.addAll("paper", "folia")
 
   syncBodyFrom.set(rootProject.file("README.md").readText())
 

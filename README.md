@@ -4,7 +4,7 @@
 ![Modrinth Downloads](https://img.shields.io/modrinth/dt/waypoints?label=Modrinth%20Downloads&style=flat-square)
 ![Spiget Downloads](https://img.shields.io/spiget/downloads/66647?label=Spigot%20Downloads&style=flat-square)
 
-Ever had the problem, that you were on a long trip and don't find your base?
+Ever had the problem, that you were on a long trip and can't find your base?
 
 You could set a warp with a conventional plugin at your home and simply teleport back. But if you want to keep the survival experience of not being able to
 teleport like that, this plugin could be just what your server needs!
@@ -68,7 +68,11 @@ tracked player.
 
 ## Integrations
 
-- Public waypoints are added to [Dynmap](https://www.spigotmc.org/resources/dynmap%C2%AE.274/), [SquareMap](https://github.com/jpenilla/squaremap) or [BlueMap](https://bluemap.bluecolored.de/)
+- Public waypoints are added to:
+  - [Dynmap](https://www.spigotmc.org/resources/dynmap%C2%AE.274/)
+  - [SquareMap](https://github.com/jpenilla/squaremap)
+  - [BlueMap](https://bluemap.bluecolored.de/)
+  - [Pl3xMap](https://modrinth.com/plugin/pl3xmap)
 
 ## Commands
 
