@@ -1,52 +1,61 @@
 package de.md5lukas.waypoints.pointers.variants
 
+import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.CompassConfiguration
+import java.util.concurrent.CompletableFuture
 import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.World
 import org.bukkit.entity.Player
-import org.bukkit.inventory.meta.CompassMeta
 
 internal class CompassPointer(
     pointerManager: PointerManager,
+    player: Player,
+    scheduler: AbstractScheduler,
     private val config: CompassConfiguration
-) : Pointer(pointerManager, config.interval) {
+) : Pointer(pointerManager, player, scheduler) {
 
-    override fun show(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        val currentCompassTarget = player.compassTarget
-        pointerManager.hooks.saveCompassTarget(player, currentCompassTarget)
-        update(player, trackable, translatedTarget)
+  override val interval: Int
+    get() = config.interval
+
+  override val supportsMultipleTargets: Boolean
+    get() = false
+
+  private var isTracking = false
+  private var restoreCompassTarget: CompletableFuture<Void>? = null
+
+  override fun show(trackable: Trackable, translatedTarget: Location?) {
+    val currentCompassTarget = player.compassTarget
+
+    val localFuture = restoreCompassTarget
+    if (localFuture === null || localFuture.isDone) {
+      pointerManager.hooks.saveCompassTarget(player, currentCompassTarget)
     }
+    restoreCompassTarget = null
 
-    override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        val location = translatedTarget ?: trackable.location
-        player.compassTarget = location
+    update(trackable, translatedTarget)
+  }
 
-        val world = location.world!!
-        if (config.netherSupport && world.environment === World.Environment.NETHER) {
-            player.inventory.filter { it?.type === Material.COMPASS }.forEach {
-                val meta = it.itemMeta as CompassMeta
-                meta.lodestone = location
-                it.itemMeta = meta
-            }
-        }
-    }
+  override fun update(trackable: Trackable, translatedTarget: Location?) {
+    isTracking = true
 
-    override fun hide(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        pointerManager.plugin.server.scheduler.runTaskAsynchronously(pointerManager.plugin, Runnable {
-            pointerManager.hooks.loadCompassTarget(player).join()?.let { // TODO dont block
-                player.compassTarget = it
-            }
-        })
-        if (config.netherSupport && (translatedTarget ?: trackable.location).world?.environment === World.Environment.NETHER) {
-            player.inventory.filter { it?.type === Material.COMPASS }.forEach {
-                val meta = it.itemMeta as CompassMeta
-                meta.lodestone = null
-                it.itemMeta = meta
-            }
-        }
-    }
+    val location = translatedTarget ?: trackable.location
+    player.compassTarget = location
+  }
+
+  override fun hide(trackable: Trackable, translatedTarget: Location?) {
+    isTracking = false
+
+    restoreCompassTarget =
+        pointerManager.hooks
+            .loadCompassTarget(player)
+            .thenAcceptAsync(
+                {
+                  if (it != null && !isTracking) {
+                    player.compassTarget = it
+                  }
+                },
+                scheduler.asExecutor())
+  }
 }

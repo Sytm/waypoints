@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.pointers.variants
 
+import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
@@ -10,37 +11,49 @@ import org.bukkit.entity.Player
 
 internal class ParticlePointer(
     pointerManager: PointerManager,
+    player: Player,
+    scheduler: AbstractScheduler,
     private val config: ParticleConfiguration,
-) : Pointer(pointerManager, config.interval) {
+) : Pointer(pointerManager, player, scheduler) {
 
-    override fun update(player: Player, trackable: Trackable, translatedTarget: Location?) {
-        if (translatedTarget !== null) {
-            val pLoc = player.location
-            var dir = translatedTarget.toVector().subtract(pLoc.toVector())
+  override val interval: Int
+    get() = config.interval
 
-            if (!config.showVerticalDirection) {
-                dir.y = 0.0
-            }
+  override val supportsMultipleTargets: Boolean
+    get() = true
 
-            dir = dir.normalize().multiply(config.length)
+  override fun update(trackable: Trackable, translatedTarget: Location?) {
+    if (translatedTarget !== null) {
+      val pLoc = player.location
+      var dir = translatedTarget.toVector().subtract(pLoc.toVector())
 
-            dir /= config.amount
+      if (!config.showVerticalDirection) {
+        dir.y = 0.0
+      }
 
-            for (i in 0 until config.amount) {
-                var y = config.heightOffset
+      dir = dir.normalize().multiply(config.length)
 
-                if (config.showVerticalDirection) {
-                    y += dir.y * i
-                }
+      dir /= config.amount
 
-                player.spawnParticle(
-                    config.particle,
-                    pLoc.x + (dir.x * i),
-                    pLoc.y + y,
-                    pLoc.z + (dir.z * i),
-                    1, 0.0, 0.0, 0.0, 0.0,
-                )
-            }
+      for (i in 0 until config.amount) {
+        var y = config.heightOffset
+
+        if (config.showVerticalDirection) {
+          y += dir.y * i
         }
+
+        player.spawnParticle(
+            config.particle,
+            pLoc.x + (dir.x * i),
+            pLoc.y + y,
+            pLoc.z + (dir.z * i),
+            1,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+        )
+      }
     }
+  }
 }

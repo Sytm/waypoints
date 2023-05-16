@@ -286,7 +286,7 @@ inventory:
         description: "<gray>Drücke hier drauf um sie zu zeigen"
 
     deselect:
-      displayName: "<yellow>Wegpunkte-Auswahl entfernen"
+      displayName: "<yellow>Alle Wegpunkt-Auswahlen entfernen"
       description: "<gray>Die Richtungsindikatoren werden nicht mehr angezeigt"
     setWaypoint:
       displayName: "<yellow>Neuen Wegpunkt erstellen"
@@ -350,6 +350,9 @@ inventory:
     select:
       displayName: "<yellow>Wegpunkte auswählen"
       description: "<gray>Drücke hier drauf um für diesen Wegpunkt Richtungsindikatoren zu erhalten"
+    deselect:
+      displayName: "<yellow>Wegpunkt-Auswahl entfernen"
+      description: ""
     delete:
       displayName: "<dark_red>Wegpunkt löschen"
       description: ""

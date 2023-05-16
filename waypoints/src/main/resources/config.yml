@@ -41,8 +41,6 @@ general:
   # Automatically select the last death waypoint upon death
   pointToDeathWaypointOnDeath:
     enabled: true
-    # Overwrites the current selected waypoint with the death waypoint
-    overwriteCurrent: false
 
   # Specify in which worlds waypoints can be created
   # Players with the permission waypoints.modify.anywhere can place waypoints wherever they want.
@@ -280,9 +278,6 @@ pointers:
     # The interval in game ticks when the compass target should be updated. Only relevant when tracking players
     interval: 20
 
-    # Allows the compass to function in the nether, but interferes with lodestone compass functionality and may produce glitched compasses
-    netherSupport: false
-
   particle:
     enabled: false
 
@@ -354,6 +349,7 @@ inventory:
       permission: BEACON
 
     select: REDSTONE
+    deselect: MILK_BUCKET
     delete:
       item: LAVA_BUCKET
       question: OAK_SIGN

@@ -13,6 +13,7 @@ subprojects {
 
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.md5lukas.de/public/")
+    maven("https://repo.dmulloy2.net/repository/public/")
   }
 
   tasks.withType<KotlinCompile> {
@@ -29,7 +30,7 @@ spotless {
         "buildSrc/src/*/java/**/*.java",
         "waypoints/src/*/java/**/*.java",
     )
-    googleJavaFormat()
+    palantirJavaFormat()
     formatAnnotations()
   }
   kotlin {

@@ -108,7 +108,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
         'd' to
             if (isOverview) {
               GUIItem(wpGUI.translations.OVERVIEW_DESELECT.item) {
-                wpGUI.plugin.pointerManager.disable(wpGUI.viewer)
+                wpGUI.plugin.pointerManager.disable(wpGUI.viewer) { true }
               }
             } else {
               background
