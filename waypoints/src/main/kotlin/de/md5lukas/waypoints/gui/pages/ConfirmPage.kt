@@ -5,36 +5,35 @@ import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import org.bukkit.inventory.ItemStack
 
-class ConfirmPage(wpGUI: WaypointsGUI, questionItem: ItemStack, falseItem: ItemStack, trueItem: ItemStack, onClick: (Boolean) -> Unit) :
-    BasePage(wpGUI, wpGUI.translations.CONFIRM_BACKGROUND.item) {
+class ConfirmPage(
+    wpGUI: WaypointsGUI,
+    questionItem: ItemStack,
+    falseItem: ItemStack,
+    trueItem: ItemStack,
+    onClick: (Boolean) -> Unit
+) : BasePage(wpGUI, wpGUI.translations.CONFIRM_BACKGROUND.item) {
 
-    private companion object {
-        /**
-         * q = question
-         * f = false
-         * t = true
-         */
-        val confirmPattern = GUIPattern(
+  private companion object {
+    /** q = question f = false t = true */
+    val confirmPattern =
+        GUIPattern(
             "_________",
             "____q____",
             "_________",
             "_f_____t_",
             "_________",
         )
-    }
+  }
 
-    init {
-        applyPattern(
-            confirmPattern,
-            0, 0,
-            background,
-            'q' to GUIItem(questionItem),
-            'f' to GUIItem(falseItem) {
-                onClick(false)
-            },
-            't' to GUIItem(trueItem) {
-                onClick(true)
-            },
-        )
-    }
+  init {
+    applyPattern(
+        confirmPattern,
+        0,
+        0,
+        background,
+        'q' to GUIItem(questionItem),
+        'f' to GUIItem(falseItem) { onClick(false) },
+        't' to GUIItem(trueItem) { onClick(true) },
+    )
+  }
 }

@@ -34,7 +34,6 @@ spotless {
     formatAnnotations()
   }
   kotlin {
-    ratchetFrom("51133f861b61cd5d7a263d7a0778042687c29c13")
     target(
         "*/src/*/kotlin/**/*.kt",
         "**/*.kts",

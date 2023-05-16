@@ -6,11 +6,11 @@ import org.bukkit.block.data.BlockData
 
 interface BeaconConfiguration : RepeatingPointerConfiguration {
 
-    val minDistanceSquared: Long
+  val minDistanceSquared: Long
 
-    val maxDistanceSquared: Long
+  val maxDistanceSquared: Long
 
-    val baseBlock: BlockData
+  val baseBlock: BlockData
 
-    fun getDefaultColor(trackable: Trackable): BeaconColor?
+  fun getDefaultColor(trackable: Trackable): BeaconColor?
 }

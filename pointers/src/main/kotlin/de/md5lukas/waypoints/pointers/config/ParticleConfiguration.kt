@@ -4,13 +4,13 @@ import org.bukkit.Particle
 
 interface ParticleConfiguration : RepeatingPointerConfiguration {
 
-    val heightOffset: Double
+  val heightOffset: Double
 
-    val showVerticalDirection: Boolean
+  val showVerticalDirection: Boolean
 
-    val amount: Int
+  val amount: Int
 
-    val length: Double
+  val length: Double
 
-    val particle: Particle
+  val particle: Particle
 }

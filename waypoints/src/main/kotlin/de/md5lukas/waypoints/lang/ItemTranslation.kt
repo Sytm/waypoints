@@ -11,24 +11,34 @@ class ItemTranslation(
     private val fixedMaterial: Material? = null,
 ) {
 
-    private val rawDisplayName: String
-        get() = translationLoader["$key.displayName"]
+  private val rawDisplayName: String
+    get() = translationLoader["$key.displayName"]
 
-    private val rawDescription: String
-        get() = translationLoader["$key.description"]
+  private val rawDescription: String
+    get() = translationLoader["$key.description"]
 
-    val material: Material
-        get() = fixedMaterial ?: translationLoader.plugin.waypointsConfig.inventory.getMaterial(key + if (appendItemSuffix) ".item" else "")
+  val material: Material
+    get() =
+        fixedMaterial
+            ?: translationLoader.plugin.waypointsConfig.inventory.getMaterial(
+                key + if (appendItemSuffix) ".item" else "")
 
-    val item: ItemStack
-        get() = getItem()
+  val item: ItemStack
+    get() = getItem()
 
-    fun getItem(vararg resolvers: TagResolver): ItemStack = ItemStack(material).also {
-        it.itemMeta = it.itemMeta!!.also { itemMeta ->
-            itemMeta.displayName(translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))
-            itemMeta.lore(rawDescription.lineSequence().map { line ->
-                translationLoader.itemMiniMessage.deserialize(line, *resolvers)
-            }.toMutableList())
-        }
-    }
+  fun getItem(vararg resolvers: TagResolver): ItemStack =
+      ItemStack(material).also {
+        it.itemMeta =
+            it.itemMeta!!.also { itemMeta ->
+              itemMeta.displayName(
+                  translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))
+              itemMeta.lore(
+                  rawDescription
+                      .lineSequence()
+                      .map { line ->
+                        translationLoader.itemMiniMessage.deserialize(line, *resolvers)
+                      }
+                      .toMutableList())
+            }
+      }
 }

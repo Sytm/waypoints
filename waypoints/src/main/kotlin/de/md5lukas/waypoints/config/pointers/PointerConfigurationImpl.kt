@@ -12,43 +12,41 @@ import org.bukkit.configuration.ConfigurationSection
 @Configurable
 class PointerConfigurationImpl : PointerConfiguration {
 
-    @ConfigPath("disableWhenReachedRadius")
-    override var disableWhenReachedRadiusSquared = 0
-        private set
+  @ConfigPath("disableWhenReachedRadius")
+  override var disableWhenReachedRadiusSquared = 0
+    private set
 
-    @UseAdapter(BiMapAdapter::class)
-    override var connectedWorlds: BiMap<String, String> = HashBiMap.create(0)
-        private set
+  @UseAdapter(BiMapAdapter::class)
+  override var connectedWorlds: BiMap<String, String> = HashBiMap.create(0)
+    private set
 
-    override val actionBar = ActionBarConfigurationImpl()
+  override val actionBar = ActionBarConfigurationImpl()
 
-    override val beacon = BeaconConfigurationImpl()
+  override val beacon = BeaconConfigurationImpl()
 
-    override val blinkingBlock = BlinkingBlockConfigurationImpl()
+  override val blinkingBlock = BlinkingBlockConfigurationImpl()
 
-    override val compass = CompassConfigurationImpl()
+  override val compass = CompassConfigurationImpl()
 
-    override val particle = ParticleConfigurationImpl()
+  override val particle = ParticleConfigurationImpl()
 
-    override val hologram = HologramConfigurationImpl()
+  override val hologram = HologramConfigurationImpl()
 
-    override val bossBar = BossBarConfigurationImpl()
+  override val bossBar = BossBarConfigurationImpl()
 
-    private class BiMapAdapter : TypeAdapter<BiMap<String, String>> {
-        override fun get(section: ConfigurationSection, path: String): BiMap<String, String>? {
-            val subSection = section.getConfigurationSection(path)
+  private class BiMapAdapter : TypeAdapter<BiMap<String, String>> {
+    override fun get(section: ConfigurationSection, path: String): BiMap<String, String>? {
+      val subSection = section.getConfigurationSection(path)
 
-            if (subSection === null) {
-                return null
-            }
+      if (subSection === null) {
+        return null
+      }
 
-            return subSection.getKeys(false).let {
-                val map = HashBiMap.create<String, String>(it.size)
-                it.forEach { primary ->
-                    map[primary] = subSection.getString(primary)
-                }
-                map
-            }
-        }
+      return subSection.getKeys(false).let {
+        val map = HashBiMap.create<String, String>(it.size)
+        it.forEach { primary -> map[primary] = subSection.getString(primary) }
+        map
+      }
     }
+  }
 }

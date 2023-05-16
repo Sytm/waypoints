@@ -12,46 +12,48 @@ class Translation(
     private val miniMessage: MiniMessage = MiniMessage.miniMessage()
 ) : Resettable {
 
-    init {
-        translationLoader.registerTranslationWrapper(this)
+  init {
+    translationLoader.registerTranslationWrapper(this)
+  }
+
+  val text: Component
+    get() = staticComponent()
+
+  val rawText: String
+    get() = translationLoader[key]
+
+  private var staticMessage: Component? = null
+
+  private fun staticComponent(): Component {
+    if (staticMessage === null) {
+      staticMessage = prependPrefix(miniMessage.deserialize(rawText))
     }
+    return staticMessage!!
+  }
 
-    val text: Component
-        get() = staticComponent()
-
-    val rawText: String
-        get() = translationLoader[key]
-
-    private var staticMessage: Component? = null
-
-    private fun staticComponent(): Component {
-        if (staticMessage === null) {
-            staticMessage = prependPrefix(miniMessage.deserialize(rawText))
-        }
-        return staticMessage!!
-    }
-
-    fun withReplacements(vararg resolvers: TagResolver): Component = if (resolvers.isEmpty()) {
+  fun withReplacements(vararg resolvers: TagResolver): Component =
+      if (resolvers.isEmpty()) {
         staticComponent()
-    } else {
+      } else {
         prependPrefix(miniMessage.deserialize(rawText, *resolvers))
-    }
+      }
 
-    fun send(audience: Audience) {
-        audience.sendMessage(staticComponent())
-    }
+  fun send(audience: Audience) {
+    audience.sendMessage(staticComponent())
+  }
 
-    fun send(audience: Audience, vararg resolvers: TagResolver) {
-        audience.sendMessage(withReplacements(*resolvers))
-    }
+  fun send(audience: Audience, vararg resolvers: TagResolver) {
+    audience.sendMessage(withReplacements(*resolvers))
+  }
 
-    private fun prependPrefix(component: Component) = if (prefix === null) {
+  private fun prependPrefix(component: Component) =
+      if (prefix === null) {
         component
-    } else {
+      } else {
         prefix.text.append(component)
-    }
+      }
 
-    override fun reset() {
-        staticMessage = null
-    }
+  override fun reset() {
+    staticMessage = null
+  }
 }

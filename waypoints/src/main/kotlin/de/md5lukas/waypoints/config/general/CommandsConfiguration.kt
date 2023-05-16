@@ -6,11 +6,11 @@ import de.md5lukas.konfig.Configurable
 @Configurable
 class CommandsConfiguration {
 
-    @ConfigPath("waypoints.aliases")
-    var waypointsAliases = emptyList<String>()
-        private set
+  @ConfigPath("waypoints.aliases")
+  var waypointsAliases = emptyList<String>()
+    private set
 
-    @ConfigPath("waypointsscript.aliases")
-    var waypointsScriptAliases = emptyList<String>()
-        private set
+  @ConfigPath("waypointsscript.aliases")
+  var waypointsScriptAliases = emptyList<String>()
+    private set
 }

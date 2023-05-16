@@ -6,17 +6,17 @@ import net.kyori.adventure.text.format.Style
 
 interface BossBarConfiguration : RepeatingPointerConfiguration {
 
-    val recalculateEveryNthInterval: Int
+  val recalculateEveryNthInterval: Int
 
-    val barColor: Color
+  val barColor: Color
 
-    val barStyle: Overlay
+  val barStyle: Overlay
 
-    val title: String
+  val title: String
 
-    val indicator: String
+  val indicator: String
 
-    val indicatorColor: Style
+  val indicatorColor: Style
 
-    val normalColor: Style
+  val normalColor: Style
 }

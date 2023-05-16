@@ -5,9 +5,9 @@ import de.md5lukas.konfig.Configurable
 @Configurable
 class FeaturesConfiguration {
 
-    var globalWaypoints = true
-        private set
+  var globalWaypoints = true
+    private set
 
-    var deathWaypoints = true
-        private set
+  var deathWaypoints = true
+    private set
 }

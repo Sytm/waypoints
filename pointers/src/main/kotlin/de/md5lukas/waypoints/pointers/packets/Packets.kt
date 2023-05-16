@@ -6,8 +6,10 @@ import java.util.concurrent.atomic.AtomicInteger
 
 internal object Packets {
 
-    private val entityId = Accessors.getFieldAccessor(MinecraftReflection.getEntityClass(), AtomicInteger::class.java, true)
+  private val entityId =
+      Accessors.getFieldAccessor(
+          MinecraftReflection.getEntityClass(), AtomicInteger::class.java, true)
 
-    val nextEntityId: Int
-        get() = (entityId.get(null) as AtomicInteger).incrementAndGet()
+  val nextEntityId: Int
+    get() = (entityId.get(null) as AtomicInteger).incrementAndGet()
 }

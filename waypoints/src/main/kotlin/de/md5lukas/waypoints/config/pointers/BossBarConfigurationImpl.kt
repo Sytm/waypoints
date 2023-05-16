@@ -9,24 +9,24 @@ import net.kyori.adventure.text.format.Style
 @Configurable
 class BossBarConfigurationImpl : RepeatingPointerConfigurationImpl(), BossBarConfiguration {
 
-    override var recalculateEveryNthInterval: Int = 0
-        private set
+  override var recalculateEveryNthInterval: Int = 0
+    private set
 
-    override var barColor: Color = Color.PINK
-        private set
+  override var barColor: Color = Color.PINK
+    private set
 
-    override var barStyle: Overlay = Overlay.PROGRESS
-        private set
+  override var barStyle: Overlay = Overlay.PROGRESS
+    private set
 
-    override var title: String = ""
-        private set
+  override var title: String = ""
+    private set
 
-    override var indicator: String = "#"
-        private set
+  override var indicator: String = "#"
+    private set
 
-    override var indicatorColor: Style = Style.empty()
-        private set
+  override var indicatorColor: Style = Style.empty()
+    private set
 
-    override var normalColor: Style = Style.empty()
-        private set
+  override var normalColor: Style = Style.empty()
+    private set
 }

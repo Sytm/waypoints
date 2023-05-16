@@ -9,15 +9,15 @@ import de.md5lukas.waypoints.config.tracking.PlayerTrackingConfiguration
 
 class WaypointsConfiguration {
 
-    val general = GeneralConfiguration()
+  val general = GeneralConfiguration()
 
-    val pointers = PointerConfigurationImpl()
+  val pointers = PointerConfigurationImpl()
 
-    val inventory = InventoryConfiguration()
+  val inventory = InventoryConfiguration()
 
-    val integrations = IntegrationsConfiguration()
+  val integrations = IntegrationsConfiguration()
 
-    val playerTracking = PlayerTrackingConfiguration()
+  val playerTracking = PlayerTrackingConfiguration()
 
-    val database = DatabaseConfigurationImpl()
+  val database = DatabaseConfigurationImpl()
 }

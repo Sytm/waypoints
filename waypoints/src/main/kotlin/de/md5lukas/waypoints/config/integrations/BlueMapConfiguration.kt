@@ -5,6 +5,6 @@ import de.md5lukas.konfig.Configurable
 @Configurable
 class BlueMapConfiguration {
 
-    var enabled: Boolean = false
-        private set
+  var enabled: Boolean = false
+    private set
 }

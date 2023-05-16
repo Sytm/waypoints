@@ -4,9 +4,9 @@ import org.bukkit.block.data.BlockData
 
 interface BlinkingBlockConfiguration : RepeatingPointerConfiguration {
 
-    val minDistanceSquared: Long
+  val minDistanceSquared: Long
 
-    val maxDistanceSquared: Long
+  val maxDistanceSquared: Long
 
-    val blockDataSequence: Array<BlockData>
+  val blockDataSequence: Array<BlockData>
 }

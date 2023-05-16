@@ -4,19 +4,19 @@ import net.kyori.adventure.text.format.Style
 
 interface ActionBarConfiguration : RepeatingPointerConfiguration {
 
-    val indicatorColor: Style
+  val indicatorColor: Style
 
-    val normalColor: Style
+  val normalColor: Style
 
-    val section: String
+  val section: String
 
-    val leftArrow: String
+  val leftArrow: String
 
-    val rightArrow: String
+  val rightArrow: String
 
-    val amountOfSections: Int
+  val amountOfSections: Int
 
-    val range: Int
+  val range: Int
 
-    val showDistanceEnabled: Boolean
+  val showDistanceEnabled: Boolean
 }
