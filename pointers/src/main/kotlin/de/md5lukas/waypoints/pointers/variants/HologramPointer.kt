@@ -5,10 +5,10 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.HologramConfiguration
+import de.md5lukas.waypoints.pointers.packets.FloatingItem
 import de.md5lukas.waypoints.pointers.packets.Hologram
-import de.md5lukas.waypoints.pointers.packets.SmoothFloatingItem
+import de.md5lukas.waypoints.pointers.packets.SmoothEntity
 import de.md5lukas.waypoints.pointers.util.minus
-import java.util.*
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -26,7 +26,7 @@ internal class HologramPointer(
   override val supportsMultipleTargets: Boolean
     get() = true
 
-  private val activeHolograms: MutableMap<Trackable, Pair<Hologram, SmoothFloatingItem?>> =
+  private val activeHolograms: MutableMap<Trackable, Pair<Hologram, SmoothEntity<FloatingItem>?>> =
       HashMap()
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
@@ -89,11 +89,14 @@ internal class HologramPointer(
       val item =
           if (config.iconEnabled) {
             trackable.hologramItem?.let { itemStack ->
-              SmoothFloatingItem(
+              SmoothEntity(
                       player,
                       location,
-                      itemStack,
-                  )
+                      FloatingItem(
+                          player,
+                          location,
+                          itemStack,
+                      ))
                   .also { it.spawn() }
             }
           } else null
