@@ -16,7 +16,7 @@ interface BossBarConfiguration : RepeatingPointerConfiguration {
 
   val indicator: String
 
-  val indicatorColor: Style
+  val indicatorStyle: Style
 
   val normalColor: Style
 }

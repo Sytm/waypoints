@@ -246,7 +246,8 @@ pointers:
     title: " · · ◈ · · ◈ · · E · · ◈ · · ◈ · · S · · ◈ · · ◈ · · W · · ◈ · · ◈ · · N"
 
     indicator: "⬛"
-    indicatorColor: "<dark_red>"
+    # For example add <bold> if the indicator should be bold. The colors are randomized
+    indicatorStyle: ""
     normalColor: "<white>"
 
   beacon:

@@ -119,7 +119,9 @@ internal class ManagedPlayer(
 
       if (pointer.supportsMultipleTargets) {
         logger.debug("Updating all tracked for {}", this)
+        pointer.preUpdates()
         tracked.forEach { pointer.update(it, translateTarget(it)) }
+        pointer.postUpdates()
       } else {
         val primary = tracked.lastOrNull()
         var updatedRequired = true
