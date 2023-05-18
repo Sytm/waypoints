@@ -24,7 +24,7 @@ class BossBarConfigurationImpl : RepeatingPointerConfigurationImpl(), BossBarCon
   override var indicator: String = "#"
     private set
 
-  override var indicatorColor: Style = Style.empty()
+  override var indicatorStyle: Style = Style.empty()
     private set
 
   override var normalColor: Style = Style.empty()

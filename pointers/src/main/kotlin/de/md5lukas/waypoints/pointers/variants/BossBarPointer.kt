@@ -3,6 +3,7 @@ package de.md5lukas.waypoints.pointers.variants
 import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
+import de.md5lukas.waypoints.pointers.StaticTrackable
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.BossBarConfiguration
 import de.md5lukas.waypoints.pointers.util.getAngleToTarget
@@ -11,8 +12,11 @@ import de.md5lukas.waypoints.pointers.util.textComponent
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
+import kotlin.random.Random
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.util.HSVLike
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
@@ -27,12 +31,23 @@ internal class BossBarPointer(
     get() = config.interval
 
   override val supportsMultipleTargets: Boolean
-    get() = false
+    get() = true
 
   private val rawTitle: String
     get() = config.title
 
-  private var bossBar: BarData? = null
+  private var bossBar: BossBar? = null
+  private var counter = 0
+  private val targetData = mutableMapOf<Trackable, TargetData>()
+
+  override fun preUpdates() {
+    if (bossBar === null) {
+      bossBar =
+          BossBar.bossBar(Component.empty(), 1f, config.barColor, config.barStyle).also {
+            player.showBossBar(it)
+          }
+    }
+  }
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
     if (translatedTarget === null) {
@@ -40,56 +55,67 @@ internal class BossBarPointer(
       return
     }
 
-    val barData =
-        bossBar
-            ?: BarData(
-                BossBar.bossBar(Component.empty(), 1f, config.barColor, config.barStyle).also {
-                  player.showBossBar(it)
-                },
-                0,
-                0f,
-            )
-
-    bossBar = barData
+    val data =
+        targetData.computeIfAbsent(trackable) {
+          TargetData(0f, (it as? StaticTrackable)?.beaconColor?.textColor ?: randomColor())
+        }
 
     // Don't calculate the position of the indicator everytime in favour to make the compass update
     // smoother
-    barData.counter = (barData.counter + 1) % config.recalculateEveryNthInterval
-    if (barData.counter == 0) {
+    if (counter == 0) {
       // Subtract 90° from the returned angle because Minecraft yaw is rotated by 90°
-      barData.angle = normalizeAngleTo360(getAngleToTarget(player.location, translatedTarget) - 90)
+      data.angle = normalizeAngleTo360(getAngleToTarget(player.location, translatedTarget) - 90)
     }
+  }
+
+  override fun postUpdates() {
+    counter = (counter + 1) % config.recalculateEveryNthInterval
 
     val playerAngle = normalizeAngleTo360(player.location.yaw)
     val offset = (playerAngle / 360 * rawTitle.length).roundToInt()
     val orientedTitle = config.title.loopingSubstring(rawTitle.length - 1, offset)
 
-    // Subtract 1 from the index to, because otherwise the indicator is always one too much to the
-    // right
-    val indicatorIndex = (barData.angle / 360 * rawTitle.length).roundToInt() - 1
-    val offsetIndicatorIndex = Math.floorMod(indicatorIndex - offset, rawTitle.length)
+    val trackableIndices =
+        targetData
+            .map { (_, data) ->
+              // Subtract 1 from the index to, because otherwise the indicator is always one too
+              // much to the
+              // right
+              val indicatorIndex = (data.angle / 360 * rawTitle.length).roundToInt() - 1
+              Math.floorMod(indicatorIndex - offset, rawTitle.length) to data.color
+            }
+            .sortedBy { it.first }
 
-    barData.bossBar.name(
+    bossBar?.name(
         textComponent {
           style(config.normalColor)
-          content(orientedTitle.substring(0, offsetIndicatorIndex))
-          append(
-              textComponent {
-                style(config.indicatorColor)
-                content(config.indicator)
-              })
-          append(
-              Component.text(
-                  orientedTitle.substring(min(orientedTitle.length, offsetIndicatorIndex + 1))))
+          var lastIndex = 0
+          trackableIndices.forEach { (index, color) ->
+            if (lastIndex > index) {
+              return@forEach
+            }
+            append(Component.text(orientedTitle.substring(lastIndex, index)))
+            lastIndex = index + 1
+            append(
+                textComponent {
+                  style(config.indicatorStyle)
+                  color(color)
+                  content(config.indicator)
+                })
+          }
+          append(Component.text(orientedTitle.substring(min(orientedTitle.length, lastIndex))))
         })
   }
 
   override fun hide(trackable: Trackable, translatedTarget: Location?) {
-    bossBar?.bossBar?.let { player.hideBossBar(it) }
-    bossBar = null
+    targetData.remove(trackable)
+    if (targetData.isEmpty()) {
+      bossBar?.let { player.hideBossBar(it) }
+      bossBar = null
+    }
   }
 
-  private data class BarData(val bossBar: BossBar, var counter: Int, var angle: Float)
+  private class TargetData(var angle: Float, val color: TextColor)
 
   private fun String.loopingSubstring(size: Int, offset: Int): String {
     val modOffset = Math.floorMod(offset, length)
@@ -98,4 +124,6 @@ internal class BossBarPointer(
 
     return substring(modOffset, min(length, modOffset + size)) + substring(0, overhang)
   }
+
+  private fun randomColor() = TextColor.color(HSVLike.hsvLike(Random.nextFloat(), 1f, 1f))
 }

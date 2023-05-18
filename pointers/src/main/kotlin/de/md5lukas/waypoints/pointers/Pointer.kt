@@ -17,7 +17,11 @@ internal abstract class Pointer(
     update(trackable, translatedTarget)
   }
 
+  open fun preUpdates() {}
+
   open fun update(trackable: Trackable, translatedTarget: Location?) {}
+
+  open fun postUpdates() {}
 
   open fun hide(trackable: Trackable, translatedTarget: Location?) {}
 }
