@@ -10,6 +10,7 @@ import kotlin.math.abs
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import org.joml.Vector3f
 
 /*
  * Useful Links:
@@ -32,12 +33,18 @@ internal open class ClientSideEntity(
     // Must use native types of Byte and Boolean, but not the primitive types
     val byteSerializer: WrappedDataWatcher.Serializer =
         WrappedDataWatcher.Registry.get(java.lang.Byte::class.java)
+    val intSerializer: WrappedDataWatcher.Serializer =
+        WrappedDataWatcher.Registry.get(java.lang.Integer::class.java)
     val booleanSerializer: WrappedDataWatcher.Serializer =
         WrappedDataWatcher.Registry.get(java.lang.Boolean::class.java)
+    val chatSerializer: WrappedDataWatcher.Serializer =
+        WrappedDataWatcher.Registry.getChatComponentSerializer(false)
     val optChatSerializer: WrappedDataWatcher.Serializer =
         WrappedDataWatcher.Registry.getChatComponentSerializer(true)
     val slotSerializer: WrappedDataWatcher.Serializer =
         WrappedDataWatcher.Registry.getItemStackSerializer(false)
+    val vectorSerializer: WrappedDataWatcher.Serializer =
+        WrappedDataWatcher.Registry.get(Vector3f::class.java)
 
     val disableGravity = WrappedDataValue(5, booleanSerializer, true)
   }
@@ -120,7 +127,7 @@ internal open class ClientSideEntity(
         PacketContainer(PacketType.Play.Server.MOUNT).also {
           it.integers.write(0, entityId)
 
-          it.integerArrays.write(0, passengers.map { it.entityId }.toIntArray())
+          it.integerArrays.write(0, passengers.map { passenger -> passenger.entityId }.toIntArray())
         }
 
   private val destroyPacket =
@@ -140,16 +147,21 @@ internal open class ClientSideEntity(
   }
 
   open fun update() {
-    ProtocolLibrary.getProtocolManager().let {
-      it.sendServerPacket(
-          player,
-          if (requiresTeleport) {
-            teleportPacket
-          } else {
-            movePacket
-          })
-      previousLocation = location
-      getMetadataPacket(false)?.let { packet -> it.sendServerPacket(player, packet) }
+    ProtocolLibrary.getProtocolManager()
+        .sendServerPacket(
+            player,
+            if (requiresTeleport) {
+              teleportPacket
+            } else {
+              movePacket
+            })
+    previousLocation = location
+    updateMetadata()
+  }
+
+  open fun updateMetadata() {
+    getMetadataPacket(false)?.let {
+      ProtocolLibrary.getProtocolManager().sendServerPacket(player, it)
     }
   }
 
