@@ -27,10 +27,9 @@ subprojects {
 spotless {
   java {
     target(
-        "buildSrc/src/*/java/**/*.java",
-        "waypoints/src/*/java/**/*.java",
+        "*/src/*/java/**/*.java",
     )
-    palantirJavaFormat()
+    palantirJavaFormat().style("GOOGLE")
     formatAnnotations()
   }
   kotlin {
