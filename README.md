@@ -37,8 +37,8 @@ When the player is closer to the waypoint, the beacon will be replaced with a bl
 
 ### Hologram
 
-As an alternative to the Blinking Block you can use Holograms to get the exact position of a Waypoint. This feature is optional but
-requires [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) if wanted
+Floating text like in the mods.
+This feature is optional but requires [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) if wanted.
 
 ### Particles
 

@@ -45,7 +45,7 @@ dependencies {
   // Required dependencies
   implementation(libs.schedulers)
   implementation(libs.skedule)
-  implementation(libs.anvilGui)
+  implementation(variantOf(libs.anvilGui) { classifier("latest") })
   implementation(libs.bStats)
   implementation(libs.bundles.commandApi)
 
