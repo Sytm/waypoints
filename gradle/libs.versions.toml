@@ -9,7 +9,7 @@ dynmap = "3.5-SNAPSHOT"
 
 [libraries]
 stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.0-RC" }
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
 spigot = { group = "org.spigotmc", name = "spigot-api", version.ref = "paper" }
@@ -19,7 +19,7 @@ spigot = { group = "org.spigotmc", name = "spigot-api", version.ref = "paper" }
 md5Commons = { group = "de.md5lukas", name = "md5-commons", version = "2.0.0" }
 kinvs = { group = "de.md5lukas", name = "kinvs", version = "1.0.4" }
 sqliteHelper = { group = "de.md5lukas", name = "sqlite-kotlin-helper", version = "1.2.2" }
-konfig = { group = "de.md5lukas", name = "spigot-konfig", version = "1.0.1-SNAPSHOT" }
+konfig = { group = "de.md5lukas", name = "spigot-konfig", version = "1.0.1" }
 
 # (external)
 schedulers = { group = "de.md5lukas", name = "schedulers", version = "1.0.0-SNAPSHOT" }

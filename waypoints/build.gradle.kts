@@ -160,5 +160,15 @@ modrinth {
 
   syncBodyFrom.set(rootProject.file("README.md").readText())
 
+  dependencies {
+    with(optional) {
+      project("pl3xmap")
+      project("bluemap")
+      project("squaremap")
+      project("dynmap")
+    }
+    with(embedded) { project("commandapi") }
+  }
+
   debugMode.set(false)
 }
