@@ -37,6 +37,7 @@ internal class SmoothEntity<T : ClientSideEntity>(
 
   override fun update() {
     super.update()
+    wrapped.updateMetadata()
     wrapped.location = location
   }
 

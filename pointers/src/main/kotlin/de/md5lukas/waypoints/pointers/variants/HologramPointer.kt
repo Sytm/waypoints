@@ -5,13 +5,14 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.HologramConfiguration
-import de.md5lukas.waypoints.pointers.packets.FloatingItem
-import de.md5lukas.waypoints.pointers.packets.Hologram
+import de.md5lukas.waypoints.pointers.packets.ItemDisplay
 import de.md5lukas.waypoints.pointers.packets.SmoothEntity
+import de.md5lukas.waypoints.pointers.packets.TextDisplay
 import de.md5lukas.waypoints.pointers.util.minus
 import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import org.bukkit.util.Vector
 
 internal class HologramPointer(
     pointerManager: PointerManager,
@@ -26,7 +27,8 @@ internal class HologramPointer(
   override val supportsMultipleTargets: Boolean
     get() = true
 
-  private val activeHolograms: MutableMap<Trackable, Pair<Hologram, SmoothEntity<FloatingItem>?>> =
+  private val activeHolograms:
+      MutableMap<Trackable, Pair<SmoothEntity<TextDisplay>, ItemDisplay?>> =
       HashMap()
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
@@ -74,32 +76,28 @@ internal class HologramPointer(
         }
 
     if (trackable in activeHolograms) {
-      val (hologram, item) = activeHolograms[trackable]!!
+      val (hologram) = activeHolograms[trackable]!!
 
       hologram.location = location
-      hologram.text = hologramText
+      hologram.wrapped.text = hologramText
       hologram.update()
-
-      item?.let {
-        item.location = location.clone().add(0.0, config.iconOffset, 0.0)
-        item.update()
-      }
     } else {
-      val hologram = Hologram(player, location, hologramText).also { it.spawn() }
       val item =
           if (config.iconEnabled) {
             trackable.hologramItem?.let { itemStack ->
-              SmoothEntity(
-                      player,
-                      location,
-                      FloatingItem(
-                          player,
-                          location,
-                          itemStack,
-                      ))
-                  .also { it.spawn() }
+              ItemDisplay(player, location, itemStack, Vector(0.0, config.iconOffset, 0.0)).also {
+                it.spawn()
+              }
             }
           } else null
+
+      val hologram =
+          SmoothEntity(player, location, TextDisplay(player, location, hologramText)).also {
+            if (item !== null) {
+              it.passengers += item
+            }
+            it.spawn()
+          }
 
       activeHolograms[trackable] = hologram to item
     }
