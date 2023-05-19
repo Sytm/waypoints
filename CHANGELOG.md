@@ -22,3 +22,4 @@
 
 - Compass pointer nether support has been removed, because any possible implementation is inherently buggy
 - Command help messages use used alias again
+- The Hologram Pointer uses display entities instead of ArmorStands

@@ -24,7 +24,7 @@ konfig = { group = "de.md5lukas", name = "spigot-konfig", version = "1.0.1-SNAPS
 # (external)
 schedulers = { group = "de.md5lukas", name = "schedulers", version = "1.0.0-SNAPSHOT" }
 skedule = { group = "de.md5lukas", name = "skedule", version = "2.0.0-SNAPSHOT" }
-anvilGui = { group = "net.wesjd", name = "anvilgui", version = "1.6.5-SNAPSHOT" }
+anvilGui = { group = "de.md5lukas", name = "anvilgui", version = "1.6.6-SNAPSHOT" }
 bStats = { group = "org.bstats", name = "bstats-bukkit", version = "3.0.2" }
 commandapi-shade = { group = "dev.jorel", name = "commandapi-bukkit-shade", version.ref = "commandApi" }
 commandapi-kotlin = { group = "dev.jorel", name = "commandapi-bukkit-kotlin", version.ref = "commandApi" }
