@@ -132,7 +132,7 @@ tasks.withType<ShadowJar> {
     include(dependency("org.bstats::"))
   }
 
-  arrayOf("commons", "kinvs", "konfig", "schedulers").forEach {
+  arrayOf("commons", "kinvs", "konfig", "schedulers", "signgui").forEach {
     relocate("de.md5lukas.$it", "de.md5lukas.waypoints.$it")
   }
 
