@@ -33,6 +33,7 @@ spotless {
     formatAnnotations()
   }
   kotlin {
+    toggleOffOn()
     target(
         "*/src/*/kotlin/**/*.kt",
         "**/*.kts",

@@ -5,6 +5,7 @@ import com.okkero.skedule.switchContext
 import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
+import de.md5lukas.signgui.SignGUI
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
@@ -42,9 +43,18 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
 
   private companion object {
     /**
-     * Overview / Folder p = Previous f = Create Folder / Delete Folder s = Cycle Sort d = Deselect
-     * active waypoint / None i = None / Folder Icon t = Toggle Globals / Rename w = Create Waypoint
-     * / Create waypoint in folder b = None / Back n = Next
+     * spotless:off
+     * Overview / Folder
+     * p = Previous
+     * f = Create Folder / Delete Folder
+     * s = Cycle Sort
+     * d = Deselect active waypoint / Edit description
+     * i = None / Folder Icon
+     * t = Toggle Globals / Rename
+     * w = Create Waypoint / Create waypoint in folder
+     * b = None / Back
+     * n = Next
+     * spotless:on
      */
     val controlsPattern = GUIPattern("pfsditwbn")
   }
@@ -69,11 +79,6 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
   }
 
   private suspend fun updateControls(update: Boolean = true) {
-    /**
-     * Overview / Folder p = Previous f = Create Folder / Delete Folder s = Cycle Sort d = Deselect
-     * active waypoint / None i = None / Folder Icon t = Toggle Globals / Rename w = Create Waypoint
-     * / Create waypoint in folder b = None / Back n = Next
-     */
     applyPattern(
         controlsPattern,
         4,
@@ -121,6 +126,28 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
             if (isOverview) {
               GUIItem(wpGUI.translations.OVERVIEW_DESELECT.item) {
                 wpGUI.plugin.pointerManager.disable(wpGUI.viewer) { true }
+              }
+            } else if (canModify &&
+                wpGUI.plugin.server.pluginManager.isPluginEnabled("ProtocolLib") &&
+                guiFolder is Folder) {
+              GUIItem(wpGUI.translations.FOLDER_EDIT_DESCRIPTION.item) {
+                wpGUI.viewer.closeInventory()
+                val builder =
+                    SignGUI.newBuilder().plugin(wpGUI.plugin).player(wpGUI.viewer).onClose { lines
+                      ->
+                      wpGUI.skedule {
+                        if (lines.all(String::isBlank)) {
+                          guiFolder.setDescription(null)
+                        } else {
+                          guiFolder.setDescription(lines.joinToString("\n"))
+                        }
+                        updateControls()
+                        switchContext(SynchronizationContext.SYNC)
+                        wpGUI.gui.open()
+                      }
+                    }
+                guiFolder.description?.let { description -> builder.lines(description.split('\n')) }
+                builder.open()
               }
             } else {
               background

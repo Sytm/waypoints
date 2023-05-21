@@ -12,6 +12,8 @@ include(":api-sqlite")
 
 include(":api-tests")
 
+include(":signgui")
+
 include(":utils")
 
 include(":pointers")

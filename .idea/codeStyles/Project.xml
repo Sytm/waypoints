@@ -22,6 +22,11 @@
     <codeStyleSettings language="JAVA">
       <option name="SPACE_WITHIN_ARRAY_INITIALIZER_BRACES" value="true" />
       <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
+      <indentOptions>
+        <option name="INDENT_SIZE" value="2" />
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+        <option name="TAB_SIZE" value="2" />
+      </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="JavaScript">
       <indentOptions>

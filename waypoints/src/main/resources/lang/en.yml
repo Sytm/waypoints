@@ -329,9 +329,14 @@ inventory:
 
         <gray>Created at: <gold><created_at:'dd.MM.uuuu kk:mm'>
 
+      customDescription: &waypointCustomDescription |
+        <light_purple><italic><description1>
+        <light_purple><italic><description2>
+
       private:
         displayName: "<dark_purple><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
       death:
         displayName: "<red>Death <created_at:'dd.MM.uuuu kk:mm'>"
         description: |
@@ -343,9 +348,11 @@ inventory:
       public:
         displayName: "<aqua><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
       permission:
         displayName: "<light_purple><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
 
     select:
       displayName: "<yellow>Select waypoint"
@@ -368,6 +375,9 @@ inventory:
     rename:
       displayName: "<yellow>Rename waypoint"
       description: ""
+    editDescription:
+      displayName: "<yellow>Edit description"
+      description: "<gray>All changes will <bold>always</bold> be saved"
     moveToFolder:
       displayName: "<yellow>Move waypoint into a folder"
       description: |
@@ -431,18 +441,25 @@ inventory:
     # created_at: Date at which the folder was created
     # amount: Amount of waypoints visible to the player
     icon:
+      customDescription: &folderCustomDescription |
+        <light_purple><italic><description1>
+        <light_purple><italic><description2>
+
       private:
         displayName: "<dark_purple><name>"
         description: "<gray>Waypoints in this folder: <gold><amount>"
+        customDescription: *folderCustomDescription
       death:
         displayName: "<red>Deaths"
         description: "<gray>Waypoints in this folder: <gold><amount>"
       public:
         displayName: "<aqua><name>"
         description: "<gray>Waypoints in this folder: <gold><amount>"
+        customDescription: *folderCustomDescription
       permission:
         displayName: "<light_purple><name>"
         description: "<gray>Waypoints in this folder: <gold><amount>"
+        customDescription: *folderCustomDescription
 
     delete:
       displayName: "<dark_red>Delete folder"
@@ -459,6 +476,9 @@ inventory:
     rename:
       displayName: "<yellow>Rename folder"
       description: ""
+    editDescription:
+      displayName: "<yellow>Edit description"
+      description: "<gray>All changes will <bold>always</bold> be saved"
 
     create:
       enterName: "Enter name here"

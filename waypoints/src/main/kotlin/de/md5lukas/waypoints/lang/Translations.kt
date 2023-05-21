@@ -183,9 +183,15 @@ class Translations(tl: TranslationLoader) {
   val ICON_TRACKING = ItemTranslation(tl, "inventory.listing.tracking")
 
   val WAYPOINT_ICON_PRIVATE = ItemTranslation(tl, "inventory.waypoint.icon.private")
+  val WAYPOINT_ICON_PRIVATE_CUSTOM_DESCRIPTION =
+      InventoryTranslation(tl, "inventory.waypoint.icon.private.customDescription")
   val WAYPOINT_ICON_DEATH = ItemTranslation(tl, "inventory.waypoint.icon.death")
   val WAYPOINT_ICON_PUBLIC = ItemTranslation(tl, "inventory.waypoint.icon.public")
+  val WAYPOINT_ICON_PUBLIC_CUSTOM_DESCRIPTION =
+      InventoryTranslation(tl, "inventory.waypoint.icon.public.customDescription")
   val WAYPOINT_ICON_PERMISSION = ItemTranslation(tl, "inventory.waypoint.icon.permission")
+  val WAYPOINT_ICON_PERMISSION_CUSTOM_DESCRIPTION =
+      InventoryTranslation(tl, "inventory.waypoint.icon.permission.customDescription")
 
   val WAYPOINT_SELECT = ItemTranslation(tl, "inventory.waypoint.select")
   val WAYPOINT_DESELECT = ItemTranslation(tl, "inventory.waypoint.deselect")
@@ -194,6 +200,7 @@ class Translations(tl: TranslationLoader) {
   val WAYPOINT_DELETE_CONFIRM_TRUE = ItemTranslation(tl, "inventory.waypoint.delete.confirm")
   val WAYPOINT_DELETE_CONFIRM_FALSE = ItemTranslation(tl, "inventory.waypoint.delete.cancel")
   val WAYPOINT_RENAME = ItemTranslation(tl, "inventory.waypoint.rename")
+  val WAYPOINT_EDIT_DESCRIPTION = ItemTranslation(tl, "inventory.waypoint.editDescription")
   val WAYPOINT_MOVE_TO_FOLDER = ItemTranslation(tl, "inventory.waypoint.moveToFolder")
   val WAYPOINT_TELEPORT = ItemTranslation(tl, "inventory.waypoint.teleport")
   val WAYPOINT_TELEPORT_XP_LEVEL = InventoryTranslation(tl, "inventory.waypoint.teleport.xpLevel")
@@ -220,15 +227,22 @@ class Translations(tl: TranslationLoader) {
   val WAYPOINT_CHANGE_MAP_ICON = ItemTranslation(tl, "inventory.waypoint.changeMapIcon")
 
   val FOLDER_ICON_PRIVATE = ItemTranslation(tl, "inventory.folder.icon.private")
+  val FOLDER_ICON_PRIVATE_CUSTOM_DESCRIPTION =
+      InventoryTranslation(tl, "inventory.folder.icon.private.customDescription")
   val FOLDER_ICON_DEATH = ItemTranslation(tl, "inventory.folder.icon.death")
   val FOLDER_ICON_PUBLIC = ItemTranslation(tl, "inventory.folder.icon.public")
+  val FOLDER_ICON_PUBLIC_CUSTOM_DESCRIPTION =
+      InventoryTranslation(tl, "inventory.folder.icon.public.customDescription")
   val FOLDER_ICON_PERMISSION = ItemTranslation(tl, "inventory.folder.icon.permission")
+  val FOLDER_ICON_PERMISSION_CUSTOM_DESCRIPTION =
+      InventoryTranslation(tl, "inventory.folder.icon.permission.customDescription")
 
   val FOLDER_DELETE = ItemTranslation(tl, "inventory.folder.delete", true)
   val FOLDER_DELETE_CONFIRM_QUESTION = ItemTranslation(tl, "inventory.folder.delete.question")
   val FOLDER_DELETE_CONFIRM_TRUE = ItemTranslation(tl, "inventory.folder.delete.confirm")
   val FOLDER_DELETE_CONFIRM_FALSE = ItemTranslation(tl, "inventory.folder.delete.cancel")
   val FOLDER_RENAME = ItemTranslation(tl, "inventory.folder.rename")
+  val FOLDER_EDIT_DESCRIPTION = ItemTranslation(tl, "inventory.folder.editDescription")
 
   val SELECT_FOLDER_NO_FOLDER = ItemTranslation(tl, "inventory.selectFolder.noFolder")
 

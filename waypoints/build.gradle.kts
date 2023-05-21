@@ -36,6 +36,7 @@ dependencies {
   implementation(project(":waypoints-api"))
   implementation(project(":api-base"))
   implementation(project(":api-sqlite", "shadow"))
+  implementation(project(":signgui"))
 
   // Dependencies on own projects
   implementation(libs.md5Commons)
@@ -119,6 +120,7 @@ tasks.withType<ShadowJar> {
     include(project(":waypoints-api"))
     include(project(":api-base"))
     include(project(":api-sqlite"))
+    include(project(":signgui"))
 
     include(dependency(libs.md5Commons.get()))
     include(dependency(libs.kinvs.get()))
