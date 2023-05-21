@@ -38,7 +38,7 @@ When the player is closer to the waypoint, the beacon will be replaced with a bl
 ### Hologram
 
 Floating text like in the mods.
-This feature is optional but requires [ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/) if wanted.
+This feature is optional but requires [ProtocolLib](https://github.com/dmulloy2/ProtocolLib) if wanted.
 
 ### Particles
 

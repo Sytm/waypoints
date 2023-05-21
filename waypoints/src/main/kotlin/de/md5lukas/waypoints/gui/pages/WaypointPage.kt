@@ -5,6 +5,7 @@ import com.okkero.skedule.switchContext
 import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
+import de.md5lukas.signgui.SignGUI
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
@@ -36,16 +37,29 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
 
   private companion object {
     /**
-     * w = Waypoint Icon i = Get UUID (Global waypoints only) u = Move to public folder e = Move to
-     * permission folder p = Change permission s = Select y = WebMap custom icon c = Select beacon
-     * color f = Move to folder r = rename d = Delete t = Teleport b = Back
+     * spotless:off
+     * w = Waypoint Icon
+     * i = Get UUID (Global waypoints only)
+     * u = Move to public folder
+     * e = Move to permission folder
+     * p = Change permission
+     * s = Select
+     * y = WebMap custom icon
+     * c = Select beacon color
+     * f = Move to folder
+     * r = rename
+     * o = Edit custom description
+     * d = Delete
+     * t = Teleport
+     * b = Back
+     * spotless:on
      */
     val waypointPattern =
         GUIPattern(
             "____w____",
-            "_________",
-            "i_u_s_y_c",
-            "_f_e_p_r_",
+            "_______o_",
+            "i_u_s_y_r",
+            "_f_e_p_c_",
             "d___t___b",
         )
   }
@@ -335,6 +349,32 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                     }
                     .onClose { wpGUI.schedule { wpGUI.gui.open() } }
                     .open(wpGUI.viewer)
+              }
+            } else {
+              background
+            },
+        'o' to
+            if (canModifyWaypoint &&
+                isNotDeathWaypoint &&
+                wpGUI.plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
+              GUIItem(wpGUI.translations.WAYPOINT_EDIT_DESCRIPTION.item) {
+                wpGUI.viewer.closeInventory()
+                val builder =
+                    SignGUI.newBuilder().plugin(wpGUI.plugin).player(wpGUI.viewer).onClose { lines
+                      ->
+                      wpGUI.skedule {
+                        if (lines.all(String::isBlank)) {
+                          waypoint.setDescription(null)
+                        } else {
+                          waypoint.setDescription(lines.joinToString("\n"))
+                        }
+                        updatePage()
+                        switchContext(SynchronizationContext.SYNC)
+                        wpGUI.gui.open()
+                      }
+                    }
+                waypoint.description?.let { description -> builder.lines(description.split('\n')) }
+                builder.open()
               }
             } else {
               background

@@ -329,9 +329,14 @@ inventory:
 
         <gray>Erstellt am: <gold><created_at:'dd.MM.uuuu kk:mm'>
 
+      customDescription: &waypointCustomDescription |
+        <light_purple><italic><description1>
+        <light_purple><italic><description2>
+
       private:
         displayName: "<dark_purple><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
       death:
         displayName: "<red>Tot am <created_at:'dd.MM.uuuu kk:mm'>"
         description: |
@@ -343,9 +348,11 @@ inventory:
       public:
         displayName: "<aqua><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
       permission:
         displayName: "<light_purple><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
 
     select:
       displayName: "<yellow>Wegpunkte auswählen"
@@ -368,6 +375,9 @@ inventory:
     rename:
       displayName: "<yellow>Wegpunkt umbenennen"
       description: ""
+    editDescription:
+      displayName: "<yellow>Beschreibung ändern"
+      description: "<gray>Alle Änderungen werden <bold>immer</bold> gespeichert"
     moveToFolder:
       displayName: "<yellow>Wegpunkt in einen Ordner verschieben"
       description: |
@@ -431,18 +441,25 @@ inventory:
     # created_at: Date at which the folder was created
     # amount: Amount of waypoints visible to the player
     icon:
+      customDescription: &folderCustomDescription |
+        <light_purple><italic><description1>
+        <light_purple><italic><description2>
+
       private:
         displayName: "<dark_purple><name>"
         description: "<gray>Wegpunkte in diesem Ordner: <gold><amount>"
+        customDescription: *folderCustomDescription
       death:
         displayName: "<red>Tode"
         description: "<gray>Wegpunkte in diesem Ordner: <gold><amount>"
       public:
         displayName: "<aqua><name>"
         description: "<gray>Wegpunkte in diesem Ordner: <gold><amount>"
+        customDescription: *folderCustomDescription
       permission:
         displayName: "<light_purple><name>"
         description: "<gray>Wegpunkte in diesem Ordner: <gold><amount>"
+        customDescription: *folderCustomDescription
 
     delete:
       displayName: "<dark_red>Ordner löschen"
@@ -459,6 +476,9 @@ inventory:
     rename:
       displayName: "<yellow>Ordner umbenennen"
       description: ""
+    editDescription:
+      displayName: "<yellow>Beschreibung ändern"
+      description: "<gray>Alle Änderungen werden <bold>immer</bold> gespeichert"
 
     create:
       enterName: "Name hier eingeben"

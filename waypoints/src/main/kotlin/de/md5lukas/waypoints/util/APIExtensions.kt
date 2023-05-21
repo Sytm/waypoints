@@ -10,6 +10,8 @@ import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
+import de.md5lukas.waypoints.lang.InventoryTranslation
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -34,6 +36,13 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
           Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
         }.getItem(*getResolvers(player))
+
+    when (type) {
+      Type.DEATH -> null
+      Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE_CUSTOM_DESCRIPTION
+      Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC_CUSTOM_DESCRIPTION
+      Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION_CUSTOM_DESCRIPTION
+    }?.let { stack.applyDescription(type, it, description) }
 
     material?.also { stack.type = it }
 
@@ -143,6 +152,13 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           MathHelper.clamp(1, 64, fetchedAmount)
         }
 
+    when (type) {
+      Type.DEATH -> null
+      Type.PRIVATE -> translations.FOLDER_ICON_PRIVATE_CUSTOM_DESCRIPTION
+      Type.PUBLIC -> translations.FOLDER_ICON_PUBLIC_CUSTOM_DESCRIPTION
+      Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION_CUSTOM_DESCRIPTION
+    }?.let { stack.applyDescription(type, it, description) }
+
     material?.also { stack.type = it }
 
     return stack
@@ -163,5 +179,22 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
     stack.amount = MathHelper.clamp(1, 64, fetchedAmount)
 
     return stack
+  }
+
+  private fun ItemStack.applyDescription(
+      type: Type,
+      translation: InventoryTranslation,
+      description: String?
+  ) {
+    description?.let {
+      val (line1, line2, line3, line4) = it.split('\n')
+      val customDescription = mutableListOf<Component>(Component.empty())
+      customDescription +=
+          translation.withReplacements(
+              "description1" placeholder "$line1 $line2".trim(),
+              "description2" placeholder "$line3 $line4".trim(),
+          )
+      editMeta { meta -> meta.lore(meta.lore()!! + customDescription) }
+    }
   }
 }

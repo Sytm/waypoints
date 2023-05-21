@@ -366,10 +366,11 @@ inventory:
       confirm: LAVA_BUCKET
       cancel: WATER_BUCKET
     rename: NAME_TAG
+    editDescription: PAPER
     moveToFolder: CHEST_MINECART
     teleport: ENDER_PEARL
     selectBeaconColor: LIME_STAINED_GLASS
-    getUuid: PAPER
+    getUuid: COMMAND_BLOCK
     editPermission: IRON_BARS
     make:
       public:
@@ -397,6 +398,7 @@ inventory:
       confirm: LAVA_BUCKET
       cancel: WATER_BUCKET
     rename: NAME_TAG
+    editDescription: PAPER
 
   selectFolder:
     noFolder: MINECART
