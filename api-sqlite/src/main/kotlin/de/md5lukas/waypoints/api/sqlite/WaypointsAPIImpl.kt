@@ -12,16 +12,14 @@ internal class WaypointsAPIImpl(
 
   override suspend fun getWaypointPlayer(uuid: UUID): WaypointsPlayer =
       withContext(dm.asyncDispatcher) {
-        dm.instanceCache.playerData.get(uuid) {
-          // Must add the canBeTracked 0, because some users might have an old database that has 1
-          // has the default value and that cannot be altered.
-          dm.connection.update(
-              "INSERT INTO player_data(id, canBeTracked) VALUES(?, 0) ON CONFLICT DO NOTHING;",
-              uuid.toString())
-          dm.connection.selectFirst("SELECT * FROM player_data WHERE id = ?;", uuid.toString()) {
-            WaypointsPlayerImpl(dm, this)
-          }!!
-        }
+        // Must add the canBeTracked 0, because some users might have an old database that has 1
+        // has the default value and that cannot be altered.
+        dm.connection.update(
+            "INSERT INTO player_data(id, canBeTracked) VALUES(?, 0) ON CONFLICT DO NOTHING;",
+            uuid.toString())
+        dm.connection.selectFirst("SELECT * FROM player_data WHERE id = ?;", uuid.toString()) {
+          WaypointsPlayerImpl(dm, this)
+        }!!
       }
 
   override suspend fun waypointsPlayerExists(uuid: UUID): Boolean =

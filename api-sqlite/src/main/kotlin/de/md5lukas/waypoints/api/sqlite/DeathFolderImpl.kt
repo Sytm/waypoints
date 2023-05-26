@@ -66,8 +66,7 @@ class DeathFolderImpl(
             "SELECT * FROM waypoints WHERE type = ? AND owner = ?;",
             Type.DEATH.name,
             owner.toString()) {
-              val id = UUID.fromString(this.getString("id"))
-              dm.instanceCache.waypoints.get(id) { WaypointImpl(dm, this) }
+              WaypointImpl(dm, this)
             }
       }
 

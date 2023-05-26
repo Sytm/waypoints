@@ -11,6 +11,7 @@ import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
+import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.UUID
@@ -39,10 +40,10 @@ private constructor(
       row: ResultSet
   ) : this(
       dm = dm,
-      id = UUID.fromString(row.getString("id")),
+      id = row.getUUID("id")!!,
       createdAt = OffsetDateTime.parse(row.getString("createdAt")),
       type = Type.valueOf(row.getString("type")),
-      owner = row.getString("owner")?.let(UUID::fromString),
+      owner = row.getUUID("owner"),
       location =
           Location(
               dm.plugin.server.getWorld(row.getString("world")),
@@ -50,7 +51,7 @@ private constructor(
               row.getDouble("y"),
               row.getDouble("z"),
           ),
-      folder = row.getString("folder")?.let(UUID::fromString),
+      folder = row.getUUID("folder"),
       name = row.getString("name"),
       description = row.getString("description"),
       permission = row.getString("permission"),
@@ -62,10 +63,8 @@ private constructor(
   override suspend fun getFolder(): Folder? =
       withContext(dm.asyncDispatcher) {
         folderId?.let {
-          dm.instanceCache.folders.get(it) {
-            dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?;", it) {
-              FolderImpl(dm, this)
-            }
+          dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?;", it) {
+            FolderImpl(dm, this)
           }
         }
       }
