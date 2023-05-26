@@ -6,6 +6,7 @@ import de.md5lukas.jdbc.setValues
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.*
@@ -26,7 +27,7 @@ private constructor(
       row: ResultSet
   ) : this(
       dm = dm,
-      id = UUID.fromString(row.getString("id")),
+      id = row.getUUID("id")!!,
       showGlobals = row.getBoolean("showGlobals"),
       sortBy = OverviewSort.valueOf(row.getString("sortBy")),
       canBeTracked = row.getBoolean("canBeTracked"),

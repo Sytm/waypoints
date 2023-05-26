@@ -10,7 +10,6 @@ abstract class DatabaseManager(
     val databaseConfiguration: DatabaseConfiguration,
     val testing: Boolean,
 ) {
-  val instanceCache: InstanceCache = InstanceCache(testing)
 
   val asyncDispatcher =
       if (testing) {

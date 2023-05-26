@@ -10,6 +10,7 @@ import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
+import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.UUID
@@ -34,10 +35,10 @@ private constructor(
       row: ResultSet
   ) : this(
       dm = dm,
-      id = UUID.fromString(row.getString("id")),
+      id = row.getUUID("id")!!,
       createdAt = OffsetDateTime.parse(row.getString("createdAt")),
       type = Type.valueOf(row.getString("type")),
-      owner = row.getString("owner")?.let(UUID::fromString),
+      owner = row.getUUID("owner"),
       name = row.getString("name"),
       description = row.getString("description"),
       material = row.getString("material")?.let { Material.valueOf(it) },
@@ -93,8 +94,7 @@ private constructor(
   override suspend fun getWaypoints(): List<Waypoint> =
       withContext(dm.asyncDispatcher) {
         dm.connection.select("SELECT * FROM waypoints WHERE folder = ?;", id.toString()) {
-          val id = UUID.fromString(this.getString("id"))
-          dm.instanceCache.waypoints.get(id) { WaypointImpl(dm, this) }
+          WaypointImpl(dm, this)
         }
       }
 

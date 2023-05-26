@@ -32,8 +32,7 @@ internal open class WaypointHolderImpl(
       withContext(dm.asyncDispatcher) {
         dm.connection.select(
             "SELECT * FROM folders WHERE type = ? AND owner IS ?;", type.name, owner?.toString()) {
-              val id = UUID.fromString(this.getString("id"))
-              dm.instanceCache.folders.get(id) { FolderImpl(dm, this) }
+              FolderImpl(dm, this)
             }
       }
 
@@ -43,8 +42,7 @@ internal open class WaypointHolderImpl(
             "SELECT * FROM waypoints WHERE type = ? AND owner IS ? AND folder IS NULL;",
             type.name,
             owner?.toString()) {
-              val id = UUID.fromString(this.getString("id"))
-              dm.instanceCache.waypoints.get(id) { WaypointImpl(dm, this) }
+              WaypointImpl(dm, this)
             }
       }
 
@@ -54,8 +52,7 @@ internal open class WaypointHolderImpl(
             "SELECT * FROM waypoints WHERE type = ? AND owner IS ?;",
             type.name,
             owner?.toString()) {
-              val id = UUID.fromString(this.getString("id"))
-              dm.instanceCache.waypoints.get(id) { WaypointImpl(dm, this) }
+              WaypointImpl(dm, this)
             }
       }
 

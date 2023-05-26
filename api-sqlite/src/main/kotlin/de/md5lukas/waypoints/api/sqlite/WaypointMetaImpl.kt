@@ -3,6 +3,7 @@ package de.md5lukas.waypoints.api.sqlite
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.WaypointMeta
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.util.*
 import kotlinx.coroutines.withContext
@@ -21,8 +22,8 @@ private constructor(
       row: ResultSet
   ) : this(
       dm = dm,
-      waypoint = UUID.fromString(row.getString("waypointId")),
-      owner = UUID.fromString(row.getString("playerId")),
+      waypoint = row.getUUID("waypointId")!!,
+      owner = row.getUUID("playerId")!!,
       teleportations = row.getInt("teleportations"),
       visited = row.getBoolean("visited"),
   )
