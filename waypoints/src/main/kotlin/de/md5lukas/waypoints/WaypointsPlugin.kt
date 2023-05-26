@@ -10,7 +10,11 @@ import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
-import de.md5lukas.waypoints.config.*
+import de.md5lukas.waypoints.config.BlockDataAdapter
+import de.md5lukas.waypoints.config.DurationAdapter
+import de.md5lukas.waypoints.config.MaterialListAdapter
+import de.md5lukas.waypoints.config.StyleAdapter
+import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
@@ -34,6 +38,8 @@ import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIBukkitConfig
 import java.io.File
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asExecutor
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
@@ -50,12 +56,14 @@ class WaypointsPlugin : JavaPlugin() {
 
   lateinit var api: WaypointsAPI
     private set
+
   val apiExtensions: APIExtensions by lazy { APIExtensions(this) }
   lateinit var pointerManager: PointerManager
 
   private lateinit var translationLoader: TranslationLoader
   lateinit var translations: Translations
     private set
+
   lateinit var worldTranslations: WorldTranslations
     private set
 
@@ -64,18 +72,26 @@ class WaypointsPlugin : JavaPlugin() {
 
   lateinit var uuidUtils: UUIDUtils
     private set
+
+  lateinit var durationFormatter: DurationFormatter
+    private set
+
   private var vaultIntegration0: VaultIntegration? = null
   val vaultIntegration: VaultIntegration
     get() =
         vaultIntegration0
             ?: throw IllegalStateException(
                 "The vault integration is configured to be used, but no vault compatible plugin is installed")
+
   var dynMapIntegrationAvailable = false
     private set
+
   var squareMapIntegrationAvailable = false
     private set
+
   var pl3xMapIntegrationAvailable = false
     private set
+
   private var blueMapIntegrationAvailable = false
 
   private lateinit var metrics: Metrics
@@ -94,8 +110,7 @@ class WaypointsPlugin : JavaPlugin() {
 
     initTranslations()
     initTeleportManager()
-    initUUIDUtils()
-    initDurationFormatter()
+    initCommons()
     initIntegrations()
 
     registerCommands()
@@ -160,22 +175,20 @@ class WaypointsPlugin : JavaPlugin() {
     teleportManager = TeleportManager(this)
   }
 
-  private fun initUUIDUtils() {
+  private fun initCommons() {
     with(waypointsConfig.general.uuidCache) {
       uuidUtils =
           UUIDUtils(
               this@WaypointsPlugin,
+              Dispatchers.Default.asExecutor(),
               UUIDCacheSettings().also {
                 it.maxSize = this@with.maxSize
                 it.expireAfterWrite = this@with.expireAfter
                 it.expireAfterWriteTimeUnit = TimeUnit.HOURS
               })
     }
-  }
-
-  private fun initDurationFormatter() {
-    with(translations) {
-      DurationFormatter.setPluralizationHelper { _, timeUnit, isPlural ->
+    durationFormatter = DurationFormatter { timeUnit, isPlural ->
+      with(translations) {
         when (timeUnit) {
           TimeUnit.SECONDS -> if (isPlural) TEXT_DURATION_SECONDS else TEXT_DURATION_SECOND
           TimeUnit.MINUTES -> if (isPlural) TEXT_DURATION_MINUTES else TEXT_DURATION_MINUTE

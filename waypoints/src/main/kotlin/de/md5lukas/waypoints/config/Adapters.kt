@@ -1,11 +1,10 @@
 package de.md5lukas.waypoints.config
 
-import de.md5lukas.commons.time.DurationParser
 import de.md5lukas.konfig.RegisteredTypeAdapter
 import java.time.Duration
-import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
+import kotlin.time.toJavaDuration
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
@@ -40,9 +39,7 @@ object BlockDataAdapter : RegisteredTypeAdapter<BlockData> {
 
 object DurationAdapter : RegisteredTypeAdapter.Static<Duration>(Duration::class) {
   override fun get(section: ConfigurationSection, path: String) =
-      section.getString(path)?.let {
-        Duration.ofMillis(DurationParser.parseDuration(it, TimeUnit.MILLISECONDS))
-      }
+      section.getString(path)?.let { kotlin.time.Duration.parse(it).toJavaDuration() }
 }
 
 object StyleAdapter : RegisteredTypeAdapter.Static<Style>(Style::class) {

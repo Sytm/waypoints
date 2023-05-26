@@ -1,6 +1,5 @@
 package de.md5lukas.waypoints.util
 
-import de.md5lukas.commons.time.DurationFormatter
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type
@@ -114,7 +113,8 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
     if (cooldownUntil != null) {
       val remainingMillis = Duration.between(Instant.now(), cooldownUntil).toMillis()
       if (remainingMillis > 0) {
-        val remainingCooldown = DurationFormatter.formatDuration(player, remainingMillis)
+        val remainingCooldown =
+            plugin.durationFormatter.formatDuration(Duration.ofMillis(remainingMillis))
 
         plugin.translations.MESSAGE_TELEPORT_ON_COOLDOWN.send(
             player, "remaining_cooldown" placeholder remainingCooldown)
@@ -159,9 +159,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
       if (standStillTime.toSeconds() > 0) {
         plugin.translations.MESSAGE_TELEPORT_STAND_STILL_NOTICE.send(
-            player,
-            "duration" placeholder
-                DurationFormatter.formatDuration(player, standStillTime.toMillis()))
+            player, "duration" placeholder plugin.durationFormatter.formatDuration(standStillTime))
         val id = teleportIds.getAndIncrement()
         pendingTeleports[player] = id
         delayTime(standStillTime)

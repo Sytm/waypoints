@@ -18,6 +18,7 @@ import de.md5lukas.waypoints.gui.pages.*
 import de.md5lukas.waypoints.util.*
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.future.await
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import org.bukkit.Material
@@ -40,28 +41,14 @@ class WaypointsGUI(
 
   internal lateinit var viewerData: WaypointsPlayer
     private set
+
   internal lateinit var targetData: WaypointsPlayer
     private set
 
   internal val translations = plugin.translations
 
-  internal val gui =
-      GUI(
-          viewer,
-          5,
-          if (isOwner) {
-            plugin.translations.INVENTORY_TITLE_SELF.text
-          } else {
-            val otherName = plugin.uuidUtils.getName(target)
-
-            if (otherName.isEmpty) {
-              throw IllegalArgumentException("A player with the UUID $target does not exist.")
-            }
-
-            plugin.translations.INVENTORY_TITLE_OTHER.withReplacements(
-                "name" placeholder otherName.get())
-          },
-      )
+  internal lateinit var gui: GUI
+    private set
 
   suspend fun openOverview() {
     val page = GUIFolderPage(this, targetData).apply { init() }
@@ -321,6 +308,7 @@ class WaypointsGUI(
   internal val scheduler = Schedulers.entity(plugin, viewer)
 
   internal fun schedule(block: Runnable) = scheduler.schedule(null, block)
+
   internal fun skedule(
       sync: SynchronizationContext = SynchronizationContext.ASYNC,
       block: suspend CoroutineScope.() -> Unit
@@ -330,6 +318,23 @@ class WaypointsGUI(
     skedule {
       viewerData = plugin.api.getWaypointPlayer(viewer.uniqueId)
       targetData = plugin.api.getWaypointPlayer(target)
+      gui =
+          GUI(
+              viewer,
+              5,
+              if (isOwner) {
+                plugin.translations.INVENTORY_TITLE_SELF.text
+              } else {
+                val otherName = plugin.uuidUtils.getNameAsync(target).await()
+
+                if (otherName.isEmpty) {
+                  throw IllegalArgumentException("A player with the UUID $target does not exist.")
+                }
+
+                plugin.translations.INVENTORY_TITLE_OTHER.withReplacements(
+                    "name" placeholder otherName.get())
+              },
+          )
       openOverview()
       switchContext(SynchronizationContext.SYNC)
       gui.open()

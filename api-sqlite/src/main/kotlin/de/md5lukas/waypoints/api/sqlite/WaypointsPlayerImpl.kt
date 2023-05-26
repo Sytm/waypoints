@@ -109,6 +109,7 @@ private constructor(
   }
 
   override val deathFolder: Folder = DeathFolderImpl(dm, id)
+
   override suspend fun getCompassTarget(): Location? =
       withContext(dm.asyncDispatcher) {
         dm.connection.selectFirst(
