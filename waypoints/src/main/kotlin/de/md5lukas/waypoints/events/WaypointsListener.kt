@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.events
 
 import com.okkero.skedule.skedule
-import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.util.checkWorldAvailability
@@ -29,10 +28,9 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
         (!config.mustSneak || e.player.isSneaking) &&
         e.action in config.validClicks &&
         e.material in config.items) {
-      Schedulers.entity(plugin, e.player).schedule {
-        // Run in next tick to hopefully fix https://github.com/Sytm/waypoints/issues/86
-        WaypointsGUI(plugin, e.player, e.player.uniqueId)
-      }
+      // Run in next tick to hopefully fix https://github.com/Sytm/waypoints/issues/86 (will be run
+      // automatically in next tick due to context switch)
+      WaypointsGUI(plugin, e.player, e.player.uniqueId)
     }
   }
 }

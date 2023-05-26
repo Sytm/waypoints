@@ -22,19 +22,24 @@ class DeathFolderImpl(
 
   override val id: UUID
     get() = owner
+
   override val createdAt: OffsetDateTime = OffsetDateTime.ofInstant(Instant.EPOCH, ZoneId.of("UTC"))
   override val type: Type
     get() = Type.DEATH
+
   override val name: String
     get() = guiType.name
+
   override suspend fun setName(name: String) =
       throw UnsupportedOperationException("Changing the name of the death folder is not supported")
+
   override val description: String?
     get() = null
 
   override suspend fun setDescription(description: String?) =
       throw UnsupportedOperationException(
           "Changing the description of the death folder is not supported")
+
   override val material: Material?
     get() = null
 
@@ -54,6 +59,7 @@ class DeathFolderImpl(
   override suspend fun getAmountVisibleForPlayer(permissible: Permissible): Int = getAmount()
 
   override suspend fun getFolders(): List<Folder> = emptyList()
+
   override suspend fun getWaypoints(): List<Waypoint> =
       withContext(dm.asyncDispatcher) {
         dm.connection.select(

@@ -14,6 +14,7 @@ class WaypointTrackable(private val plugin: WaypointsPlugin, val waypoint: Waypo
       return (trackable as? WaypointTrackable)?.waypoint
     }
   }
+
   override val location: Location
     get() = waypoint.location
 

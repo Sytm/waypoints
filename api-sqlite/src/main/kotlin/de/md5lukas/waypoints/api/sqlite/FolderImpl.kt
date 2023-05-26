@@ -50,6 +50,7 @@ private constructor(
     this.name = name
     set("name", name)
   }
+
   override var description: String? = description
     private set
 
@@ -57,6 +58,7 @@ private constructor(
     this.description = description
     set("description", description)
   }
+
   override var material: Material? = material
     private set
 

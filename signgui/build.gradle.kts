@@ -25,8 +25,8 @@ publishing {
       name = "md5lukasReposilite"
 
       url =
-        uri(
-          "https://repo.md5lukas.de/${
+          uri(
+              "https://repo.md5lukas.de/${
             if (version.toString().endsWith("-SNAPSHOT")) {
               "snapshots"
             } else {
@@ -38,9 +38,5 @@ publishing {
       authentication { create<BasicAuthentication>("basic") }
     }
   }
-  publications {
-    create<MavenPublication>("maven") {
-      from(components["java"])
-    }
-  }
+  publications { create<MavenPublication>("maven") { from(components["java"]) } }
 }
