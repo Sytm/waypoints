@@ -24,4 +24,6 @@ internal abstract class Pointer(
   open fun postUpdates() {}
 
   open fun hide(trackable: Trackable, translatedTarget: Location?) {}
+
+  open fun immediateCleanup(trackable: Trackable, translatedTarget: Location?) = hide(trackable, translatedTarget)
 }
