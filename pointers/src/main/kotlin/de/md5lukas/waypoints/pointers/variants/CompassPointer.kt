@@ -58,4 +58,12 @@ internal class CompassPointer(
                 },
                 scheduler.asExecutor())
   }
+
+  override fun immediateCleanup(trackable: Trackable, translatedTarget: Location?) {
+    isTracking = false
+    // We need to join here because if the player leaves and is the last one keeping the chunk loaded
+    // after disconnect all chunks are basically unloaded and saved instantaneously and modifications
+    // to the player after that are no longer saved
+    pointerManager.hooks.loadCompassTarget(player).join()?.let { player.compassTarget = it }
+  }
 }

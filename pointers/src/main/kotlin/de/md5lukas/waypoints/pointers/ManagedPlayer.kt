@@ -144,9 +144,9 @@ internal class ManagedPlayer(
     fun immediateCleanup() {
       logger.debug("Performing immediate clean up")
       if (pointer.supportsMultipleTargets) {
-        tracked.forEach { pointer.hide(it, translateTarget(it)) }
+        tracked.forEach { pointer.immediateCleanup(it, translateTarget(it)) }
       } else {
-        previousPrimary?.let { pointer.hide(it, translateTarget(it)) }
+        previousPrimary?.let { pointer.immediateCleanup(it, translateTarget(it)) }
       }
     }
 
