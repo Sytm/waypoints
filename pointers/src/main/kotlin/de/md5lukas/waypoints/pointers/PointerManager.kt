@@ -9,6 +9,7 @@ import de.md5lukas.waypoints.pointers.variants.BossBarPointer
 import de.md5lukas.waypoints.pointers.variants.CompassPointer
 import de.md5lukas.waypoints.pointers.variants.HologramPointer
 import de.md5lukas.waypoints.pointers.variants.ParticlePointer
+import de.md5lukas.waypoints.pointers.variants.TrailPointer
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
 import net.kyori.adventure.text.Component
@@ -22,6 +23,8 @@ import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.plugin.Plugin
+import org.bukkit.plugin.java.JavaPlugin
+import org.patheloper.mapping.PatheticMapper
 
 /**
  * The PointerManager handles the creation of the selected PointerTypes and manages their tasks
@@ -39,6 +42,7 @@ class PointerManager(
 
   init {
     plugin.server.pluginManager.registerEvents(this, plugin)
+    PatheticMapper.initialize(plugin as JavaPlugin)
   }
 
   internal val availablePointers:
@@ -106,7 +110,17 @@ class PointerManager(
                 null
               }
             }
-          })
+          },
+          { config, player, scheduler ->
+            with(config.trail) {
+              if (enabled) {
+                TrailPointer(this@PointerManager, player, scheduler, this)
+              } else {
+                null
+              }
+            }
+          },
+      )
 
   private val players = ConcurrentHashMap<Player, ManagedPlayer>()
 
@@ -117,6 +131,7 @@ class PointerManager(
    */
   fun applyNewConfiguration(newConfiguration: PointerConfiguration) {
     configuration = newConfiguration
+    TrailPointer.resetPathfinder()
     players.values.forEach { it.reapplyConfiguration() }
   }
 

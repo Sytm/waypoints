@@ -14,15 +14,6 @@ teleport like that, this plugin could be just what your server needs!
 So, instead of just bringing the player back where he started, this plugin shows him the direction he has to walk, so he can explore the world even more. To
 show the player the direction you can configure multiple direction indicators to guide the player to his destination.
 
-### Compass
-
-It won't get any simpler than that if the player owns a compass. It will have the waypoint as it's target and points into that direction.
-
-### Actionbar Indicator
-
-This is comparable to the compass but doesn't require one. It will show the rough direction with small sections in the action bar of the player. If the player
-is too far left, the sections in the right will light up and vice versa.
-
 ### Bossbar Indicator
 
 A compass will be visible at the top of the screen, with a highlighter marking in which direction the waypoint is
@@ -31,14 +22,27 @@ A compass will be visible at the top of the screen, with a highlighter marking i
 
 When the waypoint is in render distance, a beacon beam will appear at the location of the waypoint to make it easier to pinpoint the location of the waypoint.
 
-### Blinking Block
+### Trail
 
-When the player is closer to the waypoint, the beacon will be replaced with a block sequence that will repeat. This is to help him get to the exact location.
+The plugin attempts to find a suitable path for you to walk and then shows it to you with particles.
 
 ### Hologram
 
 Floating text like in the mods.
 This feature is optional but requires [ProtocolLib](https://github.com/dmulloy2/ProtocolLib) if wanted.
+
+### Blinking Block
+
+When the player is closer to the waypoint, the beacon will be replaced with a block sequence that will repeat. This is to help him get to the exact location.
+
+### Compass
+
+It won't get any simpler than that if the player owns a compass. It will have the waypoint as it's target and points into that direction.
+
+### Actionbar Indicator
+
+This is comparable to the compass but doesn't require one. It will show the rough direction with small sections in the action bar of the player. If the player
+is too far left, the sections in the right will light up and vice versa.
 
 ### Particles
 

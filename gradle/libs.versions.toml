@@ -30,7 +30,8 @@ anvilGui = { group = "de.md5lukas", name = "anvilgui", version = "1.6.6-SNAPSHOT
 bStats = { group = "org.bstats", name = "bstats-bukkit", version = "3.0.2" }
 commandapi-shade = { group = "dev.jorel", name = "commandapi-bukkit-shade", version.ref = "commandApi" }
 commandapi-kotlin = { group = "dev.jorel", name = "commandapi-bukkit-kotlin", version.ref = "commandApi" }
-brigadier = { group = "com.mojang", name = "brigadier", version = "1.0.18" }
+brigadier = { group = "com.mojang", name = "brigadier", version = "1.1.8" }
+pathetic = { group = "com.github.patheloper.pathetic", name = "pathetic-mapping", version = "2.1.4" }
 
 # Optional dependencies
 vaultApi = { group = "com.github.MilkBowl", name = "VaultAPI", version = "1.7.1" }

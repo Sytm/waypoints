@@ -300,9 +300,59 @@ pointers:
     amount: 10
     # The total length of the particles in blocks
     length: 1
-    # See here for different particles https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html
+    # See here for different particles https://jd.papermc.io/paper/1.19/org/bukkit/Particle.html
     particle: FLAME
 
+  trail:
+    enabled: true
+    interval: 10
+
+    # Settings for the pathing engine
+    pathing:
+      # The maximum distance that is calculated ahead each time
+      # Longer ranges take more time to calculate at a time but might provide
+      # better paths. If this value gets too big (view-distance) chunk loading must also be enabled
+      maxLength: 130
+      # Allow the engine to take diagonal moves into account
+      allowDiagonal: true
+      # If pathfinding fails, it will fallback to the already found path.
+      allowFallback: true
+      # Allow the engine to load chunks in advance to calculate the path.
+      # Should be kept to false if the view-distance of the server isn't reduced or maxLength increased
+      allowChunkLoading: false
+      # When the location of the player and the target are both obstructed the pathing will be aborted.
+      # Otherwise it is attempted to find a path anyway
+      allowFastFail: true
+      # Strategy to use when deciding which blocks are allowed
+      # DIRECT: Finds the shortest possible path. Attempts to take routes through air or 1x1 spaces
+      # WALKABLE: All blocks to the target must be solid and walkable
+      # PLAYER: Like walkable but basic jumps are attempted
+      strategy: PLAYER
+
+    # Max distance between player and any part of the path.
+    # When exceeded the path is recalculated from the players current location
+    pathInvalidationDistance: 15
+    # When the player comes into this distance of the end of the last calculated trail
+    # An attempt is made to calculate a continuation
+    pathCalculateAheadDistance: 50
+    # When the path has been extended, every past part of the trail further
+    # away from the player than this distance is discared
+    retainMaxPlayerDistance: 30
+
+    particle:
+      # The spread of the particles
+      spread: 0.3
+      # The amount of particles spawned per block
+      # Highlights spawn 1.5 times the given amount
+      amount: 4
+      # To view all available Particles see here: https://jd.papermc.io/paper/1.19/org/bukkit/Particle.html
+      # The normal particle to spawn
+      normal: WAX_ON
+      # The highlight particle to spawn
+      highlight: WAX_OFF
+
+    # The distance of blocks between each highlight
+    highlightDistance: 7
 
   hologram:
     # Requires ProtocolLib to be actually available

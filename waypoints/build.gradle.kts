@@ -18,7 +18,6 @@ repositories {
   maven("https://repo.codemc.io/repository/maven-public/") // AnvilGUI
   maven("https://libraries.minecraft.net") // Brigadier
 
-  maven("https://jitpack.io") // Vault and BlueMap
   maven("https://repo.mikeprimm.com/") // DynMap
   exclusiveContent { // Pl3xMap
     forRepository { maven("https://api.modrinth.com/maven") }
@@ -32,7 +31,7 @@ dependencies {
   implementation(libs.coroutines)
 
   implementation(project(":utils"))
-  implementation(project(":pointers"))
+  implementation(project(":pointers", "shadow"))
   implementation(project(":waypoints-api"))
   implementation(project(":api-base"))
   implementation(project(":api-sqlite", "shadow"))
@@ -98,6 +97,7 @@ tasks.withType<KotlinCompile> {
   // To make sure we have an explicit dependency on the project itself because otherwise we will get
   // a warning that we only depend on an output file and not the project itself
   dependsOn(project(":api-sqlite").tasks["shadowJar"])
+  dependsOn(project(":pointers").tasks["shadowJar"])
 }
 
 tasks.withType<ShadowJar> {

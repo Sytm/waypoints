@@ -10,6 +10,8 @@ internal abstract class Pointer(
     protected val scheduler: AbstractScheduler,
 ) {
 
+  protected val syncExecutor = scheduler.asExecutor()
+
   abstract val interval: Int
   abstract val supportsMultipleTargets: Boolean
 
@@ -25,5 +27,6 @@ internal abstract class Pointer(
 
   open fun hide(trackable: Trackable, translatedTarget: Location?) {}
 
-  open fun immediateCleanup(trackable: Trackable, translatedTarget: Location?) = hide(trackable, translatedTarget)
+  open fun immediateCleanup(trackable: Trackable, translatedTarget: Location?) =
+      hide(trackable, translatedTarget)
 }
