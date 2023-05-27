@@ -21,4 +21,6 @@ interface PointerConfiguration {
   val hologram: HologramConfiguration
 
   val bossBar: BossBarConfiguration
+
+  val trail: TrailConfiguration
 }

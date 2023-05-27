@@ -289,6 +289,8 @@ class WaypointsPlugin : JavaPlugin() {
         SimplePie("particle_pointer_enabled") {
           waypointsConfig.pointers.particle.enabled.toString()
         })
+    metrics.addCustomChart(
+        SimplePie("trails_pointer_enabled") { waypointsConfig.pointers.trail.enabled.toString() })
   }
 
   private fun startBackgroundTasks() {

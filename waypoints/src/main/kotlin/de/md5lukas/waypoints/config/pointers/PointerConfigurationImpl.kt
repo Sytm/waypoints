@@ -14,7 +14,9 @@ class PointerConfigurationImpl : PointerConfiguration {
 
   @ConfigPath("disableWhenReachedRadius")
   override var disableWhenReachedRadiusSquared = 0
-    private set
+    private set(value) {
+      field = value * value
+    }
 
   @UseAdapter(BiMapAdapter::class)
   override var connectedWorlds: BiMap<String, String> = HashBiMap.create(0)
@@ -33,6 +35,8 @@ class PointerConfigurationImpl : PointerConfiguration {
   override val hologram = HologramConfigurationImpl()
 
   override val bossBar = BossBarConfigurationImpl()
+
+  override val trail = TrailConfigurationImpl()
 
   private class BiMapAdapter : TypeAdapter<BiMap<String, String>> {
     override fun get(section: ConfigurationSection, path: String): BiMap<String, String>? {

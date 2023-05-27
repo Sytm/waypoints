@@ -1,14 +1,16 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
   with(libs.plugins) {
     alias(kotlin)
     alias(dokka)
+    alias(shadow)
   }
   `maven-publish`
 }
 
-repositories { maven("https://repo.dmulloy2.net/repository/public/") }
+repositories {}
 
 dependencies {
   api(libs.paper)
@@ -16,6 +18,7 @@ dependencies {
 
   implementation(libs.schedulers)
   implementation(libs.protocollib)
+  implementation(libs.pathetic)
 }
 
 kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
@@ -52,6 +55,14 @@ val dokkaHtmlJar by
       from(tasks.dokkaHtml)
     }
 
+tasks.withType<ShadowJar> {
+  archiveClassifier.set("")
+
+  dependencies { include(dependency(libs.pathetic.get())) }
+
+  relocate("org.patheloper", "de.md5lukas.waypoints.pointers.path")
+}
+
 publishing {
   repositories {
     maven {
@@ -73,7 +84,7 @@ publishing {
   }
   publications {
     create<MavenPublication>("maven") {
-      from(components["kotlin"])
+      project.shadow.component(this)
       artifact(sourcesJar)
       artifact(javadocJar)
       artifact(dokkaHtmlJar)
