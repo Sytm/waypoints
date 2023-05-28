@@ -167,6 +167,20 @@ class SQLiteManager(
                  FOREIGN KEY (playerId) REFERENCES player_data(id) ON DELETE CASCADE
                );
             """)
+      update(
+          """
+               CREATE TABLE IF NOT EXISTS waypoint_shares (
+                 owner TEXT NOT NULL,
+                 sharedWith TEXT NOT NULL,
+                 shareId TEXT NOT NULL,
+                 expires DATE,
+                 
+                 PRIMARY KEY (owner, sharedWith, shareId),
+                 FOREIGN KEY (owner) REFERENCES player_data(id) ON DELETE CASCADE,
+                 FOREIGN KEY (sharedWith) REFERENCES player_data(id) ON DELETE CASCADE,
+                 FOREIGN KEY (shareId) REFERENCES waypoints(id) ON DELETE CASCADE
+               );
+      """)
     }
   }
 
@@ -174,9 +188,14 @@ class SQLiteManager(
     // Remove death waypoints older than the specified amount of time, if the amount is non-zero
     if (!databaseConfiguration.deathWaypointRetentionPeriod.isZero) {
       connection.update(
-          "DELETE FROM waypoints WHERE type = ? AND datetime(createdAt) <= datetime(?)",
+          "DELETE FROM waypoints WHERE type = ? AND datetime(createdAt) <= datetime(?);",
           Type.DEATH.name,
-          OffsetDateTime.now().minus(databaseConfiguration.deathWaypointRetentionPeriod).toString())
+          OffsetDateTime.now().minus(databaseConfiguration.deathWaypointRetentionPeriod).toString(),
+      )
+      connection.update(
+          "DELETE FROM waypoint_shares WHERE datetime(expires) <= datetime(?);",
+          OffsetDateTime.now(),
+      )
     }
   }
 

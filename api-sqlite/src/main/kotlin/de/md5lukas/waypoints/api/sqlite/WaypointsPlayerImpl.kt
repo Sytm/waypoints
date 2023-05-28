@@ -197,6 +197,28 @@ private constructor(
     }
   }
 
+  override suspend fun getSharingWaypoints(): List<WaypointShare> =
+      withContext(dm.asyncDispatcher) {
+        dm.connection.select(
+            "SELECT * FROM waypoint_shares WHERE owner = ? AND (expires IS NULL OR datetime(expires) > datetime(?));",
+            id.toString(),
+            OffsetDateTime.now().toString(),
+        ) {
+          WaypointShareImpl(dm, this)
+        }
+      }
+
+  override suspend fun getSharedWaypoints(): List<WaypointShare> =
+      withContext(dm.asyncDispatcher) {
+        dm.connection.select(
+            "SELECT * FROM waypoint_shares WHERE sharedWith = ? AND (expires IS NULL OR datetime(expires) > datetime(?));",
+            id.toString(),
+            OffsetDateTime.now().toString(),
+        ) {
+          WaypointShareImpl(dm, this)
+        }
+      }
+
   private suspend fun set(column: String, value: Any?) {
     withContext(dm.asyncDispatcher) {
       dm.connection.update("UPDATE player_data SET $column = ? WHERE id = ?;", value, id)

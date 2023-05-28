@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
+import java.time.OffsetDateTime
 import java.util.UUID
 import org.bukkit.Location
 import org.bukkit.Material
@@ -83,6 +84,10 @@ interface Waypoint : GUIDisplayable {
    * @param data The data to save with the key
    */
   suspend fun setCustomData(key: String, data: String?)
+
+  suspend fun shareWith(with: UUID, expires: OffsetDateTime? = null)
+
+  suspend fun getSharedWith(): List<WaypointShare>
 
   /**
    * Deletes this waypoint from the database.
