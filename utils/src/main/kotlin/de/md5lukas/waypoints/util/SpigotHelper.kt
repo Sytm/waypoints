@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.Plugin
 
 fun Plugin.callEvent(event: Event) {
@@ -70,3 +71,7 @@ fun Location.fuzzyEquals(other: Location, tolerance: Double) =
 
 val ItemStack.loreNotNull: MutableList<Component>
   get() = lore() ?: mutableListOf()
+
+inline fun <reified T : ItemMeta> ItemStack.editMeta(noinline block: T.() -> Unit) {
+  editMeta(T::class.java, block)
+}

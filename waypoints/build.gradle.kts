@@ -87,7 +87,8 @@ tasks.withType<ProcessResources> {
     expand(
         "kotlinVersion" to kotlinVersion,
         "commandApiVersion" to commandApiVersion,
-        "coroutinesVersion" to coroutinesVersion)
+        "coroutinesVersion" to coroutinesVersion,
+    )
   }
 }
 
