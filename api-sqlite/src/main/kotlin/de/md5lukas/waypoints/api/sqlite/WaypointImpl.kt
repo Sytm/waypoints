@@ -60,14 +60,7 @@ private constructor(
 
   private var folderId: UUID? = folder
 
-  override suspend fun getFolder(): Folder? =
-      withContext(dm.asyncDispatcher) {
-        folderId?.let {
-          dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?;", it) {
-            FolderImpl(dm, this)
-          }
-        }
-      }
+  override suspend fun getFolder(): Folder? = folderId?.let { dm.api.getFolderByID(it)!! }
 
   override suspend fun setFolder(folder: Folder?) {
     if (folder !== null && folder.type !== type) {
