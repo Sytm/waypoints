@@ -17,8 +17,11 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class APIExtensions(private val plugin: WaypointsPlugin) {
-  private val translations = plugin.translations
-  private val worldTranslations = plugin.worldTranslations
+  private val translations
+    get() = plugin.translations
+
+  private val worldTranslations
+    get() = plugin.worldTranslations
 
   suspend fun GUIDisplayable.getItem(player: Player) =
       when (this) {
