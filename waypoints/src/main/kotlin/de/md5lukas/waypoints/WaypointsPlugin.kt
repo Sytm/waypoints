@@ -57,7 +57,7 @@ class WaypointsPlugin : JavaPlugin() {
   lateinit var api: WaypointsAPI
     private set
 
-  val apiExtensions: APIExtensions by lazy { APIExtensions(this) }
+  val apiExtensions = APIExtensions(this)
   lateinit var pointerManager: PointerManager
 
   private lateinit var translationLoader: TranslationLoader

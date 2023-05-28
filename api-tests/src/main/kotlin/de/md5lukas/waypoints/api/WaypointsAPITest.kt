@@ -32,4 +32,11 @@ abstract class WaypointsAPITest : TestBase() {
 
     assertNotNull(api.getWaypointByID(waypoint))
   }
+
+  @Test
+  fun folderFoundIfPrivateFolder(): Unit = runBlocking {
+    val waypoint = api.getWaypointPlayer(UUID.randomUUID()).createFolder("Test").id
+
+    assertNotNull(api.getFolderByID(waypoint))
+  }
 }
