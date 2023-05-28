@@ -35,8 +35,17 @@ internal class WaypointsAPIImpl(
   override val permissionWaypoints: WaypointHolder = WaypointHolderImpl(dm, Type.PERMISSION, null)
 
   override suspend fun getWaypointByID(uuid: UUID): Waypoint? =
-      dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?", uuid.toString()) {
-        WaypointImpl(dm, this)
+      withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst("SELECT * FROM waypoints WHERE id = ?;", uuid.toString()) {
+          WaypointImpl(dm, this)
+        }
+      }
+
+  override suspend fun getFolderByID(uuid: UUID): Folder? =
+      withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst("SELECT * FROM folders WHERE id = ?;", uuid.toString()) {
+          FolderImpl(dm, this)
+        }
       }
 
   override val statistics: Statistics = StatisticsImpl(dm)

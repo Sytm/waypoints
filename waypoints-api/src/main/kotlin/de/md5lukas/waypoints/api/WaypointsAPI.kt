@@ -54,6 +54,14 @@ interface WaypointsAPI {
    */
   suspend fun getWaypointByID(uuid: UUID): Waypoint?
 
+  /**
+   * Retrieve a folder of any type with the given UUID from the database.
+   *
+   * @param uuid The UUID of the folder
+   * @return The folder if it exists
+   */
+  suspend fun getFolderByID(uuid: UUID): Folder?
+
   /** Get access to some interesting statistics of total waypoints and folders. */
   val statistics: Statistics
 }
