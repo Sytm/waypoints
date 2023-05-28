@@ -1,11 +1,13 @@
 package de.md5lukas.waypoints.api.sqlite
 
+import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointMeta
+import de.md5lukas.waypoints.api.WaypointShare
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
@@ -161,6 +163,35 @@ private constructor(
           )
         }
         WaypointCustomDataChangeEvent(!dm.testing, this@WaypointImpl, key, data).callEvent()
+      }
+
+  override suspend fun shareWith(with: UUID, expires: OffsetDateTime?) {
+    if (type !== Type.PRIVATE) {
+      throw UnsupportedOperationException(
+          "Only waypoints of type ${Type.PRIVATE} can be shared with other players")
+    }
+    withContext(dm.asyncDispatcher) {
+      val expiresString = expires?.toString()
+      dm.connection.update(
+          "INSERT INTO waypoint_shares(owner, sharedWith, shareId, expires) VALUES (?, ?, ?, ?) ON CONFLICT DO UPDATE SET expires = ?;",
+          owner!!.toString(),
+          with.toString(),
+          id.toString(),
+          expiresString,
+          expiresString,
+      )
+    }
+  }
+
+  override suspend fun getSharedWith(): List<WaypointShare> =
+      withContext(dm.asyncDispatcher) {
+        dm.connection.select(
+            "SELECT * FROM waypoint_shares WHERE shareId = ? AND (expires IS NULL OR datetime(expires) > datetime(?));",
+            id.toString(),
+            OffsetDateTime.now().toString(),
+        ) {
+          WaypointShareImpl(dm, this)
+        }
       }
 
   override suspend fun delete(): Unit =

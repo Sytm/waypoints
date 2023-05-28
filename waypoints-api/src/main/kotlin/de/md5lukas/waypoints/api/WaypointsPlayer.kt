@@ -102,4 +102,8 @@ interface WaypointsPlayer : WaypointHolder {
   suspend fun getCompassTarget(): Location?
 
   suspend fun setCompassTarget(location: Location)
+
+  suspend fun getSharingWaypoints(): List<WaypointShare>
+
+  suspend fun getSharedWaypoints(): List<WaypointShare>
 }

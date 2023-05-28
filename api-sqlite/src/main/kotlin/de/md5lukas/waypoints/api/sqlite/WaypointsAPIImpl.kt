@@ -2,8 +2,15 @@ package de.md5lukas.waypoints.api.sqlite
 
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.api.*
-import java.util.*
+import de.md5lukas.waypoints.api.Folder
+import de.md5lukas.waypoints.api.SQLiteManager
+import de.md5lukas.waypoints.api.Statistics
+import de.md5lukas.waypoints.api.Type
+import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.WaypointHolder
+import de.md5lukas.waypoints.api.WaypointsAPI
+import de.md5lukas.waypoints.api.WaypointsPlayer
+import java.util.UUID
 import kotlinx.coroutines.withContext
 
 internal class WaypointsAPIImpl(
