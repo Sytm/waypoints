@@ -287,10 +287,11 @@ class Translations(tl: TranslationLoader) {
 
   val INTEGRATIONS_MAPS_LABEL = Translation(tl, "integrations.maps.label")
 
+  val PLAYER_LIST_REFRESH_LISTING = ItemTranslation(tl, "inventory.playerList.refresh")
+
   val TRACKING_BACKGROUND = ItemTranslation(tl, "inventory.tracking.background")
   val TRACKING_TRACKABLE_ENABLED = ItemTranslation(tl, "inventory.tracking.trackable.enabled")
   val TRACKING_TRACKABLE_DISABLED = ItemTranslation(tl, "inventory.tracking.trackable.disabled")
-  val TRACKING_REFRESH_LISTING = ItemTranslation(tl, "inventory.tracking.refresh")
   val TRACKING_PLAYER =
       ItemTranslation(tl, "inventory.tracking.player", fixedMaterial = Material.PLAYER_HEAD)
 }

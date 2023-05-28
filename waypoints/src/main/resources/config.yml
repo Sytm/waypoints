@@ -468,9 +468,11 @@ inventory:
   confirm:
     background: GRAY_STAINED_GLASS_PANE
 
+  playerList:
+    refresh: FISHING_ROD
+
   tracking:
     background: GRAY_STAINED_GLASS_PANE
     trackable:
       enabled: ENDER_EYE
       disabled: ENDER_PEARL
-    refresh: FISHING_ROD

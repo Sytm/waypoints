@@ -10,6 +10,7 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.TrackableToggleItem
 import de.md5lukas.waypoints.pointers.PlayerTrackable
+import de.md5lukas.waypoints.util.editMeta
 import de.md5lukas.waypoints.util.placeholder
 import de.md5lukas.waypoints.util.placeholderIgnoringArguments
 import org.bukkit.entity.Player
@@ -56,10 +57,7 @@ class PlayerTrackingPage(
                         "distance" placeholderIgnoringArguments
                             wpGUI.translations.TEXT_DISTANCE_OTHER_WORLD.text
                       })
-                  .also { stack ->
-                    stack.itemMeta =
-                        (stack.itemMeta!! as SkullMeta).also { meta -> meta.owningPlayer = player }
-                  }) {
+                  .also { stack -> stack.editMeta<SkullMeta> { owningPlayer = player } }) {
                 if (!wpGUI.viewerData.canBeTracked &&
                     wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable) {
                   wpGUI.translations.MESSAGE_TRACKING_TRACKABLE_REQUIRED.send(wpGUI.viewer)
@@ -104,7 +102,7 @@ class PlayerTrackingPage(
               background
             },
         'r' to
-            GUIItem(wpGUI.translations.TRACKING_REFRESH_LISTING.item) {
+            GUIItem(wpGUI.translations.PLAYER_LIST_REFRESH_LISTING.item) {
               wpGUI.skedule { updateListingContent() }
             },
         'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() },

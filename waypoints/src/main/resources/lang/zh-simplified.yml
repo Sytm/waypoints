@@ -433,6 +433,11 @@ inventory:
       displayName: "<black>-"
       description: ""
 
+  playerList:
+    refresh:
+      displayName: "<gray>更新玩家列表"
+      description: ""
+
   tracking:
     background:
       displayName: "<black>-"
@@ -444,9 +449,6 @@ inventory:
       disabled:
         displayName: "<gray>自身隐藏"
         description: "<gray>其他玩家不可追踪你"
-    refresh:
-      displayName: "<gray>更新玩家列表"
-      description: ""
 
     # name: Name of the player
     # world: World where the player is located at

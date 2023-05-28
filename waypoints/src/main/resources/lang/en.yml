@@ -579,6 +579,11 @@ inventory:
       displayName: "<black>-"
       description: ""
 
+  playerList:
+    refresh:
+      displayName: "<gray>Update the player list"
+      description: ""
+
   tracking:
     background:
       displayName: "<black>-"
@@ -590,9 +595,6 @@ inventory:
       disabled:
         displayName: "<gray>You are hidden"
         description: "<gray>Other players cannot track you"
-    refresh:
-      displayName: "<gray>Update the player list"
-      description: ""
 
     # name: Name of the player
     # world: World where the player is located at
