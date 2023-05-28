@@ -26,6 +26,7 @@
 - Compass pointer nether support has been removed, because any possible implementation is inherently inconsistent
 - Command help messages use used alias again
 - The Hologram Pointer uses display entities instead of ArmorStands
+- Added extra item in the waypoint gui page for changing the icon of waypoints
 
 [Paper]: https://papermc.io/software/paper
 [Folia]: https://papermc.io/software/folia

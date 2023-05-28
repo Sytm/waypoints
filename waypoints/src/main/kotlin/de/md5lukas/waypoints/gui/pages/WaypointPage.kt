@@ -23,6 +23,7 @@ import de.md5lukas.waypoints.util.component2
 import de.md5lukas.waypoints.util.copyFieldsTo
 import de.md5lukas.waypoints.util.createWaypointPermission
 import de.md5lukas.waypoints.util.createWaypointPublic
+import de.md5lukas.waypoints.util.getAllowedItemsForCustomIconMessage
 import de.md5lukas.waypoints.util.loreNotNull
 import de.md5lukas.waypoints.util.onClickSuspending
 import de.md5lukas.waypoints.util.placeholder
@@ -40,6 +41,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
     /**
      * spotless:off
      * w = Waypoint Icon
+     * g = Change icon
      * i = Get UUID (Global waypoints only)
      * u = Move to public folder
      * e = Move to permission folder
@@ -58,7 +60,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
     val waypointPattern =
         GUIPattern(
             "____w____",
-            "_______o_",
+            "_g_____o_",
             "i_u_s_y_r",
             "_f_e_p_c_",
             "d___t___b",
@@ -81,25 +83,31 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
         0,
         0,
         background,
-        'w' to
-            wpGUI.extendApi {
-              GUIItem(
-                  waypoint.getItem(wpGUI.viewer),
-                  if (canModifyWaypoint) {
-                    {
-                      val newMaterial = wpGUI.viewer.inventory.itemInMainHand.type
-
-                      if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
-                        wpGUI.skedule {
-                          waypoint.setMaterial(newMaterial)
-
-                          updatePage()
-                        }
-                      } else {
-                        wpGUI.translations.MESSAGE_WAYPOINT_NEW_ICON_INVALID.send(wpGUI.viewer)
-                      }
+        'w' to wpGUI.extendApi { GUIItem(waypoint.getItem(wpGUI.viewer)) },
+        'g' to
+            if (canModifyWaypoint) {
+              GUIItem(wpGUI.translations.WAYPOINT_EDIT_ICON.item) {
+                val newMaterial =
+                    if (it.isShiftClick) {
+                      null
+                    } else {
+                      wpGUI.viewer.inventory.itemInMainHand.type
                     }
-                  } else null)
+
+                if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
+                  wpGUI.skedule {
+                    waypoint.setMaterial(newMaterial)
+                    updatePage()
+                  }
+                } else {
+                  wpGUI.viewer.sendMessage(
+                      wpGUI.translations.MESSAGE_WAYPOINT_NEW_ICON_INVALID.text
+                          .appendSpace()
+                          .append(getAllowedItemsForCustomIconMessage(wpGUI.plugin)))
+                }
+              }
+            } else {
+              background
             },
         'i' to
             if (wpGUI.viewer.hasPermission(WaypointsPermissions.COMMAND_SCRIPTING) &&
