@@ -5,7 +5,6 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.StaticTrackable
 import de.md5lukas.waypoints.pointers.Trackable
-import de.md5lukas.waypoints.pointers.config.BlinkingBlockConfiguration
 import de.md5lukas.waypoints.pointers.util.sendActualBlock
 import java.util.*
 import org.bukkit.Location
@@ -15,8 +14,9 @@ internal class BlinkingBlockPointer(
     pointerManager: PointerManager,
     player: Player,
     scheduler: AbstractScheduler,
-    private val config: BlinkingBlockConfiguration
 ) : Pointer(pointerManager, player, scheduler) {
+
+  private val config = pointerManager.configuration.blinkingBlock
 
   override val interval: Int
     get() = config.interval

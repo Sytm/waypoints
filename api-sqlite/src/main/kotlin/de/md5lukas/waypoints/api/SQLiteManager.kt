@@ -21,7 +21,7 @@ class SQLiteManager(
     testing: Boolean = false,
 ) : DatabaseManager(plugin, databaseConfiguration, testing) {
 
-  private val schemaVersion: Int = 5
+  private val schemaVersion: Int = 6
   private val sqliteHelper =
       if (file === null) {
         SQLiteHelper()
@@ -57,9 +57,7 @@ class SQLiteManager(
                   showGlobals BOOLEAN NOT NULL DEFAULT 1,
                   sortBy TEXT NOT NULL DEFAULT '${OverviewSort.TYPE_ASCENDING.name}',
                   canBeTracked BOOLEAN NOT NULL DEFAULT 0,
-                  lastSelectedWaypoint TEXT,
-                  
-                  FOREIGN KEY (lastSelectedWaypoint) REFERENCES waypoints(id) ON DELETE SET NULL
+                  enabledPointers TEXT
                 );
             """)
       update(
@@ -229,12 +227,13 @@ class SQLiteManager(
                 update("UPDATE waypoints SET beaconColor = ? WHERE beaconColor = ?;", new, old)
               }
         }
+        it[6] = { update("ALTER TABLE player_data ADD COLUMN enabledPointers TEXT;") }
       }
 
   override fun upgradeDatabase() {
     with(connection) {
       val currentSchemaVersion =
-          selectFirst("SELECT schemaVersion FROM database_meta WHERE id = ?", 0) {
+          selectFirst("SELECT schemaVersion FROM database_meta WHERE id = ?;", 0) {
             getInt("schemaVersion")
           }
               ?: throw IllegalStateException("Could not retrieve schema version of database")
@@ -253,7 +252,7 @@ class SQLiteManager(
         if (currentSchemaVersion < upgradesTo) {
           try {
             upgrade()
-            update("UPDATE database_meta SET schemaVersion = ? WHERE id = ?", upgradesTo, 0)
+            update("UPDATE database_meta SET schemaVersion = ? WHERE id = ?;", upgradesTo, 0)
           } catch (e: Exception) {
             throw Exception("Could not perform database upgrade to version $upgradesTo", e)
           }

@@ -1,14 +1,6 @@
 package de.md5lukas.waypoints.pointers
 
-import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.config.PointerConfiguration
-import de.md5lukas.waypoints.pointers.variants.ActionBarPointer
-import de.md5lukas.waypoints.pointers.variants.BeaconPointer
-import de.md5lukas.waypoints.pointers.variants.BlinkingBlockPointer
-import de.md5lukas.waypoints.pointers.variants.BossBarPointer
-import de.md5lukas.waypoints.pointers.variants.CompassPointer
-import de.md5lukas.waypoints.pointers.variants.HologramPointer
-import de.md5lukas.waypoints.pointers.variants.ParticlePointer
 import de.md5lukas.waypoints.pointers.variants.TrailPointer
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
@@ -45,83 +37,6 @@ class PointerManager(
     PatheticMapper.initialize(plugin as JavaPlugin)
   }
 
-  internal val availablePointers:
-      List<(PointerConfiguration, Player, AbstractScheduler) -> Pointer?> =
-      listOf(
-          { config, player, scheduler ->
-            with(config.actionBar) {
-              if (enabled) {
-                ActionBarPointer(this@PointerManager, player, scheduler, this)
-              } else {
-                null
-              }
-            }
-          },
-          { config, player, scheduler ->
-            with(config.beacon) {
-              if (enabled) {
-                BeaconPointer(this@PointerManager, player, scheduler, this)
-              } else {
-                null
-              }
-            }
-          },
-          { config, player, scheduler ->
-            with(config.blinkingBlock) {
-              if (enabled) {
-                BlinkingBlockPointer(this@PointerManager, player, scheduler, this)
-              } else {
-                null
-              }
-            }
-          },
-          { config, player, scheduler ->
-            with(config.compass) {
-              if (enabled) {
-                CompassPointer(this@PointerManager, player, scheduler, this)
-              } else {
-                null
-              }
-            }
-          },
-          { config, player, scheduler ->
-            with(config.particle) {
-              if (enabled) {
-                ParticlePointer(this@PointerManager, player, scheduler, this)
-              } else {
-                null
-              }
-            }
-          },
-          { config, player, scheduler ->
-            with(config.hologram) {
-              if (enabled && plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
-                HologramPointer(this@PointerManager, player, scheduler, this)
-              } else {
-                null
-              }
-            }
-          },
-          { config, player, scheduler ->
-            with(config.bossBar) {
-              if (enabled) {
-                BossBarPointer(this@PointerManager, player, scheduler, this)
-              } else {
-                null
-              }
-            }
-          },
-          { config, player, scheduler ->
-            with(config.trail) {
-              if (enabled) {
-                TrailPointer(this@PointerManager, player, scheduler, this)
-              } else {
-                null
-              }
-            }
-          },
-      )
-
   private val players = ConcurrentHashMap<Player, ManagedPlayer>()
 
   /**
@@ -133,6 +48,10 @@ class PointerManager(
     configuration = newConfiguration
     TrailPointer.resetPathfinder()
     players.values.forEach { it.reapplyConfiguration() }
+  }
+
+  fun reapplyConfiguration(player: Player) {
+    players[player]?.reapplyConfiguration()
   }
 
   /**
@@ -263,6 +182,8 @@ class PointerManager(
      * @return The previous compass target or <code>null</code> if there is none
      */
     fun loadCompassTarget(player: Player): CompletableFuture<Location?>
+
+    fun loadEnabledPointers(player: Player): CompletableFuture<Map<String, Boolean>>
 
     interface ActionBar {
       /**

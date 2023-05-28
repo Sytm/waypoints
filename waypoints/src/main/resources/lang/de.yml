@@ -277,17 +277,15 @@ inventory:
       activeColor: "<gold>"
       inactiveColor: "<gray>"
 
-    toggleGlobals:
-      visible:
-        displayName: "<yellow>Global Wegpunkte sind sichtbar"
-        description: "<gray>Drücke hier drauf um sie zu verstecken"
-      hidden:
-        displayName: "<yellow>Global Wegpunkte sind versteckt"
-        description: "<gray>Drücke hier drauf um sie zu zeigen"
+    settings:
+      displayName: "<yellow>Einstellungen"
+      description: |
+        <gray>Ändere die Sichtbarkeit von globalen
+        <gray>Wegpunkten und die verwendeten Wegweiser
 
     deselect:
       displayName: "<yellow>Alle Wegpunkt-Auswahlen entfernen"
-      description: "<gray>Die Richtungsindikatoren werden nicht mehr angezeigt"
+      description: "<gray>Die Wegweiser werden nicht mehr angezeigt"
     setWaypoint:
       displayName: "<yellow>Neuen Wegpunkt erstellen"
       description: |
@@ -299,6 +297,72 @@ inventory:
     createFolder:
       displayName: "<yellow>Neunen Ordner erstellen"
       description: ""
+
+  settings:
+    toggleGlobals:
+      visible:
+        displayName: "<yellow>Globale Wegpunkte sind sichtbar"
+        description: "<gray>Drücke hier drauf um sie zu verstecken"
+      hidden:
+        displayName: "<yellow>Globale Wegpunkte sind versteckt"
+        description: "<gray>Drücke hier drauf um sie zu zeigen"
+    pointers:
+      title:
+        displayName: "<yellow>Passe die Wegweiser an"
+        description: ""
+      on:
+        displayName: "<bold><green><name>"
+        description: ""
+      off:
+        displayName: "<bold><red><name>"
+        description: ""
+      actionBar:
+        name: "Aktionsleiste"
+        description: |
+          <gray>In deiner Aktionsleiste zeigt eine Anzeige
+          <gray>in welche Richtung du schauen musst um
+          <gray>zum Wegpunkt zu gelangen
+      beacon:
+        name: "Leuchtfeuer"
+        description: |
+          <gray>Sobald du in Sichtweite vom Wegpunkt kommst
+          <gray>wird ein Leuchtfeuerstrahl mit einstellbarer
+          <gray>Farbe auf dem Wegpunkt angezeigt
+      blinkingBlock:
+        name: "Blinkender Block"
+        description: |
+          <gray>Sobald du in die Nähe vom Wegpunkt kommst
+          <gray>erscheint ein blinkender Block auf diesem
+          <gray>der dir die genaue Position zeigt
+      bossBar:
+        name: "Bossleiste"
+        description: |
+          <gray>In der Bossleiste wird ein Kompass angezeigt
+          <gray>mit Markern für jeden ausgewählten Wegpunkt
+      compass:
+        name: "Kompass"
+        description: |
+          <gray>Jeder Kompass in deinem Inventar zeigt nun
+          <gray>zum Wegpunkt
+      hologram:
+        name: "Hologram"
+        description: |
+          <gray>Ein Hologram schwebt in deiner Nähe in
+          <gray>der Richtung zum Wegpunkt und zeigt den
+          <gray>Namen, das Icon und die Entfernung zu diesem
+          <gray>an
+      particle:
+        name: "Partikel-Kompass"
+        description: |
+          <gray>Partikel in der Nähe deiner Füße zeigen
+          <gray>dir in welcher Richtung sich der Wegpunkt
+          <gray>befindet
+      trail:
+        name: "Partikel-Pfad"
+        description: |
+          <gray>Es wird ein möglicher Weg zum Wegpunkt
+          <gray>berechnet welcher dann mit einem
+          <gray>Partikel-Pfad angezeigt wird
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:
@@ -356,7 +420,7 @@ inventory:
 
     select:
       displayName: "<yellow>Wegpunkte auswählen"
-      description: "<gray>Drücke hier drauf um für diesen Wegpunkt Richtungsindikatoren zu erhalten"
+      description: "<gray>Drücke hier drauf um für diesen Wegpunkt Wegweiser zu erhalten"
     deselect:
       displayName: "<yellow>Wegpunkt-Auswahl entfernen"
       description: ""

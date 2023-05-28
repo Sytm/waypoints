@@ -223,14 +223,6 @@ inventory:
       activeColor: "<gold>"
       inactiveColor: "<gray>"
 
-    toggleGlobals:
-      visible:
-        displayName: "<yellow>Waypoints globais estão visíveis"
-        description: "<gray>Clique para esconder elas"
-      hidden:
-        displayName: "<yellow>Waypoints globais estão escondidas"
-        description: "<gray>Clique para mostrar elas"
-
     deselect:
       description: "<gray>A direção não está mais sendo mostrada a você"
     setWaypoint:
@@ -244,6 +236,15 @@ inventory:
     createFolder:
       displayName: "<yellow>Criar nova pasta"
       description: ""
+
+  settings:
+    toggleGlobals:
+      visible:
+        displayName: "<yellow>Waypoints globais estão visíveis"
+        description: "<gray>Clique para esconder elas"
+      hidden:
+        displayName: "<yellow>Waypoints globais estão escondidas"
+        description: "<gray>Clique para mostrar elas"
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:

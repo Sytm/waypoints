@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.lang
 
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.pointers.BeaconColor
+import de.md5lukas.waypoints.pointers.variants.PointerVariant
 import org.bukkit.Material
 
 @Suppress("PropertyName")
@@ -170,13 +171,34 @@ class Translations(tl: TranslationLoader) {
           tl, "inventory.overview.cycleSort.inactiveColor", miniMessage = tl.itemMiniMessage)
   val OVERVIEW_CYCLE_SORT_OPTIONS =
       OverviewSort.values().map { it to Translation(tl, "text.sortOptions.${it.name.lowercase()}") }
-  val OVERVIEW_TOGGLE_GLOBALS_VISIBLE =
-      ItemTranslation(tl, "inventory.overview.toggleGlobals.visible")
-  val OVERVIEW_TOGGLE_GLOBALS_HIDDEN =
-      ItemTranslation(tl, "inventory.overview.toggleGlobals.hidden")
+  val OVERVIEW_SETTINGS = ItemTranslation(tl, "inventory.overview.settings")
   val OVERVIEW_DESELECT = ItemTranslation(tl, "inventory.overview.deselect")
   val OVERVIEW_SET_WAYPOINT = ItemTranslation(tl, "inventory.overview.setWaypoint")
   val OVERVIEW_CREATE_FOLDER = ItemTranslation(tl, "inventory.overview.createFolder")
+
+  val SETTINGS_TOGGLE_GLOBALS_VISIBLE =
+      ItemTranslation(tl, "inventory.settings.toggleGlobals.visible")
+  val SETTINGS_TOGGLE_GLOBALS_HIDDEN =
+      ItemTranslation(tl, "inventory.settings.toggleGlobals.hidden")
+  val SETTINGS_POINTERS_TITLE = ItemTranslation(tl, "inventory.settings.pointers.title")
+  // "on" and "off" in the keys are also interpreted as booleans by yaml. whyyy
+  val SETTINGS_POINTERS_ON = ItemTranslation(tl, "inventory.settings.pointers.true")
+  val SETTINGS_POINTERS_OFF = ItemTranslation(tl, "inventory.settings.pointers.false")
+
+  val SETTINGS_POINTERS_NAMES: Map<PointerVariant, Translation> =
+      mutableMapOf<PointerVariant, Translation>().also { map ->
+        map.putAll(
+            PointerVariant.values().map {
+              it to Translation(tl, "inventory.settings.pointers.${it.key}.name")
+            })
+      }
+  val SETTINGS_POINTERS_DESCRIPTIONS: Map<PointerVariant, InventoryTranslation> =
+      mutableMapOf<PointerVariant, InventoryTranslation>().also { map ->
+        map.putAll(
+            PointerVariant.values().map {
+              it to InventoryTranslation(tl, "inventory.settings.pointers.${it.key}.description")
+            })
+      }
 
   val ICON_PUBLIC = ItemTranslation(tl, "inventory.listing.public")
   val ICON_PERMISSION = ItemTranslation(tl, "inventory.listing.permission")

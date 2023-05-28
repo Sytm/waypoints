@@ -23,6 +23,7 @@ import de.md5lukas.waypoints.util.component2
 import de.md5lukas.waypoints.util.copyFieldsTo
 import de.md5lukas.waypoints.util.createWaypointPermission
 import de.md5lukas.waypoints.util.createWaypointPublic
+import de.md5lukas.waypoints.util.loreNotNull
 import de.md5lukas.waypoints.util.onClickSuspending
 import de.md5lukas.waypoints.util.placeholder
 import de.md5lukas.waypoints.util.plainDisplayName
@@ -412,7 +413,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                 waypoint.location.world !== null) {
               GUIItem(
                   wpGUI.translations.WAYPOINT_TELEPORT.getItem().also { stack ->
-                    val currentLore = stack.lore()!!
+                    val currentLore = stack.loreNotNull
                     wpGUI.plugin.teleportManager
                         .getTeleportCostDescription(wpGUI.viewer, waypoint)
                         ?.let { currentLore += it }

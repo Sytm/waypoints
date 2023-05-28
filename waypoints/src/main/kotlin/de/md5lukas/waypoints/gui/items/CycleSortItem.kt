@@ -3,6 +3,7 @@ package de.md5lukas.waypoints.gui.items
 import de.md5lukas.kinvs.items.GUICycleItem
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.gui.WaypointsGUI
+import de.md5lukas.waypoints.util.loreNotNull
 import de.md5lukas.waypoints.util.text
 
 class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) :
@@ -40,7 +41,7 @@ class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) :
                       .toList()
 
               val item = wpGUI.translations.OVERVIEW_CYCLE_SORT.getItem()
-              item.lore(item.lore()!! + additionalLines)
+              item.lore(item.loreNotNull + additionalLines)
 
               current to item
             }

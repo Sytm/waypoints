@@ -41,6 +41,31 @@ abstract class WaypointPlayerTest : TestBase() {
   }
 
   @Test
+  fun enabledPointersAreEmpty() = runBlocking {
+    assertTrue(api.getWaypointPlayer(UUID.randomUUID()).enabledPointers.isEmpty())
+  }
+
+  @Test
+  fun enabledPointersAreSaved() = runBlocking {
+    val id = UUID.randomUUID()
+    var player = api.getWaypointPlayer(id)
+
+    val map =
+        mapOf(
+            "type1" to true,
+            "type2" to true,
+            "type3" to false,
+            "type4" to true,
+        )
+
+    player.setEnabledPointers(map)
+
+    player = api.getWaypointPlayer(id) // Recreate WaypointsPlayer, to fetch value
+
+    assertEquals(map, player.enabledPointers)
+  }
+
+  @Test
   fun newPlayerHasNoSelectedWaypoints() = runBlocking {
     val player = api.getWaypointPlayer(UUID.randomUUID())
 

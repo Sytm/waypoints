@@ -194,7 +194,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
               "description1" placeholder "$line1 $line2".trim(),
               "description2" placeholder "$line3 $line4".trim(),
           )
-      editMeta { meta -> meta.lore(meta.lore()!! + customDescription) }
+      editMeta { meta -> meta.lore((meta.lore() ?: emptyList()) + customDescription) }
     }
   }
 }

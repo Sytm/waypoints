@@ -18,10 +18,12 @@
 - Multiple Waypoints can be selected at the same time (#92)
 - Integration to [Pl3xMap] has been added
 - Descriptions have been added to waypoints and folders. To change them [ProtocolLib] needs to be installed
+- A Particle Trail pointer has been added
+- Players can choose to disable some of the server-wide available pointers (For example only having the bossbar)
 
 ### Misc
 
-- Compass pointer nether support has been removed, because any possible implementation is inherently buggy
+- Compass pointer nether support has been removed, because any possible implementation is inherently inconsistent
 - Command help messages use used alias again
 - The Hologram Pointer uses display entities instead of ArmorStands
 

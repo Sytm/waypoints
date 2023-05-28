@@ -1,5 +1,7 @@
 package de.md5lukas.waypoints.api.sqlite
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.setValues
@@ -20,7 +22,27 @@ private constructor(
     showGlobals: Boolean,
     sortBy: OverviewSort,
     canBeTracked: Boolean,
+    enabledPointers: Map<String, Boolean>,
 ) : WaypointHolderImpl(dm, Type.PRIVATE, id), WaypointsPlayer {
+
+  private companion object {
+    private val gson = Gson()
+    private val typeToken = object : TypeToken<Map<String, Boolean>>() {}.type
+
+    private fun serializeEnabledPointers(enabledPointers: Map<String, Boolean>): String? {
+      if (enabledPointers.isEmpty()) {
+        return null
+      }
+      return gson.toJson(enabledPointers, typeToken)
+    }
+
+    private fun deserializeEnabledPointers(json: String?): Map<String, Boolean> {
+      if (json.isNullOrEmpty()) {
+        return emptyMap()
+      }
+      return gson.fromJson(json, typeToken)
+    }
+  }
 
   constructor(
       dm: DatabaseManager,
@@ -31,6 +53,7 @@ private constructor(
       showGlobals = row.getBoolean("showGlobals"),
       sortBy = OverviewSort.valueOf(row.getString("sortBy")),
       canBeTracked = row.getBoolean("canBeTracked"),
+      enabledPointers = deserializeEnabledPointers(row.getString("enabledPointers")),
   )
 
   override var showGlobals: Boolean = showGlobals
@@ -55,6 +78,14 @@ private constructor(
   override suspend fun setCanBeTracked(canBeTracked: Boolean) {
     this.canBeTracked = canBeTracked
     set("canBeTracked", canBeTracked)
+  }
+
+  override var enabledPointers: Map<String, Boolean> = enabledPointers
+    private set
+
+  override suspend fun setEnabledPointers(enabledPointers: Map<String, Boolean>) {
+    this.enabledPointers = enabledPointers
+    set("enabledPointers", serializeEnabledPointers(enabledPointers))
   }
 
   override suspend fun getCooldownUntil(type: Type): OffsetDateTime? =

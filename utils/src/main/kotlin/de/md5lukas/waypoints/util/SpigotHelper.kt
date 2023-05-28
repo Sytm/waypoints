@@ -3,20 +3,14 @@ package de.md5lukas.waypoints.util
 import com.google.common.math.DoubleMath
 import java.util.concurrent.CompletableFuture
 import kotlin.math.roundToInt
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.Plugin
-
-@Deprecated(
-    "Replace with Schedulers",
-    replaceWith = ReplaceWith("Schedulers.global(plugin).schedule()"),
-    DeprecationLevel.ERROR)
-inline fun Plugin.runTask(crossinline block: () -> Unit) {
-  server.scheduler.runTask(this, Runnable { block() })
-}
 
 fun Plugin.callEvent(event: Event) {
   server.pluginManager.callEvent(event)
@@ -30,16 +24,6 @@ fun ConfigurationSection.getStringNotNull(path: String): String =
     getString(path)
         ?: throw IllegalArgumentException(
             "The configuration key ${getFullPath(path)} is not present")
-
-fun ConfigurationSection.getConfigurationSectionNotNull(path: String): ConfigurationSection =
-    getConfigurationSection(path)
-        ?: throw IllegalArgumentException(
-            "The configuration section ${getFullPath(path)} is not present")
-
-@Suppress("UNCHECKED_CAST")
-fun <T> ConfigurationSection.getListNotNull(path: String): List<T> =
-    getList(path) as List<T>?
-        ?: throw IllegalArgumentException("The list at ${getFullPath(path)} is not present")
 
 private fun ConfigurationSection.getFullPath(path: String): String =
     if (currentPath!!.isEmpty()) {
@@ -83,3 +67,6 @@ fun Location.fuzzyEquals(other: Location, tolerance: Double) =
         DoubleMath.fuzzyEquals(x, other.x, tolerance) &&
         DoubleMath.fuzzyEquals(y, other.y, tolerance) &&
         DoubleMath.fuzzyEquals(x, other.x, tolerance)
+
+val ItemStack.loreNotNull: MutableList<Component>
+  get() = lore() ?: mutableListOf()

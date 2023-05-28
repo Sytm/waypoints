@@ -2,7 +2,9 @@ package de.md5lukas.waypoints.pointers
 
 import de.md5lukas.schedulers.AbstractScheduledTask
 import de.md5lukas.schedulers.Schedulers
+import de.md5lukas.waypoints.pointers.variants.PointerVariant
 import java.util.Collections
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.floor
 import org.bukkit.Location
@@ -14,6 +16,8 @@ internal class ManagedPlayer(
 ) {
 
   private val scheduler = Schedulers.entity(pointerManager.plugin, player)
+  private val pointerSetupLock = Any()
+  private var pointerSetup: CompletableFuture<*>? = null
   private val pointers = mutableListOf<PlayerPointer>()
   private val tracked = CopyOnWriteArrayList<Trackable>()
   val readOnlyTracked: Collection<Trackable> = Collections.unmodifiableCollection(tracked)
@@ -48,6 +52,7 @@ internal class ManagedPlayer(
     }
     if (discard) {
       pointers.clear()
+      pointerSetup = null
     }
   }
 
@@ -70,23 +75,45 @@ internal class ManagedPlayer(
     }
 
     pointers.clear()
+    pointerSetup = null
 
     scheduleTasks()
   }
 
   private fun scheduleTasks() {
-    pointerManager.availablePointers.forEach { factory ->
-      factory(pointerManager.configuration, player, scheduler)?.let { pointer ->
-        logger.debug("Commissioning new PlayerPointer for {}", pointer)
-        val playerPointer = PlayerPointer(pointer)
-        val task =
-            scheduler.scheduleAtFixedRate(
-                interval = pointer.interval.toLong(), delay = 1L, block = playerPointer)
-        task?.let {
-          playerPointer.task = task
-          pointers += playerPointer
-        }
-      }
+    if (pointerSetup !== null) return
+    synchronized(pointerSetupLock) {
+      if (pointerSetup !== null) return
+      pointerSetup =
+          pointerManager.hooks
+              .loadEnabledPointers(player)
+              .thenAccept { enabled ->
+                PointerVariant.values()
+                    .filter {
+                      it.isEnabled(pointerManager.configuration) &&
+                          enabled.getOrDefault(it.key, true)
+                    }
+                    .forEach {
+                      val pointer = it.create(pointerManager, player, scheduler)
+
+                      logger.debug("Commissioning new PlayerPointer for {}", pointer)
+                      val playerPointer = PlayerPointer(pointer)
+                      val task =
+                          scheduler.scheduleAtFixedRate(
+                              interval = pointer.interval.toLong(),
+                              delay = 1L,
+                              block = playerPointer,
+                          )
+                      task?.let {
+                        playerPointer.task = task
+                        pointers += playerPointer
+                      }
+                    }
+              }
+              .exceptionally {
+                logger.error("Couldn't load enabled pointer types for player ${player.name}", it)
+                null
+              }
     }
   }
 

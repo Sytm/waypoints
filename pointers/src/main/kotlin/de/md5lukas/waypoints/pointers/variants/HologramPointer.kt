@@ -4,7 +4,6 @@ import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
-import de.md5lukas.waypoints.pointers.config.HologramConfiguration
 import de.md5lukas.waypoints.pointers.packets.ItemDisplay
 import de.md5lukas.waypoints.pointers.packets.SmoothEntity
 import de.md5lukas.waypoints.pointers.packets.TextDisplay
@@ -18,8 +17,9 @@ internal class HologramPointer(
     pointerManager: PointerManager,
     player: Player,
     scheduler: AbstractScheduler,
-    private val config: HologramConfiguration
 ) : Pointer(pointerManager, player, scheduler) {
+
+  private val config = pointerManager.configuration.hologram
 
   override val interval: Int
     get() = config.interval

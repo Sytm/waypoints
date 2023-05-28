@@ -5,7 +5,6 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.StaticTrackable
 import de.md5lukas.waypoints.pointers.Trackable
-import de.md5lukas.waypoints.pointers.config.BossBarConfiguration
 import de.md5lukas.waypoints.pointers.util.getAngleToTarget
 import de.md5lukas.waypoints.pointers.util.normalizeAngleTo360
 import de.md5lukas.waypoints.pointers.util.textComponent
@@ -24,8 +23,9 @@ internal class BossBarPointer(
     pointerManager: PointerManager,
     player: Player,
     scheduler: AbstractScheduler,
-    private val config: BossBarConfiguration,
 ) : Pointer(pointerManager, player, scheduler) {
+
+  private val config = pointerManager.configuration.bossBar
 
   override val interval: Int
     get() = config.interval
