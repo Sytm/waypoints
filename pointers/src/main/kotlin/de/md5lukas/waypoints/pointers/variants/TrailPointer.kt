@@ -3,6 +3,7 @@ package de.md5lukas.waypoints.pointers.variants
 import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
+import de.md5lukas.waypoints.pointers.StaticTrackable
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.TrailConfiguration
 import de.md5lukas.waypoints.pointers.util.blockEquals
@@ -73,16 +74,16 @@ internal class TrailPointer(
   private var lastFuture: CompletableFuture<*>? = null
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
-    if (translatedTarget === null) {
+    if (translatedTarget === null || trackable !is StaticTrackable) {
       return
     }
 
     if (lastFuture === null) {
       // If the player has moved too far away from any parts of the calculated trail invalidate the
-      // previous trail
+      // previous trail or if the calculated trail is only one block long because the path couldn't be calculated
       if (locationTrail.all {
         player.location.distanceSquared(it) >= config.pathInvalidationDistanceSquared
-      }) {
+      } || (locationTrail.size == 1 && !locationTrail.last().blockEquals(translatedTarget))) {
         locationTrail.clear()
       }
 
@@ -104,7 +105,6 @@ internal class TrailPointer(
         val last = locationTrail.last()
         if (!last.blockEquals(translatedTarget) &&
             player.location.distanceSquared(last) < config.pathCalculateAheadDistanceSquared) {
-          println("calculating")
           lastFuture =
               pathfinder
                   .findPath(last.toPathPosition(), translatedTarget.toPathPosition())
