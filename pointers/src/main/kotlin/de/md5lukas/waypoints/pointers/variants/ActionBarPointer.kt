@@ -4,7 +4,6 @@ import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
-import de.md5lukas.waypoints.pointers.config.ActionBarConfiguration
 import de.md5lukas.waypoints.pointers.util.getAngleToTarget
 import de.md5lukas.waypoints.pointers.util.textComponent
 import kotlin.math.roundToInt
@@ -16,9 +15,9 @@ internal class ActionBarPointer(
     pointerManager: PointerManager,
     player: Player,
     scheduler: AbstractScheduler,
-    private val config: ActionBarConfiguration,
 ) : Pointer(pointerManager, player, scheduler) {
 
+  private val config = pointerManager.configuration.actionBar
   override val interval: Int
     get() = config.interval
 

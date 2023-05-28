@@ -32,13 +32,18 @@ class ItemTranslation(
             it.itemMeta!!.also { itemMeta ->
               itemMeta.displayName(
                   translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))
+              var discard = true // Remove leading blank lines
               itemMeta.lore(
-                  rawDescription
-                      .lineSequence()
-                      .map { line ->
-                        translationLoader.itemMiniMessage.deserialize(line, *resolvers)
-                      }
-                      .toMutableList())
+                  rawDescription.lineSequence().mapNotNullTo(mutableListOf()) { line ->
+                    if (line.isNotBlank()) {
+                      discard = false
+                    }
+                    if (discard) {
+                      null
+                    } else {
+                      translationLoader.itemMiniMessage.deserialize(line, *resolvers)
+                    }
+                  })
             }
       }
 }

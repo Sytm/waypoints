@@ -2,7 +2,6 @@ package de.md5lukas.waypoints.pointers.variants
 
 import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.*
-import de.md5lukas.waypoints.pointers.config.BeaconConfiguration
 import de.md5lukas.waypoints.pointers.util.blockEquals
 import de.md5lukas.waypoints.pointers.util.highestBlock
 import de.md5lukas.waypoints.pointers.util.sendActualBlock
@@ -16,8 +15,9 @@ internal class BeaconPointer(
     pointerManager: PointerManager,
     player: Player,
     scheduler: AbstractScheduler,
-    private val config: BeaconConfiguration,
 ) : Pointer(pointerManager, player, scheduler) {
+
+  private val config = pointerManager.configuration.beacon
 
   override val interval: Int
     get() = config.interval

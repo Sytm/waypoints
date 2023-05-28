@@ -389,12 +389,19 @@ inventory:
 
   overview:
     cycleSort: HOPPER
-    toggleGlobals:
-      visible: ENDER_CHEST
-      hidden: CHEST
+    settings: CRAFTING_TABLE
     deselect: MILK_BUCKET
     setWaypoint: TORCH
     createFolder: WRITABLE_BOOK
+
+  settings:
+    toggleGlobals:
+      visible: ENDER_CHEST
+      hidden: CHEST
+    pointers:
+      title: OAK_SIGN
+      on: LIME_CONCRETE
+      off: RED_CONCRETE
 
   listing:
     public: ENCHANTED_BOOK

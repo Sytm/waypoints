@@ -28,6 +28,16 @@ interface WaypointsPlayer : WaypointHolder {
 
   suspend fun setCanBeTracked(canBeTracked: Boolean)
 
+  val enabledPointers: Map<String, Boolean>
+
+  suspend fun setEnabledPointers(enabledPointers: Map<String, Boolean>)
+
+  fun isPointerEnabled(key: String) = enabledPointers.getOrDefault(key, true)
+
+  suspend fun setPointerEnabled(key: String, value: Boolean) {
+    setEnabledPointers(enabledPointers.toMutableMap().also { it[key] = value })
+  }
+
   /**
    * Get the point in time at which a cooldown for teleporting has expired if present.
    *

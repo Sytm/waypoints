@@ -235,14 +235,6 @@ inventory:
       activeColor: "<gold>"
       inactiveColor: "<gray>"
 
-    toggleGlobals:
-      visible:
-        displayName: "<yellow>全局路径点可见"
-        description: "<gray>点击隐藏"
-      hidden:
-        displayName: "<yellow>全局路径点隐藏"
-        description: "<gray>点击显示"
-
     deselect:
       description: "<gray>导航消息将不再提醒"
     setWaypoint:
@@ -255,6 +247,15 @@ inventory:
     createFolder:
       displayName: "<yellow>创建新路径点组"
       description: ""
+
+  settings:
+    toggleGlobals:
+      visible:
+        displayName: "<yellow>全局路径点可见"
+        description: "<gray>点击隐藏"
+      hidden:
+        displayName: "<yellow>全局路径点隐藏"
+        description: "<gray>点击显示"
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:

@@ -277,13 +277,11 @@ inventory:
       activeColor: "<gold>"
       inactiveColor: "<gray>"
 
-    toggleGlobals:
-      visible:
-        displayName: "<yellow>Global waypoints are visible"
-        description: "<gray>Click here to hide them"
-      hidden:
-        displayName: "<yellow>Global waypoints are hidden"
-        description: "<gray>Click here to show them"
+    settings:
+      displayName: "<yellow>Settings"
+      description: |
+        <gray>Change visibility of global
+        <gray>waypoints and used pointers
 
     deselect:
       displayName: "<yellow>Deselect all waypoints"
@@ -299,6 +297,70 @@ inventory:
     createFolder:
       displayName: "<yellow>Create new folder"
       description: ""
+
+  settings:
+    toggleGlobals:
+      visible:
+        displayName: "<yellow>Global waypoints are visible"
+        description: "<gray>Click here to hide them"
+      hidden:
+        displayName: "<yellow>Global waypoints are hidden"
+        description: "<gray>Click here to show them"
+    pointers:
+      title:
+        displayName: "<yellow>Customize which pointers are used"
+        description: ""
+      on:
+        displayName: "<bold><green><name>"
+        description: ""
+      off:
+        displayName: "<bold><red><name>"
+        description: ""
+      actionBar:
+        name: "Action Bar"
+        description: |
+          <gray>In your action bar an indicator is show
+          <gray>that tells you in which direction you must
+          <gray>look to get to the Waypoint
+      beacon:
+        name: "Beacon"
+        description: |
+          <gray>After you entered the view distance of the
+          <gray>Waypoint a beacon beam with customizable color
+          <gray>appears on top of the Waypoint
+      blinkingBlock:
+        name: "Blinking Block"
+        description: |
+          <gray>After you got into the vicinity of the Waypoint
+          <gray>a blinking block on top of the Waypoint shows you
+          <gray>the exact location
+      bossBar:
+        name: "Boss Bar"
+        description: |
+          <gray>A compass is displayed in the boss bar
+          <gray>with markers for waypoints you have selected
+      compass:
+        name: "Compass"
+        description: |
+          <gray>Any compass in your inventory now points
+          <gray>towards the waypoint
+      hologram:
+        name: "Hologram"
+        description: |
+          <gray>A hologram hovers near you in the direction
+          <gray>of the Waypoint and displays the name, icon
+          <gray>and distance to the Waypoint
+      particle:
+        name: "Particle Compass"
+        description: |
+          <gray>Particles near your feet show you in
+          <gray>which direction the waypoint is located
+      trail:
+        name: "Particle Trail"
+        description: |
+          <gray>A possible Path towards the Waypoint
+          <gray>is calculated and then displayed
+          <gray>with a particle trail
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:

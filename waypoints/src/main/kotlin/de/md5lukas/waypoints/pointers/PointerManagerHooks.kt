@@ -37,6 +37,9 @@ class PointerManagerHooks(private val plugin: WaypointsPlugin) : Hooks {
   override fun loadCompassTarget(player: Player) =
       plugin.future { plugin.api.getWaypointPlayer(player.uniqueId).getCompassTarget() }
 
+  override fun loadEnabledPointers(player: Player) =
+      plugin.future { plugin.api.getWaypointPlayer(player.uniqueId).enabledPointers }
+
   private inner class ActionBarPointerHooks : Hooks.ActionBar {
     override fun formatDistanceMessage(
         player: Player,

@@ -22,8 +22,9 @@ internal class TrailPointer(
     pointerManager: PointerManager,
     player: Player,
     scheduler: AbstractScheduler,
-    private val config: TrailConfiguration
 ) : Pointer(pointerManager, player, scheduler) {
+
+  private val config = pointerManager.configuration.trail
 
   companion object {
     private val pathfinderLock = Any()
@@ -80,7 +81,8 @@ internal class TrailPointer(
 
     if (lastFuture === null) {
       // If the player has moved too far away from any parts of the calculated trail invalidate the
-      // previous trail or if the calculated trail is only one block long because the path couldn't be calculated
+      // previous trail or if the calculated trail is only one block long because the path couldn't
+      // be calculated
       if (locationTrail.all {
         player.location.distanceSquared(it) >= config.pathInvalidationDistanceSquared
       } || (locationTrail.size == 1 && !locationTrail.last().blockEquals(translatedTarget))) {

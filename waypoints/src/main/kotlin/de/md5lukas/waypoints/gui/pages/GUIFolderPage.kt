@@ -15,7 +15,6 @@ import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.CycleSortItem
-import de.md5lukas.waypoints.gui.items.ToggleGlobalsItem
 import de.md5lukas.waypoints.util.asSingletonList
 import de.md5lukas.waypoints.util.checkFolderName
 import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
@@ -50,7 +49,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
      * s = Cycle Sort
      * d = Deselect active waypoint / Edit description
      * i = None / Folder Icon
-     * t = Toggle Globals / Rename
+     * t = Settings / Rename
      * w = Create Waypoint / Create waypoint in folder
      * b = None / Back
      * n = Next
@@ -176,49 +175,45 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
               }
             },
         't' to
-            if (wpGUI.isOwner && isPlayerOverview) {
-              if (wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
-                ToggleGlobalsItem(wpGUI) { wpGUI.skedule { updateListingContent() } }
-              } else {
-                background
-              }
-            } else {
-              if (guiFolder is Folder && canModify) {
-                GUIItem(wpGUI.translations.FOLDER_RENAME.item) {
-                  wpGUI.viewer.closeInventory()
-                  AnvilGUI.Builder()
-                      .plugin(wpGUI.plugin)
-                      .itemLeft(
-                          ItemStack(Material.PAPER).also { it.plainDisplayName = guiFolder.name })
-                      .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, name) ->
-                        if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
-                            return@onClickSuspending emptyList()
+            when {
+              isPlayerOverview ->
+                  GUIItem(wpGUI.translations.OVERVIEW_SETTINGS.item) {
+                    wpGUI.open(SettingsPage(wpGUI).apply { init() })
+                  }
+              guiFolder is Folder && canModify ->
+                  GUIItem(wpGUI.translations.FOLDER_RENAME.item) {
+                    wpGUI.viewer.closeInventory()
+                    AnvilGUI.Builder()
+                        .plugin(wpGUI.plugin)
+                        .itemLeft(
+                            ItemStack(Material.PAPER).also { it.plainDisplayName = guiFolder.name })
+                        .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, name) ->
+                          if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                              return@onClickSuspending emptyList()
 
-                        val holder = wpGUI.getHolderForType(guiFolder.type)
+                          val holder = wpGUI.getHolderForType(guiFolder.type)
 
-                        if (checkFolderName(wpGUI.plugin, holder, name)) {
-                          guiFolder.setName(name)
+                          if (checkFolderName(wpGUI.plugin, holder, name)) {
+                            guiFolder.setName(name)
 
-                          updateControls()
-                        } else {
-                          when (guiFolder.type) {
-                            Type.PRIVATE -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PRIVATE
-                            Type.PUBLIC -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PUBLIC
-                            Type.PERMISSION -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PERMISSION
-                            else ->
-                                throw IllegalArgumentException(
-                                    "Folders of the type ${guiFolder.type} have no name")
-                          }.send(wpGUI.viewer)
+                            updateControls()
+                          } else {
+                            when (guiFolder.type) {
+                              Type.PRIVATE -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PRIVATE
+                              Type.PUBLIC -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PUBLIC
+                              Type.PERMISSION -> wpGUI.translations.FOLDER_NAME_DUPLICATE_PERMISSION
+                              else ->
+                                  throw IllegalArgumentException(
+                                      "Folders of the type ${guiFolder.type} have no name")
+                            }.send(wpGUI.viewer)
+                          }
+
+                          return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
                         }
-
-                        return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
-                      }
-                      .onClose { wpGUI.schedule { wpGUI.gui.open() } }
-                      .open(wpGUI.viewer)
-                }
-              } else {
-                background
-              }
+                        .onClose { wpGUI.schedule { wpGUI.gui.open() } }
+                        .open(wpGUI.viewer)
+                  }
+              else -> background
             },
         'w' to
             if (canModify &&
