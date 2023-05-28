@@ -423,6 +423,7 @@ inventory:
       confirm: LAVA_BUCKET
       cancel: WATER_BUCKET
     rename: NAME_TAG
+    editIcon: PAINTING
     editDescription: PAPER
     moveToFolder: CHEST_MINECART
     teleport: ENDER_PEARL

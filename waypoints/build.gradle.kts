@@ -133,12 +133,12 @@ tasks.withType<ShadowJar> {
   }
 
   arrayOf("commons", "kinvs", "konfig", "schedulers", "signgui").forEach {
-    relocate("de.md5lukas.$it", "de.md5lukas.waypoints.$it")
+    relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.$it")
   }
 
-  relocate("com.okkero.skedule", "de.md5lukas.waypoints.skedule")
-  relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.anvilgui")
-  relocate("org.bstats", "de.md5lukas.waypoints.bstats")
+  relocate("com.okkero.skedule", "de.md5lukas.waypoints.libs.skedule")
+  relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.libs.anvilgui")
+  relocate("org.bstats", "de.md5lukas.waypoints.libs.bstats")
 }
 
 runPaper.folia.registerTask()

@@ -187,6 +187,10 @@ message:
       permission: "<gray>Der eingeschränkte Ordner wurde erfolgreich erstellt."
     newIconInvalid: "<red>Das Item das du als Icon für den Ordner verwenden möchtest ist nicht erlaubt."
 
+  allowedIcons:
+    whitelist: "<red>Nur die folgenden Items sind erlaubt: <yellow><items>"
+    blacklist: "<red>Die folgenden Items sind nicht erlaubt: <yellow><items>"
+
   teleport:
     # remaining_cooldown: Time left until player can teleport again
     onCooldown: "<red>Du kannst für <yellow><remaining_cooldown><red> nicht teleportieren."
@@ -439,6 +443,21 @@ inventory:
     rename:
       displayName: "<yellow>Wegpunkt umbenennen"
       description: ""
+    editIcon:
+      displayName: "<yellow>Icon ändern"
+      description: |
+        <gray>Drücke hier drauf um das Item in
+        <gray>deiner Haupthand als neues Icon
+        <gray>für den Wegpunkt zu verwenden.
+        
+        <gray>Falls du das Icon von einem Ordner
+        <gray>ändern möchtest musst du auf sein
+        <gray>Icon drücken nachdem du den Ordner
+        <gray>geöffnet hast.
+        
+        <gray>In beiden Fällen kann mit einem
+        <gray>Shift-Klick das Icon auf den
+        <gray>Standard zurück gesetzt werden
     editDescription:
       displayName: "<yellow>Beschreibung ändern"
       description: "<gray>Alle Änderungen werden <bold>immer</bold> gespeichert"

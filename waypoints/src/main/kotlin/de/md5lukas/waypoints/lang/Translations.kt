@@ -135,6 +135,9 @@ class Translations(tl: TranslationLoader) {
   val FOLDER_CREATE_SUCCESS_PERMISSION =
       Translation(tl, "message.folder.createSuccess.permission", PREFIX)
 
+  val MESSAGE_ALLOWED_ICONS_WHITELIST = Translation(tl, "message.allowedIcons.whitelist")
+  val MESSAGE_ALLOWED_ICONS_BLACKLIST = Translation(tl, "message.allowedIcons.blacklist")
+
   val MESSAGE_TELEPORT_ON_COOLDOWN = Translation(tl, "message.teleport.onCooldown", PREFIX)
   val MESSAGE_TELEPORT_NOT_ALLOWED = Translation(tl, "message.teleport.notAllowed", PREFIX)
   val MESSAGE_TELEPORT_NOT_ENOUGH_XP = Translation(tl, "message.teleport.notEnough.xp", PREFIX)
@@ -222,6 +225,7 @@ class Translations(tl: TranslationLoader) {
   val WAYPOINT_DELETE_CONFIRM_TRUE = ItemTranslation(tl, "inventory.waypoint.delete.confirm")
   val WAYPOINT_DELETE_CONFIRM_FALSE = ItemTranslation(tl, "inventory.waypoint.delete.cancel")
   val WAYPOINT_RENAME = ItemTranslation(tl, "inventory.waypoint.rename")
+  val WAYPOINT_EDIT_ICON = ItemTranslation(tl, "inventory.waypoint.editIcon")
   val WAYPOINT_EDIT_DESCRIPTION = ItemTranslation(tl, "inventory.waypoint.editDescription")
   val WAYPOINT_MOVE_TO_FOLDER = ItemTranslation(tl, "inventory.waypoint.moveToFolder")
   val WAYPOINT_TELEPORT = ItemTranslation(tl, "inventory.waypoint.teleport")

@@ -187,6 +187,10 @@ message:
       permission: "<gray>The permission folder has been created successfully."
     newIconInvalid: "<red>The item you are trying to use as a new icon for the folder is not allowed."
 
+  allowedIcons:
+    whitelist: "<red>Only the following items are allowed: <yellow><items>"
+    blacklist: "<red>The following items are not allowed: <yellow><items>"
+
   teleport:
     # remaining_cooldown: Time left until player can teleport again
     onCooldown: "<red>You cannot teleport for <yellow><remaining_cooldown><red>."
@@ -437,6 +441,18 @@ inventory:
     rename:
       displayName: "<yellow>Rename waypoint"
       description: ""
+    editIcon:
+      displayName: "<yellow>Edit icon"
+      description: |
+        <gray>Click here to make the item in your
+        <gray>main hand the icon for this Waypoint.
+        
+        <gray>If you want to change the icon of a
+        <gray>folder you must click on its icon
+        <gray>after you opened it.
+        
+        <gray>In both cases performing a shift-click
+        <gray>resets the icon to the default
     editDescription:
       displayName: "<yellow>Edit description"
       description: "<gray>All changes will <bold>always</bold> be saved"

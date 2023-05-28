@@ -4,6 +4,7 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.config.general.FilterType
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
@@ -24,8 +25,11 @@ class SuccessWaypoint(val waypoint: Waypoint) : CreateResult()
 
 class SuccessFolder(val folder: Folder) : CreateResult()
 
-fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material): Boolean {
-  if (material == Material.AIR) {
+fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material?): Boolean {
+  if (material === null) {
+    return true
+  }
+  if (material === Material.AIR) {
     return false
   }
 
@@ -34,6 +38,28 @@ fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material): Boo
     FilterType.WHITELIST -> material in filter.materials
     FilterType.BLACKLIST -> material !in filter.materials
   }
+}
+
+fun getAllowedItemsForCustomIconMessage(plugin: WaypointsPlugin): Component {
+  val filter = plugin.waypointsConfig.general.customIconFilter
+
+  val materialsComponent = text {
+    if (filter.type === FilterType.BLACKLIST) {
+      append(Component.translatable(Material.AIR))
+      append(Component.text(", "))
+    }
+    filter.materials.forEachIndexed { index, material ->
+      if (index > 0) {
+        append(Component.text(", "))
+      }
+      append(Component.translatable(material))
+    }
+  }
+
+  return when (filter.type) {
+    FilterType.WHITELIST -> plugin.translations.MESSAGE_ALLOWED_ICONS_WHITELIST
+    FilterType.BLACKLIST -> plugin.translations.MESSAGE_ALLOWED_ICONS_BLACKLIST
+  }.withReplacements("items" placeholder materialsComponent)
 }
 
 fun checkWorldAvailability(plugin: WaypointsPlugin, world: World): Boolean {

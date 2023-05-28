@@ -21,6 +21,7 @@ import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
 import de.md5lukas.waypoints.util.checkWorldAvailability
 import de.md5lukas.waypoints.util.component1
 import de.md5lukas.waypoints.util.component2
+import de.md5lukas.waypoints.util.getAllowedItemsForCustomIconMessage
 import de.md5lukas.waypoints.util.isLocationOutOfBounds
 import de.md5lukas.waypoints.util.onClickSuspending
 import de.md5lukas.waypoints.util.parseLocationString
@@ -160,7 +161,12 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                     (guiFolder as Folder).getItem(wpGUI.viewer),
                     if (canModify) {
                       {
-                        val newMaterial = wpGUI.viewer.inventory.itemInMainHand.type
+                        val newMaterial =
+                            if (it.isShiftClick) {
+                              null
+                            } else {
+                              wpGUI.viewer.inventory.itemInMainHand.type
+                            }
 
                         if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
                           wpGUI.skedule {
@@ -168,7 +174,10 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                             updateControls()
                           }
                         } else {
-                          wpGUI.translations.FOLDER_NEW_ICON_INVALID.send(wpGUI.viewer)
+                          wpGUI.viewer.sendMessage(
+                              wpGUI.translations.FOLDER_NEW_ICON_INVALID.text
+                                  .appendSpace()
+                                  .append(getAllowedItemsForCustomIconMessage(wpGUI.plugin)))
                         }
                       }
                     } else null)
