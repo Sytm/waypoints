@@ -211,6 +211,10 @@ message:
       notice: "<gray>Du darfst dich für <yellow><duration><gray> nicht Bewegen."
       moved: "<red>Deine eingereihte Teleportation wurde abgebrochen da du dich bewegt hast."
 
+  sharing:
+    alreadyShared: "<red>Du hast diesen Wegpunkt bereits mit <yellow><name></yellow> geteilt."
+    success: "<gray>Der Wegpunkt wurde mit <yellow><name></yellow> geteilt."
+
   tracking:
     playerNoLongerOnline: "<red>Der Spieler den du verfolgen möchtest ist nicht mehr online."
     trackableRequired: "<red>Um andere Spieler verfolgen zu können musst du dich selbst sichtbar machen."
@@ -379,6 +383,11 @@ inventory:
     tracking:
       displayName: "<green>Spieler"
       description: "<gray>Verfolge andere Spieler"
+    shared:
+      displayName: "<aqua>Geteilte Wegpunkte"
+      description: |
+        <gray>Wegpunkte die andere Spieler mit
+        <gray>dir geteilt haben
 
   waypoint:
     # name: Name of the waypoint
@@ -481,7 +490,14 @@ inventory:
       description: ""
     getUuid:
       displayName: "<yellow>UUID vom Wegpunkt erhalten"
-      description: "<gray>Schickt eine klickbare Nachricht die die UUID in das Textfeld kopiert"
+      description: | 
+        <gray>Schickt eine klickbare Nachricht die
+        <gray>die UUID in die Zwischenablage kopiert
+    share:
+      displayName: "<yellow>Teile den Wegpunkt"
+      description: |
+        <gray>Teile den Wegpunkt mit anderen Spielern
+        <gray>oder entferne die Freigaben für diese
     editPermission:
       displayName: "<yellow>Benötigte Berechtigung ändern"
       description: "<gray>Aktuell benötigte Berechtigung ist <yellow><permission>"
@@ -611,3 +627,28 @@ inventory:
       description: |
         <gray>Welt: <gold><world>
         <gray>Entfernung: <gold><distance:'.0'>
+
+  sharing:
+    player:
+      select:
+        displayName: "<aqua><name>"
+        description: ""
+      delete:
+        displayName: "<aqua><name>"
+        description: |
+          <gray>Drücke hier um den Zugriff auf
+          <gray>diesen Wegpunkt für <yellow><name></yellow> 
+          <gray>zurückzuziehen.
+    viewSharing:
+      displayName: "<yellow>Geteilt mit"
+      description: |
+        <gray>Sehe welche Spieler zugriff auf diesen
+        <gray>Wegpunkt haben und entferne diesen
+        <gray>gegebenenfalls wieder.
+    sharedBy: |
+      
+      <gray>Dieser Wegpunkt wurde von <yellow><name></yellow>
+      <gray>mit dir geteilt.
+      <gray>Shift-Klicke um diese Freigabe
+      <gray>zurückzuziehen.
+    unknownPlayer: "<red>Unknown"

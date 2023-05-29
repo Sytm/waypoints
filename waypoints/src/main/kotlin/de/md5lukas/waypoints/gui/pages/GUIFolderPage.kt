@@ -18,6 +18,7 @@ import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.config.general.WorldNotFoundAction
 import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
+import de.md5lukas.waypoints.gui.SharedDisplayable
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.CycleSortItem
 import de.md5lukas.waypoints.util.asSingletonList
@@ -87,6 +88,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
           wpGUI.viewer.hasPermission(WaypointsPermissions.TRACKING_ENABLED)) {
         content.add(PlayerTrackingDisplayable)
       }
+      if (wpGUI.viewerData.hasSharedWaypoints()) {
+        content.add(SharedDisplayable)
+      }
     }
 
     if (guiFolder.type == Type.PERMISSION &&
@@ -135,6 +139,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
             is Folder -> wpGUI.openFolder(value)
             is Waypoint -> wpGUI.openWaypoint(value)
             is PlayerTrackingDisplayable -> wpGUI.openPlayerTracking()
+            is SharedDisplayable -> wpGUI.openShared()
             else ->
                 throw IllegalStateException(
                     "The GUIDisplayable is of an unknown subclass ${value.javaClass.name}")

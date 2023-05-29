@@ -10,6 +10,7 @@ import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
+import de.md5lukas.waypoints.gui.SharedDisplayable
 import de.md5lukas.waypoints.lang.InventoryTranslation
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
@@ -28,6 +29,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
         is GUIFolder -> getItem(player)
         is Waypoint -> getItem(player)
         is PlayerTrackingDisplayable -> translations.ICON_TRACKING.item
+        is SharedDisplayable -> translations.ICON_SHARED.item
         else -> throw IllegalStateException("Unknown GUIDisplayable subclass")
       }
 

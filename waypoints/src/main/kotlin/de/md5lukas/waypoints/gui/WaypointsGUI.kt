@@ -75,6 +75,12 @@ class WaypointsGUI(
     open(page)
   }
 
+  suspend fun openShared() {
+    val page = SharedWaypointsPage(this).apply { init() }
+    switchContext(SynchronizationContext.SYNC)
+    open(page)
+  }
+
   fun openCreateFolder(waypointHolder: WaypointHolder) {
     AnvilGUI.Builder()
         .plugin(plugin)

@@ -105,5 +105,7 @@ interface WaypointsPlayer : WaypointHolder {
 
   suspend fun getSharingWaypoints(): List<WaypointShare>
 
+  suspend fun hasSharedWaypoints(): Boolean
+
   suspend fun getSharedWaypoints(): List<WaypointShare>
 }

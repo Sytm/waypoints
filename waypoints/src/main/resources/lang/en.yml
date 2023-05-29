@@ -216,6 +216,10 @@ message:
     trackableRequired: "<red>To track other players you must make yourself visible."
     notification: "<gray>The player <yellow><name><gray> is tracking you."
 
+  sharing:
+    alreadyShared: "<red>You have already shared this waypoint with <yellow><name></yellow>."
+    success: "<gray>The waypoint has been shared with <yellow><name></yellow>."
+
 pointers:
   actionBar:
     # current: Translated name of the world the player is in
@@ -377,6 +381,11 @@ inventory:
     tracking:
       displayName: "<green>Players"
       description: "<gray>Track other players"
+    shared:
+      displayName: "<aqua>Shared waypoints"
+      description: |
+        <gray>Waypoints that have been shared
+        <gray>with you by other players
 
   waypoint:
     # name: Name of the waypoint
@@ -476,7 +485,14 @@ inventory:
       description: ""
     getUuid:
       displayName: "<yellow>Get the UUID of the waypoint"
-      description: "<gray>Sends a clickable message that enters the UUID into the chat"
+      description: |
+        <gray>Sends a clickable message that
+        <gray>copies the UUID into your clipboard
+    share:
+      displayName: "<yellow>Share the waypoint"
+      description: |
+        <gray>Share the waypoint with other players
+        <gray>or remove shares again.
     editPermission:
       displayName: "<yellow>Change required permission"
       description: "<gray>Current permission is <yellow><permission>"
@@ -606,3 +622,25 @@ inventory:
       description: |
         <gray>World: <gold><world>
         <gray>Distance: <gold><distance:'.0'>
+
+  sharing:
+    player:
+      select:
+        displayName: "<aqua><name>"
+        description: ""
+      delete:
+        displayName: "<aqua><name>"
+        description: |
+          <gray>Click here to revoke access to this
+          <gray>waypoint for <yellow><name>
+    viewSharing:
+      displayName: "<yellow>Shared with"
+      description: |
+        <gray>See which players have access to this
+        <gray>waypoint and optionally remove them.
+    sharedBy: |
+      
+      <gray>This waypoint has been shared to you
+      <gray>by <yellow><name></yellow>.
+      <gray>Shift-Click to remove this share.
+    unknownPlayer: "<red>Unknown"

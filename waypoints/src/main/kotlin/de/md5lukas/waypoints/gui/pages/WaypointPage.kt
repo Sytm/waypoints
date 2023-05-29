@@ -54,16 +54,17 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
      * o = Edit custom description
      * d = Delete
      * t = Teleport
+     * h = Share
      * b = Back
      * spotless:on
      */
-    val waypointPattern =
+    val waypointPattern = // e t
         GUIPattern(
-            "____w____",
-            "_g_____o_",
-            "i_u_s_y_r",
-            "_f_e_p_c_",
-            "d___t___b",
+            "u_p_w_y_i",
+            "__c___r__",
+            "_f__s__g_",
+            "__h___o__",
+            "d_e_t___b",
         )
   }
 
@@ -72,7 +73,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
   private val canModifyWaypoint =
       when (waypoint.type) {
         Type.PRIVATE,
-        Type.DEATH -> wpGUI.isOwner
+        Type.DEATH -> wpGUI.viewerData.id == waypoint.owner
         Type.PUBLIC -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)
         Type.PERMISSION -> wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)
       }
@@ -442,6 +443,18 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                       }
                     }
                   }
+            } else {
+              background
+            },
+        'h' to
+            if (canModifyWaypoint && waypoint.type === Type.PRIVATE) {
+              GUIItem(wpGUI.translations.WAYPOINT_SHARE.item) {
+                wpGUI.skedule {
+                  val page = ShareWaypointPage(wpGUI, waypoint).apply { init() }
+                  switchContext(SynchronizationContext.SYNC)
+                  wpGUI.open(page)
+                }
+              }
             } else {
               background
             },

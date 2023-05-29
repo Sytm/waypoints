@@ -6,12 +6,17 @@ import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.setValues
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.api.*
+import de.md5lukas.waypoints.api.Folder
+import de.md5lukas.waypoints.api.OverviewSort
+import de.md5lukas.waypoints.api.Type
+import de.md5lukas.waypoints.api.Waypoint
+import de.md5lukas.waypoints.api.WaypointShare
+import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime
-import java.util.*
+import java.util.UUID
 import kotlinx.coroutines.withContext
 import org.bukkit.Location
 
@@ -206,6 +211,18 @@ private constructor(
         ) {
           WaypointShareImpl(dm, this)
         }
+      }
+
+  override suspend fun hasSharedWaypoints(): Boolean =
+      withContext(dm.asyncDispatcher) {
+        dm.connection.selectFirst(
+            "SELECT EXISTS(SELECT 1 FROM waypoint_shares WHERE sharedWith = ? AND (expires IS NULL OR datetime(expires) > datetime(?)));",
+            id.toString(),
+            OffsetDateTime.now().toString(),
+        ) {
+          getInt(1) == 1
+        }
+            ?: false
       }
 
   override suspend fun getSharedWaypoints(): List<WaypointShare> =

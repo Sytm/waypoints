@@ -407,6 +407,7 @@ inventory:
     public: ENCHANTED_BOOK
     permission: ENCHANTED_BOOK
     tracking: PLAYER_HEAD
+    shared: SPYGLASS
 
   waypoint:
     icon:
@@ -429,6 +430,7 @@ inventory:
     teleport: ENDER_PEARL
     selectBeaconColor: LIME_STAINED_GLASS
     getUuid: COMMAND_BLOCK
+    share: SPYGLASS
     editPermission: IRON_BARS
     make:
       public:
@@ -476,3 +478,6 @@ inventory:
     trackable:
       enabled: ENDER_EYE
       disabled: ENDER_PEARL
+
+  sharing:
+    viewSharing: SPYGLASS
