@@ -8,24 +8,22 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
 
 class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
-    ListingPage<Folder>(
-        wpGUI,
-        wpGUI.extendApi { waypoint.type.getBackgroundItem() },
-        {
-          PaginationList<Folder>(PAGINATION_LIST_PAGE_SIZE).also {
-            it.addAll(wpGUI.getHolderForType(waypoint.type).getFolders())
+    ListingPage<Folder>(wpGUI, wpGUI.extendApi { waypoint.type.getBackgroundItem() }) {
+
+  override suspend fun getContent() =
+      PaginationList<Folder>(PAGINATION_LIST_PAGE_SIZE).also {
+        it.addAll(wpGUI.getHolderForType(waypoint.type).getFolders())
+      }
+
+  override suspend fun toGUIContent(value: Folder) =
+      wpGUI.extendApi {
+        GUIItem(value.getItem(wpGUI.viewer)) {
+          wpGUI.skedule {
+            waypoint.setFolder(value)
+            wpGUI.goBack()
           }
-        },
-        { folder ->
-          wpGUI.extendApi {
-            GUIItem(folder.getItem(wpGUI.viewer)) {
-              wpGUI.skedule {
-                waypoint.setFolder(folder)
-                wpGUI.goBack()
-              }
-            }
-          }
-        }) {
+        }
+      }
 
   private companion object {
     /** p = Previous g = No folder b = Back n = Next */

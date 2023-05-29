@@ -3,16 +3,21 @@ package de.md5lukas.waypoints.gui.pages
 import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.switchContext
 import com.okkero.skedule.withSynchronizationContext
+import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.GUIPattern
+import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.signgui.SignGUI
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
+import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointHolder
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
+import de.md5lukas.waypoints.config.general.WorldNotFoundAction
+import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.CycleSortItem
 import de.md5lukas.waypoints.util.asSingletonList
@@ -35,11 +40,7 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
 class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
-    ListingPage<GUIDisplayable>(
-        wpGUI,
-        wpGUI.extendApi { guiFolder.type.getBackgroundItem() },
-        { wpGUI.getListingContent(guiFolder) },
-        wpGUI::toGUIContent) {
+    ListingPage<GUIDisplayable>(wpGUI, wpGUI.extendApi { guiFolder.type.getBackgroundItem() }) {
 
   private companion object {
     /**
@@ -57,6 +58,90 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
      * spotless:on
      */
     val controlsPattern = GUIPattern("pfsditwbn")
+  }
+
+  override suspend fun getContent(): PaginationList<GUIDisplayable> {
+    val content = PaginationList<GUIDisplayable>(PAGINATION_LIST_PAGE_SIZE)
+
+    if (wpGUI.isOwner && guiFolder === wpGUI.targetData) {
+      if (wpGUI.viewerData.showGlobals &&
+          wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
+        val public = wpGUI.plugin.api.publicWaypoints
+        if (public.getWaypointsAmount() > 0 ||
+            wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
+          content.add(public)
+        }
+        val permission = wpGUI.plugin.api.permissionWaypoints
+        if (permission.getWaypointsVisibleForPlayer(wpGUI.viewer) > 0 ||
+            wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+          content.add(permission)
+        }
+      }
+      if (wpGUI.plugin.waypointsConfig.general.features.deathWaypoints) {
+        val deathFolder = wpGUI.targetData.deathFolder
+        if (deathFolder.getAmount() > 0) {
+          content.add(deathFolder)
+        }
+      }
+      if (wpGUI.plugin.waypointsConfig.playerTracking.enabled &&
+          wpGUI.viewer.hasPermission(WaypointsPermissions.TRACKING_ENABLED)) {
+        content.add(PlayerTrackingDisplayable)
+      }
+    }
+
+    if (guiFolder.type == Type.PERMISSION &&
+        !wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
+      guiFolder.getWaypoints().forEach { waypoint ->
+        if (wpGUI.viewer.hasPermission(waypoint.permission!!)) {
+          content.add(waypoint)
+        }
+      }
+
+      guiFolder.getFolders().forEach { folder ->
+        if (folder.getAmountVisibleForPlayer(wpGUI.viewer) > 0) {
+          content.add(folder)
+        }
+      }
+    } else {
+      content.addAll(guiFolder.getWaypoints())
+
+      content.addAll(guiFolder.getFolders())
+    }
+
+    if (wpGUI.plugin.waypointsConfig.general.worldNotFound !== WorldNotFoundAction.SHOW) {
+      val itr = content.iterator()
+      while (itr.hasNext()) {
+        val it = itr.next()
+        if (it is Waypoint && it.location.world === null) {
+          if (wpGUI.plugin.waypointsConfig.general.worldNotFound === WorldNotFoundAction.DELETE) {
+            it.delete()
+          }
+          itr.remove()
+        }
+      }
+    }
+
+    content.sortWith(wpGUI.viewerData.sortBy)
+
+    return content
+  }
+
+  override suspend fun toGUIContent(value: GUIDisplayable): GUIContent {
+    return wpGUI.extendApi {
+      GUIItem(value.getItem(wpGUI.viewer)) {
+        wpGUI.skedule {
+          when (value) {
+            is WaypointHolder -> wpGUI.openHolder(value)
+            is Folder -> wpGUI.openFolder(value)
+            is Waypoint -> wpGUI.openWaypoint(value)
+            is PlayerTrackingDisplayable -> wpGUI.openPlayerTracking()
+            else ->
+                throw IllegalStateException(
+                    "The GUIDisplayable is of an unknown subclass ${value.javaClass.name}")
+          }
+        }
+      }
+    }
   }
 
   private val isOverview = guiFolder is WaypointHolder

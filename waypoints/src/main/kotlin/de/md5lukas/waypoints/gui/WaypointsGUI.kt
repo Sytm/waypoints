@@ -3,17 +3,10 @@ package de.md5lukas.waypoints.gui
 import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.skedule
 import com.okkero.skedule.switchContext
-import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.GUI
-import de.md5lukas.kinvs.items.GUIContent
-import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.schedulers.Schedulers
-import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.*
-import de.md5lukas.waypoints.api.gui.GUIDisplayable
-import de.md5lukas.waypoints.api.gui.GUIFolder
-import de.md5lukas.waypoints.config.general.WorldNotFoundAction
 import de.md5lukas.waypoints.gui.pages.*
 import de.md5lukas.waypoints.util.*
 import java.util.*
@@ -214,89 +207,6 @@ class WaypointsGUI(
 
     gui.activePage = page
     gui.update()
-  }
-
-  internal suspend fun getListingContent(guiFolder: GUIFolder): PaginationList<GUIDisplayable> {
-    val content = PaginationList<GUIDisplayable>(ListingPage.PAGINATION_LIST_PAGE_SIZE)
-
-    if (isOwner && guiFolder === targetData) {
-      if (viewerData.showGlobals && plugin.waypointsConfig.general.features.globalWaypoints) {
-        val public = plugin.api.publicWaypoints
-        if (public.getWaypointsAmount() > 0 ||
-            viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
-          content.add(public)
-        }
-        val permission = plugin.api.permissionWaypoints
-        if (permission.getWaypointsVisibleForPlayer(viewer) > 0 ||
-            viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
-          content.add(permission)
-        }
-      }
-      if (plugin.waypointsConfig.general.features.deathWaypoints) {
-        val deathFolder = targetData.deathFolder
-        if (deathFolder.getAmount() > 0) {
-          content.add(deathFolder)
-        }
-      }
-      if (plugin.waypointsConfig.playerTracking.enabled &&
-          viewer.hasPermission(WaypointsPermissions.TRACKING_ENABLED)) {
-        content.add(PlayerTrackingDisplayable)
-      }
-    }
-
-    if (guiFolder.type == Type.PERMISSION &&
-        !viewer.hasPermission(WaypointsPermissions.MODIFY_PERMISSION)) {
-      guiFolder.getWaypoints().forEach { waypoint ->
-        if (viewer.hasPermission(waypoint.permission!!)) {
-          content.add(waypoint)
-        }
-      }
-
-      guiFolder.getFolders().forEach { folder ->
-        if (folder.getAmountVisibleForPlayer(viewer) > 0) {
-          content.add(folder)
-        }
-      }
-    } else {
-      content.addAll(guiFolder.getWaypoints())
-
-      content.addAll(guiFolder.getFolders())
-    }
-
-    if (plugin.waypointsConfig.general.worldNotFound !== WorldNotFoundAction.SHOW) {
-      val itr = content.iterator()
-      while (itr.hasNext()) {
-        val it = itr.next()
-        if (it is Waypoint && it.location.world === null) {
-          if (plugin.waypointsConfig.general.worldNotFound === WorldNotFoundAction.DELETE) {
-            it.delete()
-          }
-          itr.remove()
-        }
-      }
-    }
-
-    content.sortWith(viewerData.sortBy)
-
-    return content
-  }
-
-  internal suspend fun toGUIContent(guiDisplayable: GUIDisplayable): GUIContent {
-    return extendApi {
-      GUIItem(guiDisplayable.getItem(viewer)) {
-        skedule {
-          when (guiDisplayable) {
-            is WaypointHolder -> openHolder(guiDisplayable)
-            is Folder -> openFolder(guiDisplayable)
-            is Waypoint -> openWaypoint(guiDisplayable)
-            is PlayerTrackingDisplayable -> openPlayerTracking()
-            else ->
-                throw IllegalStateException(
-                    "The GUIDisplayable is of an unknown subclass ${guiDisplayable.javaClass.name}")
-          }
-        }
-      }
-    }
   }
 
   internal fun getHolderForType(type: Type) =

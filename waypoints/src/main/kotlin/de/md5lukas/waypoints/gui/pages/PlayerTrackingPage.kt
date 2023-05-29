@@ -18,62 +18,58 @@ import org.bukkit.inventory.meta.SkullMeta
 
 class PlayerTrackingPage(
     wpGUI: WaypointsGUI,
-) :
-    ListingPage<Player>(
-        wpGUI,
-        wpGUI.translations.TRACKING_BACKGROUND.item,
-        {
-          val list = PaginationList<Player>(PAGINATION_LIST_PAGE_SIZE)
-          val toggleable = wpGUI.plugin.waypointsConfig.playerTracking.toggleable
-          val canTrackAll = wpGUI.viewer.hasPermission(WaypointsPermissions.TRACKING_TRACK_ALL)
+) : ListingPage<Player>(wpGUI, wpGUI.translations.TRACKING_BACKGROUND.item) {
 
-          val api = wpGUI.plugin.api
+  override suspend fun getContent(): PaginationList<Player> =
+      PaginationList<Player>(PAGINATION_LIST_PAGE_SIZE).also { list ->
+        val toggleable = wpGUI.plugin.waypointsConfig.playerTracking.toggleable
+        val canTrackAll = wpGUI.viewer.hasPermission(WaypointsPermissions.TRACKING_TRACK_ALL)
 
-          wpGUI.plugin.server.onlinePlayers.forEach {
-            if (it === wpGUI.viewer) {
-              return@forEach
-            }
-            if (canTrackAll || !toggleable || api.getWaypointPlayer(it.uniqueId).canBeTracked) {
-              list.add(it)
+        val api = wpGUI.plugin.api
+
+        wpGUI.plugin.server.onlinePlayers.forEach {
+          if (it === wpGUI.viewer) {
+            return@forEach
+          }
+          if (canTrackAll || !toggleable || api.getWaypointPlayer(it.uniqueId).canBeTracked) {
+            list.add(it)
+          }
+        }
+      }
+
+  override suspend fun toGUIContent(value: Player) =
+      GUIItem(
+          wpGUI.translations.TRACKING_PLAYER.getItem(
+                  "name" placeholder value.displayName(),
+                  "world" placeholder wpGUI.plugin.worldTranslations.getWorldName(value.world),
+                  "x" placeholder value.location.x,
+                  "y" placeholder value.location.y,
+                  "z" placeholder value.location.z,
+                  "block_x" placeholder value.location.blockX,
+                  "block_y" placeholder value.location.blockY,
+                  "block_z" placeholder value.location.blockZ,
+                  if (wpGUI.viewer.world === value.world) {
+                    "distance" placeholder
+                        MathHelper.distance2D(wpGUI.viewer.location, value.location)
+                  } else {
+                    "distance" placeholderIgnoringArguments
+                        wpGUI.translations.TEXT_DISTANCE_OTHER_WORLD.text
+                  })
+              .also { stack -> stack.editMeta<SkullMeta> { owningPlayer = value } }) {
+            if (!wpGUI.viewerData.canBeTracked &&
+                wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable) {
+              wpGUI.translations.MESSAGE_TRACKING_TRACKABLE_REQUIRED.send(wpGUI.viewer)
+            } else if (!value.isOnline) {
+              wpGUI.translations.MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE.send(wpGUI.viewer)
+            } else {
+              wpGUI.viewer.closeInventory()
+              wpGUI.plugin.pointerManager.enable(wpGUI.viewer, PlayerTrackable(wpGUI.plugin, value))
+              if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
+                wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(
+                    value, "name" placeholder wpGUI.viewer.displayName())
+              }
             }
           }
-          list
-        },
-        { player ->
-          GUIItem(
-              wpGUI.translations.TRACKING_PLAYER.getItem(
-                      "name" placeholder player.displayName(),
-                      "world" placeholder wpGUI.plugin.worldTranslations.getWorldName(player.world),
-                      "x" placeholder player.location.x,
-                      "y" placeholder player.location.y,
-                      "z" placeholder player.location.z,
-                      "block_x" placeholder player.location.blockX,
-                      "block_y" placeholder player.location.blockY,
-                      "block_z" placeholder player.location.blockZ,
-                      if (wpGUI.viewer.world === player.world) {
-                        "distance" placeholder
-                            MathHelper.distance2D(wpGUI.viewer.location, player.location)
-                      } else {
-                        "distance" placeholderIgnoringArguments
-                            wpGUI.translations.TEXT_DISTANCE_OTHER_WORLD.text
-                      })
-                  .also { stack -> stack.editMeta<SkullMeta> { owningPlayer = player } }) {
-                if (!wpGUI.viewerData.canBeTracked &&
-                    wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable) {
-                  wpGUI.translations.MESSAGE_TRACKING_TRACKABLE_REQUIRED.send(wpGUI.viewer)
-                } else if (!player.isOnline) {
-                  wpGUI.translations.MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE.send(wpGUI.viewer)
-                } else {
-                  wpGUI.viewer.closeInventory()
-                  wpGUI.plugin.pointerManager.enable(
-                      wpGUI.viewer, PlayerTrackable(wpGUI.plugin, player))
-                  if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
-                    wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(
-                        player, "name" placeholder wpGUI.viewer.displayName())
-                  }
-                }
-              }
-        }) {
 
   private companion object {
 

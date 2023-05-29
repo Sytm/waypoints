@@ -1,7 +1,6 @@
 package de.md5lukas.waypoints.gui.pages
 
 import com.okkero.skedule.SynchronizationContext
-import com.okkero.skedule.skedule
 import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.items.GUIContent
@@ -10,19 +9,21 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.bukkit.inventory.ItemStack
 
-open class ListingPage<T>(
+abstract class ListingPage<T>(
     wpGUI: WaypointsGUI,
     background: ItemStack,
-    private val contentGetter: suspend () -> PaginationList<T>,
-    private val displayableConverter: suspend (T) -> GUIContent
 ) : BasePage(wpGUI, background) {
 
   companion object Constants {
     const val PAGINATION_LIST_PAGE_SIZE = 4 * 9
   }
 
+  abstract suspend fun getContent(): PaginationList<T>
+
+  abstract suspend fun toGUIContent(value: T): GUIContent
+
   open suspend fun init() {
-    listingContent = contentGetter()
+    listingContent = getContent()
   }
 
   protected lateinit var listingContent: PaginationList<T>
@@ -39,7 +40,7 @@ open class ListingPage<T>(
   protected fun isValidListingPage(page: Int) = page >= 0 && page < listingContent.pages()
 
   protected suspend fun updateListingContent() {
-    listingContent = contentGetter()
+    listingContent = getContent()
 
     checkListingPageBounds()
 
@@ -57,7 +58,7 @@ open class ListingPage<T>(
           if (content == null) {
             grid[row][column] = GUIContent.AIR
           } else {
-            grid[row][column] = displayableConverter(content)
+            grid[row][column] = toGUIContent(content)
           }
         }
       }
