@@ -56,4 +56,26 @@ private constructor(
       )
     }
   }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+
+    other as WaypointShareImpl
+
+    if (owner != other.owner) return false
+    if (sharedWith != other.sharedWith) return false
+    return waypointId == other.waypointId
+  }
+
+  override fun hashCode(): Int {
+    var result = owner.hashCode()
+    result = 31 * result + sharedWith.hashCode()
+    result = 31 * result + waypointId.hashCode()
+    return result
+  }
+
+  override fun toString(): String {
+    return "WaypointShareImpl(owner=$owner, sharedWith=$sharedWith, waypointId=$waypointId, expires=$expires)"
+  }
 }

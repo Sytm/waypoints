@@ -193,7 +193,7 @@ class SQLiteManager(
           OffsetDateTime.now().minus(databaseConfiguration.deathWaypointRetentionPeriod).toString(),
       )
       connection.update(
-          "DELETE FROM waypoint_shares WHERE datetime(expires) <= datetime(?);",
+          "DELETE FROM waypoint_shares WHERE expires IS NOT NULL AND datetime(expires) <= datetime(?);",
           OffsetDateTime.now(),
       )
     }

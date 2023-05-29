@@ -20,6 +20,7 @@
 - Descriptions have been added to waypoints and folders. To change them [ProtocolLib] needs to be installed
 - A Particle Trail pointer has been added
 - Players can choose to disable some of the server-wide available pointers (For example only having the bossbar)
+- Players can share private waypoints with other players
 
 ### Misc
 

@@ -154,6 +154,9 @@ class Translations(tl: TranslationLoader) {
       Translation(tl, "message.tracking.trackableRequired", PREFIX)
   val MESSAGE_TRACKING_NOTIFICATION = Translation(tl, "message.tracking.notification", PREFIX)
 
+  val MESSAGE_SHARING_ALREADY_SHARED = Translation(tl, "message.sharing.alreadyShared", PREFIX)
+  val MESSAGE_SHARING_SUCCESS = Translation(tl, "message.sharing.success", PREFIX)
+
   val INVENTORY_TITLE_SELF = Translation(tl, "inventory.title.self")
   val INVENTORY_TITLE_OTHER = Translation(tl, "inventory.title.other")
 
@@ -206,6 +209,7 @@ class Translations(tl: TranslationLoader) {
   val ICON_PUBLIC = ItemTranslation(tl, "inventory.listing.public")
   val ICON_PERMISSION = ItemTranslation(tl, "inventory.listing.permission")
   val ICON_TRACKING = ItemTranslation(tl, "inventory.listing.tracking")
+  val ICON_SHARED = ItemTranslation(tl, "inventory.listing.shared")
 
   val WAYPOINT_ICON_PRIVATE = ItemTranslation(tl, "inventory.waypoint.icon.private")
   val WAYPOINT_ICON_PRIVATE_CUSTOM_DESCRIPTION =
@@ -235,6 +239,7 @@ class Translations(tl: TranslationLoader) {
       InventoryTranslation(tl, "inventory.waypoint.teleport.mustVisit")
   val WAYPOINT_SELECT_BEACON_COLOR = ItemTranslation(tl, "inventory.waypoint.selectBeaconColor")
   val WAYPOINT_GET_UUID = ItemTranslation(tl, "inventory.waypoint.getUuid")
+  val WAYPOINT_SHARE = ItemTranslation(tl, "inventory.waypoint.share")
   val WAYPOINT_EDIT_PERMISSION = ItemTranslation(tl, "inventory.waypoint.editPermission")
   val WAYPOINT_MAKE_PUBLIC = ItemTranslation(tl, "inventory.waypoint.make.public", true)
   val WAYPOINT_MAKE_PUBLIC_CONFIRM_QUESTION =
@@ -294,4 +299,12 @@ class Translations(tl: TranslationLoader) {
   val TRACKING_TRACKABLE_DISABLED = ItemTranslation(tl, "inventory.tracking.trackable.disabled")
   val TRACKING_PLAYER =
       ItemTranslation(tl, "inventory.tracking.player", fixedMaterial = Material.PLAYER_HEAD)
+
+  val SHARING_PLAYER_SELECT =
+      ItemTranslation(tl, "inventory.sharing.player.select", fixedMaterial = Material.PLAYER_HEAD)
+  val SHARING_PLAYER_DELETE =
+      ItemTranslation(tl, "inventory.sharing.player.delete", fixedMaterial = Material.PLAYER_HEAD)
+  val SHARING_VIEW_SHARING = ItemTranslation(tl, "inventory.sharing.viewSharing")
+  val SHARING_SHARED_BY = InventoryTranslation(tl, "inventory.sharing.sharedBy")
+  val SHARING_UNKNOWN_PLAYER = Translation(tl, "inventory.sharing.unknownPlayer")
 }

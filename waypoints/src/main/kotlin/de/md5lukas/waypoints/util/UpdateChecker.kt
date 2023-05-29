@@ -64,10 +64,7 @@ class UpdateChecker(
       val client = HttpClient.newHttpClient()
       val request =
           HttpRequest.newBuilder()
-              .uri(
-                  URI.create(
-                      "https://api.github.com/repos/%s/%s/releases/latest"
-                          .format(owner, repository)))
+              .uri(URI.create("https://api.github.com/repos/$owner/$repository/releases/latest"))
               .header("Accept", "application/vnd.github+json")
               .header("X-GitHub-Api-Version", " 2022-11-28")
               .header("User-Agent", "Plugin Update Checker (${plugin.pluginMeta.displayName})")

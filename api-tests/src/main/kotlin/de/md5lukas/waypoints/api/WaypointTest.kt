@@ -167,6 +167,7 @@ abstract class WaypointTest : TestBase() {
       val waypoint = player.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
       assertEquals(0, player.getSharingWaypoints().size)
+      assertFalse(player.hasSharedWaypoints())
       assertEquals(0, player.getSharedWaypoints().size)
       assertEquals(0, waypoint.getSharedWith().size)
     }
@@ -179,6 +180,7 @@ abstract class WaypointTest : TestBase() {
       assertThrows<SQLException> { waypoint.shareWith(UUID.randomUUID()) }
 
       assertEquals(0, player.getSharingWaypoints().size)
+      assertFalse(player.hasSharedWaypoints())
       assertEquals(0, player.getSharedWaypoints().size)
       assertEquals(0, waypoint.getSharedWith().size)
     }
@@ -192,11 +194,13 @@ abstract class WaypointTest : TestBase() {
       waypoint.shareWith(player2.id)
 
       assertEquals(1, player1.getSharingWaypoints().size)
+      assertFalse(player1.hasSharedWaypoints())
       assertEquals(0, player1.getSharedWaypoints().size)
       assertEquals(1, waypoint.getSharedWith().size)
 
       val player2shared = player2.getSharedWaypoints()
       assertEquals(0, player2.getSharingWaypoints().size)
+      assertTrue(player2.hasSharedWaypoints())
       assertEquals(1, player2shared.size)
 
       val share = player2shared.first()
@@ -215,12 +219,8 @@ abstract class WaypointTest : TestBase() {
 
       waypoint.shareWith(player2.id, OffsetDateTime.now().minusMinutes(1))
 
-      assertEquals(0, player1.getSharingWaypoints().size)
-      assertEquals(0, player1.getSharedWaypoints().size)
+      assertBothPlayersNoWaypoints(player1, player2)
       assertEquals(0, waypoint.getSharedWith().size)
-
-      assertEquals(0, player2.getSharingWaypoints().size)
-      assertEquals(0, player2.getSharedWaypoints().size)
     }
 
     @Test
@@ -234,20 +234,31 @@ abstract class WaypointTest : TestBase() {
       val waypointShared = waypoint.getSharedWith()
 
       assertEquals(1, player1.getSharingWaypoints().size)
+      assertFalse(player1.hasSharedWaypoints())
       assertEquals(0, player1.getSharedWaypoints().size)
       assertEquals(1, waypointShared.size)
 
       assertEquals(0, player2.getSharingWaypoints().size)
+      assertTrue(player2.hasSharedWaypoints())
       assertEquals(1, player2.getSharedWaypoints().size)
 
       waypointShared.first().delete()
 
-      assertEquals(0, player1.getSharingWaypoints().size)
-      assertEquals(0, player1.getSharedWaypoints().size)
+      assertBothPlayersNoWaypoints(player1, player2)
       assertEquals(0, waypoint.getSharedWith().size)
-
-      assertEquals(0, player2.getSharingWaypoints().size)
-      assertEquals(0, player2.getSharedWaypoints().size)
     }
+  }
+
+  private suspend fun assertBothPlayersNoWaypoints(
+      player1: WaypointsPlayer,
+      player2: WaypointsPlayer,
+  ) {
+    assertEquals(0, player1.getSharingWaypoints().size)
+    assertFalse(player1.hasSharedWaypoints())
+    assertEquals(0, player1.getSharedWaypoints().size)
+
+    assertEquals(0, player2.getSharingWaypoints().size)
+    assertFalse(player2.hasSharedWaypoints())
+    assertEquals(0, player2.getSharedWaypoints().size)
   }
 }
