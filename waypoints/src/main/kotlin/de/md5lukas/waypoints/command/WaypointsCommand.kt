@@ -31,7 +31,8 @@ import org.bukkit.entity.Player
 
 class WaypointsCommand(private val plugin: WaypointsPlugin) {
 
-  private val translations = plugin.translations
+  private val translations
+    get() = plugin.translations
 
   fun register() {
     commandTree("waypoints") {
