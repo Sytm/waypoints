@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.integrations
 
 import com.okkero.skedule.skedule
+import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
@@ -8,7 +9,6 @@ import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.events.ConfigReloadEvent
-import de.md5lukas.waypoints.util.registerEvents
 import java.io.File
 import java.util.*
 import javax.imageio.ImageIO

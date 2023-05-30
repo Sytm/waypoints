@@ -1,10 +1,10 @@
 package de.md5lukas.waypoints.gui.items
 
+import de.md5lukas.commons.paper.appendLore
+import de.md5lukas.commons.paper.textComponent
 import de.md5lukas.kinvs.items.GUICycleItem
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import de.md5lukas.waypoints.util.loreNotNull
-import de.md5lukas.waypoints.util.text
 
 class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) :
     GUICycleItem<OverviewSort>(
@@ -26,7 +26,7 @@ class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) :
             .map { current ->
               val additionalLines =
                   wpGUI.translations.OVERVIEW_CYCLE_SORT_OPTIONS.map {
-                        text {
+                        textComponent {
                           val copyFrom =
                               if (it.first === current) {
                                     wpGUI.translations.OVERVIEW_CYCLE_SORT_ACTIVE_COLOR
@@ -41,7 +41,7 @@ class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) :
                       .toList()
 
               val item = wpGUI.translations.OVERVIEW_CYCLE_SORT.getItem()
-              item.lore(item.loreNotNull + additionalLines)
+              item.appendLore(additionalLines)
 
               current to item
             }

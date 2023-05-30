@@ -3,13 +3,13 @@ package de.md5lukas.waypoints.gui.pages
 import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.switchContext
 import de.md5lukas.commons.collections.PaginationList
+import de.md5lukas.commons.paper.appendLore
+import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointShare
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import de.md5lukas.waypoints.util.loreNotNull
-import de.md5lukas.waypoints.util.placeholder
 import kotlinx.coroutines.future.await
 import net.kyori.adventure.text.Component
 
@@ -26,19 +26,15 @@ class SharedWaypointsPage(
       value.getWaypoint().let { waypoint ->
         GUIItem(
             wpGUI.extendApi {
-              waypoint.getItem(wpGUI.viewer).also {
+              waypoint.getItem(wpGUI.viewer).also { stack ->
                 val playerName =
-                    wpGUI.plugin.uuidUtils.getNameAsync(value.owner).await().let { opt ->
-                      if (opt.isPresent) {
-                        Component.text(opt.get())
-                      } else {
-                        wpGUI.translations.SHARING_UNKNOWN_PLAYER.text
-                      }
+                    wpGUI.plugin.uuidUtils.getNameAsync(value.owner).await().let { result ->
+                      result?.let { Component.text(it) }
+                          ?: wpGUI.translations.SHARING_UNKNOWN_PLAYER.text
                     }
-                it.lore(
-                    it.loreNotNull +
-                        wpGUI.translations.SHARING_SHARED_BY.withReplacements(
-                            "name" placeholder playerName))
+                stack.appendLore(
+                    wpGUI.translations.SHARING_SHARED_BY.withReplacements(
+                        "name" placeholder playerName))
               }
             }) {
               wpGUI.skedule {

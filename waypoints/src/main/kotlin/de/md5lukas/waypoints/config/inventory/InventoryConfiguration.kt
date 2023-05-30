@@ -1,9 +1,9 @@
 package de.md5lukas.waypoints.config.inventory
 
+import de.md5lukas.commons.paper.getStringNotNull
 import de.md5lukas.konfig.Configurable
 import de.md5lukas.konfig.ExportConfigurationSection
 import de.md5lukas.konfig.SkipConfig
-import de.md5lukas.waypoints.util.getStringNotNull
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 

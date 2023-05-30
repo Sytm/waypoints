@@ -1,7 +1,7 @@
 package de.md5lukas.waypoints.lang
 
+import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.waypoints.events.ConfigReloadEvent
-import de.md5lukas.waypoints.util.registerEvents
 import net.kyori.adventure.text.Component
 import org.bukkit.World
 import org.bukkit.event.EventHandler

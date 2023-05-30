@@ -1,4 +1,4 @@
-package de.md5lukas.waypoints.util
+package de.md5lukas.waypoints.api.base
 
 import java.sql.ResultSet
 import java.util.UUID

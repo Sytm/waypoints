@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.util
 
-import de.md5lukas.commons.MathHelper
+import de.md5lukas.commons.paper.placeholder
+import de.md5lukas.commons.paper.placeholderIgnoringArguments
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Folder
@@ -47,7 +48,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
       Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE_CUSTOM_DESCRIPTION
       Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC_CUSTOM_DESCRIPTION
       Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION_CUSTOM_DESCRIPTION
-    }?.let { stack.applyDescription(type, it, description) }
+    }?.let { stack.applyDescription(it, description) }
 
     material?.also { stack.type = it }
 
@@ -120,7 +121,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
         if (plugin.waypointsConfig.inventory.disableFolderSizes) {
           1
         } else {
-          MathHelper.clamp(1, 64, amountVisibleToPlayer)
+          amountVisibleToPlayer.coerceIn(1, 64)
         }
 
     return itemStack
@@ -154,7 +155,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
         if (plugin.waypointsConfig.inventory.disableFolderSizes) {
           1
         } else {
-          MathHelper.clamp(1, 64, fetchedAmount)
+          fetchedAmount.coerceIn(1, 64)
         }
 
     when (type) {
@@ -162,7 +163,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
       Type.PRIVATE -> translations.FOLDER_ICON_PRIVATE_CUSTOM_DESCRIPTION
       Type.PUBLIC -> translations.FOLDER_ICON_PUBLIC_CUSTOM_DESCRIPTION
       Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION_CUSTOM_DESCRIPTION
-    }?.let { stack.applyDescription(type, it, description) }
+    }?.let { stack.applyDescription(it, description) }
 
     material?.also { stack.type = it }
 
@@ -181,16 +182,12 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
     val fetchedAmount = getAmount()
     val stack = translations.FOLDER_ICON_DEATH.getItem("amount" placeholder fetchedAmount)
 
-    stack.amount = MathHelper.clamp(1, 64, fetchedAmount)
+    stack.amount = fetchedAmount.coerceIn(1, 64)
 
     return stack
   }
 
-  private fun ItemStack.applyDescription(
-      type: Type,
-      translation: InventoryTranslation,
-      description: String?
-  ) {
+  private fun ItemStack.applyDescription(translation: InventoryTranslation, description: String?) {
     description?.let {
       val (line1, line2, line3, line4) = it.split('\n')
       val customDescription = mutableListOf<Component>(Component.empty())

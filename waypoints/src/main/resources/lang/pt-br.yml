@@ -232,7 +232,7 @@ inventory:
         
         <gray>Usando <yellow>shift-click<gray>, você cria uma waypoint
         <gray>com coordenadas desse jeito:
-        <green>102 35/ -238
+        <green>102 35 -238
     createFolder:
       displayName: "<yellow>Criar nova pasta"
       description: ""

@@ -2,9 +2,9 @@ package de.md5lukas.waypoints.pointers
 
 import com.okkero.skedule.future
 import com.okkero.skedule.skedule
+import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.pointers.PointerManager.Hooks
-import de.md5lukas.waypoints.util.placeholder
 import java.util.concurrent.CompletableFuture
 import net.kyori.adventure.text.Component
 import org.bukkit.Location

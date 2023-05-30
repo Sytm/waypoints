@@ -1,6 +1,8 @@
 package de.md5lukas.waypoints.command
 
 import com.okkero.skedule.skedule
+import de.md5lukas.commons.paper.isOutOfBounds
+import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.gui.WaypointsGUI
@@ -10,9 +12,7 @@ import de.md5lukas.waypoints.util.createWaypointPermission
 import de.md5lukas.waypoints.util.createWaypointPrivate
 import de.md5lukas.waypoints.util.createWaypointPublic
 import de.md5lukas.waypoints.util.humanReadableByteCountBin
-import de.md5lukas.waypoints.util.isLocationOutOfBounds
 import de.md5lukas.waypoints.util.labelResolver
-import de.md5lukas.waypoints.util.placeholder
 import de.md5lukas.waypoints.util.searchWaypoint
 import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.kotlindsl.anyExecutor
@@ -182,7 +182,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
           playerExecutor { player, args ->
             val location = args[0] as Location
 
-            if (isLocationOutOfBounds(location)) {
+            if (location.isOutOfBounds) {
               translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
             } else {
               plugin.pointerManager.enable(player, TemporaryWaypointTrackable(plugin, location))

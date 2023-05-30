@@ -1,5 +1,8 @@
 package de.md5lukas.waypoints.util
 
+import de.md5lukas.commons.paper.isOutOfBounds
+import de.md5lukas.commons.paper.placeholder
+import de.md5lukas.commons.paper.textComponent
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.*
@@ -43,7 +46,7 @@ fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material?): Bo
 fun getAllowedItemsForCustomIconMessage(plugin: WaypointsPlugin): Component {
   val filter = plugin.waypointsConfig.general.customIconFilter
 
-  val materialsComponent = text {
+  val materialsComponent = textComponent {
     if (filter.type === FilterType.BLACKLIST) {
       append(Component.translatable(Material.AIR))
       append(Component.text(", "))
@@ -164,7 +167,7 @@ private fun creationPreChecks(
     return WorldUnavailable
   }
 
-  if (isLocationOutOfBounds(location)) {
+  if (location.isOutOfBounds) {
     plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
     return LocationOutOfBounds
   }

@@ -4,6 +4,9 @@ import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.switchContext
 import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.commons.collections.PaginationList
+import de.md5lukas.commons.paper.isOutOfBounds
+import de.md5lukas.commons.paper.placeholder
+import de.md5lukas.commons.paper.plainDisplayName
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
@@ -21,18 +24,14 @@ import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
 import de.md5lukas.waypoints.gui.SharedDisplayable
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.CycleSortItem
-import de.md5lukas.waypoints.util.asSingletonList
 import de.md5lukas.waypoints.util.checkFolderName
 import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
 import de.md5lukas.waypoints.util.checkWorldAvailability
 import de.md5lukas.waypoints.util.component1
 import de.md5lukas.waypoints.util.component2
 import de.md5lukas.waypoints.util.getAllowedItemsForCustomIconMessage
-import de.md5lukas.waypoints.util.isLocationOutOfBounds
 import de.md5lukas.waypoints.util.onClickSuspending
 import de.md5lukas.waypoints.util.parseLocationString
-import de.md5lukas.waypoints.util.placeholder
-import de.md5lukas.waypoints.util.plainDisplayName
 import de.md5lukas.waypoints.util.replaceInputText
 import de.md5lukas.waypoints.util.scheduler
 import net.wesjd.anvilgui.AnvilGUI
@@ -307,7 +306,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                             }.send(wpGUI.viewer)
                           }
 
-                          return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
+                          return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
                         }
                         .onClose { wpGUI.schedule { wpGUI.gui.open() } }
                         .open(wpGUI.viewer)
@@ -335,21 +334,20 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
 
                         parsedLocation = parseLocationString(wpGUI.viewer, coordinates)
 
-                        return@onClick parsedLocation
-                            .let { location ->
+                        return@onClick listOf(
+                            parsedLocation.let { location ->
                               if (location === null) {
                                 wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(
                                     wpGUI.viewer)
                                 replaceInputText(coordinates)
-                              } else if (isLocationOutOfBounds(location)) {
+                              } else if (location.isOutOfBounds) {
                                 wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(
                                     wpGUI.viewer)
                                 replaceInputText(coordinates)
                               } else {
                                 AnvilGUI.ResponseAction.close()
                               }
-                            }
-                            .asSingletonList()
+                            })
                       }
                       .onClose {
                         parsedLocation.let { location ->

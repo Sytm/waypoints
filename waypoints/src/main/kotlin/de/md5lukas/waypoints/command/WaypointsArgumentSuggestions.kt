@@ -4,9 +4,9 @@ import com.mojang.brigadier.Message
 import com.mojang.brigadier.suggestion.Suggestions
 import com.mojang.brigadier.suggestion.SuggestionsBuilder
 import com.okkero.skedule.future
+import de.md5lukas.commons.containsNonWordCharacter
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.util.containsNonWordCharacter
 import dev.jorel.commandapi.BukkitTooltip
 import dev.jorel.commandapi.SuggestionInfo
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
@@ -83,7 +83,7 @@ class WaypointsArgumentSuggestions(
   }
 
   private fun formatSuggestion(name: String) =
-      if (textMode && name.containsNonWordCharacter()) {
+      if (textMode && name.containsNonWordCharacter) {
         "\"$name\""
       } else {
         name
