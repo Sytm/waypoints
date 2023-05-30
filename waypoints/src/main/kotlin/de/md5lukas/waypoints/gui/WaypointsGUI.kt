@@ -3,6 +3,8 @@ package de.md5lukas.waypoints.gui
 import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.skedule
 import com.okkero.skedule.switchContext
+import de.md5lukas.commons.paper.placeholder
+import de.md5lukas.commons.paper.plainDisplayName
 import de.md5lukas.kinvs.GUI
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.WaypointsPlugin
@@ -101,12 +103,13 @@ class WaypointsGUI(
                         "Cannot create folders of the type ${waypointHolder.type}")
               }
 
-          return@onClickSuspending when (result) {
-            NameTaken -> replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.rawText)
-            LimitReached,
-            is SuccessFolder -> AnvilGUI.ResponseAction.close()
-            else -> throw IllegalStateException("Invalid return value $result")
-          }.asSingletonList()
+          return@onClickSuspending listOf(
+              when (result) {
+                NameTaken -> replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.rawText)
+                LimitReached,
+                is SuccessFolder -> AnvilGUI.ResponseAction.close()
+                else -> throw IllegalStateException("Invalid return value $result")
+              })
         }
         .onClose {
           (gui.activePage as BasePage).update()
@@ -133,9 +136,8 @@ class WaypointsGUI(
             name = enteredText
 
             if (type == Type.PERMISSION && permission == null) {
-              return@onClickSuspending replaceInputText(
-                      translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText)
-                  .asSingletonList()
+              return@onClickSuspending listOf(
+                  replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText))
             }
           } else if (type == Type.PERMISSION && permission == null) {
             permission = enteredText
@@ -154,24 +156,25 @@ class WaypointsGUI(
                 }
               }
 
-          return@onClickSuspending when (result) {
-            LimitReached -> AnvilGUI.ResponseAction.close().asSingletonList()
-            NameTaken -> {
-              name = null
-              replaceInputText(translations.WAYPOINT_CREATE_ENTER_NAME.rawText).asSingletonList()
-            }
-            is SuccessWaypoint -> {
-              folder?.let {
-                result.waypoint.setFolder(it)
-                open(GUIFolderPage(this, folder))
-              }
+          return@onClickSuspending listOf(
+              when (result) {
+                LimitReached -> AnvilGUI.ResponseAction.close()
+                NameTaken -> {
+                  name = null
+                  replaceInputText(translations.WAYPOINT_CREATE_ENTER_NAME.rawText)
+                }
+                is SuccessWaypoint -> {
+                  folder?.let {
+                    result.waypoint.setFolder(it)
+                    open(GUIFolderPage(this, folder))
+                  }
 
-              waypoint = result.waypoint
+                  waypoint = result.waypoint
 
-              AnvilGUI.ResponseAction.close().asSingletonList()
-            }
-            else -> throw IllegalStateException("Invalid return value $result")
-          }
+                  AnvilGUI.ResponseAction.close()
+                }
+                else -> throw IllegalStateException("Invalid return value $result")
+              })
         }
         .onClose {
           val capturedWaypoint = waypoint
@@ -245,12 +248,12 @@ class WaypointsGUI(
               } else {
                 val otherName = plugin.uuidUtils.getNameAsync(target).await()
 
-                if (otherName.isEmpty) {
+                if (otherName === null) {
                   throw IllegalArgumentException("A player with the UUID $target does not exist.")
                 }
 
                 plugin.translations.INVENTORY_TITLE_OTHER.withReplacements(
-                    "name" placeholder otherName.get())
+                    "name" placeholder otherName)
               },
           )
       openOverview()

@@ -13,7 +13,6 @@ import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.api.event.FolderCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.gui.GUIType
-import de.md5lukas.waypoints.util.asSingletonList
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -266,11 +265,11 @@ internal open class WaypointHolderImpl(
               return@flatMap emptyList()
             }
             tList.getOrNull(taggedIndex)?.let { t ->
-              return@flatMap SearchResult(t.key, "$name#$taggedIndex").asSingletonList()
+              return@flatMap listOf(SearchResult(t.key, "$name#$taggedIndex"))
             }
           }
           if (tList.size == 1) {
-            SearchResult(tList[0].key, name).asSingletonList()
+            listOf(SearchResult(tList[0].key, name))
           } else {
             tList.mapIndexed { index, t -> SearchResult(t.key, "$name#$index") }
           }

@@ -7,10 +7,10 @@ import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import de.md5lukas.waypoints.api.base.getUUID
 import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
-import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.UUID

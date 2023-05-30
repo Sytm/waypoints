@@ -5,12 +5,12 @@ import com.okkero.skedule.skedule
 import de.bluecolored.bluemap.api.BlueMapAPI
 import de.bluecolored.bluemap.api.markers.MarkerSet
 import de.bluecolored.bluemap.api.markers.POIMarker
+import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
-import de.md5lukas.waypoints.util.registerEvents
 import org.bukkit.World
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

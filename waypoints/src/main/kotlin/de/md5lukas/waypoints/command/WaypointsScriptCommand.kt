@@ -1,20 +1,27 @@
 package de.md5lukas.waypoints.command
 
 import com.okkero.skedule.skedule
+import de.md5lukas.commons.paper.isOutOfBounds
+import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.pointers.WaypointTrackable
-import de.md5lukas.waypoints.util.isLocationOutOfBounds
 import de.md5lukas.waypoints.util.labelResolver
-import de.md5lukas.waypoints.util.placeholder
 import de.md5lukas.waypoints.util.searchWaypoints
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.arguments.StringArgument
-import dev.jorel.commandapi.kotlindsl.*
-import java.util.*
+import dev.jorel.commandapi.kotlindsl.anyExecutor
+import dev.jorel.commandapi.kotlindsl.argument
+import dev.jorel.commandapi.kotlindsl.commandTree
+import dev.jorel.commandapi.kotlindsl.literalArgument
+import dev.jorel.commandapi.kotlindsl.locationArgument
+import dev.jorel.commandapi.kotlindsl.optionalArgument
+import dev.jorel.commandapi.kotlindsl.playerArgument
+import dev.jorel.commandapi.kotlindsl.uuidArgument
+import java.util.UUID
 import net.kyori.adventure.text.event.ClickEvent
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -88,7 +95,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                       return@anyExecutor
                     }
 
-                    if (isLocationOutOfBounds(target)) {
+                    if (target.isOutOfBounds) {
                       translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
                     } else {
                       plugin.pointerManager.enable(

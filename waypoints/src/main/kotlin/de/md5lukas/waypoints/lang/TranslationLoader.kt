@@ -1,8 +1,8 @@
 package de.md5lukas.waypoints.lang
 
+import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.events.ConfigReloadEvent
-import de.md5lukas.waypoints.util.registerEvents
 import java.io.File
 import java.nio.charset.StandardCharsets
 import net.kyori.adventure.text.format.TextDecoration

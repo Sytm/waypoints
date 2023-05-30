@@ -1,5 +1,9 @@
 package de.md5lukas.waypoints.util
 
+import de.md5lukas.commons.paper.fuzzyEquals
+import de.md5lukas.commons.paper.placeholder
+import de.md5lukas.commons.paper.registerEvents
+import de.md5lukas.commons.paper.teleportKeepOrientation
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type

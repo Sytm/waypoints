@@ -1,8 +1,8 @@
 package de.md5lukas.waypoints
 
+import de.md5lukas.commons.paper.UUIDUtils
+import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.commons.time.DurationFormatter
-import de.md5lukas.commons.uuid.UUIDCacheSettings
-import de.md5lukas.commons.uuid.UUIDUtils
 import de.md5lukas.konfig.Konfig
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.api.SQLiteManager
@@ -32,8 +32,6 @@ import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.APIExtensions
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.UpdateChecker
-import de.md5lukas.waypoints.util.callEvent
-import de.md5lukas.waypoints.util.registerEvents
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIBukkitConfig
 import java.io.File
@@ -141,7 +139,7 @@ class WaypointsPlugin : JavaPlugin() {
     reloadConfig()
     konfig.deserializeInto(config, waypointsConfig)
 
-    callEvent(ConfigReloadEvent(waypointsConfig))
+    ConfigReloadEvent(waypointsConfig).callEvent()
   }
 
   private fun initDatabase() {
@@ -176,17 +174,7 @@ class WaypointsPlugin : JavaPlugin() {
   }
 
   private fun initCommons() {
-    with(waypointsConfig.general.uuidCache) {
-      uuidUtils =
-          UUIDUtils(
-              this@WaypointsPlugin,
-              Dispatchers.Default.asExecutor(),
-              UUIDCacheSettings().also {
-                it.maxSize = this@with.maxSize
-                it.expireAfterWrite = this@with.expireAfter
-                it.expireAfterWriteTimeUnit = TimeUnit.HOURS
-              })
-    }
+    uuidUtils = UUIDUtils(Dispatchers.Default.asExecutor())
     durationFormatter = DurationFormatter { timeUnit, isPlural ->
       with(translations) {
         when (timeUnit) {

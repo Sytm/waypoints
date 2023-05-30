@@ -11,12 +11,10 @@ dependencies {
   api(libs.paper)
 
   implementation(libs.coroutines)
-
   implementation(libs.sqliteHelper)
 
   api(libs.stdlib)
   api(project(":api-base"))
-  implementation(project(":utils"))
   implementation(libs.md5Commons)
 
   testImplementation(project(":api-tests"))

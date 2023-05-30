@@ -2,6 +2,9 @@ package de.md5lukas.waypoints.util
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import de.md5lukas.commons.paper.placeholder
+import de.md5lukas.commons.paper.registerEvents
+import de.md5lukas.commons.paper.textComponent
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import java.net.URI
@@ -38,7 +41,7 @@ class UpdateChecker(
           plugin.translations.UPDATE_NEW_VERSION_AVAILABLE.withReplacements(
               "latest" placeholder latestData.tagName,
               "link" placeholder
-                  text {
+                  textComponent {
                     content(latestData.htmlUrl)
                     clickEvent(ClickEvent.openUrl(latestData.htmlUrl))
                   })

@@ -3,12 +3,12 @@ package de.md5lukas.waypoints.gui.pages
 import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.switchContext
 import de.md5lukas.commons.collections.PaginationList
+import de.md5lukas.commons.paper.editMeta
+import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import de.md5lukas.waypoints.util.editMeta
-import de.md5lukas.waypoints.util.placeholder
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 

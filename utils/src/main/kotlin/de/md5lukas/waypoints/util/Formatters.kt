@@ -1,11 +1,8 @@
 package de.md5lukas.waypoints.util
 
-import de.md5lukas.commons.MathHelper
 import java.text.CharacterIterator
 import java.text.StringCharacterIterator
 import kotlin.math.abs
-
-fun Double.format(): String = MathHelper.format(this)
 
 // Based on https://stackoverflow.com/a/3758880
 fun Long.humanReadableByteCountBin(): String {

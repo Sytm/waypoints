@@ -1,10 +1,10 @@
 package de.md5lukas.waypoints.gui.items
 
+import de.md5lukas.commons.paper.appendLore
+import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.kinvs.items.GUICycleItem
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.pointers.variants.PointerVariant
-import de.md5lukas.waypoints.util.loreNotNull
-import de.md5lukas.waypoints.util.placeholder
 
 class TogglePointerItem(wpGUI: WaypointsGUI, variant: PointerVariant, onChange: () -> Unit) :
     GUICycleItem<Boolean>(
@@ -14,11 +14,11 @@ class TogglePointerItem(wpGUI: WaypointsGUI, variant: PointerVariant, onChange: 
           listOf(
               true to
                   wpGUI.translations.SETTINGS_POINTERS_ON.getItem(name).also {
-                    it.lore(it.loreNotNull + description)
+                    it.appendLore(description)
                   },
               false to
                   wpGUI.translations.SETTINGS_POINTERS_OFF.getItem(name).also {
-                    it.lore(it.loreNotNull + description)
+                    it.appendLore(description)
                   },
           )
         },

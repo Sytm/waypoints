@@ -3,15 +3,16 @@ package de.md5lukas.waypoints.gui.pages
 import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.switchContext
 import de.md5lukas.commons.collections.PaginationList
+import de.md5lukas.commons.paper.editMeta
+import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointShare
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import de.md5lukas.waypoints.util.editMeta
-import de.md5lukas.waypoints.util.placeholder
-import kotlinx.coroutines.future.await
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.bukkit.Bukkit
 import org.bukkit.inventory.meta.SkullMeta
 
@@ -28,12 +29,14 @@ class SharingWaypointPage(
   override suspend fun toGUIContent(value: WaypointShare): GUIContent {
     val player = Bukkit.getOfflinePlayer(value.sharedWith)
 
-    val profile =
-        if (player.isOnline) {
-          player.playerProfile
-        } else {
-          player.playerProfile.update().await()
-        }
+    val profile = player.playerProfile
+
+    if (!player.isOnline) {
+      withContext(Dispatchers.IO) {
+        // Do not use update() because that dispatches to a Thread pool of size 2
+        player.playerProfile.complete()
+      }
+    }
 
     return GUIItem(
         wpGUI.translations.SHARING_PLAYER_DELETE.getItem("name" placeholder profile.name!!).also {

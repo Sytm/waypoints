@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.config.pointers
 
+import de.md5lukas.commons.paper.getStringNotNull
 import de.md5lukas.konfig.ConfigPath
 import de.md5lukas.konfig.Configurable
 import de.md5lukas.konfig.TypeAdapter
@@ -11,7 +12,6 @@ import de.md5lukas.waypoints.pointers.PlayerTrackable
 import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.BeaconConfiguration
-import de.md5lukas.waypoints.util.getStringNotNull
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData

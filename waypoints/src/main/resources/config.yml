@@ -17,12 +17,6 @@ general:
   # DELETE: The waypoint will be permanently deleted
   worldNotFound: HIDE
 
-  uuidCache:
-    # Max size of the internal UUID-Cache
-    maxSize: 100
-    # Set time in hours after saved UUIDs will be removed from the cache
-    expireAfter: 24
-
   features:
     # Set to "false" to disable global waypoints
     globalWaypoints: true

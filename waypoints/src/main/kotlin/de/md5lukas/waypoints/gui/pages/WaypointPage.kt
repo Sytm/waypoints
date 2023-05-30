@@ -3,6 +3,8 @@ package de.md5lukas.waypoints.gui.pages
 import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.switchContext
 import com.okkero.skedule.withSynchronizationContext
+import de.md5lukas.commons.paper.placeholder
+import de.md5lukas.commons.paper.plainDisplayName
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.signgui.SignGUI
@@ -15,7 +17,6 @@ import de.md5lukas.waypoints.integrations.Pl3xMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.SuccessWaypoint
-import de.md5lukas.waypoints.util.asSingletonList
 import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
 import de.md5lukas.waypoints.util.checkWaypointName
 import de.md5lukas.waypoints.util.component1
@@ -24,10 +25,7 @@ import de.md5lukas.waypoints.util.copyFieldsTo
 import de.md5lukas.waypoints.util.createWaypointPermission
 import de.md5lukas.waypoints.util.createWaypointPublic
 import de.md5lukas.waypoints.util.getAllowedItemsForCustomIconMessage
-import de.md5lukas.waypoints.util.loreNotNull
 import de.md5lukas.waypoints.util.onClickSuspending
-import de.md5lukas.waypoints.util.placeholder
-import de.md5lukas.waypoints.util.plainDisplayName
 import de.md5lukas.waypoints.util.replaceInputText
 import net.kyori.adventure.text.event.ClickEvent
 import net.wesjd.anvilgui.AnvilGUI
@@ -211,8 +209,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                                 else -> wpGUI.goBack()
                               }
 
-                              return@onClickSuspending AnvilGUI.ResponseAction.close()
-                                  .asSingletonList()
+                              return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
                             }
                             .onClose {
                               (wpGUI.gui.activePage as BasePage).update()
@@ -243,7 +240,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                               return@onClickSuspending emptyList()
 
                           waypoint.setPermission(permission)
-                          return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
+                          return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
                         }
                         .onClose {
                           wpGUI.skedule {
@@ -352,10 +349,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                               throw IllegalArgumentException(
                                   "Waypoints of the type ${waypoint.type} have no name")
                         }.send(wpGUI.viewer)
-                        return@onClickSuspending replaceInputText(newName).asSingletonList()
+                        return@onClickSuspending listOf(replaceInputText(newName))
                       }
 
-                      return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
+                      return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
                     }
                     .onClose { wpGUI.schedule { wpGUI.gui.open() } }
                     .open(wpGUI.viewer)
@@ -422,7 +419,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                 waypoint.location.world !== null) {
               GUIItem(
                   wpGUI.translations.WAYPOINT_TELEPORT.getItem().also { stack ->
-                    val currentLore = stack.loreNotNull
+                    val currentLore = stack.lore() ?: mutableListOf()
                     wpGUI.plugin.teleportManager
                         .getTeleportCostDescription(wpGUI.viewer, waypoint)
                         ?.let { currentLore += it }
@@ -481,7 +478,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                         return@onClickSuspending emptyList()
 
                     waypoint.setCustomData(customDataKey, newIcon.ifBlank { null })
-                    return@onClickSuspending AnvilGUI.ResponseAction.close().asSingletonList()
+                    return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
                   }
                   .onClose { wpGUI.schedule { wpGUI.gui.open() } }
           switchContext(SynchronizationContext.SYNC)

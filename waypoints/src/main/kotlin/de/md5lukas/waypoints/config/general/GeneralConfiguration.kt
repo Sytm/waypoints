@@ -14,8 +14,6 @@ class GeneralConfiguration {
   var worldNotFound: WorldNotFoundAction = WorldNotFoundAction.SHOW
     private set
 
-  val uuidCache = UUIDCacheConfiguration()
-
   val features = FeaturesConfiguration()
 
   val commands = CommandsConfiguration()

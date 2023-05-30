@@ -5,6 +5,9 @@ import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.waypoints.gui.WaypointsGUI
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.bukkit.inventory.ItemStack
@@ -51,14 +54,16 @@ abstract class ListingPage<T>(
 
   protected suspend fun updateListingInInventory() {
     listingUpdate.withLock {
-      val pageContent = listingContent.page(listingPage)
+      val pageContent = coroutineScope {
+        listingContent.page(listingPage).map { async { toGUIContent(it) } }.awaitAll()
+      }
       for (row in 0..3) {
         for (column in 0..8) {
           val content = pageContent.getOrNull(row * 9 + column)
           if (content == null) {
             grid[row][column] = GUIContent.AIR
           } else {
-            grid[row][column] = toGUIContent(content)
+            grid[row][column] = content
           }
         }
       }

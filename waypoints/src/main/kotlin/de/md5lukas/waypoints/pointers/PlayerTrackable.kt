@@ -1,8 +1,8 @@
 package de.md5lukas.waypoints.pointers
 
+import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.util.getResolvers
-import de.md5lukas.waypoints.util.placeholder
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
