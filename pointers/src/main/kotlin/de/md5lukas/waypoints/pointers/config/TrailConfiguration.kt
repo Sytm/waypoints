@@ -16,8 +16,6 @@ interface TrailConfiguration : RepeatingPointerConfiguration {
 
   val pathingAllowChunkLoading: Boolean
 
-  val pathingAllowFastFail: Boolean
-
   val pathingStrategy: PathingStrategy
 
   val pathInvalidationDistanceSquared: Int

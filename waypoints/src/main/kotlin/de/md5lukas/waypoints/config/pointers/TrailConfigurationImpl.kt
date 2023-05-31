@@ -24,10 +24,6 @@ class TrailConfigurationImpl : RepeatingPointerConfigurationImpl(), TrailConfigu
   override var pathingAllowChunkLoading: Boolean = false
     private set
 
-  @ConfigPath("pathing.allowFastFail")
-  override var pathingAllowFastFail: Boolean = false
-    private set
-
   @ConfigPath("pathing.strategy")
   override var pathingStrategy: TrailConfiguration.PathingStrategy =
       TrailConfiguration.PathingStrategy.DIRECT

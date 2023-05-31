@@ -19,38 +19,40 @@ import net.kyori.adventure.text.Component
 
 class SharedWaypointsPage(
     wpGUI: WaypointsGUI,
-) : ListingPage<Pair<WaypointShare, Waypoint>>(wpGUI, wpGUI.extendApi { Type.PRIVATE.getBackgroundItem() }) {
+) :
+    ListingPage<Pair<WaypointShare, Waypoint>>(
+        wpGUI, wpGUI.extendApi { Type.PRIVATE.getBackgroundItem() }) {
 
   override suspend fun getContent() =
       PaginationList<Pair<WaypointShare, Waypoint>>(PAGINATION_LIST_PAGE_SIZE).also { list ->
-          list.addAll(wpGUI.targetData.getSharedWaypoints().map { it to it.getWaypoint() })
+        list.addAll(wpGUI.targetData.getSharedWaypoints().map { it to it.getWaypoint() })
         sortContent(list, wpGUI.viewerData.sortBy)
       }
 
   override suspend fun toGUIContent(value: Pair<WaypointShare, Waypoint>): GUIContent {
     val (share, waypoint) = value
     return GUIItem(
-      wpGUI.extendApi {
-        waypoint.getItem(wpGUI.viewer).also { stack ->
-          val playerName =
-            wpGUI.plugin.uuidUtils.getNameAsync(share.owner).await().let { result ->
-              result?.let { Component.text(it) }
-                ?: wpGUI.translations.SHARING_UNKNOWN_PLAYER.text
+        wpGUI.extendApi {
+          waypoint.getItem(wpGUI.viewer).also { stack ->
+            val playerName =
+                wpGUI.plugin.uuidUtils.getNameAsync(share.owner).await().let { result ->
+                  result?.let { Component.text(it) }
+                      ?: wpGUI.translations.SHARING_UNKNOWN_PLAYER.text
+                }
+            stack.appendLore(
+                wpGUI.translations.SHARING_SHARED_BY.withReplacements(
+                    "name" placeholder playerName))
+          }
+        }) {
+          wpGUI.skedule {
+            if (it.isShiftClick) {
+              share.delete()
+              updateListingContent()
+            } else {
+              wpGUI.openWaypoint(waypoint)
             }
-          stack.appendLore(
-            wpGUI.translations.SHARING_SHARED_BY.withReplacements(
-              "name" placeholder playerName))
+          }
         }
-      }) {
-      wpGUI.skedule {
-        if (it.isShiftClick) {
-          share.delete()
-          updateListingContent()
-        } else {
-          wpGUI.openWaypoint(waypoint)
-        }
-      }
-    }
   }
 
   private companion object {
@@ -73,10 +75,11 @@ class SharedWaypointsPage(
         0,
         background,
         'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) { previousPage() },
-        's' to CycleSortItem(wpGUI) {
-          sortContent(listingContent, it)
-          updateListingContent()
-        },
+        's' to
+            CycleSortItem(wpGUI) {
+              sortContent(listingContent, it)
+              updateListingContent()
+            },
         'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() },
         'n' to GUIItem(wpGUI.translations.GENERAL_NEXT.item) { nextPage() },
     )
@@ -87,7 +90,9 @@ class SharedWaypointsPage(
   }
 
   private fun sortContent(content: MutableList<Pair<WaypointShare, Waypoint>>, sort: OverviewSort) {
-    content.sortWith(compareBy<Pair<WaypointShare, Waypoint>> { it.first.owner }.thenBy(sort, Pair<*, Waypoint>::second))
+    content.sortWith(
+        compareBy<Pair<WaypointShare, Waypoint>> { it.first.owner }
+            .thenBy(sort, Pair<*, Waypoint>::second))
   }
 
   override suspend fun init() {

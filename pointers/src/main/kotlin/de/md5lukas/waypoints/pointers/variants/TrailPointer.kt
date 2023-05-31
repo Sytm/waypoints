@@ -38,17 +38,17 @@ internal class TrailPointer(
         pathfinder?.let {
           return it
         }
-        var ruleset =
-            PathingRuleSet.createAsyncRuleSet()
-                .withAllowingDiagonal(config.pathingAllowDiagonal)
-                .withAllowingFallback(config.pathingAllowFallback)
-                .withLoadingChunks(config.pathingAllowChunkLoading)
-                .withAllowingFailFast(config.pathingAllowFastFail)
-                .withStrategy(config.pathingStrategy.clazz)
-
-        if (config.pathingMaxLength > 0) {
-          ruleset = ruleset.withMaxLength(config.pathingMaxLength)
-        }
+        val ruleset =
+            PathingRuleSet.builder()
+                .async(true)
+                .allowingDiagonal(config.pathingAllowDiagonal)
+                .allowingFallback(config.pathingAllowFallback)
+                .loadingChunks(config.pathingAllowChunkLoading)
+                // If the target chunk isn't loaded and loading is disabled pathing would fail
+                .allowingFailFast(false)
+                .strategy(config.pathingStrategy.clazz)
+                .maxLength(config.pathingMaxLength)
+                .build()
 
         val pathfinder = PatheticMapper.newPathfinder(ruleset)
         this.pathfinder = pathfinder
@@ -72,14 +72,14 @@ internal class TrailPointer(
   private val pathfinder = getPathfinder(config)
 
   private val locationTrail: CopyOnWriteArrayList<Location> = CopyOnWriteArrayList()
-  private var lastFuture: CompletableFuture<*>? = null
+  private var lastFuture: CompletableFuture<*> = CompletableFuture.completedFuture(Unit)
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
     if (translatedTarget === null || trackable !is StaticTrackable) {
       return
     }
 
-    if (lastFuture === null) {
+    if (lastFuture.isDone) {
       // If the player has moved too far away from any parts of the calculated trail invalidate the
       // previous trail or if the calculated trail is only one block long because the path couldn't
       // be calculated
@@ -98,7 +98,6 @@ internal class TrailPointer(
                   if (result.successful()) {
                     locationTrail.addAll(result.path.positions.map { it.toCenterLocation() })
                   }
-                  lastFuture = null
                 }
                 .exceptionally {
                   pointerManager.plugin.slF4JLogger.error("Couldn't calculate path", it)
@@ -134,7 +133,6 @@ internal class TrailPointer(
                       // Can no longer calculate path. Invalidate entire trail
                       locationTrail.clear()
                     }
-                    lastFuture = null
                   }
                   .exceptionally {
                     pointerManager.plugin.slF4JLogger.error("Couldn't calculate path", it)
@@ -169,8 +167,9 @@ internal class TrailPointer(
   }
 
   override fun hide(trackable: Trackable, translatedTarget: Location?) {
+    locationTrail.clear()
     highlightCounter = 0
-    lastFuture?.cancel(true)
+    lastFuture.cancel(true)
   }
 
   private fun Location.toPathPosition() = BukkitMapper.toPathPosition(this)
