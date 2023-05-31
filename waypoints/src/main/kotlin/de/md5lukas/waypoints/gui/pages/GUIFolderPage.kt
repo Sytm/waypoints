@@ -209,7 +209,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
         's' to
             CycleSortItem(wpGUI) {
               listingContent.sortWith(it)
-              wpGUI.skedule { updateListingInInventory() }
+              updateListingInInventory()
             },
         'd' to
             if (isOverview) {

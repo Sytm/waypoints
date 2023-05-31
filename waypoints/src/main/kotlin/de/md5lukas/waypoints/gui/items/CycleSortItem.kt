@@ -5,13 +5,18 @@ import de.md5lukas.commons.paper.textComponent
 import de.md5lukas.kinvs.items.GUICycleItem
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.gui.WaypointsGUI
+import kotlinx.coroutines.launch
 
-class CycleSortItem(wpGUI: WaypointsGUI, onCycle: (OverviewSort) -> Unit) :
+class CycleSortItem(wpGUI: WaypointsGUI, onCycle: suspend (OverviewSort) -> Unit) :
     GUICycleItem<OverviewSort>(
         getOverviewSortCycleValues(wpGUI),
         {
-          wpGUI.skedule { wpGUI.viewerData.setSortBy(it) }
-          onCycle(it)
+          wpGUI.skedule {
+            launch {
+              wpGUI.viewerData.setSortBy(it)
+            }
+            onCycle(it)
+          }
         }) {
 
   init {
