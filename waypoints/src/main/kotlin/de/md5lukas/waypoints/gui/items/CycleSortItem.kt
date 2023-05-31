@@ -12,9 +12,7 @@ class CycleSortItem(wpGUI: WaypointsGUI, onCycle: suspend (OverviewSort) -> Unit
         getOverviewSortCycleValues(wpGUI),
         {
           wpGUI.skedule {
-            launch {
-              wpGUI.viewerData.setSortBy(it)
-            }
+            launch { wpGUI.viewerData.setSortBy(it) }
             onCycle(it)
           }
         }) {
