@@ -70,7 +70,6 @@ class TranslationLoader(
   private fun processConfiguration(languageConfig: FileConfiguration): Map<String, String> {
     val map = HashMap<String, String>()
 
-    // TODO maybe revisit?
     val isNewLine = { it: Char -> it == '\n' || it == '\r' }
 
     languageConfig.getKeys(true).forEach {
