@@ -179,6 +179,14 @@ class Translations(tl: TranslationLoader) {
       OverviewSort.values().map { it to Translation(tl, "text.sortOptions.${it.name.lowercase()}") }
   val OVERVIEW_SETTINGS = ItemTranslation(tl, "inventory.overview.settings")
   val OVERVIEW_DESELECT = ItemTranslation(tl, "inventory.overview.deselect")
+  val OVERVIEW_DESELECT_SELECTED = InventoryTranslation(tl, "inventory.overview.deselect.selected")
+  val OVERVIEW_DESELECT_NAMES_WAYPOINT_PRIVATE = Translation(tl, "inventory.overview.deselect.names.waypoint.private", miniMessage = tl.itemMiniMessage)
+  val OVERVIEW_DESELECT_NAMES_WAYPOINT_DEATH = Translation(tl, "inventory.overview.deselect.names.waypoint.death", miniMessage = tl.itemMiniMessage)
+  val OVERVIEW_DESELECT_NAMES_WAYPOINT_PUBLIC = Translation(tl, "inventory.overview.deselect.names.waypoint.public", miniMessage = tl.itemMiniMessage)
+  val OVERVIEW_DESELECT_NAMES_WAYPOINT_PERMISSION = Translation(tl, "inventory.overview.deselect.names.waypoint.permission", miniMessage = tl.itemMiniMessage)
+  val OVERVIEW_DESELECT_NAMES_WAYPOINT_TEMPORARY = Translation(tl, "inventory.overview.deselect.names.waypoint.temporary", miniMessage = tl.itemMiniMessage)
+  val OVERVIEW_DESELECT_NAMES_PLAYER_TRACKING = Translation(tl, "inventory.overview.deselect.name.playerTracking", miniMessage = tl.itemMiniMessage)
+  val OVERVIEW_DESELECT_NAMES_UNKNOWN = Translation(tl, "inventory.overview.name.deselect.unknown", miniMessage = tl.itemMiniMessage)
   val OVERVIEW_SET_WAYPOINT = ItemTranslation(tl, "inventory.overview.setWaypoint")
   val OVERVIEW_CREATE_FOLDER = ItemTranslation(tl, "inventory.overview.createFolder")
 

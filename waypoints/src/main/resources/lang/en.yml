@@ -293,7 +293,18 @@ inventory:
 
     deselect:
       displayName: "<yellow>Deselect all waypoints"
-      description: "<gray>The direction indicators are no longer shown to you"
+      description: "<gray>The direction indicators will be no longer shown to you"
+      selected: "<gray>Currently the following waypoints are selected:"
+      names:
+        waypoint:
+          private: "<dark_purple><path>"
+          death: "<red>Death <created_at:'dd.MM.uuuu kk:mm'>"
+          public: "<aqua>Public/<path>"
+          permission: "<light_purple>Permission/<path>"
+          temporary: "<dark_purple>A Temporary Waypoint"
+        playerTracking: "<blue>Player: <name>"
+        unknown: "<red>Unknown"
+
     setWaypoint:
       displayName: "<yellow>Create a new waypoint"
       description: |

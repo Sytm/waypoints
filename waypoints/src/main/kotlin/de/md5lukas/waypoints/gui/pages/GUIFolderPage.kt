@@ -4,6 +4,7 @@ import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.switchContext
 import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.commons.collections.PaginationList
+import de.md5lukas.commons.paper.appendLore
 import de.md5lukas.commons.paper.isOutOfBounds
 import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.commons.paper.plainDisplayName
@@ -24,6 +25,10 @@ import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
 import de.md5lukas.waypoints.gui.SharedDisplayable
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.CycleSortItem
+import de.md5lukas.waypoints.pointers.PlayerTrackable
+import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
+import de.md5lukas.waypoints.pointers.WaypointTrackable
+import de.md5lukas.waypoints.util.amountClamped
 import de.md5lukas.waypoints.util.checkFolderName
 import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
 import de.md5lukas.waypoints.util.checkWorldAvailability
@@ -213,8 +218,43 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
             },
         'd' to
             if (isOverview) {
-              GUIItem(wpGUI.translations.OVERVIEW_DESELECT.item) {
+              val item = wpGUI.translations.OVERVIEW_DESELECT.item
+
+              val currentTargets = wpGUI.plugin.pointerManager.getCurrentTargets(wpGUI.viewer)
+
+              if (currentTargets.isNotEmpty()) {
+                item.amountClamped = currentTargets.size
+
+                val additionalLines = wpGUI.translations.OVERVIEW_DESELECT_SELECTED.text.toMutableList()
+
+                currentTargets.forEach { trackable ->
+                  additionalLines += when(trackable) {
+                    is WaypointTrackable -> trackable.waypoint.let {
+                      wpGUI.extendApi {
+                        when (it.type) {
+                          Type.PRIVATE -> wpGUI.translations.OVERVIEW_DESELECT_NAMES_WAYPOINT_PRIVATE
+                          Type.DEATH -> wpGUI.translations.OVERVIEW_DESELECT_NAMES_WAYPOINT_DEATH
+                          Type.PUBLIC -> wpGUI.translations.OVERVIEW_DESELECT_NAMES_WAYPOINT_PUBLIC
+                          Type.PERMISSION -> wpGUI.translations.OVERVIEW_DESELECT_NAMES_WAYPOINT_PERMISSION
+                        }.withReplacements("path" placeholder it.getFullPath(), "created_at" placeholder it.createdAt)
+                      }
+                    }
+                    is PlayerTrackable -> trackable.player.let {
+                      wpGUI.translations.OVERVIEW_DESELECT_NAMES_PLAYER_TRACKING.withReplacements("name" placeholder it.displayName())
+                    }
+                    is TemporaryWaypointTrackable -> wpGUI.translations.OVERVIEW_DESELECT_NAMES_WAYPOINT_TEMPORARY.text
+                    else -> wpGUI.translations.OVERVIEW_DESELECT_NAMES_UNKNOWN.text
+                  }
+                }
+
+                item.appendLore(additionalLines)
+              }
+
+              GUIItem(item) {
                 wpGUI.plugin.pointerManager.disable(wpGUI.viewer) { true }
+                wpGUI.skedule {
+                  updateControls(true)
+                }
               }
             } else if (canModify &&
                 wpGUI.plugin.server.pluginManager.isPluginEnabled("ProtocolLib") &&

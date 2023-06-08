@@ -22,9 +22,6 @@ class InventoryConfiguration {
 
   private val materialCache = HashMap<String, Material>()
 
-  var disableFolderSizes: Boolean = false
-    private set
-
   fun getMaterial(path: String): Material {
     val cached = materialCache[path]
     if (cached != null) {

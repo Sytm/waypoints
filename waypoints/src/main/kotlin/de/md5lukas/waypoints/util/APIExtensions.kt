@@ -117,12 +117,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           else -> throw IllegalStateException("A waypoint holder for a player cannot be a GUI item")
         }
 
-    itemStack.amount =
-        if (plugin.waypointsConfig.inventory.disableFolderSizes) {
-          1
-        } else {
-          amountVisibleToPlayer.coerceIn(1, 64)
-        }
+    itemStack.amountClamped = amountVisibleToPlayer
 
     return itemStack
   }
@@ -151,12 +146,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
             "created_at" placeholder createdAt,
             "amount" placeholder fetchedAmount)
 
-    stack.amount =
-        if (plugin.waypointsConfig.inventory.disableFolderSizes) {
-          1
-        } else {
-          fetchedAmount.coerceIn(1, 64)
-        }
+    stack.amountClamped = fetchedAmount
 
     when (type) {
       Type.DEATH -> null
