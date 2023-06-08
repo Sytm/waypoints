@@ -12,21 +12,24 @@ class TrailConfigurationImpl : RepeatingPointerConfigurationImpl(), TrailConfigu
   override var pathingMaxLength: Int = 0
     private set
 
-  @ConfigPath("pathing.allowDiagonal")
-  override var pathingAllowDiagonal: Boolean = false
-    private set
-
-  @ConfigPath("pathing.allowFallback")
-  override var pathingAllowFallback: Boolean = false
+  @ConfigPath("pathing.maxIterations")
+  override var pathingMaxIterations: Int = 0
     private set
 
   @ConfigPath("pathing.allowChunkLoading")
   override var pathingAllowChunkLoading: Boolean = false
     private set
 
-  @ConfigPath("pathing.strategy")
-  override var pathingStrategy: TrailConfiguration.PathingStrategy =
-      TrailConfiguration.PathingStrategy.DIRECT
+  @ConfigPath("pathing.allowChunkGeneration")
+  override var pathingAllowChunkGeneration: Boolean = false
+    private set
+
+  @ConfigPath("pathing.swimPenalty")
+  override var pathingSwimPenalty: Double = 1.0
+    private set
+
+  @ConfigPath("pathing.heuristicWeight")
+  override var pathingHeuristicWeight: Double = 1.0
     private set
 
   @ConfigPath("pathInvalidationDistance")

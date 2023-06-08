@@ -15,8 +15,6 @@ import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.java.JavaPlugin
-import org.patheloper.mapping.PatheticMapper
 
 /**
  * The PointerManager handles the creation of the selected PointerTypes and manages their tasks
@@ -34,7 +32,6 @@ class PointerManager(
 
   init {
     plugin.server.pluginManager.registerEvents(this, plugin)
-    PatheticMapper.initialize(plugin as JavaPlugin)
   }
 
   private val players = ConcurrentHashMap<Player, ManagedPlayer>()
