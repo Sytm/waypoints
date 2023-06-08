@@ -294,6 +294,17 @@ inventory:
     deselect:
       displayName: "<yellow>Alle Wegpunkt-Auswahlen entfernen"
       description: "<gray>Die Wegweiser werden nicht mehr angezeigt"
+      selected: "<gray>Aktuell sind die folgenden Wegpunkte ausgewählt:"
+      names:
+        waypoint:
+          private: "<dark_purple><path>"
+          death: "<red>Tot am <created_at:'dd.MM.uuuu kk:mm'>"
+          public: "<aqua>Öffentlich/<path>"
+          permission: "<light_purple>Eingeschränkt/<path>"
+          temporary: "<dark_purple>Ein Temporärer Wegpunkt"
+        playerTracking: "<blue>Spieler: <name>"
+        unknown: "<red>Unbekannt"
+
     setWaypoint:
       displayName: "<yellow>Neuen Wegpunkt erstellen"
       description: |

@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.util
 
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 fun parseLocationString(player: Player, input: String): Location? {
   val parts = input.split(' ')
@@ -16,3 +17,9 @@ fun parseLocationString(player: Player, input: String): Location? {
     null
   }
 }
+
+var ItemStack.amountClamped: Int
+  get() = amount
+  set(value) {
+    amount = value.coerceIn(1, maxStackSize)
+  }
