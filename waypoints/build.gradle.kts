@@ -41,6 +41,7 @@ dependencies {
   implementation(libs.md5Commons)
   implementation(libs.kinvs)
   implementation(libs.konfig)
+  implementation(libs.dependencyLoader)
 
   // Required dependencies
   implementation(libs.schedulers)
@@ -108,6 +109,8 @@ tasks.withType<ShadowJar> {
     // Exclude AnvilGUI because the version specific NMS adapters are loaded via reflection and are
     // not directly referenced
     exclude(dependency(libs.anvilGui.get()))
+    // Only referenced by the paper-plugin.yml
+    exclude(dependency(libs.dependencyLoader.get()))
 
     exclude(project(":waypoints-api"))
     exclude(project(":utils"))
@@ -126,6 +129,7 @@ tasks.withType<ShadowJar> {
     include(dependency(libs.md5Commons.get()))
     include(dependency(libs.kinvs.get()))
     include(dependency(libs.konfig.get()))
+    include(dependency(libs.dependencyLoader.get()))
 
     include(dependency(libs.schedulers.get()))
     include(dependency(libs.skedule.get()))
@@ -133,6 +137,7 @@ tasks.withType<ShadowJar> {
     include(dependency("org.bstats::"))
   }
 
+  relocate("de.md5lukas.paper.loader", "de.md5lukas.waypoints")
   arrayOf("commons", "kinvs", "konfig", "schedulers", "signgui").forEach {
     relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.$it")
   }

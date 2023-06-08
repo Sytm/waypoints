@@ -22,6 +22,7 @@ md5Commons = { group = "de.md5lukas", name = "md5-commons", version = "3.0.0-SNA
 kinvs = { group = "de.md5lukas", name = "kinvs", version = "1.0.5" }
 sqliteHelper = { group = "de.md5lukas", name = "sqlite-kotlin-helper", version = "1.2.2" }
 konfig = { group = "de.md5lukas", name = "spigot-konfig", version = "1.0.1" }
+dependencyLoader = { group = "de.md5lukas.paper", name = "paper-dependency-yml", version = "1.0.0" }
 
 # (external)
 schedulers = { group = "de.md5lukas", name = "schedulers", version = "1.0.0" }
