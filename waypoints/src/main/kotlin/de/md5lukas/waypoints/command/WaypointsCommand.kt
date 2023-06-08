@@ -86,7 +86,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true))) {
               playerExecutor { player, args ->
                 plugin.skedule(player) {
-                  val waypoint = searchWaypoint(plugin, player, args[0] as String, true)
+                  val waypoint = searchWaypoint(plugin, player, args["name"] as String, true)
                   if (waypoint == null) {
                     translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
                   } else {
@@ -122,7 +122,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     })) {
               playerExecutor { player, args ->
                 plugin.skedule(player) {
-                  val waypoint = searchWaypoint(plugin, player, args[0] as String, true)
+                  val waypoint = searchWaypoint(plugin, player, args["name"] as String, true)
                   if (waypoint == null) {
                     translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
                   } else if (plugin.teleportManager.isAllowedToTeleportToWaypoint(
@@ -140,7 +140,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
         withPermission(WaypointsPermissions.MODIFY_PRIVATE)
         greedyStringArgument("name") {
           playerExecutor { player, args ->
-            val name = args[0] as String
+            val name = args["name"] as String
 
             plugin.skedule(player) { createWaypointPrivate(plugin, player, name) }
           }
@@ -152,7 +152,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
           withPermission(WaypointsPermissions.MODIFY_PUBLIC)
           greedyStringArgument("name") {
             playerExecutor { player, args ->
-              val name = args[0] as String
+              val name = args["name"] as String
 
               plugin.skedule(player) { createWaypointPublic(plugin, player, name) }
             }
@@ -164,8 +164,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
           stringArgument("permission") {
             greedyStringArgument("name") {
               playerExecutor { player, args ->
-                val permission = args[0] as String
-                val name = args[1] as String
+                val permission = args["permission"] as String
+                val name = args["name"] as String
 
                 plugin.skedule(player) {
                   createWaypointPermission(plugin, player, name, permission)
@@ -180,7 +180,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
         withPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)
         locationArgument("target") {
           playerExecutor { player, args ->
-            val location = args[0] as Location
+            val location = args["target"] as Location
 
             if (location.isOutOfBounds) {
               translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
@@ -195,7 +195,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
         withPermission(WaypointsPermissions.COMMAND_OTHER)
         offlinePlayerArgument("target") {
           playerExecutor { player, args ->
-            val otherUUID = (args[0] as OfflinePlayer).uniqueId
+            val otherUUID = (args["target"] as OfflinePlayer).uniqueId
 
             plugin.skedule(player) {
               if (!plugin.api.waypointsPlayerExists(otherUUID)) {
