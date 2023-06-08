@@ -11,26 +11,31 @@ api-version: ${apiVersion}
 folia-supported: true
 
 dependencies:
-  - name: Vault
-    required: false
-  - name: dynmap
-    required: false
-  - name: ProtocolLib
-    required: false
-  - name: squaremap
-    required: false
-  - name: BlueMap
-    required: false
-  - name: Pl3xMap
-    required: false
-
-load-after:
-  - name: Vault
-  - name: dynmap
-  - name: ProtocolLib
-  - name: squaremap
-  - name: BlueMap
-  - name: Pl3xMap
+  server:
+    Vault:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    dynmap:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    ProtocolLib:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    squaremap:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    BlueMap:
+      load: BEFORE
+      required: false
+      join-classpath: true
+    Pl3xMap:
+      load: BEFORE
+      required: false
+      join-classpath: true
 
 permissions:
   waypoints.*:
