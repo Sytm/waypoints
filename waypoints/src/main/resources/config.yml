@@ -305,18 +305,24 @@ pointers:
     pathing:
       # The maximum distance that is calculated ahead each time
       # Longer ranges take more time to calculate at a time but might provide
-      # better paths. If this value gets too big (view-distance) chunk loading must also be enabled
-      maxLength: 130
-      # Allow the engine to take diagonal moves into account
-      allowDiagonal: true
-      # If pathfinding fails, it will fallback to the already found path.
-      allowFallback: true
-      # Allow the engine to load chunks in advance to calculate the path.
-      # Should be kept to false if the view-distance of the server isn't reduced or maxLength increased
+      # better paths.
+      # If the pathfinder encounters unloaded chunks and loading is disabled it will stop there
+      maxLength: 200
+      # The maximum amount of iterations the pathfinding algorithm may perform.
+      # Needs to be set higher if distances increase or the environment is complex
+      maxIterations: 10000
+      # Allow the pathfinder to load chunks in advance to calculate the path.
       allowChunkLoading: false
-      # When the location of the player and the target are both obstructed the pathing will be aborted.
-      # Otherwise it is attempted to find a path anyway
-      allowFastFail: true
+      # Allow the pathfinder to generate chunks when attempting to load them
+      allowChunkGeneration: false
+      # Penalty to apply to possible moves across water
+      # Increased values make the pathfinder try to find a (possible) longer path around water.
+      # Set to zero to disable water movement
+      swimPenalty: 5.0
+      # The weight to apply to the pathfinder heuristic.
+      # Higher values make the pathfinder prefer to go more to the waypoint at the cost of not 100%
+      # optimal paths
+      heuristicWeight: 1.15
       # Strategy to use when deciding which blocks are allowed
       # DIRECT: Finds the shortest possible path. Attempts to take routes through air or 1x1 spaces
       # WALKABLE: All blocks to the target must be solid and walkable

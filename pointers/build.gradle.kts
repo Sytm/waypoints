@@ -18,7 +18,7 @@ dependencies {
 
   implementation(libs.schedulers)
   implementation(libs.protocollib)
-  implementation(libs.pathetic)
+  implementation(libs.pathfinder)
 }
 
 kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
@@ -58,7 +58,7 @@ val dokkaHtmlJar by
 tasks.withType<ShadowJar> {
   archiveClassifier.set("")
 
-  dependencies { include(dependency(libs.pathetic.get())) }
+  dependencies { include(dependency(libs.pathfinder.get())) }
 
   relocate("org.patheloper", "de.md5lukas.waypoints.pointers.path")
 }

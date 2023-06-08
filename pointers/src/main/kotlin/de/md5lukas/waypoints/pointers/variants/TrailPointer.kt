@@ -1,22 +1,23 @@
 package de.md5lukas.waypoints.pointers.variants
 
+import de.md5lukas.pathfinder.PathSuccess
+import de.md5lukas.pathfinder.Pathfinder
+import de.md5lukas.pathfinder.behaviour.BasicPlayerPathingStrategy
+import de.md5lukas.pathfinder.behaviour.ConstantFWeigher
 import de.md5lukas.schedulers.AbstractScheduler
+import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.StaticTrackable
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.TrailConfiguration
 import de.md5lukas.waypoints.pointers.util.blockEquals
+import org.bukkit.Location
+import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.ceil
-import org.bukkit.Location
-import org.bukkit.entity.Player
-import org.patheloper.api.pathing.Pathfinder
-import org.patheloper.api.pathing.rules.PathingRuleSet
-import org.patheloper.api.wrapper.PathPosition
-import org.patheloper.mapping.PatheticMapper
-import org.patheloper.mapping.bukkit.BukkitMapper
 
 internal class TrailPointer(
     pointerManager: PointerManager,
@@ -30,7 +31,7 @@ internal class TrailPointer(
     private val pathfinderLock = Any()
     private var pathfinder: Pathfinder? = null
 
-    fun getPathfinder(config: TrailConfiguration): Pathfinder {
+    fun getPathfinder(plugin: Plugin, config: TrailConfiguration): Pathfinder {
       pathfinder?.let {
         return it
       }
@@ -38,19 +39,18 @@ internal class TrailPointer(
         pathfinder?.let {
           return it
         }
-        val ruleset =
-            PathingRuleSet.builder()
-                .async(true)
-                .allowingDiagonal(config.pathingAllowDiagonal)
-                .allowingFallback(config.pathingAllowFallback)
-                .loadingChunks(config.pathingAllowChunkLoading)
-                // If the target chunk isn't loaded and loading is disabled pathing would fail
-                .allowingFailFast(false)
-                .strategy(config.pathingStrategy.clazz)
-                .maxLength(config.pathingMaxLength)
-                .build()
-
-        val pathfinder = PatheticMapper.newPathfinder(ruleset)
+        val pathfinder = with(config) {
+          Pathfinder(
+            plugin = plugin,
+            executor = Schedulers.global(plugin).asExecutor(async = true),
+            maxIterations = pathingMaxIterations,
+            maxLength = pathingMaxLength,
+            pathingStrategy = BasicPlayerPathingStrategy(pathingSwimPenalty > 0.0, pathingSwimPenalty),
+            allowChunkLoading = pathingAllowChunkLoading,
+            allowChunkGeneration = pathingAllowChunkGeneration,
+            weigher = ConstantFWeigher(2.0),
+          )
+        }
         this.pathfinder = pathfinder
         return pathfinder
       }
@@ -69,10 +69,12 @@ internal class TrailPointer(
 
   private var highlightCounter: Int = 0
 
-  private val pathfinder = getPathfinder(config)
+  private val pathfinder = getPathfinder(pointerManager.plugin, config)
 
   private val locationTrail: CopyOnWriteArrayList<Location> = CopyOnWriteArrayList()
   private var lastFuture: CompletableFuture<*> = CompletableFuture.completedFuture(Unit)
+
+  // From 229 70 169 to -9 70 154
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
     if (translatedTarget === null || trackable !is StaticTrackable) {
@@ -84,7 +86,9 @@ internal class TrailPointer(
       // previous trail or if the calculated trail is only one block long because the path couldn't
       // be calculated
       if (locationTrail.all {
-        player.location.distanceSquared(it) >= config.pathInvalidationDistanceSquared
+        val squared= player.location.distanceSquared(it)
+        val outOfReach = squared >= config.pathInvalidationDistanceSquared
+        outOfReach
       } || (locationTrail.size == 1 && !locationTrail.last().blockEquals(translatedTarget))) {
         locationTrail.clear()
       }
@@ -92,11 +96,10 @@ internal class TrailPointer(
       if (locationTrail.isEmpty()) {
         lastFuture =
             pathfinder
-                .findPath(player.location.toPathPosition(), translatedTarget.toPathPosition())
-                .toCompletableFuture()
+                .findPath(player.location, translatedTarget)
                 .thenApply { result ->
-                  if (result.successful()) {
-                    locationTrail.addAll(result.path.positions.map { it.toCenterLocation() })
+                  if (result is PathSuccess) {
+                    locationTrail.addAll(result.path.map { it.toCenterLocation0() })
                   }
                 }
                 .exceptionally {
@@ -108,10 +111,9 @@ internal class TrailPointer(
             player.location.distanceSquared(last) < config.pathCalculateAheadDistanceSquared) {
           lastFuture =
               pathfinder
-                  .findPath(last.toPathPosition(), translatedTarget.toPathPosition())
-                  .toCompletableFuture()
+                  .findPath(last, translatedTarget)
                   .thenApply { result ->
-                    if (result.successful()) {
+                    if (result is PathSuccess) {
                       // Remove everything behind the player further away than X
                       val lastIndex =
                           locationTrail.indexOfLast {
@@ -122,11 +124,11 @@ internal class TrailPointer(
                         locationTrail.subList(0, lastIndex).clear()
                       }
                       locationTrail.addAll(
-                          result.path.positions.mapIndexedNotNull { index, pathPosition ->
+                          result.path.mapIndexedNotNull { index, pathPosition ->
                             if (index == 0) {
                               null // Skip start because it is already contained in trail
                             } else {
-                              pathPosition.toCenterLocation()
+                              pathPosition.toCenterLocation0()
                             }
                           })
                     } else {
@@ -172,13 +174,10 @@ internal class TrailPointer(
     lastFuture.cancel(true)
   }
 
-  private fun Location.toPathPosition() = BukkitMapper.toPathPosition(this)
-
-  private fun PathPosition.toCenterLocation() =
-      Location(
-          BukkitMapper.toWorld(pathEnvironment),
-          blockX + 0.5,
-          blockY + 0.5,
-          blockZ + 0.5,
-      )
+  private fun Location.toCenterLocation0(): Location {
+    x += 0.5
+    y += 0.5
+    z += 0.5
+    return this
+  }
 }
