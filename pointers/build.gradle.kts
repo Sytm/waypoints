@@ -60,7 +60,7 @@ tasks.withType<ShadowJar> {
 
   dependencies { include(dependency(libs.pathfinder.get())) }
 
-  relocate("org.patheloper", "de.md5lukas.waypoints.pointers.path")
+  relocate("de.md5lukas.pathfinder", "de.md5lukas.waypoints.pointers.path")
 }
 
 publishing {
