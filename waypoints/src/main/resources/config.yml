@@ -322,7 +322,7 @@ pointers:
       # The weight to apply to the pathfinder heuristic.
       # Higher values make the pathfinder prefer to go more to the waypoint at the cost of not 100%
       # optimal paths
-      heuristicWeight: 1.15
+      heuristicWeight: 2.0
       # Strategy to use when deciding which blocks are allowed
       # DIRECT: Finds the shortest possible path. Attempts to take routes through air or 1x1 spaces
       # WALKABLE: All blocks to the target must be solid and walkable

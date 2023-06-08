@@ -12,12 +12,12 @@ import de.md5lukas.waypoints.pointers.StaticTrackable
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.config.TrailConfiguration
 import de.md5lukas.waypoints.pointers.util.blockEquals
-import org.bukkit.Location
-import org.bukkit.entity.Player
-import org.bukkit.plugin.Plugin
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.math.ceil
+import org.bukkit.Location
+import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
 
 internal class TrailPointer(
     pointerManager: PointerManager,
@@ -39,18 +39,20 @@ internal class TrailPointer(
         pathfinder?.let {
           return it
         }
-        val pathfinder = with(config) {
-          Pathfinder(
-            plugin = plugin,
-            executor = Schedulers.global(plugin).asExecutor(async = true),
-            maxIterations = pathingMaxIterations,
-            maxLength = pathingMaxLength,
-            pathingStrategy = BasicPlayerPathingStrategy(pathingSwimPenalty > 0.0, pathingSwimPenalty),
-            allowChunkLoading = pathingAllowChunkLoading,
-            allowChunkGeneration = pathingAllowChunkGeneration,
-            weigher = ConstantFWeigher(2.0),
-          )
-        }
+        val pathfinder =
+            with(config) {
+              Pathfinder(
+                  plugin = plugin,
+                  executor = Schedulers.global(plugin).asExecutor(async = true),
+                  maxIterations = pathingMaxIterations,
+                  maxLength = pathingMaxLength,
+                  pathingStrategy =
+                      BasicPlayerPathingStrategy(pathingSwimPenalty > 0.0, pathingSwimPenalty),
+                  allowChunkLoading = pathingAllowChunkLoading,
+                  allowChunkGeneration = pathingAllowChunkGeneration,
+                  weigher = ConstantFWeigher(pathingHeuristicWeight),
+              )
+            }
         this.pathfinder = pathfinder
         return pathfinder
       }
@@ -86,7 +88,7 @@ internal class TrailPointer(
       // previous trail or if the calculated trail is only one block long because the path couldn't
       // be calculated
       if (locationTrail.all {
-        val squared= player.location.distanceSquared(it)
+        val squared = player.location.distanceSquared(it)
         val outOfReach = squared >= config.pathInvalidationDistanceSquared
         outOfReach
       } || (locationTrail.size == 1 && !locationTrail.last().blockEquals(translatedTarget))) {
