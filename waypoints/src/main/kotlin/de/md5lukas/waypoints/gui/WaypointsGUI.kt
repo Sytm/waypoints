@@ -75,7 +75,10 @@ class WaypointsGUI(
     }
 
     fun openCreateFolder(waypointHolder: WaypointHolder) {
-        AnvilGUI.Builder().plugin(plugin).text(translations.FOLDER_CREATE_ENTER_NAME.text).onComplete { (name) ->
+        AnvilGUI.Builder().plugin(plugin).text(translations.FOLDER_CREATE_ENTER_NAME.text).onClick { slot, (isOutputInvalid, name) ->
+            if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                return@onClick emptyList()
+
             val result = when (waypointHolder.type) {
                 Type.PRIVATE -> createFolderPrivate(plugin, viewer, name)
                 Type.PUBLIC -> createFolderPublic(plugin, viewer, name)
@@ -83,7 +86,7 @@ class WaypointsGUI(
                 else -> throw IllegalStateException("Cannot create folders of the type ${waypointHolder.type}")
             }
 
-            return@onComplete when (result) {
+            return@onClick when (result) {
                 NameTaken -> AnvilGUI.ResponseAction.replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.text)
                 LimitReached, is SuccessFolder -> AnvilGUI.ResponseAction.close()
                 else -> throw IllegalStateException("Invalid return value $result")
@@ -101,12 +104,15 @@ class WaypointsGUI(
 
         var name: String? = null
         var permission: String? = null
-        AnvilGUI.Builder().plugin(plugin).text(translations.WAYPOINT_CREATE_ENTER_NAME.text).onComplete { (enteredText) ->
+        AnvilGUI.Builder().plugin(plugin).text(translations.WAYPOINT_CREATE_ENTER_NAME.text).onClick { slot, (isOutputInvalid, enteredText) ->
+            if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
+                return@onClick emptyList()
+
             if (name == null) {
                 name = enteredText
 
                 if (type == Type.PERMISSION && permission == null) {
-                    return@onComplete AnvilGUI.ResponseAction.replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.text).asSingletonList()
+                    return@onClick AnvilGUI.ResponseAction.replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.text).asSingletonList()
                 }
             } else if (type == Type.PERMISSION && permission == null) {
                 permission = enteredText
@@ -121,7 +127,7 @@ class WaypointsGUI(
                 }
             }
 
-            return@onComplete when (result) {
+            return@onClick when (result) {
                 LimitReached -> AnvilGUI.ResponseAction.close().asSingletonList()
                 NameTaken -> {
                     name = null
