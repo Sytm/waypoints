@@ -15,27 +15,21 @@ dependencies:
     Vault:
       load: BEFORE
       required: false
-      join-classpath: true
     dynmap:
       load: BEFORE
       required: false
-      join-classpath: true
     ProtocolLib:
       load: BEFORE
       required: false
-      join-classpath: true
     squaremap:
       load: BEFORE
       required: false
-      join-classpath: true
     BlueMap:
       load: BEFORE
       required: false
-      join-classpath: true
     Pl3xMap:
       load: BEFORE
       required: false
-      join-classpath: true
 
 permissions:
   waypoints.*:

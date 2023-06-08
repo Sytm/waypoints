@@ -46,7 +46,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
       literalArgument("deselectWaypoint") {
         playerArgument("player") {
           anyExecutor { _, args ->
-            val player = args[0] as Player
+            val player = args["player"] as Player
 
             plugin.pointerManager.disable(player) { true }
           }
@@ -56,8 +56,8 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
         playerArgument("player") {
           uuidArgument("waypoint-id") {
             anyExecutor { sender, args ->
-              val player = args[0] as Player
-              val uuid = args[1] as UUID
+              val player = args["player"] as Player
+              val uuid = args["waypoint-id"] as UUID
 
               plugin.skedule(player) {
                 val waypoint = plugin.api.getWaypointByID(uuid)
@@ -78,14 +78,14 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
         playerArgument("player") {
           locationArgument("target") {
             optionalArgument(
-                StringArgument("beaconcolor")
+                StringArgument("beacon-color")
                     .replaceSuggestions(
                         ArgumentSuggestions.strings(
                             BeaconColor.values().map { it.name }.toList()))) {
                   anyExecutor { sender, args ->
-                    val player = args[0] as Player
-                    val target = args[1] as Location
-                    val beaconColorString = args[2] as? String
+                    val player = args["player"] as Player
+                    val target = args["target"] as Location
+                    val beaconColorString = args["beacon-color"] as? String
 
                     val beaconColor =
                         BeaconColor.values().firstOrNull { it.name.equals(beaconColorString, true) }
@@ -113,7 +113,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                     WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true))) {
               anyExecutor { sender, args ->
                 plugin.skedule {
-                  val result = searchWaypoints(plugin, sender, args[0] as String, true)
+                  val result = searchWaypoints(plugin, sender, args["query"] as String, true)
                   if (result.isEmpty()) {
                     translations.COMMAND_SCRIPT_UUID_NO_MATCH.send(sender)
                   } else {
