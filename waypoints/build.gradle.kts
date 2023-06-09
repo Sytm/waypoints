@@ -109,7 +109,7 @@ kotlin {
 
 tasks.withType<KotlinCompile> {
     // To make sure we have an explicit dependency on the project itself because otherwise we will get a warning that we only depend on an output file and not the project itself
-    dependsOn(project(":api-sqlite").tasks.jar)
+    dependsOn(project(":api-sqlite").tasks.shadowJar)
 }
 
 tasks.withType<ShadowJar> {
@@ -154,7 +154,7 @@ modrinth {
     versionType.set("release")
     uploadFile.set(tasks.shadowJar as Any)
 
-    gameVersions.addAll("1.19.3", "1.18.2", "1.17.1")
+    gameVersions.addAll("1.20", "1.19.4", "1.18.2")
     loaders.addAll("spigot", "paper")
 
     syncBodyFrom.set(rootProject.file("README.md").readText())

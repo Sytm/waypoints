@@ -89,21 +89,10 @@ fun parseLocationString(player: Player, input: String): Location? {
     }
 }
 
-private const val MAX_MAP_SIZE: Double = 30_000_000.0
+fun isLocationOutOfBounds(location: Location): Boolean {
+    val world = location.world!!
 
-fun isLocationOutOfBounds(plugin: Plugin, location: Location): Boolean {
-    if (abs(location.x) >= MAX_MAP_SIZE || abs(location.z) >= MAX_MAP_SIZE) {
-        return true
-    }
-
-    // TODO: Remove once 1.20 is out
-    val validYValues = if (isMinecraftVersionEqualOrLaterThan(plugin, 18, 0)) {
-        -64..320
-    } else {
-        0..256
-    }
-
-    return location.y.roundToInt() !in validYValues
+    return !world.worldBorder.isInside(location) || location.y.roundToInt() !in world.minHeight until world.maxHeight
 }
 
 fun isMinecraftVersionEqualOrLaterThan(plugin: Plugin, major: Int, minor: Int = 0): Boolean {

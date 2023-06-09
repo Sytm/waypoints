@@ -200,7 +200,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) : Lis
                                 if (location === null) {
                                     wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(wpGUI.viewer)
                                     AnvilGUI.ResponseAction.replaceInputText(coordinates)
-                                } else if (isLocationOutOfBounds(wpGUI.plugin, location)) {
+                                } else if (isLocationOutOfBounds(location)) {
                                     wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(wpGUI.viewer)
                                     AnvilGUI.ResponseAction.replaceInputText(coordinates)
                                 } else {

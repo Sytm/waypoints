@@ -78,7 +78,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                                     return@anyExecutor
                                 }
 
-                                if (isLocationOutOfBounds(plugin, target)) {
+                                if (isLocationOutOfBounds(target)) {
                                     translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(sender)
                                 } else {
                                     plugin.api.pointerManager.let {
