@@ -159,8 +159,8 @@ This plugin is licensed under the MIT license. For more information on it, you c
 Because I don't have the time or motivation to support a lot of versions, and it is generally advised to update to the latest Minecraft/Spigot versions only the
 last 3 major updates with the latest builds are supported.
 
-At the time of writing this would be 1.19.3, 1.18.2 and 1.17.1, but not 1.18, 1.16.4 or 1.15.2.
+At the time of writing this would be 1.20, 1.19.4 and 1.18.2 but not 1.18, 1.16.4 or 1.15.2.
 <!-- modrinth_exclude.end -->
 ### Java version
 
-Java 16 is the minimum required version.
+Java 17 is the minimum required version.

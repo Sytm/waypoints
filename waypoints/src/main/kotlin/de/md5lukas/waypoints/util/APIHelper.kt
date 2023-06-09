@@ -110,7 +110,7 @@ private fun creationPreChecks(plugin: WaypointsPlugin, player: Player, location:
         return WorldUnavailable
     }
 
-    if (isLocationOutOfBounds(plugin, location)) {
+    if (isLocationOutOfBounds(location)) {
         plugin.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
         return LocationOutOfBounds
     }

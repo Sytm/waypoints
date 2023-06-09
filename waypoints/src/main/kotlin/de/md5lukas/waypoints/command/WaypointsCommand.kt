@@ -172,7 +172,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     playerExecutor { player, args ->
                         val location = args[0] as Location
 
-                        if (isLocationOutOfBounds(plugin, location)) {
+                        if (isLocationOutOfBounds(location)) {
                             translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
                         } else {
                             plugin.api.pointerManager.let {
