@@ -71,7 +71,7 @@ command:
     selected: "<gray>Wegpunkt <yellow><name> <gray>ausgewählt."
 
   deselect:
-    done: "<gray>Aktuellen Wegpunkt abgewählt."
+    done: "<gray>Aktuelle Wegpunkte abgewählt."
 
   other:
     playerNoWaypoints: "<red>Der angegebene Spieler besitzt keine Wegpunkte."

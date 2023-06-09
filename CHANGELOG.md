@@ -28,6 +28,7 @@
 - Command help messages use used alias again
 - The Hologram Pointer uses display entities instead of ArmorStands
 - Added extra item in the waypoint gui page for changing the icon of waypoints
+- Reloading has always been discouraged but is now explicitly unsupported
 
 [Paper]: https://papermc.io/software/paper
 [Folia]: https://papermc.io/software/folia

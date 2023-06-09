@@ -82,6 +82,12 @@ tracked player.
 
 `/waypoints` - Opens the GUI
 
+`/waypoints select <Name>` - Select an additional waypoint
+
+`/waypoints deselectAll` - Deselect all selected waypoints
+
+`/waypoints teleport <Name>` - Teleport to waypoints (if allowed)
+
 `/waypoints set <Name>` - Create a waypoint only the player himself can see
 
 `/waypoints setPublic <Name>` - Create a waypoint visible for everyone
@@ -94,15 +100,17 @@ tracked player.
 
 `/waypoints statistics` - Look at some rudimentary statistics about the database
 
-`/waypoints reload` - Reload the configuration
+`/waypoints reload` - Reload the configuration. (`/reload` **is not supported**)
 
 ### Scripting
 
-`/waypointsscript deselectWaypoint <Player-Name>` - Deselect the current waypoint of a player with a command
+`/waypointsscript deselectWaypoint <Player-Name>` - Deselect the current waypoints of a player with a command
 
 `/waypointsscript selectWaypoint <Player-Name> <Waypoint-UUID>` - Set the waypoint selection of a player with a command
 
 `/waypointsscript temporaryWaypoint <Player-Name> <X> <Y> <Z> [Beacon-Color]` - Create a temporary waypoint for the player
+
+`/waypointsscript uuid <Search-Query>` - Search for waypoints by their name to get the uuid of them
 
 ## Permissions
 
