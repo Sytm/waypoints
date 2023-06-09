@@ -71,7 +71,7 @@ command:
     selected: "<gray>Waypoint <yellow><name> <gray>selected."
 
   deselect:
-    done: "<gray>Current waypoint deselected."
+    done: "<gray>Current waypoints deselected."
 
   other:
     playerNoWaypoints: "<red>The provided player has no waypoints."

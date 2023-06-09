@@ -85,7 +85,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                   anyExecutor { sender, args ->
                     val player = args["player"] as Player
                     val target = args["target"] as Location
-                    val beaconColorString = args["beacon-color"] as? String
+                    val beaconColorString = args["beacon-color"] as String?
 
                     val beaconColor =
                         BeaconColor.values().firstOrNull { it.name.equals(beaconColorString, true) }

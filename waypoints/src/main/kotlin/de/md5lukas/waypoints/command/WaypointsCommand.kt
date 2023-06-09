@@ -99,9 +99,8 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
               anyExecutor { sender, _ -> translations.COMMAND_NOT_A_PLAYER.send(sender) }
             }
       }
-      literalArgument("deselect") {
+      literalArgument("deselectAll") {
         playerExecutor { player, _ ->
-          // TODO Maybe support deselecting specific trackables
           plugin.pointerManager.disable(player) { true }
           translations.COMMAND_DESELECT_DONE.send(player)
         }

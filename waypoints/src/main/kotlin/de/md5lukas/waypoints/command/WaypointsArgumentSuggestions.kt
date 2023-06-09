@@ -21,22 +21,10 @@ class WaypointsArgumentSuggestions(
     private val filter: (suspend (CommandSender, Waypoint) -> Boolean)? = null,
 ) : ArgumentSuggestions<CommandSender> {
 
-  private var reloadError = true
-
   override fun suggest(
       info: SuggestionInfo<CommandSender>,
-      builder: SuggestionsBuilder
+      builder: SuggestionsBuilder,
   ): CompletableFuture<Suggestions> {
-    if (!plugin.isEnabled) {
-      // The server has been reloaded and this reference to the plugin is outdated.
-      if (reloadError) {
-        reloadError = false
-        plugin.slF4JLogger.error(
-            "The server has been reloaded, which breaks the command completion. Consider restarting")
-      }
-      return builder.buildFuture()
-    }
-
     val sender = info.sender
 
     return plugin.future {
