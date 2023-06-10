@@ -33,7 +33,8 @@ val dokkaHtml by
     tasks.getting(DokkaTask::class) {
       dokkaSourceSets {
         configureEach {
-          val majorVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
+          val majorVersion =
+              libs.versions.paper.get().substringBefore('-').split('.').take(2).joinToString(".")
           externalDocumentationLink(
               "https://jd.papermc.io/paper/$majorVersion/",
               "https://jd.papermc.io/paper/$majorVersion/element-list")

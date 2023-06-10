@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.comphenix.protocol.wrappers.WrappedRegistrable;
 import com.comphenix.protocol.wrappers.nbt.NbtCompound;
@@ -31,8 +32,8 @@ import org.jetbrains.annotations.Unmodifiable;
 
 public class SignGUI {
 
-  private static final int OFFSET = 10;
-  private static final boolean is1_20 = false; // TODO remove once 1.20 is out
+  private static final int OFFSET = 4; // Needs to be closer to the player since 1.20
+  private static final boolean newSignFormat = new MinecraftVersion("1.20").atOrAbove();
   private static final List<Component> EMPTY_LINES =
       Arrays.asList(Component.empty(), Component.empty(), Component.empty(), Component.empty());
 
@@ -102,7 +103,7 @@ public class SignGUI {
       changeSignContent
           .getBlockEntityTypeModifier()
           .write(0, WrappedRegistrable.blockEntityType("sign"));
-      changeSignContent.getNbtModifier().write(0, createSignTileData(signBlockPos));
+      changeSignContent.getNbtModifier().write(0, createSignTileData());
       protocolManager.sendServerPacket(player, changeSignContent);
     }
 
@@ -123,17 +124,11 @@ public class SignGUI {
     return signLocation;
   }
 
-  private @NotNull NbtCompound createSignTileData(@NotNull BlockPosition signPosition) {
+  private @NotNull NbtCompound createSignTileData() {
     final var signData = NbtFactory.ofCompound("");
 
     // See https://minecraft.fandom.com/wiki/Sign#Block_data
-    signData.put("id", "minecraft:sign");
-    signData.put("keepPacked", asByte(false));
-    signData.put("x", signPosition.getX());
-    signData.put("y", signPosition.getY());
-    signData.put("z", signPosition.getZ());
-
-    if (is1_20) {
+    if (newSignFormat) {
       signData.put("is_waxed", asByte(false));
       signData.put(createTextSideCompound("front_text", lines));
       signData.put(createTextSideCompound("back_text", EMPTY_LINES));
@@ -157,11 +152,13 @@ public class SignGUI {
     text.put("has_glowing_text", asByte(false));
     text.put("color", color.name().toLowerCase(Locale.ROOT));
 
-    final NbtList<String> messages = text.getListOrDefault("messages");
+    final NbtList<String> messages = NbtFactory.ofList("messages");
 
-    for (int index = 0; index < 3; index++) {
+    for (int index = 0; index < 4; index++) {
       messages.add(GsonComponentSerializer.gson().serialize(lines.get(index)));
     }
+
+    text.put(messages);
 
     return text;
   }
