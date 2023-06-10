@@ -7,7 +7,7 @@ version: ${version}
 
 website: https://github.com/Sytm/waypoints
 
-api-version: ${apiVersion}
+api-version: "${apiVersion}"
 folia-supported: true
 
 dependencies:

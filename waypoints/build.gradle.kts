@@ -65,32 +65,21 @@ tasks.register<ResourceIndexTask>("createResourceIndex")
 tasks.withType<ProcessResources> {
   dependsOn("createResourceIndex")
 
-  val apiVersion = libs.versions.paper.get().split('.').let { "${it[0]}.${it[1]}" }
-  val kotlinVersion = libs.versions.kotlin.get()
-  val commandApiVersion = libs.versions.commandApi.get()
-  val coroutinesVersion = libs.versions.coroutines.get()
+  val properties =
+      mapOf(
+          "version" to project.version,
+          "apiVersion" to
+              libs.versions.paper.get().substringBefore('-').split('.').take(2).joinToString("."),
+          "kotlinVersion" to libs.versions.kotlin.get(),
+          "coroutinesVersion" to libs.versions.coroutines.get(),
+          "commandApiVersion" to libs.versions.commandApi.get(),
+      )
 
-  inputs.property("version", project.version)
-  inputs.property("apiVersion", apiVersion)
-  inputs.property("kotlinVersion", kotlinVersion)
-  inputs.property("commandApiVersion", commandApiVersion)
-  inputs.property("coroutinesVersion", coroutinesVersion)
+  inputs.properties(properties)
 
   filteringCharset = "UTF-8"
 
-  filesMatching("paper-plugin.yml") {
-    expand(
-        "version" to project.version,
-        "apiVersion" to apiVersion,
-    )
-  }
-  filesMatching("dependencies.yml") {
-    expand(
-        "kotlinVersion" to kotlinVersion,
-        "commandApiVersion" to commandApiVersion,
-        "coroutinesVersion" to coroutinesVersion,
-    )
-  }
+  filesMatching(listOf("paper-plugin.yml", "dependencies.yml")) { expand(properties) }
 }
 
 kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
@@ -139,7 +128,7 @@ tasks.withType<ShadowJar> {
 
   relocate("de.md5lukas.paper.loader", "de.md5lukas.waypoints")
   arrayOf("commons", "kinvs", "konfig", "schedulers", "signgui").forEach {
-    relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.$it")
+    // relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.$it")
   }
 
   relocate("com.okkero.skedule", "de.md5lukas.waypoints.libs.skedule")
