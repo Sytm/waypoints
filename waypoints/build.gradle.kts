@@ -128,7 +128,7 @@ tasks.withType<ShadowJar> {
 
   relocate("de.md5lukas.paper.loader", "de.md5lukas.waypoints")
   arrayOf("commons", "kinvs", "konfig", "schedulers", "signgui").forEach {
-    // relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.$it")
+    relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.$it")
   }
 
   relocate("com.okkero.skedule", "de.md5lukas.waypoints.libs.skedule")

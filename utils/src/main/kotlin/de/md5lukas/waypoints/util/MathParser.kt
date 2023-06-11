@@ -43,38 +43,40 @@ class MathParser private constructor(private val str: String, private val variab
   private fun parseExpression(): Expression {
     var x = parseTerm()
     while (true) {
-      when {
-        eat('+') -> {
-          val a = x
-          val b = parseTerm()
-          x = Expression { a.eval(it) + b.eval(it) }
-        }
-        eat('-') -> {
-          val a = x
-          val b = parseTerm()
-          x = Expression { a.eval(it) - b.eval(it) }
-        }
-        else -> return x
-      }
+      x =
+          when {
+            eat('+') -> {
+              val a = x
+              val b = parseTerm()
+              Expression { a.eval(it) + b.eval(it) }
+            }
+            eat('-') -> {
+              val a = x
+              val b = parseTerm()
+              Expression { a.eval(it) - b.eval(it) }
+            }
+            else -> return x
+          }
     }
   }
 
   private fun parseTerm(): Expression {
     var x = parseFactor()
     while (true) {
-      when {
-        eat('*') -> {
-          val a = x
-          val b = parseFactor()
-          x = Expression { a.eval(it) * b.eval(it) }
-        }
-        eat('/') -> {
-          val a = x
-          val b = parseFactor()
-          x = Expression { a.eval(it) / b.eval(it) }
-        }
-        else -> return x
-      }
+      x =
+          when {
+            eat('*') -> {
+              val a = x
+              val b = parseFactor()
+              Expression { a.eval(it) * b.eval(it) }
+            }
+            eat('/') -> {
+              val a = x
+              val b = parseFactor()
+              Expression { a.eval(it) / b.eval(it) }
+            }
+            else -> return x
+          }
     }
   }
 
@@ -99,13 +101,13 @@ class MathParser private constructor(private val str: String, private val variab
       ch in 'a'..'z' -> { // functions
         while (ch in 'a'..'z') nextChar()
         val name = str.substring(startPos, pos)
-        if (name in variables) {
-          x = Expression {
-            it[name] ?: throw IllegalArgumentException("Missing variable with the name $name")
-          }
-        } else {
-          val a = parseFactor()
-          x =
+        x =
+            if (name in variables) {
+              Expression {
+                it[name] ?: throw IllegalArgumentException("Missing variable with the name $name")
+              }
+            } else {
+              val a = parseFactor()
               when (name) {
                 "sqrt" -> Expression { sqrt(a.eval(it)) }
                 "sin" -> Expression { sin(a.eval(it)) }
@@ -113,11 +115,9 @@ class MathParser private constructor(private val str: String, private val variab
                 "tan" -> Expression { tan(a.eval(it)) }
                 else -> throw RuntimeException("Unknown function: $name")
               }
-        }
+            }
       }
-      else -> {
-        throw RuntimeException("Unexpected: '$ch'")
-      }
+      else -> throw RuntimeException("Unexpected: '$ch'")
     }
 
     if (eat('^')) {
