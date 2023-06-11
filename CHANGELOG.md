@@ -12,10 +12,10 @@
 ### New features
 
 - Command suggestion tooltips are now customizable via the translation files at `command.search.tooltip`
-- Update checker that notifies the console on startup and admins once after they first join. Can be disabled in the config at `general.updateChecker`
+- Update checker that notifies the console on startup and admins once after they first join. Can be disabled in the config at `general.updateChecker`. Does not run periodically
 - Database accesses are now completely asynchronous to the main server thread
 - Add support for [Folia]
-- Multiple Waypoints can be selected at the same time (#92)
+- Multiple Waypoints can be selected at the same time [#92]
 - Integration to [Pl3xMap] has been added
 - Descriptions have been added to waypoints and folders. To change them [ProtocolLib] needs to be installed
 - A Particle Trail pointer has been added
@@ -35,3 +35,4 @@
 [MiniMessage]: https://docs.advntr.dev/minimessage/format.html
 [ProtocolLib]: https://github.com/dmulloy2/ProtocolLib
 [Pl3xMap]: https://modrinth.com/plugin/pl3xmap
+[#92]: https://github.com/Sytm/waypoints/issues/92
