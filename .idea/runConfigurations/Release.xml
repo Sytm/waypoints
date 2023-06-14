@@ -13,7 +13,6 @@
           <option value="clean" />
           <option value="waypoints:shadowJar" />
           <option value="waypoints:modrinth" />
-          <option value="waypoints:modrinthSyncBody" />
           <option value="waypoints-api:publish" />
         </list>
       </option>
@@ -22,6 +21,7 @@
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
     <DebugAllEnabled>false</DebugAllEnabled>
+    <ForceTestExec>false</ForceTestExec>
     <method v="2" />
   </configuration>
 </component>
