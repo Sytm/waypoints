@@ -154,7 +154,7 @@ modrinth {
     versionType.set("release")
     uploadFile.set(tasks.shadowJar as Any)
 
-    gameVersions.addAll("1.20", "1.19.4", "1.18.2")
+    gameVersions.addAll("1.20.1", "1.20", "1.19.4", "1.18.2")
     loaders.addAll("spigot", "paper")
 
     syncBodyFrom.set(rootProject.file("README.md").readText())
