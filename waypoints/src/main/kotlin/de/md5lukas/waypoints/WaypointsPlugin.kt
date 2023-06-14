@@ -95,7 +95,7 @@ class WaypointsPlugin : JavaPlugin() {
   private lateinit var metrics: Metrics
 
   override fun onLoad() {
-    CommandAPI.onLoad(CommandAPIBukkitConfig(this).silentLogs(true))
+    CommandAPI.onLoad(CommandAPIBukkitConfig(this).silentLogs(true).useLatestNMSVersion(true))
     Konfig.preloadClasses<WaypointsConfiguration>()
   }
 
