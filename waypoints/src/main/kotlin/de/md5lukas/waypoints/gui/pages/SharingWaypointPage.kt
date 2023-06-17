@@ -44,6 +44,7 @@ class SharingWaypointPage(
           stack.editMeta<SkullMeta> { playerProfile = profile }
         }) {
           wpGUI.skedule {
+            wpGUI.playSound { clickDanger }
             value.delete()
             updateListingContent()
           }
@@ -69,9 +70,21 @@ class SharingWaypointPage(
         4,
         0,
         background,
-        'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) { previousPage() },
-        'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() },
-        'n' to GUIItem(wpGUI.translations.GENERAL_NEXT.item) { nextPage() },
+        'p' to
+            GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
+              wpGUI.playSound { clickNormal }
+              previousPage()
+            },
+        'b' to
+            GUIItem(wpGUI.translations.GENERAL_BACK.item) {
+              wpGUI.playSound { clickNormal }
+              wpGUI.goBack()
+            },
+        'n' to
+            GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
+              wpGUI.playSound { clickNormal }
+              nextPage()
+            },
     )
 
     if (update) {

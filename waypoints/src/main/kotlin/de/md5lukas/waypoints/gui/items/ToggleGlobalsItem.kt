@@ -11,6 +11,7 @@ class ToggleGlobalsItem(wpGUI: WaypointsGUI, onChange: () -> Unit) :
         {
           wpGUI.skedule { wpGUI.viewerData.setShowGlobals(it) }
           onChange()
+          wpGUI.playSound { clickNormal }
         }) {
   init {
     if (wpGUI.viewerData.showGlobals != currentValue) {

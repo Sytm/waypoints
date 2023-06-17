@@ -5,6 +5,8 @@ import java.time.Duration
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import kotlin.time.toJavaDuration
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
@@ -46,4 +48,16 @@ object StyleAdapter : RegisteredTypeAdapter.Static<Style>(Style::class) {
 
   override fun get(section: ConfigurationSection, path: String) =
       section.getString(path)?.let { MiniMessage.miniMessage().deserialize(it).style() }
+}
+
+object SoundAdapter : RegisteredTypeAdapter.Static<Sound>(Sound::class) {
+
+  override fun get(section: ConfigurationSection, path: String) =
+      section.getString("$path.name")?.let {
+        Sound.sound()
+            .type(Key.key(it))
+            .volume(section.getDouble("$path.volume", 1.0).toFloat())
+            .pitch(section.getDouble("$path.pitch", 1.0).toFloat())
+            .build()
+      }
 }

@@ -18,6 +18,7 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
   override suspend fun toGUIContent(value: Folder) =
       wpGUI.extendApi {
         GUIItem(value.getItem(wpGUI.viewer)) {
+          wpGUI.playSound { clickSuccess }
           wpGUI.skedule {
             waypoint.setFolder(value)
             wpGUI.goBack()
@@ -36,16 +37,29 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
         4,
         0,
         background,
-        'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) { previousPage() },
-        'n' to GUIItem(wpGUI.translations.GENERAL_NEXT.item) { nextPage() },
+        'p' to
+            GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
+              wpGUI.playSound { clickNormal }
+              previousPage()
+            },
+        'n' to
+            GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
+              wpGUI.playSound { clickNormal }
+              nextPage()
+            },
         'g' to
             GUIItem(wpGUI.translations.SELECT_FOLDER_NO_FOLDER.item) {
+              wpGUI.playSound { clickSuccess }
               wpGUI.skedule {
                 waypoint.setFolder(null)
                 wpGUI.goBack()
               }
             },
-        'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() })
+        'b' to
+            GUIItem(wpGUI.translations.GENERAL_BACK.item) {
+              wpGUI.playSound { clickNormal }
+              wpGUI.goBack()
+            })
   }
 
   override suspend fun init() {

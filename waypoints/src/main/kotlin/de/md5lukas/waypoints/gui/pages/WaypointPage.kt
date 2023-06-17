@@ -37,32 +37,18 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
 
   private companion object {
     /**
-     * spotless:off
-     * w = Waypoint Icon
-     * g = Change icon
-     * i = Get UUID (Global waypoints only)
-     * u = Move to public folder
-     * e = Move to permission folder
-     * p = Change permission
-     * s = Select
-     * y = WebMap custom icon
-     * c = Select beacon color
-     * f = Move to folder
-     * r = rename
-     * o = Edit custom description
-     * d = Delete
-     * t = Teleport
-     * h = Share
-     * b = Back
-     * spotless:on
+     * spotless:off w = Waypoint Icon g = Change icon i = Get UUID (Global waypoints only) u = Move
+     * to public folder e = Move to permission folder p = Change permission s = Select y = WebMap
+     * custom icon c = Select beacon color f = Move to folder r = rename o = Edit custom description
+     * d = Delete t = Teleport h = Share b = Back spotless:on
      */
     val waypointPattern = // e t
         GUIPattern(
             "u_p_w_y_i",
-            "__c___r__",
+            "e_c___r__",
             "_f__s__g_",
             "__h___o__",
-            "d_e_t___b",
+            "d___t___b",
         )
   }
 
@@ -98,7 +84,9 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                     waypoint.setMaterial(newMaterial)
                     updatePage()
                   }
+                  wpGUI.playSound { clickSuccess }
                 } else {
+                  wpGUI.playSound { clickError }
                   wpGUI.viewer.sendMessage(
                       wpGUI.translations.MESSAGE_WAYPOINT_NEW_ICON_INVALID.text
                           .appendSpace()
@@ -112,6 +100,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
             if (wpGUI.viewer.hasPermission(WaypointsPermissions.COMMAND_SCRIPTING) &&
                 isNotDeathWaypoint) {
               GUIItem(wpGUI.translations.WAYPOINT_GET_UUID.item) {
+                wpGUI.playSound { clickSuccess }
                 wpGUI.viewer.sendMessage(
                     wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements(
                             "name" placeholder waypoint.name)
@@ -150,13 +139,18 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                               wpGUI.goBack()
                               wpGUI.goBack()
                             }
-                            else -> wpGUI.goBack()
+                            else -> {
+                              wpGUI.playSound { clickError }
+                              wpGUI.goBack()
+                            }
                           }
                         }
                       } else {
+                        wpGUI.playSound { clickDangerAbort }
                         wpGUI.goBack()
                       }
                     })
+                wpGUI.playSound { clickDanger }
               }
             } else {
               background
@@ -206,7 +200,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                                   wpGUI.goBack()
                                   wpGUI.goBack()
                                 }
-                                else -> wpGUI.goBack()
+                                else -> {
+                                  wpGUI.playSound { clickError }
+                                  wpGUI.goBack()
+                                }
                               }
 
                               return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
@@ -217,9 +214,11 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                             }
                             .open(wpGUI.viewer)
                       } else {
+                        wpGUI.playSound { clickDangerAbort }
                         wpGUI.goBack()
                       }
                     })
+                wpGUI.playSound { clickDanger }
               }
             } else {
               background
@@ -240,6 +239,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                               return@onClickSuspending emptyList()
 
                           waypoint.setPermission(permission)
+                          wpGUI.playSound { clickSuccess }
                           return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
                         }
                         .onClose {
@@ -250,6 +250,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                           }
                         }
                         .open(wpGUI.viewer)
+                    wpGUI.playSound { clickNormal }
                   }
             } else {
               background
@@ -263,6 +264,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                   wpGUI.plugin.pointerManager.disable(wpGUI.viewer) {
                     WaypointTrackable.Extract(it) == waypoint
                   }
+                  wpGUI.playSound { clickSuccess }
                   wpGUI.skedule { updatePage() }
                 }
               } else {
@@ -270,6 +272,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                   wpGUI.viewer.closeInventory()
                   wpGUI.plugin.pointerManager.enable(
                       wpGUI.viewer, WaypointTrackable(wpGUI.plugin, waypoint))
+                  wpGUI.playSound { waypointSelected }
                 }
               }
             } else {
@@ -306,6 +309,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                 wpGUI.plugin.waypointsConfig.pointers.beacon.enabled) {
               GUIItem(wpGUI.translations.WAYPOINT_SELECT_BEACON_COLOR.item) {
                 wpGUI.open(SelectBeaconColorPage(wpGUI, waypoint))
+                wpGUI.playSound { clickNormal }
               }
             } else {
               background
@@ -317,6 +321,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                   val page = MoveToFolderPage(wpGUI, waypoint).apply { init() }
                   switchContext(SynchronizationContext.SYNC)
                   wpGUI.open(page)
+                  wpGUI.playSound { clickNormal }
                 }
               }
             } else {
@@ -339,6 +344,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                       if (checkWaypointName(wpGUI.plugin, holder, newName)) {
                         waypoint.setName(newName)
 
+                        wpGUI.playSound { clickSuccess }
                         updatePage()
                       } else {
                         when (waypoint.type) {
@@ -349,6 +355,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                               throw IllegalArgumentException(
                                   "Waypoints of the type ${waypoint.type} have no name")
                         }.send(wpGUI.viewer)
+                        wpGUI.playSound { clickError }
                         return@onClickSuspending listOf(replaceInputText(newName))
                       }
 
@@ -356,6 +363,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                     }
                     .onClose { wpGUI.schedule { wpGUI.gui.open() } }
                     .open(wpGUI.viewer)
+                wpGUI.playSound { clickNormal }
               }
             } else {
               background
@@ -377,10 +385,12 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                         }
                         updatePage()
                         switchContext(SynchronizationContext.SYNC)
+                        wpGUI.playSound { clickSuccess }
                         wpGUI.gui.open()
                       }
                     }
                 waypoint.description?.let { description -> builder.lines(description.split('\n')) }
+                wpGUI.playSound { clickNormal }
                 builder.open()
               }
             } else {
@@ -403,11 +413,14 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                           switchContext(SynchronizationContext.SYNC)
                           wpGUI.goBack()
                           wpGUI.goBack()
+                          wpGUI.playSound { clickSuccess }
                         }
                       } else {
                         wpGUI.goBack()
+                        wpGUI.playSound { clickDangerAbort }
                       }
                     })
+                wpGUI.playSound { clickDanger }
               }
             } else {
               background
@@ -432,11 +445,14 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                     wpGUI.skedule {
                       if (wpGUI.plugin.teleportManager.isAllowedToTeleportToWaypoint(
                           wpGUI.viewer, waypoint)) {
+                        wpGUI.playSound { clickNormal }
                         withSynchronizationContext(SynchronizationContext.SYNC) {
                           wpGUI.viewer.closeInventory()
                         }
                         wpGUI.plugin.teleportManager.teleportPlayerToWaypoint(
                             wpGUI.viewer, waypoint)
+                      } else {
+                        wpGUI.playSound { clickError }
                       }
                     }
                   }
@@ -451,11 +467,16 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                   switchContext(SynchronizationContext.SYNC)
                   wpGUI.open(page)
                 }
+                wpGUI.playSound { clickNormal }
               }
             } else {
               background
             },
-        'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() },
+        'b' to
+            GUIItem(wpGUI.translations.GENERAL_BACK.item) {
+              wpGUI.playSound { clickNormal }
+              wpGUI.goBack()
+            },
     )
 
     if (update) {
@@ -478,11 +499,13 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                         return@onClickSuspending emptyList()
 
                     waypoint.setCustomData(customDataKey, newIcon.ifBlank { null })
+                    wpGUI.playSound { clickSuccess }
                     return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
                   }
                   .onClose { wpGUI.schedule { wpGUI.gui.open() } }
           switchContext(SynchronizationContext.SYNC)
           wpGUI.viewer.closeInventory()
+          wpGUI.playSound { clickNormal }
           builder.open(wpGUI.viewer)
         }
       }

@@ -93,6 +93,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                     plugin.pointerManager.enable(player, WaypointTrackable(plugin, waypoint))
                     translations.COMMAND_SELECT_SELECTED.send(
                         player, Placeholder.unparsed("name", waypoint.name))
+                    player.playSound(plugin.waypointsConfig.sounds.waypointSelected)
                   }
                 }
               }

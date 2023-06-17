@@ -25,6 +25,7 @@ class TogglePointerItem(wpGUI: WaypointsGUI, variant: PointerVariant, onChange: 
         {
           wpGUI.skedule { wpGUI.viewerData.setPointerEnabled(variant.key, it) }
           onChange()
+          wpGUI.playSound { clickNormal }
         }) {
   init {
     if (wpGUI.viewerData.isPointerEnabled(variant.key) != currentValue) {

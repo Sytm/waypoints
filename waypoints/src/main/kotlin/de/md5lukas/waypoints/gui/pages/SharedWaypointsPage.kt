@@ -46,9 +46,11 @@ class SharedWaypointsPage(
         }) {
           wpGUI.skedule {
             if (it.isShiftClick) {
+              wpGUI.playSound { clickDanger }
               share.delete()
               updateListingContent()
             } else {
+              wpGUI.playSound { clickNormal }
               wpGUI.openWaypoint(waypoint)
             }
           }
@@ -74,14 +76,26 @@ class SharedWaypointsPage(
         4,
         0,
         background,
-        'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) { previousPage() },
+        'p' to
+            GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
+              wpGUI.playSound { clickNormal }
+              previousPage()
+            },
         's' to
             CycleSortItem(wpGUI) {
               sortContent(listingContent, it)
               updateListingContent()
             },
-        'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() },
-        'n' to GUIItem(wpGUI.translations.GENERAL_NEXT.item) { nextPage() },
+        'b' to
+            GUIItem(wpGUI.translations.GENERAL_BACK.item) {
+              wpGUI.playSound { clickNormal }
+              wpGUI.goBack()
+            },
+        'n' to
+            GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
+              wpGUI.playSound { clickNormal }
+              nextPage()
+            },
     )
 
     if (update) {

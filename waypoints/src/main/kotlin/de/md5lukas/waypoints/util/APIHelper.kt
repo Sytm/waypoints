@@ -103,6 +103,8 @@ suspend fun createWaypointPrivate(
 
   checkVisited(plugin, waypoint, player)
 
+  player.playSound(plugin.waypointsConfig.sounds.waypointCreated)
+
   return SuccessWaypoint(waypoint)
 }
 
@@ -125,6 +127,8 @@ suspend fun createWaypointPublic(
   plugin.translations.WAYPOINT_SET_SUCCESS_PUBLIC.send(player)
 
   checkVisited(plugin, waypoint, player)
+
+  player.playSound(plugin.waypointsConfig.sounds.waypointCreated)
 
   return SuccessWaypoint(waypoint)
 }
@@ -152,6 +156,8 @@ suspend fun createWaypointPermission(
   plugin.translations.WAYPOINT_SET_SUCCESS_PERMISSION.send(player)
 
   checkVisited(plugin, waypoint, player)
+
+  player.playSound(plugin.waypointsConfig.sounds.waypointCreated)
 
   return SuccessWaypoint(waypoint)
 }
