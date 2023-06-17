@@ -21,6 +21,7 @@
 - A Particle Trail pointer has been added
 - Players can choose to disable some of the server-wide available pointers (For example only having the bossbar)
 - Players can share private waypoints with other players
+- Sounds have been added to the GUI and some actions. They can be customized in the config at `sounds`
 
 ### Misc
 

@@ -26,7 +26,11 @@ class SettingsPage(wpGUI: WaypointsGUI) :
     val mappings =
         mutableMapOf(
             'p' to GUIItem(wpGUI.translations.SETTINGS_POINTERS_TITLE.item),
-            'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() },
+            'b' to
+                GUIItem(wpGUI.translations.GENERAL_BACK.item) {
+                  wpGUI.playSound { clickNormal }
+                  wpGUI.goBack()
+                },
             'g' to
                 if (wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
                   ToggleGlobalsItem(wpGUI) { updatePage(true) }
@@ -51,6 +55,7 @@ class SettingsPage(wpGUI: WaypointsGUI) :
       mappings[counter.toString().first()] =
           TogglePointerItem(wpGUI, it) {
             updatePage(true)
+            wpGUI.playSound { clickNormal }
             wpGUI.plugin.pointerManager.reapplyConfiguration(wpGUI.viewer)
           }
       counter++

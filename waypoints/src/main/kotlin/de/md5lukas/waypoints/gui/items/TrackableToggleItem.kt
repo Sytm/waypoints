@@ -23,6 +23,7 @@ class TrackableToggleItem(wpGUI: WaypointsGUI) :
             }
           }
           wpGUI.gui.update()
+          wpGUI.playSound { clickNormal }
         }) {
   init {
     if (wpGUI.viewerData.canBeTracked != currentValue) {

@@ -5,6 +5,7 @@ import de.md5lukas.waypoints.config.general.GeneralConfiguration
 import de.md5lukas.waypoints.config.integrations.IntegrationsConfiguration
 import de.md5lukas.waypoints.config.inventory.InventoryConfiguration
 import de.md5lukas.waypoints.config.pointers.PointerConfigurationImpl
+import de.md5lukas.waypoints.config.sounds.SoundsConfiguration
 import de.md5lukas.waypoints.config.tracking.PlayerTrackingConfiguration
 
 class WaypointsConfiguration {
@@ -14,6 +15,8 @@ class WaypointsConfiguration {
   val pointers = PointerConfigurationImpl()
 
   val inventory = InventoryConfiguration()
+
+  val sounds = SoundsConfiguration()
 
   val integrations = IntegrationsConfiguration()
 

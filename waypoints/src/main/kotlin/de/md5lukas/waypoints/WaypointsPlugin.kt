@@ -13,6 +13,7 @@ import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.BlockDataAdapter
 import de.md5lukas.waypoints.config.DurationAdapter
 import de.md5lukas.waypoints.config.MaterialListAdapter
+import de.md5lukas.waypoints.config.SoundAdapter
 import de.md5lukas.waypoints.config.StyleAdapter
 import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.events.ConfigReloadEvent
@@ -126,6 +127,7 @@ class WaypointsPlugin : JavaPlugin() {
               BlockDataAdapter,
               DurationAdapter,
               StyleAdapter,
+              SoundAdapter,
           ))
 
   private fun loadConfiguration() {

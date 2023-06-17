@@ -372,6 +372,53 @@ pointers:
       # The vertical offset of the hovering item
       offset: -0.3
 
+# Customize the used sounds
+# For available names enter "/playsound" and view the suggested sounds. Technically custom sounds from resource packs can also be used
+# Pitch and volume can both be customized
+sounds:
+  openGui:
+    name: "minecraft:block.ender_chest.open"
+    volume: 0.5
+
+  click:
+    normal:
+      name: "minecraft:ui.button.click"
+      volume: 0.3
+    danger:
+      name: "minecraft:block.lava.pop"
+      volume: 0.75
+    dangerAbort:
+      name: "minecraft:block.lava.extinguish"
+      volume: 0.5
+    success:
+      name: "minecraft:entity.player.levelup"
+      volume: 0.5
+      pitch: 2
+    error:
+      name: "minecraft:entity.villager.hurt"
+      volume: 0.5
+      pitch: 1.5
+
+  waypoint:
+    created:
+      name: "minecraft:block.beacon.activate"
+      pitch: 1.5
+    selected:
+      name: "minecraft:block.beacon.power_select"
+      volume: 0.5
+
+  player:
+    selected:
+      name: "minecraft:block.beacon.power_select"
+      volume: 0.5
+    notification:
+      name: "minecraft:entity.wither.spawn"
+      volume: 0.1
+
+  teleport:
+    name: "minecraft:entity.enderman.teleport"
+    volume: 0.5
+
 inventory:
   general:
     previous: ARROW

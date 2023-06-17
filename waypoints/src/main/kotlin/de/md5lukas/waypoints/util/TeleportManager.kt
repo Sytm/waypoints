@@ -107,7 +107,9 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
   suspend fun teleportPlayerToWaypoint(player: Player, waypoint: Waypoint) {
     cancelRunningTeleport(player)
     if (player.hasPermission(getTeleportPermission(waypoint))) {
-      player.teleportKeepOrientation(waypoint.location)
+      if (player.teleportKeepOrientation(waypoint.location).await()) {
+        player.playSound(plugin.waypointsConfig.sounds.teleport)
+      }
       return
     }
 
@@ -190,6 +192,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         val success = player.teleportKeepOrientation(waypoint.location).await()
 
         if (success) {
+          player.playSound(plugin.waypointsConfig.sounds.teleport)
           val cooldown = config.cooldown
 
           if (cooldown.toSeconds() > 0) {
@@ -199,10 +202,10 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
           when (config.paymentType) {
             TeleportPaymentType.XP -> {
               player.giveExpLevels(price.toInt())
-              modifyTeleportations(player, waypoint, 1)
+              modifyTeleportations(player, waypoint, -1)
             }
             TeleportPaymentType.VAULT -> {
-              modifyTeleportations(player, waypoint, 1)
+              modifyTeleportations(player, waypoint, -1)
               plugin.vaultIntegration.deposit(player, price)
             }
             else -> {}

@@ -34,6 +34,7 @@ class ShareWaypointPage(
             wpGUI.skedule {
               val id = value.uniqueId
               if (waypoint.getSharedWith().any { it.sharedWith == id }) {
+                wpGUI.playSound { clickError }
                 wpGUI.translations.MESSAGE_SHARING_ALREADY_SHARED.send(
                     wpGUI.viewer,
                     "name" placeholder value.displayName(),
@@ -42,6 +43,7 @@ class ShareWaypointPage(
                 // Ensure that the player exists
                 wpGUI.plugin.api.getWaypointPlayer(id)
                 waypoint.shareWith(id)
+                wpGUI.playSound { clickSuccess }
                 wpGUI.translations.MESSAGE_SHARING_SUCCESS.send(
                     wpGUI.viewer,
                     "name" placeholder value.displayName(),
@@ -70,21 +72,35 @@ class ShareWaypointPage(
         4,
         0,
         background,
-        'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) { previousPage() },
+        'p' to
+            GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
+              wpGUI.playSound { clickNormal }
+              previousPage()
+            },
         's' to
             GUIItem(wpGUI.translations.SHARING_VIEW_SHARING.item) {
               wpGUI.skedule {
                 val page = SharingWaypointPage(wpGUI, waypoint).apply { init() }
                 switchContext(SynchronizationContext.SYNC)
+                wpGUI.playSound { clickNormal }
                 wpGUI.open(page)
               }
             },
         'r' to
             GUIItem(wpGUI.translations.PLAYER_LIST_REFRESH_LISTING.item) {
+              wpGUI.playSound { clickNormal }
               wpGUI.skedule { updateListingContent() }
             },
-        'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() },
-        'n' to GUIItem(wpGUI.translations.GENERAL_NEXT.item) { nextPage() },
+        'b' to
+            GUIItem(wpGUI.translations.GENERAL_BACK.item) {
+              wpGUI.playSound { clickNormal }
+              wpGUI.goBack()
+            },
+        'n' to
+            GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
+              wpGUI.playSound { clickNormal }
+              nextPage()
+            },
     )
 
     if (update) {

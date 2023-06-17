@@ -57,13 +57,17 @@ class PlayerTrackingPage(
               .also { stack -> stack.editMeta<SkullMeta> { owningPlayer = value } }) {
             if (!wpGUI.viewerData.canBeTracked &&
                 wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable) {
+              wpGUI.playSound { clickError }
               wpGUI.translations.MESSAGE_TRACKING_TRACKABLE_REQUIRED.send(wpGUI.viewer)
             } else if (!value.isOnline) {
+              wpGUI.playSound { clickError }
               wpGUI.translations.MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE.send(wpGUI.viewer)
             } else {
+              wpGUI.playSound { playerSelected }
               wpGUI.viewer.closeInventory()
               wpGUI.plugin.pointerManager.enable(wpGUI.viewer, PlayerTrackable(wpGUI.plugin, value))
               if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
+                wpGUI.playSound { playerNotification }
                 wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(
                     value, "name" placeholder wpGUI.viewer.displayName())
               }
@@ -89,7 +93,11 @@ class PlayerTrackingPage(
         4,
         0,
         background,
-        'p' to GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) { previousPage() },
+        'p' to
+            GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
+              wpGUI.playSound { clickNormal }
+              previousPage()
+            },
         't' to
             if (wpGUI.plugin.waypointsConfig.playerTracking.toggleable) {
               TrackableToggleItem(wpGUI)
@@ -98,10 +106,19 @@ class PlayerTrackingPage(
             },
         'r' to
             GUIItem(wpGUI.translations.PLAYER_LIST_REFRESH_LISTING.item) {
+              wpGUI.playSound { clickNormal }
               wpGUI.skedule { updateListingContent() }
             },
-        'b' to GUIItem(wpGUI.translations.GENERAL_BACK.item) { wpGUI.goBack() },
-        'n' to GUIItem(wpGUI.translations.GENERAL_NEXT.item) { nextPage() },
+        'b' to
+            GUIItem(wpGUI.translations.GENERAL_BACK.item) {
+              wpGUI.playSound { clickNormal }
+              wpGUI.goBack()
+            },
+        'n' to
+            GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
+              wpGUI.playSound { clickNormal }
+              nextPage()
+            },
     )
 
     if (update) {

@@ -9,11 +9,13 @@ import de.md5lukas.kinvs.GUI
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.*
+import de.md5lukas.waypoints.config.sounds.SoundsConfiguration
 import de.md5lukas.waypoints.gui.pages.*
 import de.md5lukas.waypoints.util.*
 import java.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.future.await
+import net.kyori.adventure.sound.Sound
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import org.bukkit.Material
@@ -103,6 +105,12 @@ class WaypointsGUI(
                         "Cannot create folders of the type ${waypointHolder.type}")
               }
 
+          if (result is SuccessFolder) {
+            playSound { clickSuccess }
+          } else {
+            playSound { clickError }
+          }
+
           return@onClickSuspending listOf(
               when (result) {
                 NameTaken -> replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.rawText)
@@ -136,6 +144,7 @@ class WaypointsGUI(
             name = enteredText
 
             if (type == Type.PERMISSION && permission == null) {
+              playSound { clickNormal }
               return@onClickSuspending listOf(
                   replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText))
             }
@@ -155,6 +164,10 @@ class WaypointsGUI(
                           "Cannot create waypoints with the gui of the type $type")
                 }
               }
+
+          if (result !is SuccessWaypoint) {
+            playSound { clickError }
+          }
 
           return@onClickSuspending listOf(
               when (result) {
@@ -235,6 +248,10 @@ class WaypointsGUI(
       block: suspend CoroutineScope.() -> Unit
   ) = scheduler.skedule(sync, block)
 
+  internal inline fun playSound(sound: SoundsConfiguration.() -> Sound) {
+    viewer.playSound(plugin.waypointsConfig.sounds.sound())
+  }
+
   init {
     skedule {
       viewerData = plugin.api.getWaypointPlayer(viewer.uniqueId)
@@ -258,6 +275,7 @@ class WaypointsGUI(
           )
       openOverview()
       switchContext(SynchronizationContext.SYNC)
+      playSound { openGui }
       gui.open()
     }
   }
