@@ -46,7 +46,7 @@ dependencies {
   // Required dependencies
   implementation(libs.schedulers)
   implementation(libs.skedule)
-  implementation(variantOf(libs.anvilGui) { classifier("latest") })
+  implementation(variantOf(libs.anvilGui) { classifier("from-19") })
   implementation(libs.bStats)
   implementation(libs.bundles.commandApi)
 
@@ -150,7 +150,7 @@ modrinth {
 
   projectId.set("waypoints")
   versionType.set("release")
-  uploadFile.set(tasks.shadowJar as Any)
+  uploadFile.set(tasks.shadowJar)
 
   gameVersions.addAll(libs.versions.paper.get().substringBefore('-'))
   loaders.addAll("paper", "folia")
@@ -166,6 +166,4 @@ modrinth {
     }
     with(embedded) { project("commandapi") }
   }
-
-  debugMode.set(false)
 }
