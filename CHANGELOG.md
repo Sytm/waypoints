@@ -4,7 +4,7 @@
 ### Breaking changes
 
 - Support for Spigot has been dropped, [Paper] is required
-- Only latest Minecraft version is supported. At the moment 1.19.4
+- Only latest Minecraft version is officially supported, although the minimum Version is 1.19.4
 - Translation files are now formatted with [MiniMessage] instead of legacy color codes
 - Database format has been updated and is not backwards compatible
 - When using `/waypointsscript selectWaypoint` it is now mandatory to run `/waypointscript deselectWaypoint` just before if only one waypoint should be active at the same time

@@ -23,6 +23,7 @@ kinvs = { group = "de.md5lukas", name = "kinvs", version = "1.0.5" }
 sqliteHelper = { group = "de.md5lukas", name = "sqlite-kotlin-helper", version = "1.2.2" }
 konfig = { group = "de.md5lukas", name = "spigot-konfig", version = "1.0.1" }
 dependencyLoader = { group = "de.md5lukas.paper", name = "paper-dependency-yml", version = "1.0.0" }
+pathfinder = { group = "de.md5lukas", name = "pathfinder", version = "1.0.0-SNAPSHOT" }
 
 # (external)
 schedulers = { group = "de.md5lukas", name = "schedulers", version = "1.0.1" }
@@ -32,7 +33,7 @@ bStats = { group = "org.bstats", name = "bstats-bukkit", version = "3.0.2" }
 commandapi-shade = { group = "dev.jorel", name = "commandapi-bukkit-shade", version.ref = "commandApi" }
 commandapi-kotlin = { group = "dev.jorel", name = "commandapi-bukkit-kotlin", version.ref = "commandApi" }
 brigadier = { group = "com.mojang", name = "brigadier", version = "1.1.8" }
-pathfinder = { group = "de.md5lukas", name = "pathfinder", version = "1.0.0-SNAPSHOT" }
+papertrail = { group = "io.papermc", name = "paper-trail", version = "0.0.1-SNAPSHOT" }
 
 # Optional dependencies
 vaultApi = { group = "com.github.MilkBowl", name = "VaultAPI", version = "1.7.1" }
