@@ -1,0 +1,5 @@
+name: Waypoints
+authors:
+  - Md5Lukas
+main: de.md5lukas.waypoints.legacy.RequiresPaperPlugins
+version: ${version}
