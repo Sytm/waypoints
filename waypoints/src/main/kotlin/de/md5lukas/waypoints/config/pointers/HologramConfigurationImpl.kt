@@ -15,9 +15,6 @@ class HologramConfigurationImpl : RepeatingPointerConfigurationImpl(), HologramC
   override val distanceFromPlayerSquared: Int
     get() = distanceFromPlayer * distanceFromPlayer
 
-  override var preventOcclusion: Boolean = false
-    private set
-
   override var hologramHeightOffset: Double = 0.0
     private set
 

@@ -33,6 +33,9 @@ internal class BossBarPointer(
   override val supportsMultipleTargets: Boolean
     get() = true
 
+  override val async
+    get() = true
+
   private val rawTitle: String
     get() = config.title
 
@@ -40,7 +43,10 @@ internal class BossBarPointer(
   private var counter = 0
   private val targetData = mutableMapOf<Trackable, TargetData>()
 
+  private lateinit var playerLocation: Location
+
   override fun preUpdates() {
+    playerLocation = player.location.clone()
     if (bossBar === null) {
       bossBar =
           BossBar.bossBar(Component.empty(), 1f, config.barColor, config.barStyle).also {
@@ -64,14 +70,14 @@ internal class BossBarPointer(
     // smoother
     if (counter == 0) {
       // Subtract 90° from the returned angle because Minecraft yaw is rotated by 90°
-      data.angle = normalizeAngleTo360(getAngleToTarget(player.location, translatedTarget) - 90)
+      data.angle = normalizeAngleTo360(getAngleToTarget(playerLocation, translatedTarget) - 90)
     }
   }
 
   override fun postUpdates() {
     counter = (counter + 1) % config.recalculateEveryNthInterval
 
-    val playerAngle = normalizeAngleTo360(player.location.yaw)
+    val playerAngle = normalizeAngleTo360(playerLocation.yaw)
     val offset = (playerAngle / 360 * rawTitle.length).roundToInt()
     val orientedTitle = config.title.loopingSubstring(rawTitle.length - 1, offset)
 

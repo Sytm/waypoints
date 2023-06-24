@@ -24,16 +24,21 @@ internal class ActionBarPointer(
   override val supportsMultipleTargets: Boolean
     get() = false
 
+  override val async: Boolean
+    get() = true
+
   override fun update(trackable: Trackable, translatedTarget: Location?) {
+    val playerLocation = player.location.clone()
+
     player.sendActionBar(
         if (translatedTarget !== null) {
           if (config.showDistanceEnabled && player.isSneaking) {
             pointerManager.hooks.actionBarHooks.formatDistanceMessage(
                 player,
-                player.location.distance(translatedTarget),
-                player.location.y - trackable.location.y)
+                playerLocation.distance(translatedTarget),
+                playerLocation.y - trackable.location.y)
           } else {
-            generateDirectionIndicator(deltaAngleToTarget(player.location, translatedTarget))
+            generateDirectionIndicator(deltaAngleToTarget(playerLocation, translatedTarget))
           }
         } else {
           pointerManager.hooks.actionBarHooks.formatWrongWorldMessage(

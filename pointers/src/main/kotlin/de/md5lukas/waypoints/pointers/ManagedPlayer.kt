@@ -99,11 +99,19 @@ internal class ManagedPlayer(
                       logger.debug("Commissioning new PlayerPointer for {}", pointer)
                       val playerPointer = PlayerPointer(pointer)
                       val task =
-                          scheduler.scheduleAtFixedRate(
-                              interval = pointer.interval.toLong(),
-                              delay = 1L,
-                              block = playerPointer,
-                          )
+                          if (pointer.async) {
+                            scheduler.scheduleAtFixedRateAsync(
+                                interval = pointer.interval.toLong(),
+                                delay = 1L,
+                                block = playerPointer,
+                            )
+                          } else {
+                            scheduler.scheduleAtFixedRate(
+                                interval = pointer.interval.toLong(),
+                                delay = 1L,
+                                block = playerPointer,
+                            )
+                          }
                       task?.let {
                         playerPointer.task = task
                         pointers += playerPointer
