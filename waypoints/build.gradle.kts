@@ -9,6 +9,7 @@ plugins {
     alias(shadow)
     alias(minotaur)
     alias(runPaper)
+    alias(changelog)
   }
 }
 
@@ -148,6 +149,8 @@ tasks.withType<RunServer> {
   minecraftVersion(libs.versions.paper.get().substringBefore('-'))
 }
 
+changelog { path.set(rootProject.relativePath("CHANGELOG.md")) }
+
 modrinth {
   val modrinthToken: String? by project
 
@@ -162,6 +165,9 @@ modrinth {
 
   syncBodyFrom.set(rootProject.file("README.md").readText())
 
+  changelog.set(
+      provider { with(project.changelog) { renderItem(getLatest().withEmptySections(false)) } })
+
   dependencies {
     with(optional) {
       project("pl3xmap")
@@ -171,4 +177,6 @@ modrinth {
     }
     with(embedded) { project("commandapi") }
   }
+
+  debugMode.set(false)
 }

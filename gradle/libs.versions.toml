@@ -64,11 +64,12 @@ sqliteJdbc = { group = "org.xerial", name = "sqlite-jdbc", version = "3.36.0.3" 
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-shadow = { id = "com.github.johnrengelman.shadow", version = "8.+" }
+shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
 dokka = { id = "org.jetbrains.dokka", version = "1.+" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.+" }
 runPaper = { id = "xyz.jpenilla.run-paper", version = "2.+" }
 spotless = { id = "com.diffplug.spotless", version = "6.+" }
+changelog = { id = "org.jetbrains.changelog", version = "2.1.0" }
 
 [bundles]
 commandApi = ["commandapi-shade", "commandapi-kotlin", "brigadier"]
