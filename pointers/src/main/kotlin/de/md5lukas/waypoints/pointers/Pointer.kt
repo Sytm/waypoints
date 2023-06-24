@@ -14,6 +14,8 @@ internal abstract class Pointer(
 
   abstract val interval: Int
   abstract val supportsMultipleTargets: Boolean
+  open val async
+    get() = false
 
   open fun show(trackable: Trackable, translatedTarget: Location?) {
     update(trackable, translatedTarget)

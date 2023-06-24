@@ -8,7 +8,6 @@ import de.md5lukas.waypoints.pointers.packets.ItemDisplay
 import de.md5lukas.waypoints.pointers.packets.SmoothEntity
 import de.md5lukas.waypoints.pointers.packets.TextDisplay
 import de.md5lukas.waypoints.pointers.util.minus
-import org.bukkit.FluidCollisionMode
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
@@ -27,9 +26,18 @@ internal class HologramPointer(
   override val supportsMultipleTargets: Boolean
     get() = true
 
+  override val async
+    get() = true
+
   private val activeHolograms:
       MutableMap<Trackable, Pair<SmoothEntity<TextDisplay>, ItemDisplay?>> =
       HashMap()
+
+  private lateinit var playerEyes: Location
+
+  override fun preUpdates() {
+    playerEyes = player.eyeLocation.clone()
+  }
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
     if (translatedTarget === null) return
@@ -37,42 +45,22 @@ internal class HologramPointer(
     val hologramText = trackable.getHologramText(player)
 
     if (hologramText === null) return
-
     val hologramTarget = translatedTarget.clone()
 
     hologramTarget.y += config.hologramHeightOffset
 
-    val distanceSquared = player.location.distanceSquared(translatedTarget)
-    val maxDistance = config.distanceFromPlayerSquared
+    val distanceSquared = playerEyes.distanceSquared(translatedTarget)
 
     val location =
-        if (distanceSquared <= maxDistance) {
+        if (distanceSquared <= config.distanceFromPlayerSquared) {
           hologramTarget
         } else {
-          val pVec = player.eyeLocation.toVector()
+          val pVec = playerEyes.toVector()
           val tVec = hologramTarget.toVector()
 
           val direction = (tVec - pVec).normalize()
 
-          val rayTrace =
-              if (config.preventOcclusion) {
-                player.world.rayTraceBlocks(
-                    player.eyeLocation,
-                    direction,
-                    config.distanceFromPlayer.toDouble(),
-                    FluidCollisionMode.NEVER,
-                    true)
-              } else null
-
-          if (rayTrace !== null) {
-                // Move the hologram half a block closer to the player
-                rayTrace.hitPosition.add(direction.multiply(-0.5))
-              } else {
-                val offset = direction.multiply(config.distanceFromPlayer)
-
-                pVec.add(offset)
-              }
-              .toLocation(player.world)
+          pVec.add(direction.multiply(config.distanceFromPlayer)).toLocation(playerEyes.world!!)
         }
 
     if (trackable in activeHolograms) {

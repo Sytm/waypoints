@@ -6,8 +6,6 @@ interface HologramConfiguration : RepeatingPointerConfiguration {
 
   val distanceFromPlayerSquared: Int
 
-  val preventOcclusion: Boolean
-
   val hologramHeightOffset: Double
 
   val iconEnabled: Boolean
