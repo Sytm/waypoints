@@ -70,8 +70,6 @@ tasks.withType<ProcessResources> {
   val properties =
       mapOf(
           "version" to project.version,
-          "apiVersion" to
-              libs.versions.paper.get().substringBefore('-').split('.').take(2).joinToString("."),
           "kotlinVersion" to libs.versions.kotlin.get(),
           "coroutinesVersion" to libs.versions.coroutines.get(),
           "commandApiVersion" to libs.versions.commandApi.get(),
@@ -160,7 +158,7 @@ modrinth {
   versionType.set("release")
   uploadFile.set(tasks.shadowJar)
 
-  gameVersions.addAll(libs.versions.paper.get().substringBefore('-'))
+  gameVersions.addAll("1.20.1", "1.20", "1.19.4")
   loaders.addAll("paper", "folia")
 
   syncBodyFrom.set(rootProject.file("README.md").readText())
