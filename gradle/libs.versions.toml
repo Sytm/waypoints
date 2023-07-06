@@ -1,11 +1,14 @@
 [versions]
 kotlin = "1.8.21"
+ksp = "1.8.21-1.0.11"
 coroutines = "1.7.1"
 jvmToolchain = "17"
 paper = "1.20.1-R0.1-SNAPSHOT"
 commandApi = "9.0.3"
 
 dynmap = "3.5-SNAPSHOT"
+
+kotlinpoet = "1.14.2"
 
 [libraries]
 stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
@@ -61,6 +64,9 @@ junitJupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version = 
 mockBukkit = { group = "com.github.seeseemelk", name = "MockBukkit-v1.19", version = "2.+" }
 sqliteJdbc = { group = "org.xerial", name = "sqlite-jdbc", version = "3.36.0.3" }
 
+ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+kotlinpoet-base = { group = "com.squareup", name = "kotlinpoet", version.ref = "kotlinpoet" }
+kotlinpoet-ksp = { group = "com.squareup", name = "kotlinpoet-ksp", version.ref = "kotlinpoet" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -70,6 +76,8 @@ minotaur = { id = "com.modrinth.minotaur", version = "2.+" }
 runPaper = { id = "xyz.jpenilla.run-paper", version = "2.+" }
 spotless = { id = "com.diffplug.spotless", version = "6.+" }
 changelog = { id = "org.jetbrains.changelog", version = "2.1.0" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [bundles]
 commandApi = ["commandapi-shade", "commandapi-kotlin", "brigadier"]
+kotlinPoet = ["kotlinpoet-base", "kotlinpoet-ksp"]

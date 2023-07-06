@@ -19,20 +19,20 @@ interface Folder : GUIFolder {
   /** The name of the folder */
   override val name: String
 
-  suspend fun setName(name: String)
+  @JvmSynthetic suspend fun setName(name: String)
 
   /** The description of the folder, null if none has been provided */
   val description: String?
 
-  suspend fun setDescription(description: String?)
+  @JvmSynthetic suspend fun setDescription(description: String?)
 
   /** The optional customized material this folder should appear as in the GUI */
   val material: Material?
 
-  suspend fun setMaterial(material: Material?)
+  @JvmSynthetic suspend fun setMaterial(material: Material?)
 
   /** The total amount of waypoints in this folder. */
-  suspend fun getAmount(): Int
+  @JvmSynthetic suspend fun getAmount(): Int
 
   /**
    * The amount of waypoints the player has permission to see in this folder if the type is
@@ -41,7 +41,7 @@ interface Folder : GUIFolder {
    * @param permissible The permissible to check the permissions against
    * @return The amount of waypoints visible for the player
    */
-  suspend fun getAmountVisibleForPlayer(permissible: Permissible): Int
+  @JvmSynthetic suspend fun getAmountVisibleForPlayer(permissible: Permissible): Int
 
   /**
    * Deletes this folder from the database.
@@ -50,5 +50,5 @@ interface Folder : GUIFolder {
    * need the folder. After that the [de.md5lukas.waypoints.api.event.FolderPostDeleteEvent] is
    * triggered with the waypoint removed from the database.
    */
-  suspend fun delete()
+  @JvmSynthetic suspend fun delete()
 }

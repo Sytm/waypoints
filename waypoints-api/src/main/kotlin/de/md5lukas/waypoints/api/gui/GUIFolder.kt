@@ -10,8 +10,8 @@ import de.md5lukas.waypoints.api.Waypoint
 interface GUIFolder : GUIDisplayable {
 
   /** Every folder contained in this displayable */
-  suspend fun getFolders(): List<Folder>
+  @JvmSynthetic suspend fun getFolders(): List<Folder>
 
   /** Every waypoint contained in this displayable */
-  suspend fun getWaypoints(): List<Waypoint>
+  @JvmSynthetic suspend fun getWaypoints(): List<Waypoint>
 }
