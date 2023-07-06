@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- Java interoperability helpers have been added to the API Waypoints provides to allow non-Kotlin plugins to use it 
+
 ## 4.0.0
 A lot of new features but also a lot of internal changes that leverage new Paper APIs that aren't available on Spigot.
 Before updating please make an update of your database to make sure nothing goes missing in case of unforeseen errors.

@@ -4,6 +4,7 @@ plugins {
   with(libs.plugins) {
     alias(kotlin)
     alias(dokka)
+    alias(ksp)
   }
   `maven-publish`
 }
@@ -13,6 +14,8 @@ description = "Waypoints api"
 dependencies {
   api(libs.paper)
   api(libs.stdlib)
+  implementation(libs.coroutines)
+  ksp(project(":coroutines-java-interop"))
 }
 
 kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }

@@ -184,7 +184,7 @@ private suspend fun checkVisited(plugin: WaypointsPlugin, waypoint: Waypoint, pl
   if (player.world === waypoint.location.world &&
       player.location.distanceSquared(waypoint.location) <=
           plugin.waypointsConfig.general.teleport.visitedRadiusSquared) {
-    waypoint.getWaypointMeta(player.uniqueId).setVisisted(true)
+    waypoint.getWaypointMeta(player.uniqueId).setVisited(true)
   }
 }
 

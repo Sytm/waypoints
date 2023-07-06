@@ -10,11 +10,11 @@ interface WaypointShare {
 
   val waypointId: UUID
 
-  suspend fun getWaypoint(): Waypoint
+  @JvmSynthetic suspend fun getWaypoint(): Waypoint
 
   val expires: OffsetDateTime?
 
-  suspend fun setExpires(expires: OffsetDateTime?)
+  @JvmSynthetic suspend fun setExpires(expires: OffsetDateTime?)
 
-  suspend fun delete()
+  @JvmSynthetic suspend fun delete()
 }

@@ -17,3 +17,5 @@ include(":signgui")
 include(":utils")
 
 include(":pointers")
+
+include(":coroutines-java-interop")
