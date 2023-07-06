@@ -22,5 +22,5 @@ interface WaypointMeta {
   /** Whether the player has visited the location of this waypoint or not */
   val visited: Boolean
 
-  suspend fun setVisisted(visited: Boolean)
+  suspend fun setVisited(visited: Boolean)
 }

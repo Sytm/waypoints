@@ -39,7 +39,7 @@ private constructor(
   override var visited: Boolean = visited
     private set
 
-  override suspend fun setVisisted(visited: Boolean) {
+  override suspend fun setVisited(visited: Boolean) {
     this.visited = visited
     set("visited", visited)
   }

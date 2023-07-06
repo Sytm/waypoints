@@ -54,7 +54,7 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
             if (e.player.location.distanceSquared(it.location) <= visitedRadius) {
               if (visitedCache.getIfPresent(e.player) != it) {
                 visitedCache.put(e.player, it)
-                plugin.skedule(e.player) { it.getWaypointMeta(e.player.uniqueId).setVisisted(true) }
+                plugin.skedule(e.player) { it.getWaypointMeta(e.player.uniqueId).setVisited(true) }
               }
             }
           }
