@@ -1,0 +1,6 @@
+name: WaypointsExample
+version: 1.0.0-SNAPSHOT
+main: de.md5lukas.example.de.md5lukas.examplek.ExamplePlugin
+
+depend:
+  - Waypoints
