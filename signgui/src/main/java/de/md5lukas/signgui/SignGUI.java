@@ -9,22 +9,18 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.BlockPosition;
-import com.comphenix.protocol.wrappers.WrappedRegistrable;
-import com.comphenix.protocol.wrappers.nbt.NbtCompound;
-import com.comphenix.protocol.wrappers.nbt.NbtFactory;
-import com.comphenix.protocol.wrappers.nbt.NbtList;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.Consumer;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -92,23 +88,28 @@ public class SignGUI {
           }
         });
 
-    player.sendBlockChange(signLocation, plugin.getServer().createBlockData(Material.OAK_SIGN));
-
-    final var signBlockPos = new BlockPosition(
-        signLocation.getBlockX(), signLocation.getBlockY(), signLocation.getBlockZ());
+    final var blockData = plugin.getServer().createBlockData(Material.OAK_SIGN);
+    player.sendBlockChange(signLocation, blockData);
 
     if (lines != EMPTY_LINES) {
-      final var changeSignContent = new PacketContainer(PacketType.Play.Server.TILE_ENTITY_DATA);
-      changeSignContent.getBlockPositionModifier().write(0, signBlockPos);
-      changeSignContent
-          .getBlockEntityTypeModifier()
-          .write(0, WrappedRegistrable.blockEntityType("sign"));
-      changeSignContent.getNbtModifier().write(0, createSignTileData());
-      protocolManager.sendServerPacket(player, changeSignContent);
+      final var blockState = (Sign) blockData.createBlockState();
+      final var side = blockState.getSide(Side.FRONT);
+      side.setColor(color);
+
+      for (int index = 0; index < 4; index++) {
+        side.line(index, lines.get(index));
+      }
+
+      player.sendBlockUpdate(signLocation, blockState);
     }
 
     final var openSignPacket = new PacketContainer(PacketType.Play.Server.OPEN_SIGN_EDITOR);
-    openSignPacket.getBlockPositionModifier().write(0, signBlockPos);
+    openSignPacket
+        .getBlockPositionModifier()
+        .write(
+            0,
+            new BlockPosition(
+                signLocation.getBlockX(), signLocation.getBlockY(), signLocation.getBlockZ()));
     openSignPacket.getBooleans().writeSafely(0, true); // 1.20 front
     protocolManager.sendServerPacket(player, openSignPacket);
   }
@@ -124,51 +125,8 @@ public class SignGUI {
     return signLocation;
   }
 
-  private @NotNull NbtCompound createSignTileData() {
-    final var signData = NbtFactory.ofCompound("");
-
-    // See https://minecraft.fandom.com/wiki/Sign#Block_data
-    if (newSignFormat) {
-      signData.put("is_waxed", asByte(false));
-      signData.put(createTextSideCompound("front_text", lines));
-      signData.put(createTextSideCompound("back_text", EMPTY_LINES));
-    } else {
-      signData.put("GlowingText", asByte(false));
-      signData.put("Color", color.name().toLowerCase(Locale.ROOT));
-
-      for (int index = 0; index < 3; index++) {
-        signData.put(
-            "Text" + (index + 1), GsonComponentSerializer.gson().serialize(lines.get(index)));
-      }
-    }
-
-    return signData;
-  }
-
-  private @NotNull NbtCompound createTextSideCompound(
-      @NotNull String name, @NotNull List<@NotNull Component> lines) {
-    final var text = NbtFactory.ofCompound(name);
-
-    text.put("has_glowing_text", asByte(false));
-    text.put("color", color.name().toLowerCase(Locale.ROOT));
-
-    final NbtList<String> messages = NbtFactory.ofList("messages");
-
-    for (int index = 0; index < 4; index++) {
-      messages.add(GsonComponentSerializer.gson().serialize(lines.get(index)));
-    }
-
-    text.put(messages);
-
-    return text;
-  }
-
   private @NotNull Component fromPlain(@NotNull String json) {
     return PlainTextComponentSerializer.plainText().deserialize(json);
-  }
-
-  private byte asByte(boolean value) {
-    return (byte) (value ? 1 : 0);
   }
 
   public static @NotNull Builder newBuilder() {

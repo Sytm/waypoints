@@ -158,13 +158,17 @@ modrinth {
   versionType.set("release")
   uploadFile.set(tasks.shadowJar)
 
-  gameVersions.addAll("1.20.1", "1.20", "1.19.4")
+  gameVersions.addAll("1.20.1")
   loaders.addAll("paper", "folia")
 
   syncBodyFrom.set(rootProject.file("README.md").readText())
 
   changelog.set(
-      provider { with(project.changelog) { renderItem(getLatest().withEmptySections(false)) } })
+      provider {
+        with(project.changelog) {
+          renderItem(getLatest().withEmptySections(false).withHeader(false))
+        }
+      })
 
   dependencies {
     with(optional) {

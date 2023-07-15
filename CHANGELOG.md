@@ -3,7 +3,10 @@
 ## [Unreleased]
 
 ### Added
-- Java interoperability helpers have been added to the API Waypoints provides to allow non-Kotlin plugins to use it 
+- Java interoperability helpers have been added to the API Waypoints provides to allow non-Kotlin plugins to use it
+
+### Changed
+- SignGUI for description editing uses newer API which has been added in 1.20
 
 ## 4.0.0
 A lot of new features but also a lot of internal changes that leverage new Paper APIs that aren't available on Spigot.
