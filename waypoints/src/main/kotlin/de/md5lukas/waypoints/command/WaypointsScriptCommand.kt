@@ -12,6 +12,7 @@ import de.md5lukas.waypoints.util.labelResolver
 import de.md5lukas.waypoints.util.searchWaypoints
 import dev.jorel.commandapi.arguments.ArgumentSuggestions
 import dev.jorel.commandapi.arguments.GreedyStringArgument
+import dev.jorel.commandapi.arguments.LocationType
 import dev.jorel.commandapi.arguments.StringArgument
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.argument
@@ -76,7 +77,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
       }
       literalArgument("temporaryWaypoint") {
         playerArgument("player") {
-          locationArgument("target") {
+          locationArgument("target", LocationType.BLOCK_POSITION) {
             optionalArgument(
                 StringArgument("beacon-color")
                     .replaceSuggestions(
