@@ -15,6 +15,7 @@ import de.md5lukas.waypoints.util.humanReadableByteCountBin
 import de.md5lukas.waypoints.util.labelResolver
 import de.md5lukas.waypoints.util.searchWaypoint
 import dev.jorel.commandapi.arguments.GreedyStringArgument
+import dev.jorel.commandapi.arguments.LocationType
 import dev.jorel.commandapi.kotlindsl.anyExecutor
 import dev.jorel.commandapi.kotlindsl.argument
 import dev.jorel.commandapi.kotlindsl.commandTree
@@ -178,7 +179,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
       }
       literalArgument("setTemporary") {
         withPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)
-        locationArgument("target") {
+        locationArgument("target", LocationType.BLOCK_POSITION) {
           playerExecutor { player, args ->
             val location = args["target"] as Location
 
