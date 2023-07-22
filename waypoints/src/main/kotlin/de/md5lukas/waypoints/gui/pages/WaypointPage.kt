@@ -25,6 +25,7 @@ import de.md5lukas.waypoints.util.copyFieldsTo
 import de.md5lukas.waypoints.util.createWaypointPermission
 import de.md5lukas.waypoints.util.createWaypointPublic
 import de.md5lukas.waypoints.util.getAllowedItemsForCustomIconMessage
+import de.md5lukas.waypoints.util.minecraftVersionAtLeast
 import de.md5lukas.waypoints.util.onClickSuspending
 import de.md5lukas.waypoints.util.replaceInputText
 import net.kyori.adventure.text.event.ClickEvent
@@ -371,6 +372,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
         'o' to
             if (canModifyWaypoint &&
                 isNotDeathWaypoint &&
+                minecraftVersionAtLeast(wpGUI.plugin, 20, 1) &&
                 wpGUI.plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
               GUIItem(wpGUI.translations.WAYPOINT_EDIT_DESCRIPTION.item) {
                 wpGUI.viewer.closeInventory()

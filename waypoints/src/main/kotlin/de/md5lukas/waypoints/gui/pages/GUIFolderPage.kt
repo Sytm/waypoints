@@ -33,6 +33,7 @@ import de.md5lukas.waypoints.util.component1
 import de.md5lukas.waypoints.util.component2
 import de.md5lukas.waypoints.util.formatCurrentTargets
 import de.md5lukas.waypoints.util.getAllowedItemsForCustomIconMessage
+import de.md5lukas.waypoints.util.minecraftVersionAtLeast
 import de.md5lukas.waypoints.util.onClickSuspending
 import de.md5lukas.waypoints.util.parseLocationString
 import de.md5lukas.waypoints.util.replaceInputText
@@ -246,6 +247,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                 wpGUI.skedule { updateControls(true) }
               }
             } else if (canModify &&
+                minecraftVersionAtLeast(wpGUI.plugin, 20, 1) &&
                 wpGUI.plugin.server.pluginManager.isPluginEnabled("ProtocolLib") &&
                 guiFolder is Folder) {
               GUIItem(wpGUI.translations.FOLDER_EDIT_DESCRIPTION.item) {
