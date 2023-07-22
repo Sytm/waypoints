@@ -158,7 +158,7 @@ modrinth {
   versionType.set("release")
   uploadFile.set(tasks.shadowJar)
 
-  gameVersions.addAll("1.20.1")
+  gameVersions.addAll("1.19.4", "1.20", "1.20.1")
   loaders.addAll("paper", "folia")
 
   syncBodyFrom.set(rootProject.file("README.md").readText())
