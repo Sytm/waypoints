@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 4.0.1
+
 ### Added
 - Java interoperability helpers have been added to the API Waypoints provides to allow non-Kotlin plugins to use it
 
