@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 4.0.2
+
+### Fixed
+- Error when opening the inventory while another player is selected [#101](https://github.com/Sytm/waypoints/issues/101)
+
 ## 4.0.1
 
 ### Added
