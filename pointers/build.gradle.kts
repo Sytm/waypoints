@@ -1,4 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
@@ -56,12 +55,14 @@ val dokkaHtmlJar by
       from(tasks.dokkaHtml)
     }
 
-tasks.withType<ShadowJar> {
-  archiveClassifier.set("")
+tasks {
+  shadowJar {
+    archiveClassifier.set("")
 
-  dependencies { include(dependency(libs.pathfinder.get())) }
+    dependencies { include(dependency(libs.pathfinder.get())) }
 
-  relocate("de.md5lukas.pathfinder", "de.md5lukas.waypoints.pointers.path")
+    relocate("de.md5lukas.pathfinder", "de.md5lukas.waypoints.pointers.path")
+  }
 }
 
 publishing {

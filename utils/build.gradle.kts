@@ -8,12 +8,15 @@ dependencies {
   // Test dependencies
   testImplementation(kotlin("test-junit5"))
   testImplementation(libs.junitJupiter)
+  testRuntimeOnly(libs.junitLauncher)
 }
 
 kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
-tasks.withType<Test> {
-  useJUnitPlatform()
+tasks {
+  test {
+    useJUnitPlatform()
 
-  testLogging { events("passed", "skipped", "failed") }
+    testLogging { events("passed", "skipped", "failed") }
+  }
 }

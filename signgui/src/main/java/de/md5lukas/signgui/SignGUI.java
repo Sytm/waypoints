@@ -7,7 +7,6 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ import org.jetbrains.annotations.Unmodifiable;
 public class SignGUI {
 
   private static final int OFFSET = 4; // Needs to be closer to the player since 1.20
-  private static final boolean newSignFormat = new MinecraftVersion("1.20").atOrAbove();
   private static final List<Component> EMPTY_LINES =
       Arrays.asList(Component.empty(), Component.empty(), Component.empty(), Component.empty());
 
