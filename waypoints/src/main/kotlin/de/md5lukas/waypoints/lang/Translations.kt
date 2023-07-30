@@ -205,7 +205,7 @@ class Translations(tl: TranslationLoader) {
       Translation(
           tl, "inventory.overview.deselect.names.playerTracking", miniMessage = tl.itemMiniMessage)
   val OVERVIEW_DESELECT_NAMES_UNKNOWN =
-      Translation(tl, "inventory.overview.names.deselect.unknown", miniMessage = tl.itemMiniMessage)
+      Translation(tl, "inventory.overview.deselect.names.unknown", miniMessage = tl.itemMiniMessage)
   val OVERVIEW_SET_WAYPOINT = ItemTranslation(tl, "inventory.overview.setWaypoint")
   val OVERVIEW_CREATE_FOLDER = ItemTranslation(tl, "inventory.overview.createFolder")
 

@@ -7,7 +7,7 @@ import org.bukkit.World
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 
-class WorldTranslations(private val tl: TranslationLoader) : Listener {
+class WorldTranslations(private val tl: YmlTranslationLoader) : Listener {
 
   init {
     tl.plugin.registerEvents(this)

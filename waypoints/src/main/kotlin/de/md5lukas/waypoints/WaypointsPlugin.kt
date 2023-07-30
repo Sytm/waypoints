@@ -24,9 +24,9 @@ import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.Pl3xMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.integrations.VaultIntegration
-import de.md5lukas.waypoints.lang.TranslationLoader
 import de.md5lukas.waypoints.lang.Translations
 import de.md5lukas.waypoints.lang.WorldTranslations
+import de.md5lukas.waypoints.lang.YmlTranslationLoader
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.PointerManagerHooks
 import de.md5lukas.waypoints.tasks.CleanDatabaseTask
@@ -59,7 +59,7 @@ class WaypointsPlugin : JavaPlugin() {
   val apiExtensions = APIExtensions(this)
   lateinit var pointerManager: PointerManager
 
-  private lateinit var translationLoader: TranslationLoader
+  private lateinit var translationLoader: YmlTranslationLoader
   lateinit var translations: Translations
     private set
 
@@ -162,7 +162,7 @@ class WaypointsPlugin : JavaPlugin() {
   }
 
   private fun initTranslations() {
-    translationLoader = TranslationLoader(this)
+    translationLoader = YmlTranslationLoader(this)
 
     translationLoader.loadLanguage(waypointsConfig.general.language)
 

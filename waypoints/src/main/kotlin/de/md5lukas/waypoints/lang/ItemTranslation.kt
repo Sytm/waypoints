@@ -3,19 +3,30 @@ package de.md5lukas.waypoints.lang
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import org.jetbrains.annotations.VisibleForTesting
 
 class ItemTranslation(
     private val translationLoader: TranslationLoader,
     private val key: String,
     private val appendItemSuffix: Boolean = false,
     private val fixedMaterial: Material? = null,
-) {
+) : AbstractTranslation {
+
+  init {
+    translationLoader.registerTranslationWrapper(this)
+  }
+
+  private val displayNameKey
+    get() = "$key.displayName"
+
+  private val descriptionKey
+    get() = "$key.description"
 
   private val rawDisplayName: String
-    get() = translationLoader["$key.displayName"]
+    get() = translationLoader[displayNameKey]
 
   private val rawDescription: String
-    get() = translationLoader["$key.description"]
+    get() = translationLoader[descriptionKey]
 
   val material: Material
     get() =
@@ -46,4 +57,8 @@ class ItemTranslation(
                   })
             }
       }
+
+  override fun reset() {}
+
+  @VisibleForTesting override fun getKeys() = arrayOf(displayNameKey, descriptionKey)
 }

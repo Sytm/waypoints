@@ -1,7 +1,4 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import de.md5lukas.resourceindex.ResourceIndexTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import xyz.jpenilla.runpaper.task.RunServer
 
 plugins {
   with(libs.plugins) {
@@ -30,6 +27,8 @@ dependencies {
   implementation(libs.paper)
   implementation(libs.stdlib)
   implementation(libs.coroutines)
+
+  compileOnly(libs.annotations)
 
   implementation(project(":utils"))
   implementation(project(":pointers", "shadow"))
@@ -60,92 +59,105 @@ dependencies {
   implementation(libs.squaremapApi)
   implementation(libs.bluemapApi)
   implementation(libs.pl3xmap)
+
+  // Testing
+  testImplementation(kotlin("test-junit5"))
+  testImplementation(libs.junitJupiter)
+  testRuntimeOnly(libs.junitLauncher)
 }
 
-tasks.register<ResourceIndexTask>("createResourceIndex")
+tasks {
+  register<ResourceIndexTask>("createResourceIndex")
 
-tasks.withType<ProcessResources> {
-  dependsOn("createResourceIndex")
+  processResources {
+    dependsOn("createResourceIndex")
 
-  val properties =
-      mapOf(
-          "version" to project.version,
-          "kotlinVersion" to libs.versions.kotlin.get(),
-          "coroutinesVersion" to libs.versions.coroutines.get(),
-          "commandApiVersion" to libs.versions.commandApi.get(),
-      )
+    val properties =
+        mapOf(
+            "version" to project.version,
+            "kotlinVersion" to libs.versions.kotlin.get(),
+            "coroutinesVersion" to libs.versions.coroutines.get(),
+            "commandApiVersion" to libs.versions.commandApi.get(),
+        )
 
-  inputs.properties(properties)
+    inputs.properties(properties)
 
-  filteringCharset = "UTF-8"
+    filteringCharset = "UTF-8"
 
-  filesMatching(listOf("paper-plugin.yml", "plugin.yml", "dependencies.yml")) { expand(properties) }
-}
-
-kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
-
-tasks.withType<KotlinCompile> {
-  // To make sure we have an explicit dependency on the project itself because otherwise we will get
-  // a warning that we only depend on an output file and not the project itself
-  dependsOn(project(":api-sqlite").tasks["shadowJar"])
-  dependsOn(project(":pointers").tasks["shadowJar"])
-}
-
-tasks.withType<ShadowJar> {
-  archiveClassifier.set("")
-
-  minimize {
-    // Exclude AnvilGUI because the version specific NMS adapters are loaded via reflection and are
-    // not directly referenced
-    exclude(dependency(libs.anvilGui.get()))
-    // Only referenced by the paper-plugin.yml
-    exclude(dependency(libs.dependencyLoader.get()))
-    // Only referenced by the plugin.yml
-    exclude(dependency(libs.papertrail.get()))
-
-    exclude(project(":waypoints-api"))
-    exclude(project(":utils"))
+    filesMatching(listOf("paper-plugin.yml", "plugin.yml", "dependencies.yml")) {
+      expand(properties)
+    }
   }
 
-  exclude("META-INF/")
-
-  dependencies {
-    include(project(":utils"))
-    include(project(":pointers"))
-    include(project(":waypoints-api"))
-    include(project(":api-base"))
-    include(project(":api-sqlite"))
-    include(project(":signgui"))
-
-    include(dependency(libs.md5Commons.get()))
-    include(dependency(libs.kinvs.get()))
-    include(dependency(libs.konfig.get()))
-    include(dependency(libs.dependencyLoader.get()))
-
-    include(dependency(libs.schedulers.get()))
-    include(dependency(libs.skedule.get()))
-    include(dependency(libs.anvilGui.get()))
-    include(dependency(libs.papertrail.get()))
-    include(dependency("org.bstats::"))
+  compileKotlin {
+    // To make sure we have an explicit dependency on the project itself because otherwise we will
+    // get
+    // a warning that we only depend on an output file and not the project itself
+    dependsOn(project(":api-sqlite").tasks["shadowJar"])
+    dependsOn(project(":pointers").tasks["shadowJar"])
   }
 
-  relocate("de.md5lukas.paper.loader", "de.md5lukas.waypoints")
-  arrayOf("commons", "kinvs", "konfig", "schedulers", "signgui").forEach {
-    relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.$it")
+  shadowJar {
+    archiveClassifier.set("")
+
+    minimize {
+      // Exclude AnvilGUI because the version specific NMS adapters are loaded via reflection and
+      // are
+      // not directly referenced
+      exclude(dependency(libs.anvilGui.get()))
+      // Only referenced by the paper-plugin.yml
+      exclude(dependency(libs.dependencyLoader.get()))
+      // Only referenced by the plugin.yml
+      exclude(dependency(libs.papertrail.get()))
+
+      exclude(project(":waypoints-api"))
+      exclude(project(":utils"))
+    }
+
+    exclude("META-INF/")
+
+    dependencies {
+      include(project(":utils"))
+      include(project(":pointers"))
+      include(project(":waypoints-api"))
+      include(project(":api-base"))
+      include(project(":api-sqlite"))
+      include(project(":signgui"))
+
+      include(dependency(libs.md5Commons.get()))
+      include(dependency(libs.kinvs.get()))
+      include(dependency(libs.konfig.get()))
+      include(dependency(libs.dependencyLoader.get()))
+
+      include(dependency(libs.schedulers.get()))
+      include(dependency(libs.skedule.get()))
+      include(dependency(libs.anvilGui.get()))
+      include(dependency(libs.papertrail.get()))
+      include(dependency("org.bstats::"))
+    }
+
+    relocate("de.md5lukas.paper.loader", "de.md5lukas.waypoints")
+    arrayOf("commons", "kinvs", "konfig", "schedulers", "signgui").forEach {
+      relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.$it")
+    }
+
+    relocate("com.okkero.skedule", "de.md5lukas.waypoints.libs.skedule")
+    relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.libs.anvilgui")
+    relocate("org.bstats", "de.md5lukas.waypoints.libs.bstats")
+    relocate("io.papermc.papertrail", "de.md5lukas.waypoints.legacy")
   }
 
-  relocate("com.okkero.skedule", "de.md5lukas.waypoints.libs.skedule")
-  relocate("net.wesjd.anvilgui", "de.md5lukas.waypoints.libs.anvilgui")
-  relocate("org.bstats", "de.md5lukas.waypoints.libs.bstats")
-  relocate("io.papermc.papertrail", "de.md5lukas.waypoints.legacy")
+  runServer {
+    dependsOn("jar")
+    minecraftVersion(libs.versions.paper.get().substringBefore('-'))
+  }
+
+  test { useJUnitPlatform() }
 }
 
 runPaper.folia.registerTask()
 
-tasks.withType<RunServer> {
-  dependsOn("jar")
-  minecraftVersion(libs.versions.paper.get().substringBefore('-'))
-}
+kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
 changelog { path.set(rootProject.relativePath("CHANGELOG.md")) }
 

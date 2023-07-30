@@ -2,11 +2,12 @@ package de.md5lukas.waypoints.lang
 
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+import org.jetbrains.annotations.VisibleForTesting
 
 class InventoryTranslation(
     private val translationLoader: TranslationLoader,
     private val key: String,
-) : Resettable {
+) : AbstractTranslation {
 
   init {
     translationLoader.registerTranslationWrapper(this)
@@ -41,4 +42,6 @@ class InventoryTranslation(
   override fun reset() {
     staticMessage = null
   }
+
+  @VisibleForTesting override fun getKeys() = arrayOf(key)
 }

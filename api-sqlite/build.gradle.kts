@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
   with(libs.plugins) {
     alias(kotlin)
@@ -18,21 +16,22 @@ dependencies {
   implementation(libs.md5Commons)
 
   testImplementation(project(":api-tests"))
-  testRuntimeOnly(libs.sqliteJdbc)
 }
 
 kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
-tasks.withType<ShadowJar> {
-  archiveClassifier.set("")
+tasks {
+  shadowJar {
+    archiveClassifier.set("")
 
-  dependencies { include(dependency(libs.sqliteHelper.get())) }
+    dependencies { include(dependency(libs.sqliteHelper.get())) }
 
-  relocate("de.md5lukas.jdbc", "de.md5lukas.waypoints.api.sqlite.jdbc")
-}
+    relocate("de.md5lukas.jdbc", "de.md5lukas.waypoints.api.sqlite.jdbc")
+  }
 
-tasks.withType<Test> {
-  useJUnitPlatform()
+  test {
+    useJUnitPlatform()
 
-  testLogging { events("passed", "skipped", "failed") }
+    testLogging { events("passed", "skipped", "failed") }
+  }
 }
