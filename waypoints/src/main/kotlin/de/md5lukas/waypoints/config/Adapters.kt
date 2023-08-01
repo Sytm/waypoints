@@ -25,7 +25,8 @@ object MaterialListAdapter : RegisteredTypeAdapter<List<Material>> {
       clazz.isSubclassOf(List::class) && typeArgumentClasses.firstOrNull() == Material::class
 }
 
-object BlockDataAdapter : RegisteredTypeAdapter<BlockData> {
+object BlockDataAdapter : RegisteredTypeAdapter.Static<BlockData>(BlockData::class) {
+
   override fun get(section: ConfigurationSection, path: String) =
       section
           .getString(path)
@@ -34,9 +35,6 @@ object BlockDataAdapter : RegisteredTypeAdapter<BlockData> {
                 ?: throw IllegalArgumentException("The material $it is not valid")
           }
           ?.let { Bukkit.createBlockData(it) }
-
-  override fun isApplicable(clazz: KClass<*>, typeArgumentClasses: List<KClass<*>>) =
-      clazz == BlockData::class
 }
 
 object DurationAdapter : RegisteredTypeAdapter.Static<Duration>(Duration::class) {
