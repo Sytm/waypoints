@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Fixed another incorrect translation mapping
+
 ## 4.0.2
 
 ### Fixed
