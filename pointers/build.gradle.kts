@@ -41,17 +41,10 @@ val dokkaHtml by
       }
     }
 
-val javadocJar by
-    tasks.creating(Jar::class) {
-      dependsOn(tasks.dokkaJavadoc)
-      archiveClassifier.set("javadoc")
-      from(tasks.dokkaJavadoc)
-    }
-
 val dokkaHtmlJar by
     tasks.creating(Jar::class) {
       dependsOn(tasks.dokkaHtml)
-      archiveClassifier.set("dokka")
+      archiveClassifier.set("javadoc")
       from(tasks.dokkaHtml)
     }
 
@@ -88,7 +81,6 @@ publishing {
     create<MavenPublication>("maven") {
       project.shadow.component(this)
       artifact(sourcesJar)
-      artifact(javadocJar)
       artifact(dokkaHtmlJar)
     }
   }

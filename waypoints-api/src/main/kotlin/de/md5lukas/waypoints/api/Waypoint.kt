@@ -22,22 +22,22 @@ interface Waypoint : GUIDisplayable {
   val owner: UUID?
 
   /** The folder this waypoint is inside, null otherwise */
-  @JvmSynthetic suspend fun getFolder(): Folder?
+  suspend fun getFolder(): Folder?
 
-  @JvmSynthetic suspend fun setFolder(folder: Folder?)
+  suspend fun setFolder(folder: Folder?)
 
   /** The name of the waypoint */
   override val name: String
 
-  @JvmSynthetic suspend fun setName(name: String)
+  suspend fun setName(name: String)
 
   /** The name of the waypoint, optionally prefixed with the folder name */
-  @JvmSynthetic suspend fun getFullPath(): String
+  suspend fun getFullPath(): String
 
   /** The description of the waypoint, null if none has been provided */
   val description: String?
 
-  @JvmSynthetic suspend fun setDescription(description: String?)
+  suspend fun setDescription(description: String?)
 
   /**
    * The required permission to see this waypoint. Required to be non-null if the waypoint is of
@@ -45,16 +45,16 @@ interface Waypoint : GUIDisplayable {
    */
   val permission: String?
 
-  @JvmSynthetic suspend fun setPermission(permission: String)
+  suspend fun setPermission(permission: String)
 
   /** The optional customized material this waypoint should appear as in the GUI */
   val material: Material?
 
-  @JvmSynthetic suspend fun setMaterial(material: Material?)
+  suspend fun setMaterial(material: Material?)
 
   val beaconColor: Material?
 
-  @JvmSynthetic suspend fun setBeaconColor(beaconColor: Material?)
+  suspend fun setBeaconColor(beaconColor: Material?)
 
   /** The location the waypoint has been created at */
   val location: Location
@@ -65,7 +65,7 @@ interface Waypoint : GUIDisplayable {
    * @param owner The UUID of the player to get the metadata for
    * @return The unique WaypointMeta instance
    */
-  @JvmSynthetic suspend fun getWaypointMeta(owner: UUID): WaypointMeta
+  suspend fun getWaypointMeta(owner: UUID): WaypointMeta
 
   /**
    * Get custom data for this waypoint.
@@ -73,7 +73,7 @@ interface Waypoint : GUIDisplayable {
    * @param key The key of the custom data
    * @return The data associated with the key
    */
-  @JvmSynthetic suspend fun getCustomData(key: String): String?
+  suspend fun getCustomData(key: String): String?
 
   /**
    * Set custom data for this waypoint.
@@ -83,11 +83,11 @@ interface Waypoint : GUIDisplayable {
    * @param key The key of the custom data
    * @param data The data to save with the key
    */
-  @JvmSynthetic suspend fun setCustomData(key: String, data: String?)
+  suspend fun setCustomData(key: String, data: String?)
 
-  @JvmSynthetic suspend fun shareWith(with: UUID, expires: OffsetDateTime? = null)
+  suspend fun shareWith(with: UUID, expires: OffsetDateTime? = null)
 
-  @JvmSynthetic suspend fun getSharedWith(): List<WaypointShare>
+  suspend fun getSharedWith(): List<WaypointShare>
 
   /**
    * Deletes this waypoint from the database.
@@ -97,5 +97,5 @@ interface Waypoint : GUIDisplayable {
    * [de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent] is triggered with the waypoint
    * removed from the database.
    */
-  @JvmSynthetic suspend fun delete()
+  suspend fun delete()
 }
