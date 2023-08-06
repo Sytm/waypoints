@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Removed
+- Java interoperability helpers for API
+
 ### Fixed
 - Fixed another incorrect translation mapping
 
