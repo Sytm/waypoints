@@ -12,5 +12,4 @@ include(
     ":signgui",
     ":utils",
     ":pointers",
-    ":coroutines-java-interop",
 )
