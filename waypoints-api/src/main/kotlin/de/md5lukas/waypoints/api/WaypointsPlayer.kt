@@ -16,25 +16,24 @@ interface WaypointsPlayer : WaypointHolder {
   /** Whether the player wants to see global waypoints in the GUI */
   val showGlobals: Boolean
 
-  @JvmSynthetic suspend fun setShowGlobals(showGlobals: Boolean)
+  suspend fun setShowGlobals(showGlobals: Boolean)
 
   /** The method to sort the items in GUI with */
   val sortBy: OverviewSort
 
-  @JvmSynthetic suspend fun setSortBy(sortBy: OverviewSort)
+  suspend fun setSortBy(sortBy: OverviewSort)
 
   /** Whether the player wants to be trackable with player-tracking or not. */
   val canBeTracked: Boolean
 
-  @JvmSynthetic suspend fun setCanBeTracked(canBeTracked: Boolean)
+  suspend fun setCanBeTracked(canBeTracked: Boolean)
 
   val enabledPointers: Map<String, Boolean>
 
-  @JvmSynthetic suspend fun setEnabledPointers(enabledPointers: Map<String, Boolean>)
+  suspend fun setEnabledPointers(enabledPointers: Map<String, Boolean>)
 
   fun isPointerEnabled(key: String) = enabledPointers.getOrDefault(key, true)
 
-  @JvmSynthetic
   suspend fun setPointerEnabled(key: String, value: Boolean) {
     setEnabledPointers(enabledPointers.toMutableMap().also { it[key] = value })
   }
@@ -45,7 +44,7 @@ interface WaypointsPlayer : WaypointHolder {
    * @param type The type the cooldown is valid for
    * @return The time the cooldown expires or null
    */
-  @JvmSynthetic suspend fun getCooldownUntil(type: Type): OffsetDateTime?
+  suspend fun getCooldownUntil(type: Type): OffsetDateTime?
 
   /**
    * Set a new cooldown for the player and the time at which it expires.
@@ -53,7 +52,7 @@ interface WaypointsPlayer : WaypointHolder {
    * @param type The type the cooldown is valid for
    * @param cooldownUntil The point in time at which the cooldown should expire
    */
-  @JvmSynthetic suspend fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime)
+  suspend fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime)
 
   /**
    * Get the amount of teleportations this player has performed to the given waypoint type
@@ -61,7 +60,7 @@ interface WaypointsPlayer : WaypointHolder {
    * @param type The type the counter is applicable to
    * @return The amount of teleportations
    */
-  @JvmSynthetic suspend fun getTeleportations(type: Type): Int
+  suspend fun getTeleportations(type: Type): Int
 
   /**
    * Update the amount of teleportations the player has performed to the given waypoint type
@@ -69,10 +68,10 @@ interface WaypointsPlayer : WaypointHolder {
    * @param type The type the counter is applicable to
    * @param teleportations The new amount of teleportations
    */
-  @JvmSynthetic suspend fun setTeleportations(type: Type, teleportations: Int)
+  suspend fun setTeleportations(type: Type, teleportations: Int)
 
   /** Adds a new location to the death history of the player. */
-  @JvmSynthetic suspend fun addDeathLocation(location: Location)
+  suspend fun addDeathLocation(location: Location)
 
   /**
    * Abstract folder representing the saved death history of the player. The only way to add
@@ -89,20 +88,20 @@ interface WaypointsPlayer : WaypointHolder {
   val deathFolder: Folder
 
   /** All the concurrent Waypoints the player has selected */
-  @JvmSynthetic suspend fun getSelectedWaypoints(): List<Waypoint>
+  suspend fun getSelectedWaypoints(): List<Waypoint>
 
-  @JvmSynthetic suspend fun setSelectedWaypoints(selected: List<Waypoint>)
+  suspend fun setSelectedWaypoints(selected: List<Waypoint>)
 
   /**
    * The compass target the player currently has before it got overwritten by the compass pointer
    */
-  @JvmSynthetic suspend fun getCompassTarget(): Location?
+  suspend fun getCompassTarget(): Location?
 
-  @JvmSynthetic suspend fun setCompassTarget(location: Location)
+  suspend fun setCompassTarget(location: Location)
 
-  @JvmSynthetic suspend fun getSharingWaypoints(): List<WaypointShare>
+  suspend fun getSharingWaypoints(): List<WaypointShare>
 
-  @JvmSynthetic suspend fun hasSharedWaypoints(): Boolean
+  suspend fun hasSharedWaypoints(): Boolean
 
-  @JvmSynthetic suspend fun getSharedWaypoints(): List<WaypointShare>
+  suspend fun getSharedWaypoints(): List<WaypointShare>
 }
