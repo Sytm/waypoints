@@ -190,6 +190,11 @@ playerTracking:
   toggleable: true
   # When true, players can only track other players when they themselves can be tracked by other players
   trackingRequiresTrackable: false
+  request:
+    # When true, the player to be tracked first needs to accept the request of the tracking player to begin tracking
+    enabled: false
+    # The amount of time the request is valid for
+    validFor: 30s
   # When true, the tracked player is notified when someone starts to track them
   notification: true
 

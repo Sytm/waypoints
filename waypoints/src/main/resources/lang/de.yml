@@ -219,6 +219,9 @@ message:
     playerNoLongerOnline: "<red>Der Spieler den du verfolgen möchtest ist nicht mehr online."
     trackableRequired: "<red>Um andere Spieler verfolgen zu können musst du dich selbst sichtbar machen."
     notification: "<gray>Der Spieler <yellow><name><gray> verfolgt dich."
+    request:
+      sent: "<gray>Eine Verfolgungsanfrage wurde an <yellow><to><gray> gesendet. Sie wird in <yellow><valid_for><gray> ablaufen."
+      request: "<yellow><from><gray> möchte deine Position verfolgen. Drücke auf diese Nachricht um die Anfrage zu akzeptieren. Diese Anfrage wird in <yellow><valid_for><gray> ablaufen."
 
 pointers:
   actionBar:

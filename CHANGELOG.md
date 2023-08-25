@@ -4,10 +4,11 @@
 
 ### Added
 - Added feature flag for teleportations at `general.features.teleportation`
+- Added player tracking requests [#102](https://github.com/Sytm/waypoints/issues/102)
 
 ### Fixed
 - Fixed another incorrect translation mapping
-- 
+
 ### Removed
 - Java interoperability helpers for API
 

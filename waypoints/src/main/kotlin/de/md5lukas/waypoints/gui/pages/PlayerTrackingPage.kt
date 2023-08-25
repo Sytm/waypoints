@@ -13,6 +13,7 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.TrackableToggleItem
 import de.md5lukas.waypoints.pointers.PlayerTrackable
+import net.kyori.adventure.text.event.ClickEvent
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 
@@ -63,13 +64,41 @@ class PlayerTrackingPage(
               wpGUI.playSound { clickError }
               wpGUI.translations.MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE.send(wpGUI.viewer)
             } else {
-              wpGUI.playSound { playerSelected }
+              fun activatePlayerTracking() {
+                wpGUI.playSound { playerSelected }
+                wpGUI.plugin.pointerManager.enable(
+                    wpGUI.viewer, PlayerTrackable(wpGUI.plugin, value))
+                if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
+                  wpGUI.playSound { playerNotification }
+                  wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(
+                      value, "name" placeholder wpGUI.viewer.displayName())
+                }
+              }
+
               wpGUI.viewer.closeInventory()
-              wpGUI.plugin.pointerManager.enable(wpGUI.viewer, PlayerTrackable(wpGUI.plugin, value))
-              if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
-                wpGUI.playSound { playerNotification }
-                wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(
-                    value, "name" placeholder wpGUI.viewer.displayName())
+
+              if (wpGUI.plugin.waypointsConfig.playerTracking.requestEnabled) {
+                val validFor = wpGUI.plugin.waypointsConfig.playerTracking.requestValidFor
+                val validForResolver =
+                    "valid_for" placeholder wpGUI.plugin.durationFormatter.formatDuration(validFor)
+
+                wpGUI.translations.MESSAGE_TRACKING_REQUEST_SENT.send(
+                    wpGUI.viewer,
+                    "to" placeholder value.displayName(),
+                    validForResolver,
+                )
+
+                value.sendMessage(
+                    wpGUI.translations.MESSAGE_TRACKING_REQUEST_REQUEST.withReplacements(
+                            "from" placeholder wpGUI.viewer.displayName(),
+                            validForResolver,
+                        )
+                        .clickEvent(
+                            ClickEvent.callback({ activatePlayerTracking() }) { options ->
+                              options.lifetime(validFor)
+                            }))
+              } else {
+                activatePlayerTracking()
               }
             }
           }
