@@ -2,11 +2,14 @@
 
 ## [Unreleased]
 
-### Removed
-- Java interoperability helpers for API
+### Added
+- Added feature flag for teleportations at `general.features.teleportation`
 
 ### Fixed
 - Fixed another incorrect translation mapping
+- 
+### Removed
+- Java interoperability helpers for API
 
 ## 4.0.2
 

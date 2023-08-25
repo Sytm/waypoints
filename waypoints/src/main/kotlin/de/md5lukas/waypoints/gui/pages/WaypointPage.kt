@@ -428,9 +428,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
               background
             },
         't' to
-            if ((wpGUI.viewer.hasPermission(
-                wpGUI.plugin.teleportManager.getTeleportPermission(waypoint)) ||
-                wpGUI.plugin.teleportManager.isTeleportEnabled(wpGUI.targetData, waypoint)) &&
+            if (wpGUI.plugin.waypointsConfig.general.features.teleportation &&
+                (wpGUI.viewer.hasPermission(
+                    wpGUI.plugin.teleportManager.getTeleportPermission(waypoint)) ||
+                    wpGUI.plugin.teleportManager.isTeleportEnabled(wpGUI.targetData, waypoint)) &&
                 waypoint.location.world !== null) {
               GUIItem(
                   wpGUI.translations.WAYPOINT_TELEPORT.getItem().also { stack ->
