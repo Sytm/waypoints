@@ -152,6 +152,8 @@ class Translations(tl: TranslationLoader) {
       Translation(tl, "message.tracking.playerNoLongerOnline", PREFIX)
   val MESSAGE_TRACKING_TRACKABLE_REQUIRED =
       Translation(tl, "message.tracking.trackableRequired", PREFIX)
+  val MESSAGE_TRACKING_REQUEST_SENT = Translation(tl, "message.tracking.request.sent", PREFIX)
+  val MESSAGE_TRACKING_REQUEST_REQUEST = Translation(tl, "message.tracking.request.request", PREFIX)
   val MESSAGE_TRACKING_NOTIFICATION = Translation(tl, "message.tracking.notification", PREFIX)
 
   val MESSAGE_SHARING_ALREADY_SHARED = Translation(tl, "message.sharing.alreadyShared", PREFIX)
