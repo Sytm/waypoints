@@ -10,4 +10,7 @@ class FeaturesConfiguration {
 
   var deathWaypoints = true
     private set
+
+  var teleportation = true
+    private set
 }

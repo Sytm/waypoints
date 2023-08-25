@@ -108,34 +108,36 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
         }
         anyExecutor { sender, _ -> translations.COMMAND_NOT_A_PLAYER.send(sender) }
       }
-      literalArgument("teleport") {
-        argument(
-            GreedyStringArgument("name")
-                .replaceSuggestions(
-                    WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true) {
-                        sender,
-                        waypoint ->
-                      if (sender !is Player) {
-                        false
-                      } else {
-                        plugin.teleportManager.isAllowedToTeleportToWaypoint(sender, waypoint)
-                      }
-                    })) {
-              playerExecutor { player, args ->
-                plugin.skedule(player) {
-                  val waypoint = searchWaypoint(plugin, player, args["name"] as String, true)
-                  if (waypoint == null) {
-                    translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
-                  } else if (plugin.teleportManager.isAllowedToTeleportToWaypoint(
-                      player, waypoint)) {
-                    plugin.teleportManager.teleportPlayerToWaypoint(player, waypoint)
-                  } else {
-                    translations.MESSAGE_TELEPORT_NOT_ALLOWED.send(player)
+      if (plugin.waypointsConfig.general.features.teleportation) {
+        literalArgument("teleport") {
+          argument(
+              GreedyStringArgument("name")
+                  .replaceSuggestions(
+                      WaypointsArgumentSuggestions(plugin, textMode = false, allowGlobals = true) {
+                          sender,
+                          waypoint ->
+                        if (sender !is Player) {
+                          false
+                        } else {
+                          plugin.teleportManager.isAllowedToTeleportToWaypoint(sender, waypoint)
+                        }
+                      })) {
+                playerExecutor { player, args ->
+                  plugin.skedule(player) {
+                    val waypoint = searchWaypoint(plugin, player, args["name"] as String, true)
+                    if (waypoint == null) {
+                      translations.COMMAND_SEARCH_NOT_FOUND_WAYPOINT.send(player)
+                    } else if (plugin.teleportManager.isAllowedToTeleportToWaypoint(
+                        player, waypoint)) {
+                      plugin.teleportManager.teleportPlayerToWaypoint(player, waypoint)
+                    } else {
+                      translations.MESSAGE_TELEPORT_NOT_ALLOWED.send(player)
+                    }
                   }
                 }
+                anyExecutor { sender, _ -> translations.COMMAND_NOT_A_PLAYER.send(sender) }
               }
-              anyExecutor { sender, _ -> translations.COMMAND_NOT_A_PLAYER.send(sender) }
-            }
+        }
       }
       literalArgument("set") {
         withPermission(WaypointsPermissions.MODIFY_PRIVATE)
