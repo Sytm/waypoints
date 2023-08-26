@@ -217,7 +217,9 @@ message:
     notification: "<gray>The player <yellow><name><gray> is tracking you."
     request:
       sent: "<gray>A tracking request has been sent to <yellow><to><gray>. It will expire in <yellow><valid_for><gray>."
-      request: "<yellow><from><gray> wants to track your location. Click this message to accept. This request will expire in <yellow><valid_for><gray>."
+      request: |
+        <yellow><from><gray> wants to track your location. This request will expire in <yellow><valid_for><gray>.
+        <gray>[<green><accept>Accept request</accept><gray>]
 
   sharing:
     alreadyShared: "<red>You have already shared this waypoint with <yellow><name></yellow>."

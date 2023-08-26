@@ -211,17 +211,19 @@ message:
       notice: "<gray>Du darfst dich für <yellow><duration><gray> nicht Bewegen."
       moved: "<red>Deine eingereihte Teleportation wurde abgebrochen da du dich bewegt hast."
 
-  sharing:
-    alreadyShared: "<red>Du hast diesen Wegpunkt bereits mit <yellow><name></yellow> geteilt."
-    success: "<gray>Der Wegpunkt wurde mit <yellow><name></yellow> geteilt."
-
   tracking:
     playerNoLongerOnline: "<red>Der Spieler den du verfolgen möchtest ist nicht mehr online."
     trackableRequired: "<red>Um andere Spieler verfolgen zu können musst du dich selbst sichtbar machen."
     notification: "<gray>Der Spieler <yellow><name><gray> verfolgt dich."
     request:
       sent: "<gray>Eine Verfolgungsanfrage wurde an <yellow><to><gray> gesendet. Sie wird in <yellow><valid_for><gray> ablaufen."
-      request: "<yellow><from><gray> möchte deine Position verfolgen. Drücke auf diese Nachricht um die Anfrage zu akzeptieren. Diese Anfrage wird in <yellow><valid_for><gray> ablaufen."
+      request: |
+        <yellow><from><gray> möchte deine Position verfolgen. Diese Anfrage wird in <yellow><valid_for><gray> ablaufen.
+        <gray>[<green><accept>Anfrage akzeptieren</accept><gray>]
+
+  sharing:
+    alreadyShared: "<red>Du hast diesen Wegpunkt bereits mit <yellow><name></yellow> geteilt."
+    success: "<gray>Der Wegpunkt wurde mit <yellow><name></yellow> geteilt."
 
 pointers:
   actionBar:
