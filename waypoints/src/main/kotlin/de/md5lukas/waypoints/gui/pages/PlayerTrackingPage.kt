@@ -14,6 +14,8 @@ import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.TrackableToggleItem
 import de.md5lukas.waypoints.pointers.PlayerTrackable
 import net.kyori.adventure.text.event.ClickEvent
+import net.kyori.adventure.text.minimessage.tag.Tag
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 
@@ -90,13 +92,15 @@ class PlayerTrackingPage(
 
                 value.sendMessage(
                     wpGUI.translations.MESSAGE_TRACKING_REQUEST_REQUEST.withReplacements(
-                            "from" placeholder wpGUI.viewer.displayName(),
-                            validForResolver,
-                        )
-                        .clickEvent(
-                            ClickEvent.callback({ activatePlayerTracking() }) { options ->
-                              options.lifetime(validFor)
-                            }))
+                        "from" placeholder wpGUI.viewer.displayName(),
+                        validForResolver,
+                        TagResolver.resolver(
+                            "accept",
+                            Tag.styling(
+                                ClickEvent.callback({ activatePlayerTracking() }) { options ->
+                                  options.lifetime(validFor)
+                                })),
+                    ))
               } else {
                 activatePlayerTracking()
               }
