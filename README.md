@@ -59,6 +59,16 @@ tracked player.
 - Players must show themselves to others in order to track a player (if enabled)
 - The player that gets tracked receives a notification who started tracking him (if enabled)
 
+## Languages
+The plugin is shipping translations for the following languages:
+- English
+- German
+- Italian (by marcotech81)
+- Simplified Chinese (partial, by SnowCutieOwO)
+- Brazilian Portuguese (partial, by gaugt980131gg2)
+
+And if your language is not there, the plugin is fully translatable
+
 ## Other notable features
 
 - Open the GUI by sneaking and right-clicking with a compass (by default)
@@ -67,7 +77,6 @@ tracked player.
 - Customizable teleport prices and price increases the more the player teleports (With Vault support)
 - Direction indicators customizable
 - Items in GUI fully customizable
-- Fully translatable
 - SQLite data storage
 
 ## Integrations
