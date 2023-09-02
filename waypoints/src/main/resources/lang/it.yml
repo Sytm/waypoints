@@ -1,7 +1,7 @@
 # These translations have been provided by marcotech81
 
-prefix: "<aqua><bold>Waypoints <yellow><bold>><reset>"
-scriptPrefix: "<aqua><bold>Waypoints<green>Script <yellow><bold>><reset>"
+prefix: "<aqua><bold>Waypoints <yellow><bold>><reset> "
+scriptPrefix: "<aqua><bold>Waypoints<green>Script <yellow><bold>><reset> "
 
 worlds:
   world: "Overworld"
