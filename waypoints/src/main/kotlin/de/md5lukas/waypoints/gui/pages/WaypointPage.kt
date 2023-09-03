@@ -4,7 +4,6 @@ import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.switchContext
 import com.okkero.skedule.withSynchronizationContext
 import de.md5lukas.commons.paper.placeholder
-import de.md5lukas.commons.paper.plainDisplayName
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.signgui.SignGUI
@@ -30,8 +29,6 @@ import de.md5lukas.waypoints.util.onClickSuspending
 import de.md5lukas.waypoints.util.replaceInputText
 import net.kyori.adventure.text.event.ClickEvent
 import net.wesjd.anvilgui.AnvilGUI
-import org.bukkit.Material
-import org.bukkit.inventory.ItemStack
 
 class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
     BasePage(wpGUI, wpGUI.extendApi { waypoint.type.getBackgroundItem() }) {
@@ -175,13 +172,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                             nameResolver),
                     ) {
                       if (it) {
-                        AnvilGUI.Builder()
+                        AnvilGUI.builder()
                             .plugin(wpGUI.plugin)
-                            .itemLeft(
-                                ItemStack(Material.PAPER).also { stack ->
-                                  stack.plainDisplayName =
-                                      wpGUI.translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText
-                                })
+                            .text("")
+                            .title(wpGUI.translations.WAYPOINT_CREATE_ENTER_PERMISSION.text)
                             .onClickSuspending(wpGUI.scheduler) {
                                 slot,
                                 (isOutputInvalid, permission) ->
@@ -229,12 +223,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
               GUIItem(
                   wpGUI.translations.WAYPOINT_EDIT_PERMISSION.getItem(
                       "permission" placeholder (waypoint.permission ?: ""))) {
-                    AnvilGUI.Builder()
+                    AnvilGUI.builder()
                         .plugin(wpGUI.plugin)
-                        .itemLeft(
-                            ItemStack(Material.PAPER).also {
-                              it.plainDisplayName = waypoint.permission ?: ""
-                            })
+                        .text(waypoint.permission ?: "")
+                        .title(wpGUI.translations.WAYPOINT_EDIT_ENTER_PERMISSION.text)
                         .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, permission) ->
                           if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
                               return@onClickSuspending emptyList()
@@ -332,10 +324,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
             if (canModifyWaypoint && isNotDeathWaypoint) {
               GUIItem(wpGUI.translations.WAYPOINT_RENAME.item) {
                 wpGUI.viewer.closeInventory()
-                AnvilGUI.Builder()
+                AnvilGUI.builder()
                     .plugin(wpGUI.plugin)
-                    .itemLeft(
-                        ItemStack(Material.PAPER).also { it.plainDisplayName = waypoint.name })
+                    .text(waypoint.name)
+                    .title(wpGUI.translations.WAYPOINT_EDIT_ENTER_NAME.text)
                     .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, newName) ->
                       if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
                           return@onClickSuspending emptyList()
@@ -491,12 +483,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
       GUIItem(wpGUI.translations.WAYPOINT_CHANGE_MAP_ICON.item) {
         wpGUI.skedule {
           val builder =
-              AnvilGUI.Builder()
+              AnvilGUI.builder()
                   .plugin(wpGUI.plugin)
-                  .itemLeft(
-                      ItemStack(Material.PAPER).also {
-                        it.plainDisplayName = waypoint.getCustomData(customDataKey) ?: defaultIcon
-                      })
+                  .text(waypoint.getCustomData(customDataKey) ?: defaultIcon)
+                  .title(wpGUI.translations.WAYPOINT_EDIT_ENTER_WEB_MAP_ICON.text)
                   .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, newIcon) ->
                     if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
                         return@onClickSuspending emptyList()
