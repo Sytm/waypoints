@@ -7,17 +7,12 @@ import de.md5lukas.commons.collections.PaginationList
 import de.md5lukas.commons.paper.appendLore
 import de.md5lukas.commons.paper.isOutOfBounds
 import de.md5lukas.commons.paper.placeholder
-import de.md5lukas.commons.paper.plainDisplayName
 import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIContent
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.signgui.SignGUI
 import de.md5lukas.waypoints.WaypointsPermissions
-import de.md5lukas.waypoints.api.Folder
-import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.api.WaypointHolder
-import de.md5lukas.waypoints.api.WaypointsPlayer
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.config.general.WorldNotFoundAction
@@ -25,40 +20,18 @@ import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
 import de.md5lukas.waypoints.gui.SharedDisplayable
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.CycleSortItem
-import de.md5lukas.waypoints.util.amountClamped
-import de.md5lukas.waypoints.util.checkFolderName
-import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
-import de.md5lukas.waypoints.util.checkWorldAvailability
-import de.md5lukas.waypoints.util.component1
-import de.md5lukas.waypoints.util.component2
-import de.md5lukas.waypoints.util.formatCurrentTargets
-import de.md5lukas.waypoints.util.getAllowedItemsForCustomIconMessage
-import de.md5lukas.waypoints.util.minecraftVersionAtLeast
-import de.md5lukas.waypoints.util.onClickSuspending
-import de.md5lukas.waypoints.util.parseLocationString
-import de.md5lukas.waypoints.util.replaceInputText
+import de.md5lukas.waypoints.util.*
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.inventory.ItemStack
 
 class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
     ListingPage<GUIDisplayable>(wpGUI, wpGUI.extendApi { guiFolder.type.getBackgroundItem() }) {
 
   private companion object {
     /**
-     * spotless:off
-     * Overview / Folder
-     * p = Previous
-     * f = Create Folder / Delete Folder
-     * s = Cycle Sort
-     * d = Deselect active waypoint / Edit description
-     * i = None / Folder Icon
-     * t = Settings / Rename
-     * w = Create Waypoint / Create waypoint in folder
-     * b = None / Back
-     * n = Next
-     * spotless:on
+     * spotless:off Overview / Folder p = Previous f = Create Folder / Delete Folder s = Cycle Sort
+     * d = Deselect active waypoint / Edit description i = None / Folder Icon t = Settings / Rename
+     * w = Create Waypoint / Create waypoint in folder b = None / Back n = Next spotless:on
      */
     val controlsPattern = GUIPattern("pfsditwbn")
   }
@@ -316,10 +289,10 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
               guiFolder is Folder && canModify ->
                   GUIItem(wpGUI.translations.FOLDER_RENAME.item) {
                     wpGUI.viewer.closeInventory()
-                    AnvilGUI.Builder()
+                    AnvilGUI.builder()
                         .plugin(wpGUI.plugin)
-                        .itemLeft(
-                            ItemStack(Material.PAPER).also { it.plainDisplayName = guiFolder.name })
+                        .text(guiFolder.name)
+                        .title(wpGUI.translations.FOLDER_EDIT_ENTER_NAME.text)
                         .onClickSuspending(wpGUI.scheduler) { slot, (isOutputInvalid, name) ->
                           if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
                               return@onClickSuspending emptyList()
@@ -339,8 +312,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                                   throw IllegalArgumentException(
                                       "Folders of the type ${guiFolder.type} have no name")
                             }.send(wpGUI.viewer)
+                            wpGUI.playSound { clickError }
+                            return@onClickSuspending listOf(replaceInputText(name))
                           }
-                          // TODO rearrange stuff
                           wpGUI.playSound { clickNormal }
 
                           return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
@@ -358,36 +332,31 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
               GUIItem(wpGUI.translations.OVERVIEW_SET_WAYPOINT.item) {
                 if (it.isShiftClick) {
                   var parsedLocation: Location? = null
-                  AnvilGUI.Builder()
+                  AnvilGUI.builder()
                       .plugin(wpGUI.plugin)
-                      .itemLeft(
-                          ItemStack(Material.PAPER).also { stack ->
-                            stack.plainDisplayName =
-                                wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.rawText
-                          })
+                      .text("")
+                      .title(wpGUI.translations.WAYPOINT_CREATE_ENTER_COORDINATES.text)
                       .onClick { slot, (isOutputInvalid, coordinates) ->
                         if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid)
                             return@onClick emptyList()
 
                         parsedLocation = parseLocationString(wpGUI.viewer, coordinates)
 
-                        return@onClick listOf(
-                            parsedLocation.let { location ->
-                              if (location === null) {
-                                wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(
-                                    wpGUI.viewer)
-                                wpGUI.playSound { clickError }
-                                replaceInputText(coordinates)
-                              } else if (location.isOutOfBounds) {
-                                wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(
-                                    wpGUI.viewer)
-                                wpGUI.playSound { clickError }
-                                replaceInputText(coordinates)
-                              } else {
-                                wpGUI.playSound { clickNormal }
-                                AnvilGUI.ResponseAction.close()
-                              }
-                            })
+                        parsedLocation.let { location ->
+                          if (location === null) {
+                            wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(
+                                wpGUI.viewer)
+                            wpGUI.playSound { clickError }
+                          } else if (location.isOutOfBounds) {
+                            wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(
+                                wpGUI.viewer)
+                            wpGUI.playSound { clickError }
+                          } else {
+                            wpGUI.playSound { clickNormal }
+                            return@onClick listOf(AnvilGUI.ResponseAction.close())
+                          }
+                        }
+                        emptyList()
                       }
                       .onClose {
                         parsedLocation.let { location ->

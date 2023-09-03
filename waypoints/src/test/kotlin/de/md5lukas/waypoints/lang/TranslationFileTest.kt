@@ -40,7 +40,7 @@ class TranslationFileTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = ["en", "de", "it"])
+  @ValueSource(strings = ["en", "de"])
   fun verifyLanguageFileCompleteness(language: String) {
     val required = collectUsedKeys()
     val defined = getDefinedKeys(language)

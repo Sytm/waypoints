@@ -544,9 +544,14 @@ inventory:
       description: ""
 
     create:
-      enterName: "Inserisci nome qui"
-      enterCoordinates: "Inserisci coordinate qui"
-      enterPermission: "Inserisci permessi qui"
+      enterName: "Inserisci nome"
+      enterCoordinates: "Inserisci coordinate"
+      enterPermission: "Inserisci permessi"
+
+    edit:
+#      enterName: "Enter new name"
+#      enterPermission: "Enter new permission"
+#      enterWebMapIcon: "Enter WebMap icon"
 
   folder:
     # name: Name of the folder
@@ -593,7 +598,10 @@ inventory:
       description: "<gray>Tutti i cambiamenti saranno <bold>sempre</bold> salvati."
 
     create:
-      enterName: "Inserisci nome qui"
+      enterName: "Inserisci nome"
+
+    edit:
+#      enterName: "Enter new name"
 
   selectFolder:
     noFolder:

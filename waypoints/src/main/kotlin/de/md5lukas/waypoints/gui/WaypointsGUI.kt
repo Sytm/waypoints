@@ -4,7 +4,6 @@ import com.okkero.skedule.SynchronizationContext
 import com.okkero.skedule.skedule
 import com.okkero.skedule.switchContext
 import de.md5lukas.commons.paper.placeholder
-import de.md5lukas.commons.paper.plainDisplayName
 import de.md5lukas.kinvs.GUI
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.WaypointsPlugin
@@ -18,9 +17,7 @@ import kotlinx.coroutines.future.await
 import net.kyori.adventure.sound.Sound
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 class WaypointsGUI(
     internal val plugin: WaypointsPlugin,
@@ -86,12 +83,10 @@ class WaypointsGUI(
   }
 
   fun openCreateFolder(waypointHolder: WaypointHolder) {
-    AnvilGUI.Builder()
+    AnvilGUI.builder()
         .plugin(plugin)
-        .itemLeft(
-            ItemStack(Material.PAPER).also {
-              it.plainDisplayName = translations.FOLDER_CREATE_ENTER_NAME.rawText
-            })
+        .text("")
+        .title(translations.FOLDER_CREATE_ENTER_NAME.text)
         .onClickSuspending(scheduler) { slot, (isOutputInvalid, name) ->
           if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid) return@onClickSuspending emptyList()
 
@@ -111,13 +106,12 @@ class WaypointsGUI(
             playSound { clickError }
           }
 
-          return@onClickSuspending listOf(
-              when (result) {
-                NameTaken -> replaceInputText(translations.FOLDER_CREATE_ENTER_NAME.rawText)
-                LimitReached,
-                is SuccessFolder -> AnvilGUI.ResponseAction.close()
-                else -> throw IllegalStateException("Invalid return value $result")
-              })
+          return@onClickSuspending when (result) {
+            NameTaken -> emptyList()
+            LimitReached,
+            is SuccessFolder -> listOf(AnvilGUI.ResponseAction.close())
+            else -> throw IllegalStateException("Invalid return value $result")
+          }
         }
         .onClose {
           (gui.activePage as BasePage).update()
@@ -131,12 +125,10 @@ class WaypointsGUI(
 
     var name: String? = null
     var permission: String? = null
-    AnvilGUI.Builder()
+    AnvilGUI.builder()
         .plugin(plugin)
-        .itemLeft(
-            ItemStack(Material.PAPER).also {
-              it.plainDisplayName = translations.WAYPOINT_CREATE_ENTER_NAME.rawText
-            })
+        .text("")
+        .title(translations.WAYPOINT_CREATE_ENTER_NAME.text)
         .onClickSuspending(scheduler) { slot, (isOutputInvalid, enteredText) ->
           if (slot != AnvilGUI.Slot.OUTPUT || isOutputInvalid) return@onClickSuspending emptyList()
 
@@ -146,7 +138,8 @@ class WaypointsGUI(
             if (type == Type.PERMISSION && permission == null) {
               playSound { clickNormal }
               return@onClickSuspending listOf(
-                  replaceInputText(translations.WAYPOINT_CREATE_ENTER_PERMISSION.rawText))
+                  AnvilGUI.ResponseAction.updateTitle(
+                      translations.WAYPOINT_CREATE_ENTER_PERMISSION.text, false))
             }
           } else if (type == Type.PERMISSION && permission == null) {
             permission = enteredText
@@ -169,25 +162,24 @@ class WaypointsGUI(
             playSound { clickError }
           }
 
-          return@onClickSuspending listOf(
-              when (result) {
-                LimitReached -> AnvilGUI.ResponseAction.close()
-                NameTaken -> {
-                  name = null
-                  replaceInputText(translations.WAYPOINT_CREATE_ENTER_NAME.rawText)
-                }
-                is SuccessWaypoint -> {
-                  folder?.let {
-                    result.waypoint.setFolder(it)
-                    open(GUIFolderPage(this, folder))
-                  }
+          return@onClickSuspending when (result) {
+            LimitReached -> listOf(AnvilGUI.ResponseAction.close())
+            NameTaken -> {
+              name = null
+              emptyList()
+            }
+            is SuccessWaypoint -> {
+              folder?.let {
+                result.waypoint.setFolder(it)
+                open(GUIFolderPage(this, folder))
+              }
 
-                  waypoint = result.waypoint
+              waypoint = result.waypoint
 
-                  AnvilGUI.ResponseAction.close()
-                }
-                else -> throw IllegalStateException("Invalid return value $result")
-              })
+              listOf(AnvilGUI.ResponseAction.close())
+            }
+            else -> throw IllegalStateException("Invalid return value $result")
+          }
         }
         .onClose {
           val capturedWaypoint = waypoint

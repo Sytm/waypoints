@@ -314,8 +314,12 @@ class Translations(tl: TranslationLoader) {
       Translation(tl, "inventory.waypoint.create.enterCoordinates")
   val WAYPOINT_CREATE_ENTER_PERMISSION =
       Translation(tl, "inventory.waypoint.create.enterPermission")
+  val WAYPOINT_EDIT_ENTER_NAME = Translation(tl, "inventory.waypoint.edit.enterName")
+  val WAYPOINT_EDIT_ENTER_PERMISSION = Translation(tl, "inventory.waypoint.edit.enterPermission")
+  val WAYPOINT_EDIT_ENTER_WEB_MAP_ICON = Translation(tl, "inventory.waypoint.edit.enterWebMapIcon")
 
   val FOLDER_CREATE_ENTER_NAME = Translation(tl, "inventory.folder.create.enterName")
+  val FOLDER_EDIT_ENTER_NAME = Translation(tl, "inventory.folder.edit.enterName")
 
   val CONFIRM_BACKGROUND = ItemTranslation(tl, "inventory.confirm.background")
 
