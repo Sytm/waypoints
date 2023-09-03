@@ -6,10 +6,9 @@ import de.md5lukas.schedulers.AbstractScheduler
 import net.wesjd.anvilgui.AnvilGUI.*
 import org.bukkit.Material
 
-operator fun StateSnapshot.component1(): Boolean =
-    outputItem === null || outputItem.type === Material.AIR
+operator fun StateSnapshot.component1(): Boolean = outputItem.type === Material.AIR
 
-operator fun StateSnapshot.component2(): String = outputItem.plainDisplayName
+operator fun StateSnapshot.component2(): String = text
 
 fun replaceInputText(text: String) = ResponseAction { anvilGUI, _ ->
   anvilGUI.inventory.getItem(Slot.INPUT_LEFT)!!.let {
@@ -18,14 +17,10 @@ fun replaceInputText(text: String) = ResponseAction { anvilGUI, _ ->
   }
 }
 
-fun Builder.scheduler(scheduler: AbstractScheduler): Builder =
-    mainThreadExecutor(scheduler.asExecutor())
-
 inline fun Builder.onClickSuspending(
     scheduler: AbstractScheduler,
     crossinline block: suspend (Int, StateSnapshot) -> List<ResponseAction>
 ): Builder {
-  this.scheduler(scheduler)
   this.onClickAsync { slot, state -> scheduler.future { block(slot, state) } }
   return this
 }

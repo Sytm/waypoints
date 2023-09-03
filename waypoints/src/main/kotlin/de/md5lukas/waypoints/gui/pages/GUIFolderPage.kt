@@ -37,7 +37,6 @@ import de.md5lukas.waypoints.util.minecraftVersionAtLeast
 import de.md5lukas.waypoints.util.onClickSuspending
 import de.md5lukas.waypoints.util.parseLocationString
 import de.md5lukas.waypoints.util.replaceInputText
-import de.md5lukas.waypoints.util.scheduler
 import net.wesjd.anvilgui.AnvilGUI
 import org.bukkit.Location
 import org.bukkit.Material
@@ -361,7 +360,6 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                   var parsedLocation: Location? = null
                   AnvilGUI.Builder()
                       .plugin(wpGUI.plugin)
-                      .scheduler(wpGUI.scheduler)
                       .itemLeft(
                           ItemStack(Material.PAPER).also { stack ->
                             stack.plainDisplayName =
@@ -397,10 +395,12 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                             wpGUI.goBack()
                             wpGUI.schedule { wpGUI.gui.open() }
                           } else {
-                            wpGUI.openCreateWaypoint(
-                                guiFolder.type,
-                                if (guiFolder is Folder) guiFolder else null,
-                                location)
+                            wpGUI.schedule {
+                              wpGUI.openCreateWaypoint(
+                                  guiFolder.type,
+                                  if (guiFolder is Folder) guiFolder else null,
+                                  location)
+                            }
                           }
                         }
                       }
