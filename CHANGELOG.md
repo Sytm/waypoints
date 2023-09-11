@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- Death folders can now be deleted in its entirely
+
 ## 4.1.0
 
 ### Added
