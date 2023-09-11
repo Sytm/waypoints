@@ -593,6 +593,7 @@ inventory:
       cancel:
         displayName: "<green>Nein, den Ordner nicht <yellow><name><green> löschen."
         description: ""
+      deathName: "Tode"
     rename:
       displayName: "<yellow>Ordner umbenennen"
       description: ""

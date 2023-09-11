@@ -588,6 +588,7 @@ inventory:
       cancel:
         displayName: "<green>No, do not delete the folder <yellow><name><green>."
         description: ""
+      deathName: "Deaths"
     rename:
       displayName: "<yellow>Rename folder"
       description: ""

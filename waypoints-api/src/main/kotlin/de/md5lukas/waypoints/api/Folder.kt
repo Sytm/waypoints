@@ -48,7 +48,7 @@ interface Folder : GUIFolder {
    *
    * First a [de.md5lukas.waypoints.api.event.FolderPreDeleteEvent] is triggered, in case you still
    * need the folder. After that the [de.md5lukas.waypoints.api.event.FolderPostDeleteEvent] is
-   * triggered with the waypoint removed from the database.
+   * triggered with the folder removed from the database.
    */
   suspend fun delete()
 }

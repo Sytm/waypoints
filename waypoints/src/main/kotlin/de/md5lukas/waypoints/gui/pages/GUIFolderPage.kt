@@ -29,9 +29,18 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
 
   private companion object {
     /**
-     * spotless:off Overview / Folder p = Previous f = Create Folder / Delete Folder s = Cycle Sort
-     * d = Deselect active waypoint / Edit description i = None / Folder Icon t = Settings / Rename
-     * w = Create Waypoint / Create waypoint in folder b = None / Back n = Next spotless:on
+     * spotless:off
+     * Overview / Folder
+     * p = Previous
+     * f = Create Folder / Delete Folder
+     * s = Cycle Sort
+     * d = Deselect active waypoint / Edit description
+     * i = None / Folder Icon
+     * t = Settings / Rename
+     * w = Create Waypoint / Create waypoint in folder
+     * b = None / Back
+     * n = Next
+     * spotless:on
      */
     val controlsPattern = GUIPattern("pfsditwbn")
   }
@@ -156,7 +165,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
               previousPage()
             },
         'f' to
-            if (canModify) {
+            if (guiFolder.type === Type.DEATH || canModify) {
               if (isOverview) {
                 GUIItem(wpGUI.translations.OVERVIEW_CREATE_FOLDER.item) {
                   wpGUI.playSound { clickNormal }
@@ -164,7 +173,14 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                 }
               } else {
                 GUIItem(wpGUI.translations.FOLDER_DELETE.item) {
-                  val nameResolver = "name" placeholder guiFolder.name
+                  val nameResolver =
+                      "name" placeholder
+                          if (guiFolder.type === Type.DEATH) {
+                            wpGUI.translations.FOLDER_DELETE_DEATH_NAME.rawText
+                          } else {
+                            guiFolder.name
+                          }
+
                   wpGUI.open(
                       ConfirmPage(
                           wpGUI,

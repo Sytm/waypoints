@@ -301,6 +301,7 @@ class Translations(tl: TranslationLoader) {
   val FOLDER_DELETE_CONFIRM_QUESTION = ItemTranslation(tl, "inventory.folder.delete.question")
   val FOLDER_DELETE_CONFIRM_TRUE = ItemTranslation(tl, "inventory.folder.delete.confirm")
   val FOLDER_DELETE_CONFIRM_FALSE = ItemTranslation(tl, "inventory.folder.delete.cancel")
+  val FOLDER_DELETE_DEATH_NAME = Translation(tl, "inventory.folder.delete.deathName")
   val FOLDER_RENAME = ItemTranslation(tl, "inventory.folder.rename")
   val FOLDER_EDIT_DESCRIPTION = ItemTranslation(tl, "inventory.folder.editDescription")
 

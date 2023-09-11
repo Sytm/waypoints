@@ -1,6 +1,5 @@
 package de.md5lukas.waypoints.api
 
-import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.event.WaypointCreateEvent
 import java.time.OffsetDateTime
 import java.util.*
@@ -8,7 +7,6 @@ import kotlin.test.*
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
@@ -213,10 +211,22 @@ abstract class WaypointPlayerTest : TestBase() {
     }
 
     @Test
-    fun deathFolderCannotBeDeleted(): Unit = runBlocking {
-      assertThrows<UnsupportedOperationException> {
-        api.getWaypointPlayer(UUID.randomUUID()).deathFolder.delete()
-      }
+    fun deletingDeathFolderClearsIt(): Unit = runBlocking {
+      val location = server.createLocation("world", 1, 2, 3)
+
+      val player = api.getWaypointPlayer(UUID.randomUUID())
+
+      player.addDeathLocation(location)
+      player.addDeathLocation(location)
+
+      val deathFolder = player.deathFolder
+      assertEquals(2, deathFolder.getAmount())
+      assertEquals(2, deathFolder.getWaypoints().size)
+
+      deathFolder.delete()
+
+      assertEquals(0, deathFolder.getAmount())
+      assertEquals(0, deathFolder.getWaypoints().size)
     }
   }
 }

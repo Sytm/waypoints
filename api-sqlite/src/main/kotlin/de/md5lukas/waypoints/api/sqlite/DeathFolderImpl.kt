@@ -2,6 +2,7 @@ package de.md5lukas.waypoints.api.sqlite
 
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
+import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
@@ -44,7 +45,8 @@ class DeathFolderImpl(
     get() = null
 
   override suspend fun setMaterial(material: Material?) =
-      throw UnsupportedOperationException("Changing the name of the death folder is not supported")
+      throw UnsupportedOperationException(
+          "Changing the material of the death folder is not supported")
 
   override suspend fun getAmount(): Int =
       withContext(dm.asyncDispatcher) {
@@ -71,7 +73,13 @@ class DeathFolderImpl(
       }
 
   override suspend fun delete() {
-    throw UnsupportedOperationException("Changing the name of the death folder is not supported")
+    withContext(dm.asyncDispatcher) {
+      dm.connection.update(
+          "DELETE FROM waypoints WHERE type = ? AND owner = ?;",
+          Type.DEATH.name,
+          owner.toString(),
+      )
+    }
   }
 
   override val guiType: GUIType = GUIType.DEATH_FOLDER
