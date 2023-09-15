@@ -1,0 +1,621 @@
+prefix: "<aqua><bold>Waypoints <yellow><bold>><reset> "
+scriptPrefix: "<aqua><bold>Waypoints<green>Script <yellow><bold>><reset> "
+worlds:
+  world: "Welt"
+  world_nether: "Nether"
+  world_the_end: "Das Ende"
+update:
+  error: "<red>Es konnten nicht die aktuellsten Veröffentlichung geladen werden"
+  upToDate: "<green>Es wird die aktuellste Version von Waypoints verwendet"
+  outdated: |
+    <gray>Waypoints Version <yellow><latest></yellow> ist verfügbar.
+    Schau dir die Veröffentlichung hier an: <yellow><link></yellow>
+command:
+  notAPlayer: "<red>Du musst ein Spieler sein um diesen Befehl benutzen zu können."
+  script:
+    help:
+      header: "<gray><underlined>Hilfe"
+      deselectWaypoint: "<gray> - <yellow>/<label> deselectWaypoint <Spieler-Name> <gray><bold>|<reset><gray> Entferne die Wegpunkt-Auswahl von einem Spieler"
+      selectWaypoint: "<gray> - <yellow>/<label> selectWaypoint <Spieler-Name> <Wegpunkt-UUID> <gray><bold>|<reset><gray> Setzte die Wegpunkt-Auswahl von einem Spieler auf diesen Wegpunkt"
+      temporaryWaypoint: "<gray> - <yellow>/<label> temporaryWaypoint <Spieler-Name> <X> <Y> <Z> [Leuchtfeuerfarbe] <gray><bold>|<reset><gray> Erstelle einen temporären Wegpunkt für den Spieler"
+      uuid: "<gray> - <yellow>/<label> uuid <Name> <gray><bold>|<reset><gray> Suche nach Wegpunkten um deren UUID zu erhalten"
+    selectWaypoint:
+      #uuid: ID of the waypoint that could not be found
+      waypointNotFound: "<red>Konnte keinen Wegpunkt mit der UUID <yellow><uuid><red> finden."
+    temporaryWaypoint:
+      beaconColorNotFound: "<red>Die angegebene Leuchtfeuerfarbe konnte nicht gefunden werden."
+    uuid:
+      noMatch: "<red>Es konnten keine Wegpunkte mit dieser Suchanfrage gefunden werden."
+      header: "<gray>Wegpunkte: (Drücke auf ein Ergebnis um die UUID in die Zwischenablage zu kopieren)"
+      result: "<gray> - Name: <yellow><name><gray> Ordner: <yellow><folder>"
+  help:
+    header: "<gray><underlined>Hilfe"
+    gui: "<gray> - <yellow>/<label> <gray><bold>|<reset><gray> Öffne die Wegpunkt GUI"
+    help: "<gray> - <yellow>/<label> help <gray><bold>|<reset><gray> Zeigt diese Hilfe Nachricht"
+    select: "<gray> - <yellow>/<label> select <Name> <gray><bold>|<reset><gray> Wählt den Wegpunkt aus"
+    deselect: "<gray> - <yellow>/<label> deselect <gray><bold>|<reset><gray> Die Wegpunkt-Auswahl wird wieder entfernt"
+    teleport: "<gray> - <yellow>/<label> teleport <Name> <gray><bold>|<reset><gray> Teleportiere dich zum Wegpunkt"
+    set:
+      private: "<gray> - <yellow>/<label> set <Name> <gray><bold>|<reset><gray> Erstelle einen neuen Wegpunkt"
+      public: "<gray> - <yellow>/<label> setPublic <Name> <gray><bold>|<reset><gray> Erstelle einen neuen öffentlichen Wegpunkt"
+      permission: "<gray> - <yellow>/<label> setPermission <Permission> <Name> <gray><bold>|<reset><gray> Erstelle einen neuen eingeschränkten Wegpunkt"
+      temporary: "<gray> - <yellow>/<label> setTemporary <X> <Y> <Z> <gray><bold>|<reset><gray> Erstelle einen Wegpunkt der nicht gespeichert wird"
+    other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> Sieh dir die Wegpunkte von einem anderen Spieler an"
+    statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> Sieh dir die Statistik der Datenbank an"
+    reload: "<gray> - <yellow>/<label> reload <gray><bold>|<reset><gray> Lädt die Konfiguration neu"
+  search:
+    prefix:
+      public: "Öffentlich"
+      permission: "Eingeschränkt"
+    notFound:
+      waypoint: "<red>Es konnte kein Wegpunkt mit dieser Suchanfrage gefunden werden."
+    #Set the text of the floating hologram here.
+    #name: Name of the waypoint
+    #createdAt: Date at which the waypoint was created
+    #world: World where the waypoint is located at
+    #x, y, z: Coordinates of the waypoint
+    #block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
+    #distance: Distance in blocks to the player
+    tooltip: "<created_at:'dd.MM.uuuu kk:mm'>"
+  select:
+    selected: "<gray>Wegpunkt <yellow><name> <gray>ausgewählt."
+  deselect:
+    done: "<gray>Aktuelle Wegpunkte abgewählt."
+  other:
+    playerNoWaypoints: "<red>Der angegebene Spieler besitzt keine Wegpunkte."
+  statistics:
+    #db_file_size: Size of the database in SI Units
+    #total_waypoints: Total amount of waypoints
+    #private_waypoints: Amount of private waypoints
+    #death_waypoints: Amount of death waypoints
+    #public_waypoints: Amount of public waypoints
+    #permission_waypoints: Amount of permission waypoints
+    #total_folders: Total amount of folders
+    #private_folders: Amount of private folders
+    #public_folders: Amount of public folders
+    #permission_folders: Amount of permission folders
+    message: |
+      <gray>Datenbank-Statistiken
+      <gray>Dateigröße: <yellow><db_file_size>
+
+      <gray>Wegpunkte insgesamt: <yellow><total_waypoints>
+      <gray>Private Wegpunkte: <yellow><private_waypoints>
+      <gray>Todes Wegpunkte: <yellow><death_waypoints>
+      <gray>Öffentliche Wegpunkte: <yellow><public_waypoints>
+      <gray>Eingeschränkte Wegpunkte: <yellow><permission_waypoints>
+
+      <gray>Ordner insgesamt: <yellow><total_folders>
+      <gray>Private Ordner: <yellow><private_folders>
+      <gray>Öffentliche Ordner: <yellow><public_folders>
+      <gray>Eingeschränkte Ordner: <yellow><permission_folders>
+  reload:
+    finished: "<gray>Die Konfiguration wurde neu geladen."
+text:
+  duration:
+    second: "Sekunde"
+    seconds: "Sekunden"
+    minute: "Minute"
+    minutes: "Minuten"
+    hour: "Stunde"
+    hours: "Stunden"
+    day: "Tag"
+    days: "Tage"
+  worldNotFound: "?"
+  distance:
+    otherWorld: "?"
+  sortOptions:
+    type_ascending: "Typ"
+    type_descending: "Typ (Absteigend)"
+    name_ascending: "Name"
+    name_descending: "Name (Absteigend)"
+    created_ascending: "Erstellungszeitpunkt"
+    created_descending: "Erstellungszeitpunkt (Absteigend)"
+  beaconColors:
+    clear: "<gray>Keine Farbe"
+    light_gray: "<gray>Hellgrau"
+    gray: "<gray>Grau"
+    pink: "<gray>Rosa"
+    lime: "<gray>Hellgrün"
+    yellow: "<gray>Gelb"
+    light_blue: "<gray>Hellblau"
+    magenta: "<gray>Magenta"
+    orange: "<gray>Orange"
+    white: "<gray>Weiß"
+    black: "<gray>Schwarz"
+    red: "<gray>Rot"
+    green: "<gray>Grün"
+    brown: "<gray>Braun"
+    blue: "<gray>Blau"
+    cyan: "<gray>Türkis"
+    purple: "<gray>Violett"
+message:
+  waypoint:
+    create:
+      worldUnavailable: "<red>In Welt in der du dich befindest sind Wegpunkte nicht verfügbar."
+      coordinates:
+        outOfBounds: "<red>Die Position an der du den Wegpunkt erstellen möchtest liegt außerhalb der Grenzen."
+        invalidFormat: |
+          <red>Die Koordinaten müssen im folgenden Format angegeben werden:
+          <green>102/35/-238
+    limitReached:
+      private: "<red>Du hast die maximale Anzahl an Wegpunkten erreicht die du erstellen kannst."
+    nameDuplicate:
+      private: "<red>Wegpunkte mit bereits vorhandenen Namen sind nicht erlaubt."
+      public: "<red>Öffentliche Wegpunkte mit bereits vorhandenen Namen sind nicht erlaubt."
+      permission: "<red>Eingeschränkte Wegpunkte mit bereits vorhandenen Namen sind nicht erlaubt."
+    setSuccess:
+      private: "<gray>Der Wegpunkt wurde erfolgreich erstellt."
+      public: "<gray>Der öffentliche Wegpunkt wurde erfolgreich erstellt."
+      permission: "<gray>Der eingeschränkte Wegpunkt wurde erfolgreich erstellt."
+    #name: Name of the waypoint
+    getUuid: "<gray>Drücke auf diese Nachricht um die UUID von dem Wegpunkt <yellow><name><gray> zu erhalten."
+    newIconInvalid: "<red>Das Item das du als Icon für den Wegpunkt verwenden möchtest ist nicht erlaubt."
+  folder:
+    limitReached:
+      private: "<red>Du hast die maximale Anzahl an Ordnern erreicht die du erstellen kannst."
+    nameDuplicate:
+      private: "<red>Ordner mit bereits vorhandenen Namen sind nicht erlaubt."
+      public: "<red>Öffentliche Ordner mit bereits vorhandenen Namen sind nicht erlaubt."
+      permission: "<red>Eingeschränkte Ordner mit bereits vorhandenen Namen sind nicht erlaubt."
+    createSuccess:
+      private: "<gray>Der Ordner wurde erfolgreich erstellt."
+      public: "<gray>Der öffentliche Ordner wurde erfolgreich erstellt."
+      permission: "<gray>Der eingeschränkte Ordner wurde erfolgreich erstellt."
+    newIconInvalid: "<red>Das Item das du als Icon für den Ordner verwenden möchtest ist nicht erlaubt."
+  allowedIcons:
+    whitelist: "<red>Nur die folgenden Items sind erlaubt: <yellow><items>"
+    blacklist: "<red>Die folgenden Items sind nicht erlaubt: <yellow><items>"
+  teleport:
+    #remaining_cooldown: Time left until player can teleport again
+    onCooldown: "<red>Du kannst für <yellow><remaining_cooldown><red> nicht teleportieren."
+    notAllowed: "<red>Du darfst dich nicht zu diesem Wegpunkt teleportieren."
+    notEnough:
+      #current_level: Level of the player
+      #required_level: Level required for teleportation
+      xp: |
+        <red>Du hast nicht genügend Erfahrungs-Level für eine Teleportation.
+        <red>Benötigtes Level: <yellow><required_level>
+      #current_balance: Vault balance of the player
+      #required_balance: Vault balance required for teleportation
+      balance: |
+        <red>Dein Kontostand ist zu niedrig für eine Teleportation.
+        <red>Benötiger Kontostand: <required_balance>
+    standStill:
+      #duration: Amount of time the player needs to stand still
+      notice: "<gray>Du darfst dich für <yellow><duration><gray> nicht Bewegen."
+      moved: "<red>Deine eingereihte Teleportation wurde abgebrochen da du dich bewegt hast."
+  tracking:
+    playerNoLongerOnline: "<red>Der Spieler den du verfolgen möchtest ist nicht mehr online."
+    trackableRequired: "<red>Um andere Spieler verfolgen zu können musst du dich selbst sichtbar machen."
+    notification: "<gray>Der Spieler <yellow><name><gray> verfolgt dich."
+    request:
+      sent: "<gray>Eine Verfolgungsanfrage wurde an <yellow><to><gray> gesendet. Sie wird in <yellow><valid_for><gray> ablaufen."
+      request: |
+        <yellow><from><gray> möchte deine Position verfolgen. Diese Anfrage wird in <yellow><valid_for><gray> ablaufen.
+        <gray>[<green><accept>Anfrage akzeptieren</accept><gray>]
+  sharing:
+    alreadyShared: "<red>Du hast diesen Wegpunkt bereits mit <yellow><name></yellow> geteilt."
+    success: "<gray>Der Wegpunkt wurde mit <yellow><name></yellow> geteilt."
+pointers:
+  actionBar:
+    #current: Translated name of the world the player is in
+    #correct: Translated name of the world the waypoint is in
+    wrongWorld: "<red>Du bist momentan in der Welt <green><current><red>, der Wegpunkt befindet sich in der Welt <green><correct>"
+    #distance: Distance to the waypoint in blocks
+    #height_difference: Height difference between player and waypoint. Positive when to high, negative when to low
+    distance: "<gray>Du bist <yellow><distance::'.0'><gray> Blöcke von deinem Ziel entfernt"
+  hologram:
+    #Set the text of the floating hologram here.
+    #name: Name of the waypoint
+    #created_at: Date at which the waypoint was created
+    #world: World where the waypoint is located at
+    #x, y, z: Coordinates of the waypoint
+    #block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
+    private: "<dark_purple><name> (<distance:'.0'>m)"
+    death: "<red>Tot am <created_at:'dd.MM.uuuu kk:mm'> (<distance:'.0'>m)"
+    public: "<aqua><name> (<distance:'.0'>m)"
+    permission: "<light_purple><name> (<distance:'.0'>m)"
+    temporary: "<dark_purple>Temporärer Wegpunkt (<distance:'.0'>m)"
+    playerTracking: "<blue><name> <reset><blue>(<distance:'.0'>m)"
+integrations:
+  maps:
+    label: "Öffentliche Wegpunkte"
+inventory:
+  title:
+    self: "<dark_gray>Deine Wegpunkte"
+    #name: Name of the other player
+    other: "<dark_gray>Wegpunkte von <blue><name>"
+  general:
+    previous:
+      displayName: "<yellow>Vorherige Seite"
+      description: ""
+    next:
+      displayName: "<yellow>Nächste Seite"
+      description: ""
+    back:
+      displayName: "<yellow>Zurück"
+      description: ""
+  background:
+    private:
+      displayName: "<black>-"
+      description: ""
+    death:
+      displayName: "<black>-"
+      description: ""
+    public:
+      displayName: "<black>-"
+      description: ""
+    permission:
+      displayName: "<black>-"
+      description: ""
+  overview:
+    cycleSort:
+      displayName: "<yellow>Sortiere nach"
+      description: ""
+      activeColor: "<gold>"
+      inactiveColor: "<gray>"
+    settings:
+      displayName: "<yellow>Einstellungen"
+      description: |
+        <gray>Ändere die Sichtbarkeit von globalen
+        <gray>Wegpunkten und die verwendeten Wegweiser
+    deselect:
+      displayName: "<yellow>Alle Wegpunkt-Auswahlen entfernen"
+      description: "<gray>Die Wegweiser werden nicht mehr angezeigt"
+      selected: "<gray>Aktuell sind die folgenden Wegpunkte ausgewählt:"
+      names:
+        waypoint:
+          private: "<dark_purple><path>"
+          death: "<red>Tot am <created_at:'dd.MM.uuuu kk:mm'>"
+          public: "<aqua>Öffentlich/<path>"
+          permission: "<light_purple>Eingeschränkt/<path>"
+          temporary: "<dark_purple>Ein Temporärer Wegpunkt"
+        playerTracking: "<blue>Spieler: <name>"
+        unknown: "<red>Unbekannt"
+    setWaypoint:
+      displayName: "<yellow>Neuen Wegpunkt erstellen"
+      description: |
+        <gray>Der Wegpunkt wird im aktuellen Ordner erstellt
+
+        <gray>Wenn du <yellow>Shift-Klickst<gray>, kannst du einen Wegpunkt
+        <gray>erstellen indem du Koordinaten so angibst:
+        <green>102 35 -238
+    createFolder:
+      displayName: "<yellow>Neunen Ordner erstellen"
+      description: ""
+  settings:
+    toggleGlobals:
+      visible:
+        displayName: "<yellow>Globale Wegpunkte sind sichtbar"
+        description: "<gray>Drücke hier drauf um sie zu verstecken"
+      hidden:
+        displayName: "<yellow>Globale Wegpunkte sind versteckt"
+        description: "<gray>Drücke hier drauf um sie zu zeigen"
+    pointers:
+      title:
+        displayName: "<yellow>Passe die Wegweiser an"
+        description: ""
+      on:
+        displayName: "<bold><green><name>"
+        description: ""
+      off:
+        displayName: "<bold><red><name>"
+        description: ""
+      actionBar:
+        name: "Aktionsleiste"
+        description: |
+          <gray>In deiner Aktionsleiste zeigt eine Anzeige
+          <gray>in welche Richtung du schauen musst um
+          <gray>zum Wegpunkt zu gelangen
+      beacon:
+        name: "Leuchtfeuer"
+        description: |
+          <gray>Sobald du in Sichtweite vom Wegpunkt kommst
+          <gray>wird ein Leuchtfeuerstrahl mit einstellbarer
+          <gray>Farbe auf dem Wegpunkt angezeigt
+      blinkingBlock:
+        name: "Blinkender Block"
+        description: |
+          <gray>Sobald du in die Nähe vom Wegpunkt kommst
+          <gray>erscheint ein blinkender Block auf diesem
+          <gray>der dir die genaue Position zeigt
+      bossBar:
+        name: "Bossleiste"
+        description: |
+          <gray>In der Bossleiste wird ein Kompass angezeigt
+          <gray>mit Markern für jeden ausgewählten Wegpunkt
+      compass:
+        name: "Kompass"
+        description: |
+          <gray>Jeder Kompass in deinem Inventar zeigt nun
+          <gray>zum Wegpunkt
+      hologram:
+        name: "Hologram"
+        description: |
+          <gray>Ein Hologram schwebt in deiner Nähe in
+          <gray>der Richtung zum Wegpunkt und zeigt den
+          <gray>Namen, das Icon und die Entfernung zu diesem
+          <gray>an
+      particle:
+        name: "Partikel-Kompass"
+        description: |
+          <gray>Partikel in der Nähe deiner Füße zeigen
+          <gray>dir in welcher Richtung sich der Wegpunkt
+          <gray>befindet
+      trail:
+        name: "Partikel-Pfad"
+        description: |
+          <gray>Es wird ein möglicher Weg zum Wegpunkt
+          <gray>berechnet welcher dann mit einem
+          <gray>Partikel-Pfad angezeigt wird
+  #amount: Amount of waypoints in this global folder visible for the player
+  listing:
+    public:
+      displayName: "<aqua>Öffentliche Wegpunkte"
+      description: "<gray>Anzahl: <gold><amount>"
+    permission:
+      displayName: "<light_purple>Eingeschränkte Wegpunkte"
+      description: "<gray>Für dich verfügbar: <gold><amount>"
+    tracking:
+      displayName: "<green>Spieler"
+      description: "<gray>Verfolge andere Spieler"
+    shared:
+      displayName: "<aqua>Geteilte Wegpunkte"
+      description: |
+        <gray>Wegpunkte die andere Spieler mit
+        <gray>dir geteilt haben
+  waypoint:
+    #name: Name of the waypoint
+    #createdAt: Date at which the waypoint was created
+    #world: World where the waypoint is located at
+    #x, y, z: Coordinates of the waypoint
+    #block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
+    #distance: Distance in blocks to the player
+    icon:
+      description: |
+        <gray>Welt: <gold><world>
+        <gray>X: <gold><block_x>
+        <gray>Y: <gold><block_y>
+        <gray>Z: <gold><block_z>
+        <gray>Entfernung: <gold><distance:'.0'>
+
+        <gray>Erstellt am: <gold><created_at:'dd.MM.uuuu kk:mm'>
+      customDescription: |
+        <light_purple><italic><description1>
+        <light_purple><italic><description2>
+      private:
+        displayName: "<dark_purple><name>"
+        description: null
+        customDescription: null
+      death:
+        displayName: "<red>Tot am <created_at:'dd.MM.uuuu kk:mm'>"
+        description: |
+          <gray>Welt: <gold><world>
+          <gray>X: <gold><block_x>
+          <gray>Y: <gold><block_y>
+          <gray>Z: <gold><block_z>
+          <gray>Entfernung: <gold><distance:'.0'>
+      public:
+        displayName: "<aqua><name>"
+        description: null
+        customDescription: null
+      permission:
+        displayName: "<light_purple><name>"
+        description: null
+        customDescription: null
+    select:
+      displayName: "<yellow>Wegpunkte auswählen"
+      description: "<gray>Drücke hier drauf um für diesen Wegpunkt Wegweiser zu erhalten"
+    deselect:
+      displayName: "<yellow>Wegpunkt-Auswahl entfernen"
+      description: ""
+    delete:
+      displayName: "<dark_red>Wegpunkt löschen"
+      description: ""
+      question:
+        displayName: "<gray>Möchtest du wirklich <yellow><name><gray> löschen?"
+        description: ""
+      confirm:
+        displayName: "<red>Ja, <yellow><name><red> löschen!"
+        description: ""
+      cancel:
+        displayName: "<green>Nein, <yellow><name><green> nicht löschen."
+        description: ""
+    rename:
+      displayName: "<yellow>Wegpunkt umbenennen"
+      description: ""
+    editIcon:
+      displayName: "<yellow>Icon ändern"
+      description: |
+        <gray>Drücke hier drauf um das Item in
+        <gray>deiner Haupthand als neues Icon
+        <gray>für den Wegpunkt zu verwenden.
+
+        <gray>Falls du das Icon von einem Ordner
+        <gray>ändern möchtest musst du auf sein
+        <gray>Icon drücken nachdem du den Ordner
+        <gray>geöffnet hast.
+
+        <gray>In beiden Fällen kann mit einem
+        <gray>Shift-Klick das Icon auf den
+        <gray>Standard zurück gesetzt werden
+    editDescription:
+      displayName: "<yellow>Beschreibung ändern"
+      description: "<gray>Alle Änderungen werden <bold>immer</bold> gespeichert"
+    moveToFolder:
+      displayName: "<yellow>Wegpunkt in einen Ordner verschieben"
+      description: |
+        <gray>Stecke den Wegpunkt in einen Ordner um ihn zu Gruppieren,
+        <gray>oder entferne ihn vom momentanen Ordner
+    teleport:
+      displayName: "<yellow>Zum Wegpunkt teleportieren"
+      description: ""
+      #levels: The amount of levels required for teleportation
+      xpLevel: "<gray>Du benötigst <yellow><levels><gray> Erfahrungs-Level um diese Teleportation durchzuführen."
+      #balance: The amount of balance required for teleportation
+      balance: "<gray>Du benötigst <yellow><balance><gray> auf deinem Konto um diese Teleportation durchzuführen."
+      mustVisit: |
+        <red>Du musst den Wegpunkt zuvor besucht haben um
+        <red>dich zu ihm teleportieren zu können.
+    selectBeaconColor:
+      displayName: "<yellow>Farbe vom Leuchtfeuer ändern"
+      description: ""
+    getUuid:
+      displayName: "<yellow>UUID vom Wegpunkt erhalten"
+      description: |
+        <gray>Schickt eine klickbare Nachricht die
+        <gray>die UUID in die Zwischenablage kopiert
+    share:
+      displayName: "<yellow>Teile den Wegpunkt"
+      description: |
+        <gray>Teile den Wegpunkt mit anderen Spielern
+        <gray>oder entferne die Freigaben für diese
+    editPermission:
+      displayName: "<yellow>Benötigte Berechtigung ändern"
+      description: "<gray>Aktuell benötigte Berechtigung ist <yellow><permission>"
+    make:
+      public:
+        displayName: "<dark_red>Wegpunkt öffentlich machen"
+        description: ""
+        question:
+          displayName: "<gray>Möchtest du wirklich <yellow><name><gray> öffentlich machen?"
+          description: ""
+        confirm:
+          displayName: "<red>Ja, <yellow><name><red> öffentlich machen!"
+          description: ""
+        cancel:
+          displayName: "<green>Nein, <yellow><name><green> nicht öffentlich machen."
+          description: ""
+      permission:
+        displayName: "<dark_red>Wegpunkt eingeschränkt machen"
+        description: ""
+        question:
+          displayName: "<gray>Möchtest du wirklich <yellow><name><gray> eingeschränkt machen?"
+          description: ""
+        confirm:
+          displayName: "<red>Ja, <yellow><name><red> eingeschränkt machen!"
+          description: ""
+        cancel:
+          displayName: "<green>Nein, <yellow><name><green> nicht eingeschränkt machen."
+          description: ""
+    changeMapIcon:
+      displayName: "<yellow>Benutzerdefiniertes Web-Karten Symbol ändern"
+      description: ""
+    create:
+      enterName: "Name eingeben"
+      enterCoordinates: "Koordinaten eingeben"
+      enterPermission: "Berechtigung eingeben"
+    edit:
+      enterName: "Neuen Name eingeben"
+      enterPermission: "Neue Berechtigung eingeben"
+      enterWebMapIcon: "WebMap Icon eingeben"
+  folder:
+    #name: Name of the folder
+    #created_at: Date at which the folder was created
+    #amount: Amount of waypoints visible to the player
+    icon:
+      customDescription: |
+        <light_purple><italic><description1>
+        <light_purple><italic><description2>
+      private:
+        displayName: "<dark_purple><name>"
+        description: "<gray>Wegpunkte in diesem Ordner: <gold><amount>"
+        customDescription: null
+      death:
+        displayName: "<red>Tode"
+        description: "<gray>Wegpunkte in diesem Ordner: <gold><amount>"
+      public:
+        displayName: "<aqua><name>"
+        description: "<gray>Wegpunkte in diesem Ordner: <gold><amount>"
+        customDescription: null
+      permission:
+        displayName: "<light_purple><name>"
+        description: "<gray>Wegpunkte in diesem Ordner: <gold><amount>"
+        customDescription: null
+    delete:
+      displayName: "<dark_red>Ordner löschen"
+      description: ""
+      question:
+        displayName: "<gray>Möchtest du wirklich den Ordner <yellow><name><gray> löschen?"
+        description: ""
+      confirm:
+        displayName: "<red>Ja, den Ordner <yellow><name><red> löschen!"
+        description: ""
+      cancel:
+        displayName: "<green>Nein, den Ordner nicht <yellow><name><green> löschen."
+        description: ""
+      deathName: "Tode"
+    rename:
+      displayName: "<yellow>Ordner umbenennen"
+      description: ""
+    editDescription:
+      displayName: "<yellow>Beschreibung ändern"
+      description: "<gray>Alle Änderungen werden <bold>immer</bold> gespeichert"
+    create:
+      enterName: "Name eingeben"
+    edit:
+      enterName: "Neuen Namen eingeben"
+  selectFolder:
+    noFolder:
+      displayName: "<yellow>Kein Ordner"
+      description: "<gray>Den Wegpunkt zurück zur Übersicht verschieben"
+  selectBeaconColor:
+    moveLeft:
+      displayName: "<yellow>Nach links verschieben"
+      description: ""
+    moveRight:
+      displayName: "<yellow>Nach rechts verschieben"
+      description: ""
+  confirm:
+    background:
+      displayName: "<black>-"
+      description: ""
+  playerList:
+    refresh:
+      displayName: "<gray>Spieler-Liste aktualisieren"
+      description: ""
+  tracking:
+    background:
+      displayName: "<black>-"
+      description: ""
+    trackable:
+      enabled:
+        displayName: "<gray>Du bist sichtbar"
+        description: "<gray>Andere Spieler können dich verfolgen"
+      disabled:
+        displayName: "<gray>Du bist versteckt"
+        description: "<gray>Andere Spieler können dich nicht verfolgen"
+    #name: Name of the player
+    #world: World where the player is located at
+    #x, y, z: Coordinates of the player
+    #block_x, block_y, block_z: Coordinates of the block nearest to the player
+    #distance: Distance in blocks to the player
+    player:
+      displayName: "<green><name>"
+      description: |
+        <gray>Welt: <gold><world>
+        <gray>Entfernung: <gold><distance:'.0'>
+  sharing:
+    player:
+      select:
+        displayName: "<aqua><name>"
+        description: ""
+      delete:
+        displayName: "<aqua><name>"
+        description: |
+          <gray>Drücke hier um den Zugriff auf
+          <gray>diesen Wegpunkt für <yellow><name></yellow>
+          <gray>zurückzuziehen.
+    viewSharing:
+      displayName: "<yellow>Geteilt mit"
+      description: |
+        <gray>Sehe welche Spieler zugriff auf diesen
+        <gray>Wegpunkt haben und entferne diesen
+        <gray>gegebenenfalls wieder.
+    sharedBy: |
+
+      <gray>Dieser Wegpunkt wurde von <yellow><name></yellow>
+      <gray>mit dir geteilt.
+      <gray>Shift-Klicke um diese Freigabe
+      <gray>zurückzuziehen.
+    unknownPlayer: "<red>Unknown"
