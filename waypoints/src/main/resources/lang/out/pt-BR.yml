@@ -1,3 +1,4 @@
+#These translations have been provided by marcotech81
 prefix: "<aqua><bold>Waypoints <yellow><bold>><reset> "
 scriptPrefix: "<aqua><bold>Waypoints<green>Script <yellow><bold>><reset> "
 worlds:
@@ -5,50 +6,50 @@ worlds:
   world_nether: "Nether"
   world_the_end: "The End"
 update:
-  error: "<red>Could not retrieve latest release data"
-  upToDate: "<green>The latest version of Waypoints is used"
+  error: "<red>Impossibile recuperare i dati dell'ultima versione"
+  upToDate: "<green>Si sta utilizzando l'ultima versione di Waypoints."
   outdated: |
-    <gray>The version <yellow><latest></yellow> for Waypoints is available.
-    Checkout the release here: <yellow><link></yellow>
+    <gray>La versione <yellow><latest></yellow> per Waypoints è disponibile.
+    Dai un'occhiata al rilascio qui: <yellow><link></yellow>
 command:
-  notAPlayer: "<red>You must be a player to use this command."
+  notAPlayer: "<red>Devi essere un giocatore per utilizzare questo comando."
   script:
     help:
       header: "<gray><underlined>Help"
-      deselectWaypoint: "<gray> - <yellow>/<label> deselectWaypoint <Player-Name> <gray><bold>|<reset><gray> Remove the waypoint selection of a player"
-      selectWaypoint: "<gray> - <yellow>/<label> selectWaypoint <Player-Name> <Waypoint-UUID> <gray><bold>|<reset><gray> Set the waypoint selection of a player to that waypoint"
-      temporaryWaypoint: "<gray> - <yellow>/<label> temporaryWaypoint <Player-Name> <X> <Y> <Z> [Beacon-Color] <gray><bold>|<reset><gray> Create a temporary waypoint for the player"
-      uuid: "<gray> - <yellow>/<label> uuid <Name> <gray><bold>|<reset><gray> Search for waypoints using the query to get their UUID"
+      deselectWaypoint: "<gray> - <yellow>/<label> deselectWaypoint <Player-Name> <gray><bold>|<reset><gray> Rimuovi la selezione del waypoint di un giocatore"
+      selectWaypoint: "<gray> - <yellow>/<label> selectWaypoint <Player-Name> <Waypoint-UUID> <gray><bold>|<reset><gray> Imposta la selezione del waypoint di un giocatore su quel waypoint"
+      temporaryWaypoint: "<gray> - <yellow>/<label> temporaryWaypoint <Player-Name> <X> <Y> <Z> [Beacon-Color] <gray><bold>|<reset><gray> Crea un waypoint temporaneo per il giocatore"
+      uuid: "<gray> - <yellow>/<label> uuid <Name> <gray><bold>|<reset><gray> Cerca i waypoints utilizzando la query per ottenere il loro UUID"
     selectWaypoint:
       #uuid: ID of the waypoint that could not be found
-      waypointNotFound: "<red>Could not find a waypoint with the UUID <yellow><uuid><red>."
+      waypointNotFound: "<red>Non è stato possibile trovare un waypoint con l'UUID <yellow><uuid><red>"
     temporaryWaypoint:
-      beaconColorNotFound: "<red>The provided beacon color could not be found."
+      beaconColorNotFound: "<red>Il colore del faro fornito non può essere trovato."
     uuid:
-      noMatch: "<red>No waypoints could be found for the given query."
-      header: "<gray>Waypoints: (Click result to copy UUID to clipboard)"
-      result: "<gray> - Name: <yellow><name><gray> Folder: <yellow><folder>"
+      noMatch: "<red>Nessun waypoint è stato trovato per la query fornita."
+      header: "<gray>Waypoints: (Clicca sul risultato per copiare l'UUID negli appunti)"
+      result: "<gray> - Name: <yellow><name><gray> Cartella: <yellow><folder>"
   help:
-    header: "<gray><underlined>Help"
-    gui: "<gray> - <yellow>/<label> <gray><bold>|<reset><gray> Open the Waypoints GUI"
-    help: "<gray> - <yellow>/<label> help <gray><bold>|<reset><gray> Shows this help message"
-    select: "<gray> - <yellow>/<label> select <Name> <gray><bold>|<reset><gray> Selects the waypoint"
-    deselect: "<gray> - <yellow>/<label> deselect <gray><bold>|<reset><gray> Deselects the current waypoint"
-    teleport: "<gray> - <yellow>/<label> teleport <Name> <gray><bold>|<reset><gray> Teleport to the waypoint"
+    header: "<gray><underlined>Aiuto"
+    gui: "<gray> - <yellow>/<label> <gray><bold>|<reset><gray> Apri l'interfaccia grafica dei waypoints (Waypoints GUI)"
+    help: "<gray> - <yellow>/<label> help <gray><bold>|<reset><gray> Mostra questo messaggio di aiuto"
+    select: "<gray> - <yellow>/<label> select <Name> <gray><bold>|<reset><gray> Seleziona il waypoint"
+    deselect: "<gray> - <yellow>/<label> deselect <gray><bold>|<reset><gray> Deseleziona il waypoint corrente"
+    teleport: "<gray> - <yellow>/<label> teleport <Name> <gray><bold>|<reset><gray> Teletrasportati al waypoint"
     set:
-      private: "<gray> - <yellow>/<label> set <Name> <gray><bold>|<reset><gray> Create a new waypoint"
-      public: "<gray> - <yellow>/<label> setPublic <Name> <gray><bold>|<reset><gray> Create a new public waypoint"
-      permission: "<gray> - <yellow>/<label> setPermission <Permission> <Name> <gray><bold>|<reset><gray> Create a new permission waypoint"
-      temporary: "<gray> - <yellow>/<label> setTemporary <X> <Y> <Z> <gray><bold>|<reset><gray> Target a waypoint that is not saved"
-    other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> View the waypoints of another player"
-    statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> View the statistics of the database"
-    reload: "<gray> - <yellow>/<label> reload <gray><bold>|<reset><gray> Reload the configuration"
+      private: "<gray> - <yellow>/<label> set <Name> <gray><bold>|<reset><gray> Crea un nuovo waypoint"
+      public: "<gray> - <yellow>/<label> setPublic <Name> <gray><bold>|<reset><gray> Crea un nuovo waypoint pubblico"
+      permission: "<gray> - <yellow>/<label> setPermission <Permission> <Name> <gray><bold>|<reset><gray> Crea un nuovo waypoint con permessi"
+      temporary: "<gray> - <yellow>/<label> setTemporary <X> <Y> <Z> <gray><bold>|<reset><gray> Seleziona un waypoint che non è stato salvato"
+    other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> Visualizza i waypoint di un altro giocatore"
+    statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> Visualizza le statistiche del database"
+    reload: "<gray> - <yellow>/<label> reload <gray><bold>|<reset><gray> Ricarica la configurazione"
   search:
     prefix:
-      public: "Public"
-      permission: "Permission"
+      public: "Pubblico"
+      permission: "Permessi"
     notFound:
-      waypoint: "<red>Could not find a waypoint with with the given query."
+      waypoint: "<red>Non è stato possibile trovare un waypoint con la query fornita."
     #Set the text of the floating hologram here.
     #name: Name of the waypoint
     #createdAt: Date at which the waypoint was created
@@ -58,11 +59,11 @@ command:
     #distance: Distance in blocks to the player
     tooltip: "<created_at:'dd.MM.uuuu kk:mm'>"
   select:
-    selected: "<gray>Waypoint <yellow><name> <gray>selected."
+    selected: "<gray>Waypoint <yellow><name> <gray>selezionato."
   deselect:
-    done: "<gray>Current waypoints deselected."
+    done: "<gray>Waypoint corrente deselezionato."
   other:
-    playerNoWaypoints: "<red>The provided player has no waypoints."
+    playerNoWaypoints: "<red>Il giocatore fornito non ha waypoints."
   statistics:
     #db_file_size: Size of the database in SI Units
     #total_waypoints: Total amount of waypoints
@@ -75,165 +76,165 @@ command:
     #public_folders: Amount of public folders
     #permission_folders: Amount of permission folders
     message: |
-      <gray>Database-Statistics
-      <gray>Filesize: <yellow><db_file_size>
+      <gray>Statistiche del database
+      <gray>Dimensione del file: <yellow><db_file_size>
 
-      <gray>Total waypoints: <yellow><total_waypoints>
-      <gray>Private waypoints: <yellow><private_waypoints>
-      <gray>Death waypoints: <yellow><death_waypoints>
-      <gray>Public waypoints: <yellow><public_waypoints>
-      <gray>Permission waypoints: <yellow><permission_waypoints>
+      <gray>Waypoints totali: <yellow><total_waypoints>
+      <gray>Waypoints privati: <yellow><private_waypoints>
+      <gray>Waypoints di morte: <yellow><death_waypoints>
+      <gray>Waypoints pubblici: <yellow><public_waypoints>
+      <gray>Waypoints con permessi: <yellow><permission_waypoints>
 
-      <gray>Total folders: <yellow><total_folders>
-      <gray>Private folders: <yellow><private_folders>
-      <gray>Public folders: <yellow><public_folders>
-      <gray>Permission folders: <yellow><permission_folders>
+      <gray>Cartelle totali: <yellow><total_folders>
+      <gray>Cartelle private: <yellow><private_folders>
+      <gray>Cartelle pubbliche: <yellow><public_folders>
+      <gray>Cartelle con permessi: <yellow><permission_folders>
   reload:
-    finished: "<gray>The configuration has been reloaded."
+    finished: "<gray>Il file di configurazione è stato ricaricato."
 text:
   duration:
-    second: "second"
-    seconds: "seconds"
-    minute: "minute"
-    minutes: "minutes"
-    hour: "hour"
-    hours: "hours"
-    day: "day"
-    days: "days"
+    second: "secondo"
+    seconds: "secondi"
+    minute: "minuto"
+    minutes: "minuti"
+    hour: "ora"
+    hours: "ore"
+    day: "giorno"
+    days: "giorni"
   worldNotFound: "?"
   distance:
     otherWorld: "?"
   sortOptions:
-    type_ascending: "Type"
-    type_descending: "Type (Descending)"
-    name_ascending: "Name"
-    name_descending: "Name (Descending)"
-    created_ascending: "Creation date"
-    created_descending: "Creation date (Descending)"
+    type_ascending: "Tipo"
+    type_descending: "Tipo (decrescente)"
+    name_ascending: "Nome"
+    name_descending: "Nome (decrescente)"
+    created_ascending: "Data creazione"
+    created_descending: "Data creazione (decrescente)"
   beaconColors:
-    clear: "<gray>No color"
-    light_gray: "<gray>Light gray"
-    gray: "<gray>Gray"
-    pink: "<gray>Pink"
+    clear: "<gray>Nessun colore"
+    light_gray: "<gray>Grigio chiaro"
+    gray: "<gray>Grigio"
+    pink: "<gray>Rosa"
     lime: "<gray>Lime"
-    yellow: "<gray>Yellow"
-    light_blue: "<gray>Light blue"
+    yellow: "<gray>Giallo"
+    light_blue: "<gray>Azzurro"
     magenta: "<gray>Magenta"
-    orange: "<gray>Orange"
-    white: "<gray>White"
-    black: "<gray>Black"
-    red: "<gray>Red"
-    green: "<gray>Green"
-    brown: "<gray>Brown"
-    blue: "<gray>Blue"
-    cyan: "<gray>Cyan"
-    purple: "<gray>Purple"
+    orange: "<gray>Arancione"
+    white: "<gray>Bianco"
+    black: "<gray>Nero"
+    red: "<gray>Rosso"
+    green: "<gray>Verde"
+    brown: "<gray>Marrone"
+    blue: "<gray>Blu"
+    cyan: "<gray>Ciano"
+    purple: "<gray>Viola"
 message:
   waypoint:
     create:
-      worldUnavailable: "<red>In world you are in waypoints are unavailable."
+      worldUnavailable: "<red>I waypoint non sono disponibili nel mondo in cui ti trovi."
       coordinates:
-        outOfBounds: "<red>The location you are trying to create the waypoint at is out of bounds."
+        outOfBounds: "<red>La posizione in cui stai cercando di creare il waypoint è fuori dai limiti."
         invalidFormat: |
-          <red>The coordinates must be provided in the following format:
+          <red>Le coordinate devono essere fornite nel seguente formato:
           <green>102/35/-238
     limitReached:
-      private: "<red>You have reached your personal limit of waypoints you can create."
+      private: "<red>Hai raggiunto il tuo limite personale di waypoint che puoi creare."
     nameDuplicate:
-      private: "<red>Waypoints with duplicate names are not permitted."
-      public: "<red>Public waypoints with duplicate names are not permitted."
-      permission: "<red>Permission waypoints with duplicate names are not permitted."
+      private: "<red>Waypoint con nomi duplicati non sono consentiti."
+      public: "<red>Waypoint pubblici con nomi duplicati non sono consentiti."
+      permission: "<red>Waypoint con permessi con nomi duplicati non sono consentiti"
     setSuccess:
-      private: "<gray>The waypoint has been created successfully."
-      public: "<gray>The public waypoint has been created successfully."
-      permission: "<gray>The permission waypoint has been created successfully."
+      private: "<gray>Il waypoint è stato creato con successo."
+      public: "<gray>Il waypoint pubblico è stato creato con successo."
+      permission: "<gray>Il waypoint con permessi è stato creato con successo."
     #name: Name of the waypoint
-    getUuid: "<gray>Click on this message to get the UUID of the waypoint <yellow><name><gray>."
-    newIconInvalid: "<red>The item you are trying to use as a new icon for the waypoint is not allowed."
+    getUuid: "<gray>Clicca su questo messaggio per ottenere l'UUID del waypoint <yellow><name><gray>."
+    newIconInvalid: "<red>L'oggetto che stai cercando di usare come nuovo icona per il waypoint non è consentito."
   folder:
     limitReached:
-      private: "<red>You have reached your personal limit of folders you can create."
+      private: "<red>Hai raggiunto il tuo limite personale di cartelle che puoi creare."
     nameDuplicate:
-      private: "<red>Folders with duplicate names are not permitted."
-      public: "<red>Public folders with duplicate names are not permitted."
-      permission: "<red>Permission folders with duplicate names are not permitted."
+      private: "<red>Le cartelle con nomi duplicati non sono consentite."
+      public: "<red>Le cartelle pubbliche con nomi duplicati non sono consentite."
+      permission: "<red>Le cartelle con permessi con nomi duplicati non sono consentite."
     createSuccess:
-      private: "<gray>The folder has been created successfully."
-      public: "<gray>The public folder has been created successfully."
-      permission: "<gray>The permission folder has been created successfully."
-    newIconInvalid: "<red>The item you are trying to use as a new icon for the folder is not allowed."
+      private: "<gray>La cartella è stata creata con successo."
+      public: "<gray>La cartella pubblica è stata creata con successo."
+      permission: "<gray>La cartella con permessi è stata creata con successo."
+    newIconInvalid: "<red>L'oggetto che stai cercando di usare come nuova icona per la cartella non è consentito."
   allowedIcons:
-    whitelist: "<red>Only the following items are allowed: <yellow><items>"
-    blacklist: "<red>The following items are not allowed: <yellow><items>"
+    whitelist: "<red>Sono consentiti solo i seguenti oggetti: <yellow><items>"
+    blacklist: "<red>Non sono consentiti i seguenti oggetti: <yellow><items>"
   teleport:
     #remaining_cooldown: Time left until player can teleport again
-    onCooldown: "<red>You cannot teleport for <yellow><remaining_cooldown><red>."
-    notAllowed: "<red>You are not allowed to teleport to that waypoint."
+    onCooldown: "<red>Non puoi teletrasportarti per <yellow><remaining_cooldown><red>."
+    notAllowed: "<red>Non sei autorizzato a teletrasportarti a quel waypoint."
     notEnough:
       #current_level: Level of the player
       #required_level: Level required for teleportation
       xp: |
-        <red>You don't have enough experience levels for teleportation.
-        <red>Required level: <yellow><required_level>
+        <red>Non hai abbastanza livelli di esperienza per il teletrasporto.
+        <red>Livello richiesto: <yellow><required_level>
       #current_balance: Vault balance of the player
       #required_balance: Vault balance required for teleportation
       balance: |
-        <red>You don't have enough balance for teleportation.
-        <red>Required balance: <green><required_balance>
+        <red>Non hai abbastanza soldi per il teletrasporto.
+        <red>Soldi richiesti: <green><required_balance>
     standStill:
       #duration: Amount of time the player needs to stand still
-      notice: "<gray>You need to stand still for <yellow><duration><gray>."
-      moved: "<red>You have moved and the scheduled teleport has been canceled."
+      notice: "<gray>Devi rimanere fermo per <yellow><duration><gray>."
+      moved: "<red>Ti sei mosso ed il teletrasporto programmato è stato cancellato."
   tracking:
-    playerNoLongerOnline: "<red>The player you are trying to track is no longer online."
-    trackableRequired: "<red>To track other players you must make yourself visible."
-    notification: "<gray>The player <yellow><name><gray> is tracking you."
+    playerNoLongerOnline: "<red>Il giocatore che stai cercando di rintracciare non è più online."
+    trackableRequired: "<red>Per rintracciare altri giocatori devi rendere te stesso visibile."
+    notification: "<gray>Il Player <yellow><name><gray> ti sta rintracciando."
     request:
-      sent: "<gray>A tracking request has been sent to <yellow><to><gray>. It will expire in <yellow><valid_for><gray>."
+      sent: "<gray>È stata inviata una richiesta di tracciamento a <yellow><to><gray>. Scadrà tra <yellow><valid_for><gray>."
       request: |
-        <yellow><from><gray> wants to track your location. This request will expire in <yellow><valid_for><gray>.
-        <gray>[<green><accept>Accept request</accept><gray>]
+        <yellow><from><gray> desidera tracciare la tua posizione. Questa richiesta scadrà tra <yellow><valid_for><gray>.
+        <gray>[<green><accept>Accetta la richiesta</accept><gray>]
   sharing:
-    alreadyShared: "<red>You have already shared this waypoint with <yellow><name></yellow>."
-    success: "<gray>The waypoint has been shared with <yellow><name></yellow>."
+    alreadyShared: "<red>Hai già condiviso questo waypoint con <yellow><name></yellow>."
+    success: "<gray>Il waypoint è stato condiviso con <yellow><name></yellow>."
 pointers:
   actionBar:
     #current: Translated name of the world the player is in
     #correct: Translated name of the world the waypoint is in
-    wrongWorld: "<red>You are currently in the world <green><current><red>, but the waypoint is in <green><correct>"
+    wrongWorld: "<red>Sei attualmente nel mondo <green><current><red>, ma il waypoint è in <green><correct>"
     #distance: Distance to the waypoint in blocks
     #height_difference: Height difference between player and waypoint. Positive when to high, negative when to low
-    distance: "<gray>You are <yellow><distance:'.0'><gray> blocks away from your target"
+    distance: "<gray>Sei <yellow><distance:'.0'><gray> blocchi distante dal tuo obiettivo"
   hologram:
     #Set the text of the floating hologram here.
     #name: Name of the waypoint
     #created_at: Date at which the waypoint was created
     #world: World where the waypoint is located at
     #x, y, z: Coordinates of the waypoint
-    #block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
+    #blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
     private: "<dark_purple><name> (<distance:'.0'>m)"
-    death: "<red>Death <created_at:'dd.MM.uuuu kk:mm'> (<distance:'.0'>m)"
+    death: "<red>Morte <created_at:'dd.MM.uuuu kk:mm'> (<distance:'.0'>m)"
     public: "<aqua><name> (<distance:'.0'>m)"
     permission: "<light_purple><name> (<distance:'.0'>m)"
-    temporary: "<dark_purple>Temporary Waypoint (<distance:'.0'>m)"
+    temporary: "<dark_purple>Waypoint temporaneo (<distance:'.0'>m)"
     playerTracking: "<blue><name> <reset><blue>(<distance:'.0'>m)"
 integrations:
   maps:
-    label: "Public waypoints"
+    label: "Waypoints pubblici"
 inventory:
   title:
-    self: "<dark_gray>Your waypoints"
+    self: "<dark_gray>I tuoi waypoints"
     #name: Name of the other player
-    other: "<dark_gray>Waypoints of <blue><name>"
+    other: "<dark_gray>Waypoints di <blue><name>"
   general:
     previous:
-      displayName: "<yellow>Previous page"
+      displayName: "<yellow>Pagina precedente"
       description: ""
     next:
-      displayName: "<yellow>Next page"
+      displayName: "<yellow>Prossima pagina"
       description: ""
     back:
-      displayName: "<yellow>Go back"
+      displayName: "<yellow>Torna indietro"
       description: ""
   background:
     private:
@@ -250,50 +251,50 @@ inventory:
       description: ""
   overview:
     cycleSort:
-      displayName: "<yellow>Sort by"
+      displayName: "<yellow>Ordina per:"
       description: ""
       activeColor: "<gold>"
       inactiveColor: "<gray>"
     settings:
-      displayName: "<yellow>Settings"
+      displayName: "<yellow>Impostazioni"
       description: |
-        <gray>Change visibility of global
-        <gray>waypoints and used pointers
+        <gray>Cambia la visibilità dei
+        <gray>waypoint globali e dei puntatori utilizzati
     deselect:
-      displayName: "<yellow>Deselect all waypoints"
-      description: "<gray>The direction indicators will be no longer shown to you"
-      selected: "<gray>Currently the following waypoints are selected:"
+      displayName: "<yellow>Deseleziona waypoint"
+      description: "<gray>Gli indicatori di direzione non vengono più visualizzati"
+      selected: "<gray>Attualmente sono selezionati i seguenti waypoint:"
       names:
         waypoint:
           private: "<dark_purple><path>"
-          death: "<red>Death <created_at:'dd.MM.uuuu kk:mm'>"
-          public: "<aqua>Public/<path>"
-          permission: "<light_purple>Permission/<path>"
-          temporary: "<dark_purple>A Temporary Waypoint"
-        playerTracking: "<blue>Player: <name>"
-        unknown: "<red>Unknown"
+          death: "<red>Morte <created_at:'dd.MM.uuuu kk:mm'>"
+          public: "<aqua>Pubblico/<path>"
+          permission: "<light_purple>Permesso/<path>"
+          temporary: "<dark_purple>Un waypoint temporaneo"
+        playerTracking: "<blue>Giocatore: <name>"
+        unknown: "<red>Sconosciuto"
     setWaypoint:
-      displayName: "<yellow>Create a new waypoint"
+      displayName: "<yellow>Crea un nuovo waypoint"
       description: |
-        <gray>The waypoint will be created in the current folder
+        <gray>Il waypoint verrà creato nella cartella corrente
 
-        <gray>If you <yellow>shift-click<gray>, you can create a waypoint
-        <gray>by providing coordinates like this:
+        <gray>Se tu <yellow>shift-click<gray>, puoi creare un waypoint
+        <gray>fornendo coordinate come queste:
         <green>102 35 -238
     createFolder:
-      displayName: "<yellow>Create new folder"
+      displayName: "<yellow>Crea nuova cartella"
       description: ""
   settings:
     toggleGlobals:
       visible:
-        displayName: "<yellow>Global waypoints are visible"
-        description: "<gray>Click here to hide them"
+        displayName: "<yellow>I waypoints globali sono visibili."
+        description: "<gray>Clicca qui per nasconderli"
       hidden:
-        displayName: "<yellow>Global waypoints are hidden"
-        description: "<gray>Click here to show them"
+        displayName: "<yellow>I waypoints globali sono nascosti."
+        description: "<gray>Clicca qui per mostrarli"
     pointers:
       title:
-        displayName: "<yellow>Customize which pointers are used"
+        displayName: "<yellow>Personalizza quali puntatori vengono utilizzati"
         description: ""
       on:
         displayName: "<bold><green><name>"
@@ -304,64 +305,64 @@ inventory:
       actionBar:
         name: "Action Bar"
         description: |
-          <gray>In your action bar an indicator is show
-          <gray>that tells you in which direction you must
-          <gray>look to get to the Waypoint
+          <gray>Nella tua action bar viene mostrato un indicatore
+          <gray>che ti indica in quale direzione devi
+          <gray>guardare per arrivare al waypoint
       beacon:
-        name: "Beacon"
+        name: "Faro (beacon)"
         description: |
-          <gray>After you entered the view distance of the
-          <gray>Waypoint a beacon beam with customizable color
-          <gray>appears on top of the Waypoint
+          <gray>Dopo essere entrato nel raggio visivo del
+          <gray>Waypoint un faro con colore personalizzabile
+          <gray>appare sopra al waypoint
       blinkingBlock:
-        name: "Blinking Block"
+        name: "Blocco lampeggiante"
         description: |
-          <gray>After you got into the vicinity of the Waypoint
-          <gray>a blinking block on top of the Waypoint shows you
-          <gray>the exact location
+          <gray>Dopo essere entrato nelle vicinanze del Waypoint
+          <gray>un blocco lampeggiante sopra il Waypoint ti mostra
+          <gray>la posizione esatta
       bossBar:
         name: "Boss Bar"
         description: |
-          <gray>A compass is displayed in the boss bar
-          <gray>with markers for waypoints you have selected
+          <gray>Una bussola viene visualizzata nella boss bar
+          <gray>con marcatori per i waypoint che hai selezionato
       compass:
-        name: "Compass"
+        name: "Bussola"
         description: |
-          <gray>Any compass in your inventory now points
-          <gray>towards the waypoint
+          <gray>Ogni bussola nel tuo inventario ora punta
+          <gray>verso il waypoint
       hologram:
-        name: "Hologram"
+        name: "Ologramma"
         description: |
-          <gray>A hologram hovers near you in the direction
-          <gray>of the Waypoint and displays the name, icon
-          <gray>and distance to the Waypoint
+          <gray>Un ologramma si trova vicino a te nella direzione
+          <gray>del Waypoint e mostra il nome, l'icona
+          <gray>e distanza dal Waypoint.
       particle:
-        name: "Particle Compass"
+        name: "Bussola di particelle"
         description: |
-          <gray>Particles near your feet show you in
-          <gray>which direction the waypoint is located
+          <gray>Particelle vicine ad i tuoi piedi mostrano
+          <gray>in quale direzione si trova il waypoint
       trail:
-        name: "Particle Trail"
+        name: "Scia di particelle"
         description: |
-          <gray>A possible Path towards the Waypoint
-          <gray>is calculated and then displayed
-          <gray>with a particle trail
+          <gray>Viene calcolato un possibile percorso
+          <gray>verso il Waypoint e poi mostrato
+          <gray>con una scia di particelle
   #amount: Amount of waypoints in this global folder visible for the player
   listing:
     public:
-      displayName: "<aqua>Public waypoints"
-      description: "<gray>Amount: <gold><amount>"
+      displayName: "<aqua>Waypoints pubblici"
+      description: "<gray>Quantità: <gold><amount>"
     permission:
-      displayName: "<light_purple>Restricted waypoints"
-      description: "<gray>Available for you: <gold><amount>"
+      displayName: "<light_purple>Waypoints ristretti"
+      description: "<gray>Disponibili per te: <gold><amount>"
     tracking:
-      displayName: "<green>Players"
-      description: "<gray>Track other players"
+      displayName: "<green>Giocatori"
+      description: "<gray>Rintraccia altri giocatori"
     shared:
-      displayName: "<aqua>Shared waypoints"
+      displayName: "<aqua>Waypoints condivisi"
       description: |
-        <gray>Waypoints that have been shared
-        <gray>with you by other players
+        <gray>Waypoints che sono stati condivisi
+        <gray>con te da altri giocatori
   waypoint:
     #name: Name of the waypoint
     #createdAt: Date at which the waypoint was created
@@ -371,13 +372,13 @@ inventory:
     #distance: Distance in blocks to the player
     icon:
       description: |
-        <gray>World: <gold><world>
+        <gray>Mondo: <gold><world>
         <gray>X: <gold><block_x>
         <gray>Y: <gold><block_y>
         <gray>Z: <gold><block_z>
-        <gray>Distance: <gold><distance:'.0'>
+        <gray>Distanza: <gold><distance:'.0'>
 
-        <gray>Created at: <gold><created_at:'dd.MM.uuuu kk:mm'>
+        <gray>Creato il: <gold><created_at:'dd.MM.uuuu kk:mm'>
       customDescription: |
         <light_purple><italic><description1>
         <light_purple><italic><description2>
@@ -386,13 +387,13 @@ inventory:
         description: null
         customDescription: null
       death:
-        displayName: "<red>Death <created_at:'dd.MM.uuuu kk:mm'>"
+        displayName: "<red>Morte <created_at:'dd.MM.uuuu kk:mm'>"
         description: |
-          <gray>World: <gold><world>
+          <gray>Mondo: <gold><world>
           <gray>X: <gold><block_x>
           <gray>Y: <gold><block_y>
           <gray>Z: <gold><block_z>
-          <gray>Distance: <gold><distance:'.0'>
+          <gray>Distanza: <gold><distance:'.0'>
       public:
         displayName: "<aqua><name>"
         description: null
@@ -402,111 +403,110 @@ inventory:
         description: null
         customDescription: null
     select:
-      displayName: "<yellow>Select waypoint"
-      description: "<gray>Click here to make this waypoint your primary one"
+      displayName: "<yellow>Seleziona waypoint"
+      description: "<gray>Cliccare qui per rendere attivo questo waypoint"
     deselect:
-      displayName: "<yellow>Deselect this waypoint"
+      displayName: "<yellow>Deseleziona questo waypoint"
       description: ""
     delete:
-      displayName: "<dark_red>Delete waypoint"
+      displayName: "<dark_red>Cancella waypoint"
       description: ""
       question:
-        displayName: "<gray>Do you really want to delete <yellow><name><gray>?"
+        displayName: "<gray>Vuoi davvero cancellare <yellow><name><gray>?"
         description: ""
       confirm:
-        displayName: "<red>Yes, delete <yellow><name><red>!"
+        displayName: "<red>Si, cancella <yellow><name><red>!"
         description: ""
       cancel:
-        displayName: "<green>No, do not delete <yellow><name><green>."
+        displayName: "<green>No, non cancellare <yellow><name><green>."
         description: ""
     rename:
-      displayName: "<yellow>Rename waypoint"
+      displayName: "<yellow>Rinomina waypoint"
       description: ""
     editIcon:
-      displayName: "<yellow>Edit icon"
+      displayName: "<yellow>Modifica icona"
       description: |
-        <gray>Click here to make the item in your
-        <gray>main hand the icon for this Waypoint.
+        <gray>Clicca qui per rendere l'oggetto
+        <gray>nella tua mano principale l'icona per il Waypoint.
 
-        <gray>If you want to change the icon of a
-        <gray>folder you must click on its icon
-        <gray>after you opened it.
+        <gray>Se vuoi cambiare l'icona di
+        <gray>una cartella devi cliccare sulla sua icona
+        <gray>dopo che l'hai aperta.
 
-        <gray>In both cases performing a shift-click
-        <gray>resets the icon to the default
+        <gray>In entrambi i casi eseguire uno shift-click
+        <gray>resetta l'icona a quella predefinita
     editDescription:
-      displayName: "<yellow>Edit description"
-      description: "<gray>All changes will <bold>always</bold> be saved"
+      displayName: "<yellow>Modifica descrizione"
+      description: "<gray>Tutti i cambiamenti saranno <bold>sempre</bold> salvati"
     moveToFolder:
-      displayName: "<yellow>Move waypoint into a folder"
+      displayName: "<yellow>Sposta waypoint in una cartella"
       description: |
-        <gray>Put the waypoint into a folder to group it,
-        <gray>or remove it from the current folder
+        <gray>Inserisci il waypoint in una cartella per raggrupparlo,
+        o per rimuoverlo dalla cartella corrente
     teleport:
-      displayName: "<yellow>Teleport to waypoint"
+      displayName: "<yellow>Teletrasporta a Waypoint"
       description: ""
       #levels: The amount of levels required for teleportation
-      xpLevel: "<gray>You need <yellow><levels><gray> levels to perform this teleportation."
+      xpLevel: "<gray>Hai bisogno di <yellow><levels><gray> livelli per eseguire questo teletrasporto."
       #balance: The amount of balance required for teleportation
-      balance: "<gray>You need <yellow><balance><gray> balance to perform this teleportation."
+      balance: "<gray>Hai bisogno di <yellow><balance><gray> soldi per eseguire questo teletrasporto."
       mustVisit: |
-        <red>You must have visited this waypoint before to
-        <red>be able to teleport to it.
+        <red>Devi avere già visitato questo waypoint prima
+        <red>per poter eseguire il teletrasporto.
     selectBeaconColor:
-      displayName: "<yellow>Change the color of the beacon beam"
+      displayName: "<yellow>Modifica del colore del fascio luminoso"
       description: ""
     getUuid:
-      displayName: "<yellow>Get the UUID of the waypoint"
-      description: |
-        <gray>Sends a clickable message that
-        <gray>copies the UUID into your clipboard
+      displayName: "<yellow>Ottieni lo UUID del waypoint"
+      description: "<gray>Invia un messaggio cliccabile che inserisce l'UUID nella chat"
+    #ALIGN * 2
     share:
-      displayName: "<yellow>Share the waypoint"
+      displayName: "<yellow>Condividi il waypoint"
       description: |
-        <gray>Share the waypoint with other players
-        <gray>or remove shares again.
+        <gray>Condividi il waypoint con altri giocatori
+        <gray>o rimuovi ancora le condivisioni.
     editPermission:
-      displayName: "<yellow>Change required permission"
-      description: "<gray>Current permission is <yellow><permission>"
+      displayName: "<yellow>Modifica i permessi richiesti"
+      description: "<gray>I permessi attuali sono: <yellow><permission>"
     make:
       public:
-        displayName: "<yellow>Make waypoint public"
+        displayName: "<yellow>Rendi il waypoint pubblico"
         description: ""
         question:
-          displayName: "<gray>Do you really want to make <yellow><name><gray> public?"
+          displayName: "<gray>Vuoi davvero rendere <yellow><name><gray> pubblico?"
           description: ""
         confirm:
-          displayName: "<red>Yes, make <yellow><name><red> public!"
+          displayName: "<red>Sì, rendi <yellow><name><red> pubblico!"
           description: ""
         cancel:
-          displayName: "<green>No, do not make <yellow><name><green> public."
+          displayName: "<green>No, non rendere <yellow><name><green> pubblico."
           description: ""
       permission:
-        displayName: "<yellow>Make waypoint a permission waypoint"
+        displayName: "<yellow>Rendi il waypoint un waypoint con permessi."
         description: ""
         question:
-          displayName: "<gray>Do you really want to make <yellow><name><gray> a permission waypoint?"
+          displayName: "<gray>Vuoi davvero rendere <yellow><name><gray> un waypoint con permessi?"
           description: ""
         confirm:
-          displayName: "<red>Yes, make <yellow><name><red> a permission waypoint!"
+          displayName: "<red>Sì, rendi <yellow><name><red> un waypoint con permessi!"
           description: ""
         cancel:
-          displayName: "<green>No, do not make <yellow><name><green> a permission waypoint."
+          displayName: "<green>No, non rendere <yellow><name><green> un waypoint con permessi."
           description: ""
     changeMapIcon:
-      displayName: "<yellow>Change custom web map icon"
+      displayName: "<yellow>Cambia l'icona personalizzata della mappa web."
       description: ""
     create:
-      enterName: "Enter name"
-      enterCoordinates: "Enter coordinates"
-      enterPermission: "Enter permission"
+      enterName: "Inserisci nome"
+      enterCoordinates: "Inserisci coordinate"
+      enterPermission: "Inserisci permessi"
     edit:
-      enterName: "Enter new name"
-      enterPermission: "Enter new permission"
-      enterWebMapIcon: "Enter WebMap icon"
+  #enterName: "Enter new name"
+  #enterPermission: "Enter new permission"
+  #enterWebMapIcon: "Enter WebMap icon"
   folder:
     #name: Name of the folder
-    #created_at: Date at which the folder was created
+    #createdAt: Date at which the folder was created
     #amount: Amount of waypoints visible to the player
     icon:
       customDescription: |
@@ -514,52 +514,52 @@ inventory:
         <light_purple><italic><description2>
       private:
         displayName: "<dark_purple><name>"
-        description: "<gray>Waypoints in this folder: <gold><amount>"
+        description: "<gray>Waypoints in questa cartella: <gold><amount>"
         customDescription: null
       death:
-        displayName: "<red>Deaths"
-        description: "<gray>Waypoints in this folder: <gold><amount>"
+        displayName: "<red>Decessi"
+        description: "<gray>Waypoints in questa cartella: <gold><amount>"
       public:
         displayName: "<aqua><name>"
-        description: "<gray>Waypoints in this folder: <gold><amount>"
+        description: "<gray>Waypoints in questa cartella: <gold><amount>"
         customDescription: null
       permission:
         displayName: "<light_purple><name>"
-        description: "<gray>Waypoints in this folder: <gold><amount>"
+        description: "<gray>Waypoints in questa cartella: <gold><amount>"
         customDescription: null
     delete:
-      displayName: "<dark_red>Delete folder"
+      displayName: "<dark_red>Cancella cartella"
       description: ""
       question:
-        displayName: "<gray>Do you really want to delete the folder <yellow><name><gray>?"
+        displayName: "<gray>Vuoi davvero cancellare la cartella <yellow><name><gray>?"
         description: ""
       confirm:
-        displayName: "<red>Yes, delete the folder <yellow><name><red>!"
+        displayName: "<red>Si, cancella la cartella <yellow><name><red>!"
         description: ""
       cancel:
-        displayName: "<green>No, do not delete the folder <yellow><name><green>."
+        displayName: "<green>No, non cancellare la cartella <yellow><name><green>."
         description: ""
-      deathName: "Deaths"
+      deathName: "Decessi"
     rename:
-      displayName: "<yellow>Rename folder"
+      displayName: "<yellow>Rinomina cartella"
       description: ""
     editDescription:
-      displayName: "<yellow>Edit description"
-      description: "<gray>All changes will <bold>always</bold> be saved"
+      displayName: "<yellow>Modifica descrizione"
+      description: "<gray>Tutti i cambiamenti saranno <bold>sempre</bold> salvati."
     create:
-      enterName: "Enter name"
+      enterName: "Inserisci nome"
     edit:
-      enterName: "Enter new name"
+  #enterName: "Enter new name"
   selectFolder:
     noFolder:
-      displayName: "<yellow>No folder"
-      description: "<gray>Move this waypoint back to the main overview"
+      displayName: "<yellow>Nessuna cartella"
+      description: "<gray>Sposta questo waypoint di nuovo alla panoramica principale"
   selectBeaconColor:
     moveLeft:
-      displayName: "<yellow>Move left"
+      displayName: "<yellow>Sposta a sinistra"
       description: ""
     moveRight:
-      displayName: "<yellow>Move right"
+      displayName: "<yellow>Sposta a destra"
       description: ""
   confirm:
     background:
@@ -567,7 +567,7 @@ inventory:
       description: ""
   playerList:
     refresh:
-      displayName: "<gray>Update the player list"
+      displayName: "<gray>Aggiorna la lista di giocatori"
       description: ""
   tracking:
     background:
@@ -575,21 +575,21 @@ inventory:
       description: ""
     trackable:
       enabled:
-        displayName: "<gray>You are visible"
-        description: "<gray>Other players can track you"
+        displayName: "<gray>Sei visibile"
+        description: "<gray>Gli altri giocatori possono rintracciarti"
       disabled:
-        displayName: "<gray>You are hidden"
-        description: "<gray>Other players cannot track you"
+        displayName: "<gray>Sei nascosto"
+        description: "<gray>Gli altri giocatori non possono rintracciarti"
     #name: Name of the player
     #world: World where the player is located at
     #x, y, z: Coordinates of the player
-    #block_x, block_y, block_z: Coordinates of the block nearest to the player
+    #blockX, blockY, blockZ: Coordinates of the block nearest to the player
     #distance: Distance in blocks to the player
     player:
       displayName: "<green><name>"
       description: |
-        <gray>World: <gold><world>
-        <gray>Distance: <gold><distance:'.0'>
+        <gray>Mondo: <gold><world>
+        <gray>Distanza: <gold><distance:'.0'>
   sharing:
     player:
       select:
@@ -598,16 +598,16 @@ inventory:
       delete:
         displayName: "<aqua><name>"
         description: |
-          <gray>Click here to revoke access to this
-          <gray>waypoint for <yellow><name>
+          <gray>Clicca qui per revocare l'accesso a questo
+          <gray>waypoint per <yellow><name>
     viewSharing:
-      displayName: "<yellow>Shared with"
+      displayName: "<yellow>Condiviso con"
       description: |
-        <gray>See which players have access to this
-        <gray>waypoint and optionally remove them.
+        <gray>Vedi quali giocatori hanno accesso a questo
+        <gray>waypoint e opzionalmente rimuoverli.
     sharedBy: |
 
-      <gray>This waypoint has been shared to you
-      <gray>by <yellow><name></yellow>.
-      <gray>Shift-Click to remove this share.
-    unknownPlayer: "<red>Unknown"
+      <gray>Questo waypoint ti è stato condiviso
+      <gray>da <yellow><name></yellow>.
+      <gray>Shift-Click per rimuovere questa condivisione.
+    unknownPlayer: "<red>Sconosciuto"
