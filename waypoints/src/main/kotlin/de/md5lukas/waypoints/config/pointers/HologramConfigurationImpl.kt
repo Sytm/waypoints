@@ -23,6 +23,6 @@ class HologramConfigurationImpl : RepeatingPointerConfigurationImpl(), HologramC
     private set
 
   @ConfigPath("icon.offset")
-  override var iconOffset: Double = 0.0
+  override var iconOffset: Float = 0.0f
     private set
 }

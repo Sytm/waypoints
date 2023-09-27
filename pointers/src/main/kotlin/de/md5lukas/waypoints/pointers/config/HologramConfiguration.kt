@@ -10,5 +10,5 @@ interface HologramConfiguration : RepeatingPointerConfiguration {
 
   val iconEnabled: Boolean
 
-  val iconOffset: Double
+  val iconOffset: Float
 }
