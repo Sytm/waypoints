@@ -16,7 +16,6 @@ dependencies {
   api(libs.stdlib)
 
   implementation(libs.schedulers)
-  implementation(libs.protocollib)
   implementation(libs.pathfinder)
 }
 

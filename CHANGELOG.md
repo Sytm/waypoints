@@ -6,6 +6,9 @@
 - Support for Minecraft 1.20.2
 - Death folders can now be deleted in its entirety
 
+### Changed
+- ProtocolLib is no longer required for hologram pointers
+
 ## 4.1.0
 
 ### Added

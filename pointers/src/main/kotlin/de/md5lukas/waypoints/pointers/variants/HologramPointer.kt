@@ -4,13 +4,17 @@ import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
-import de.md5lukas.waypoints.pointers.packets.ItemDisplay
-import de.md5lukas.waypoints.pointers.packets.SmoothEntity
-import de.md5lukas.waypoints.pointers.packets.TextDisplay
 import de.md5lukas.waypoints.pointers.util.minus
+import io.papermc.paper.entity.TeleportFlag
+import java.util.concurrent.ConcurrentHashMap
+import net.kyori.adventure.text.Component
 import org.bukkit.Location
-import org.bukkit.entity.Player
-import org.bukkit.util.Vector
+import org.bukkit.entity.*
+import org.bukkit.entity.ItemDisplay.*
+import org.bukkit.event.player.PlayerTeleportEvent
+import org.bukkit.util.Transformation
+import org.joml.AxisAngle4f
+import org.joml.Vector3f
 
 internal class HologramPointer(
     pointerManager: PointerManager,
@@ -29,9 +33,7 @@ internal class HologramPointer(
   override val async
     get() = true
 
-  private val activeHolograms:
-      MutableMap<Trackable, Pair<SmoothEntity<TextDisplay>, ItemDisplay?>> =
-      HashMap()
+  private val activeHolograms: MutableMap<Trackable, Hologram> = ConcurrentHashMap()
 
   private lateinit var playerEyes: Location
 
@@ -64,37 +66,106 @@ internal class HologramPointer(
         }
 
     if (trackable in activeHolograms) {
-      val (hologram) = activeHolograms[trackable]!!
+      val hologram = activeHolograms[trackable]!!
 
       hologram.location = location
-      hologram.wrapped.text = hologramText
-      hologram.update()
+      hologram.text = hologramText
     } else {
-      val item =
-          if (config.iconEnabled) {
-            trackable.hologramItem?.let { itemStack ->
-              ItemDisplay(player, location, itemStack, Vector(0.0, config.iconOffset, 0.0)).also {
-                it.spawn()
-              }
-            }
-          } else null
-
-      val hologram =
-          SmoothEntity(player, location, TextDisplay(player, location, hologramText)).also {
-            if (item !== null) {
-              it.passengers += item
-            }
-            it.spawn()
-          }
-
-      activeHolograms[trackable] = hologram to item
+      activeHolograms[trackable] = Hologram(trackable, location, hologramText)
     }
   }
 
+  override fun postUpdates() {
+    scheduler.schedule { activeHolograms.values.forEach(Hologram::update) }
+  }
+
   override fun hide(trackable: Trackable, translatedTarget: Location?) {
-    activeHolograms.remove(trackable)?.let { (hologram, item) ->
-      hologram.destroy()
-      item?.destroy()
+    scheduler.schedule { activeHolograms.remove(trackable)?.remove() }
+  }
+
+  private inner class Hologram(
+      private val trackable: Trackable,
+      var location: Location,
+      var text: Component
+  ) {
+
+    private lateinit var smoothingArmorStand: ArmorStand
+    private lateinit var textDisplay: TextDisplay
+    private var itemDisplay: ItemDisplay? = null
+
+    fun update() {
+      if (::smoothingArmorStand.isInitialized) {
+        smoothingArmorStand.teleport(
+            location,
+            PlayerTeleportEvent.TeleportCause.PLUGIN,
+            TeleportFlag.EntityState.RETAIN_PASSENGERS)
+        textDisplay.text(text)
+      } else {
+        val world = player.world
+        smoothingArmorStand =
+            world.spawn(location, ArmorStand::class.java) {
+              it.isPersistent = false
+              it.isVisibleByDefault = false
+
+              it.setGravity(false)
+              it.isVisible = false
+              it.isMarker = true
+            }
+        player.showEntity(pointerManager.plugin, smoothingArmorStand)
+
+        textDisplay =
+            world.spawn(location, TextDisplay::class.java) {
+              it.isPersistent = false
+              it.isVisibleByDefault = false
+
+              it.billboard = Display.Billboard.CENTER
+
+              it.text(text)
+              it.isDefaultBackground = true
+              it.isSeeThrough = true
+            }
+        smoothingArmorStand.addPassenger(textDisplay)
+        player.showEntity(pointerManager.plugin, textDisplay)
+
+        if (config.iconEnabled) {
+          itemDisplay =
+              trackable.hologramItem
+                  ?.let { itemStack ->
+                    world.spawn(location, ItemDisplay::class.java) {
+                      it.isPersistent = false
+                      it.isVisibleByDefault = false
+
+                      it.itemStack = itemStack
+
+                      val isBlock = itemStack.type.isBlock
+                      it.billboard =
+                          if (isBlock) {
+                            Display.Billboard.FIXED
+                          } else {
+                            Display.Billboard.CENTER
+                          }
+                      it.transformation =
+                          Transformation(
+                              Vector3f(0.0f, config.iconOffset, 0.0f),
+                              AxisAngle4f(),
+                              Vector3f(if (isBlock) 1.0f else 0.6f),
+                              AxisAngle4f(),
+                          )
+                      it.itemDisplayTransform = ItemDisplayTransform.FIXED
+                    }
+                  }
+                  ?.also {
+                    smoothingArmorStand.addPassenger(it)
+                    player.showEntity(pointerManager.plugin, it)
+                  }
+        }
+      }
+    }
+
+    fun remove() {
+      smoothingArmorStand.remove()
+      textDisplay.remove()
+      itemDisplay?.remove()
     }
   }
 }

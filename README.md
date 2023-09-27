@@ -29,7 +29,6 @@ The plugin attempts to find a suitable path for you to walk and then shows it to
 ### Hologram
 
 Floating text like in the mods.
-This feature is optional but requires [ProtocolLib](https://github.com/dmulloy2/ProtocolLib) if wanted.
 
 ### Blinking Block
 
