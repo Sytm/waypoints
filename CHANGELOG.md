@@ -3,7 +3,8 @@
 ## [Unreleased]
 
 ### Added
-- Death folders can now be deleted in its entirely
+- Support for Minecraft 1.20.2
+- Death folders can now be deleted in its entirety
 
 ## 4.1.0
 

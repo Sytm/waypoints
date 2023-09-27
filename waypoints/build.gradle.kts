@@ -75,6 +75,8 @@ tasks {
     val properties =
         mapOf(
             "version" to project.version,
+            "apiVersion" to
+                libs.versions.paper.get().substringBefore('-').split('.').take(2).joinToString("."),
             "kotlinVersion" to libs.versions.kotlin.get(),
             "coroutinesVersion" to libs.versions.coroutines.get(),
             "commandApiVersion" to libs.versions.commandApi.get(),
@@ -101,10 +103,6 @@ tasks {
     archiveClassifier.set("")
 
     minimize {
-      // Exclude AnvilGUI because the version specific NMS adapters are loaded via reflection and
-      // are
-      // not directly referenced
-      exclude(dependency(libs.anvilGui.get()))
       // Only referenced by the paper-plugin.yml
       exclude(dependency(libs.dependencyLoader.get()))
       // Only referenced by the plugin.yml
@@ -170,7 +168,7 @@ modrinth {
   versionType.set("release")
   uploadFile.set(tasks.shadowJar)
 
-  gameVersions.addAll("1.19.4", "1.20", "1.20.1")
+  gameVersions.addAll(libs.versions.paper.get().substringBefore('-'))
   loaders.addAll("paper", "folia")
 
   syncBodyFrom.set(rootProject.file("README.md").readText())

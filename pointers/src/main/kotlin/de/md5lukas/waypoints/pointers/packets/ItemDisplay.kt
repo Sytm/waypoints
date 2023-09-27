@@ -29,9 +29,9 @@ internal class ItemDisplay(
     if (spawn) {
       // https://wiki.vg/Entity_metadata#Item_Display
       dataValues +=
-          WrappedDataValue(22, slotSerializer, MinecraftReflection.getMinecraftItemStack(itemStack))
+          WrappedDataValue(23, slotSerializer, MinecraftReflection.getMinecraftItemStack(itemStack))
       dataValues +=
-          WrappedDataValue(23, byteSerializer, ItemDisplayTransform.FIXED.ordinal.toByte())
+          WrappedDataValue(24, byteSerializer, ItemDisplayTransform.FIXED.ordinal.toByte())
     }
   }
 }
