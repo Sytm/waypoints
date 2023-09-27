@@ -26,17 +26,17 @@ internal class TextDisplay(
     super.modifyMetadataValues(spawn, dataValues)
     dataValues +=
         WrappedDataValue(
-            22,
+            23,
             chatSerializer,
             WrappedChatComponent.fromJson(GsonComponentSerializer.gson().serialize(text)).handle)
     if (spawn) {
       // https://wiki.vg/Entity_metadata#Text_Display
       if (backgroundColor !== null) {
-        dataValues += WrappedDataValue(24, intSerializer, backgroundColor.asARGB())
+        dataValues += WrappedDataValue(25, intSerializer, backgroundColor.asARGB())
       }
       dataValues +=
           WrappedDataValue(
-              26,
+              27,
               byteSerializer,
               if (backgroundColor === null) {
                     0x02 or

@@ -25,13 +25,13 @@ internal open class DisplayEntity(
     if (spawn) {
       // https://wiki.vg/Entity_metadata#Display
       if (translation !== null) {
-        dataValues += WrappedDataValue(10, vectorSerializer, translation.toVector3f())
+        dataValues += WrappedDataValue(11, vectorSerializer, translation.toVector3f())
       }
       if (scale !== null) {
-        dataValues += WrappedDataValue(11, vectorSerializer, scale.toVector3f())
+        dataValues += WrappedDataValue(12, vectorSerializer, scale.toVector3f())
       }
-      dataValues += WrappedDataValue(14, byteSerializer, billboard.ordinal.toByte())
-      dataValues += WrappedDataValue(15, intSerializer, 15 shl 4) // Set block light level to 15
+      dataValues += WrappedDataValue(15, byteSerializer, billboard.ordinal.toByte())
+      dataValues += WrappedDataValue(16, intSerializer, 15 shl 4) // Set block light level to 15
     }
   }
 }
