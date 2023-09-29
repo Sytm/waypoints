@@ -44,7 +44,7 @@ internal class HologramPointer(
   override fun update(trackable: Trackable, translatedTarget: Location?) {
     if (translatedTarget === null) return
 
-    val hologramText = trackable.getHologramText(player)
+    val hologramText = trackable.getHologramText(player, translatedTarget)
 
     if (hologramText === null) return
     val hologramTarget = translatedTarget.clone()
@@ -95,10 +95,19 @@ internal class HologramPointer(
 
     fun update() {
       if (::smoothingArmorStand.isInitialized) {
-        smoothingArmorStand.teleport(
-            location,
-            PlayerTeleportEvent.TeleportCause.PLUGIN,
-            TeleportFlag.EntityState.RETAIN_PASSENGERS)
+        if (player.world == smoothingArmorStand.world) {
+          smoothingArmorStand.teleport(
+              location,
+              PlayerTeleportEvent.TeleportCause.PLUGIN,
+              TeleportFlag.EntityState.RETAIN_PASSENGERS)
+        } else {
+          // Cannot teleport entities with passengers, so eject, teleport separately, and remount
+          // them
+          smoothingArmorStand.eject()
+          arrayOf(smoothingArmorStand, textDisplay, itemDisplay).forEach { it?.teleport(location) }
+          smoothingArmorStand.addPassenger(textDisplay)
+          itemDisplay?.let { smoothingArmorStand.addPassenger(it) }
+        }
         textDisplay.text(text)
       } else {
         val world = player.world

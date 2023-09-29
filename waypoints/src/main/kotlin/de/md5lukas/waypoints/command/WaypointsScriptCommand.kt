@@ -82,14 +82,14 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                 StringArgument("beacon-color")
                     .replaceSuggestions(
                         ArgumentSuggestions.strings(
-                            BeaconColor.values().map { it.name }.toList()))) {
+                            BeaconColor.entries.map { it.name }.toList()))) {
                   anyExecutor { sender, args ->
                     val player = args["player"] as Player
                     val target = args["target"] as Location
                     val beaconColorString = args["beacon-color"] as String?
 
                     val beaconColor =
-                        BeaconColor.values().firstOrNull { it.name.equals(beaconColorString, true) }
+                        BeaconColor.entries.firstOrNull { it.name.equals(beaconColorString, true) }
                     if (beaconColorString !== null && beaconColor === null) {
                       translations.COMMAND_SCRIPT_TEMPORARY_WAYPOINT_BEACON_COLOR_NOT_FOUND.send(
                           sender)

@@ -9,6 +9,13 @@
 ### Changed
 - ProtocolLib is no longer required for hologram pointers
 
+### Fixed
+- Hologram pointers work across dimensions changes
+- Hologram pointers not showing the distance to the target when in a connected world
+- Connected worlds not working by default. To apply this fix to existing users:
+  - Either regenerate the config.yml
+  - Or update `pointers.connectedWorlds.world` from `world_the_nether` to `world_nether`
+
 ## 4.1.0
 
 ### Added

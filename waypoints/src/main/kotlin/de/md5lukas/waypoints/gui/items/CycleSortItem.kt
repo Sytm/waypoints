@@ -26,7 +26,7 @@ class CycleSortItem(wpGUI: WaypointsGUI, onCycle: suspend (OverviewSort) -> Unit
 
   private companion object {
     fun getOverviewSortCycleValues(wpGUI: WaypointsGUI) =
-        OverviewSort.values()
+        OverviewSort.entries
             .map { current ->
               val additionalLines =
                   wpGUI.translations.OVERVIEW_CYCLE_SORT_OPTIONS.map {

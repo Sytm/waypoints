@@ -88,7 +88,7 @@ internal class ManagedPlayer(
           pointerManager.hooks
               .loadEnabledPointers(player)
               .thenAccept { enabled ->
-                PointerVariant.values()
+                PointerVariant.entries
                     .filter {
                       it.isEnabled(pointerManager.configuration) &&
                           enabled.getOrDefault(it.key, true)

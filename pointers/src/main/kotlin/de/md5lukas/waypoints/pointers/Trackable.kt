@@ -18,7 +18,7 @@ interface Trackable {
    *
    * If this value is null the hologram pointer will not be available.
    */
-  fun getHologramText(player: Player): Component? = null
+  fun getHologramText(player: Player, translatedTarget: Location): Component? = null
 
   /**
    * The item the hologram pointer should use.

@@ -14,6 +14,7 @@ import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
 import de.md5lukas.waypoints.gui.SharedDisplayable
 import de.md5lukas.waypoints.lang.InventoryTranslation
 import net.kyori.adventure.text.Component
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -55,7 +56,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
     return stack
   }
 
-  fun Waypoint.getResolvers(player: Player?) =
+  fun Waypoint.getResolvers(player: Player?, translatedTarget: Location = this.location) =
       arrayOf(
           "name" placeholder name,
           "description" placeholder (description ?: ""),
@@ -69,8 +70,8 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           "block_x" placeholder location.blockX,
           "block_y" placeholder location.blockY,
           "block_z" placeholder location.blockZ,
-          if (player !== null && player.world === location.world) {
-            "distance" placeholder player.location.distance(location)
+          if (player !== null && player.world === translatedTarget.world) {
+            "distance" placeholder player.location.distance(translatedTarget)
           } else {
             "distance" placeholderIgnoringArguments translations.TEXT_DISTANCE_OTHER_WORLD.text
           },

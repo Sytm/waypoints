@@ -21,9 +21,11 @@ class WaypointTrackable(private val plugin: WaypointsPlugin, val waypoint: Waypo
   override val beaconColor: BeaconColor?
     get() = waypoint.beaconColor?.let { BeaconColor.byMaterial(it) }
 
-  override fun getHologramText(player: Player) =
+  override fun getHologramText(player: Player, translatedTarget: Location) =
       plugin.apiExtensions.run {
-        waypoint.getHologramTranslations().withReplacements(*waypoint.getResolvers(player))
+        waypoint
+            .getHologramTranslations()
+            .withReplacements(*waypoint.getResolvers(player, translatedTarget))
       }
 
   override val hologramItem =
