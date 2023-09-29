@@ -11,9 +11,9 @@ class TemporaryWaypointTrackable(
     override val beaconColor: BeaconColor? = null,
 ) : StaticTrackable {
 
-  override fun getHologramText(player: Player) =
+  override fun getHologramText(player: Player, translatedTarget: Location) =
       plugin.apiExtensions.run {
         plugin.translations.POINTERS_HOLOGRAM_TEMPORARY.withReplacements(
-            *location.getResolvers(plugin, player))
+            *location.getResolvers(plugin, player, translatedTarget))
       }
 }

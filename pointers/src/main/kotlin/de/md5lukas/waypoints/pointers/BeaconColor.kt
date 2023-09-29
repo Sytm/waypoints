@@ -1,6 +1,5 @@
 package de.md5lukas.waypoints.pointers
 
-import java.util.Collections
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.Material
@@ -66,9 +65,6 @@ enum class BeaconColor(val material: Material, val textColor: TextColor?) {
   val blockData by lazy { material.createBlockData() }
 
   companion object {
-    private val entries: List<BeaconColor> =
-        Collections.unmodifiableList(BeaconColor.values().toList())
-
-    fun byMaterial(material: Material) = this.entries.firstOrNull { it.material === material }
+    fun byMaterial(material: Material) = entries.firstOrNull { it.material === material }
   }
 }

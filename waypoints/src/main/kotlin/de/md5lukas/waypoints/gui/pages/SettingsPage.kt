@@ -38,7 +38,7 @@ class SettingsPage(wpGUI: WaypointsGUI) :
         )
 
     val enabledPointers =
-        PointerVariant.values().mapNotNull {
+        PointerVariant.entries.mapNotNull {
           if (it.isEnabled(wpGUI.plugin.waypointsConfig.pointers)) {
             it
           } else {

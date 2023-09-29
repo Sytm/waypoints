@@ -69,7 +69,7 @@ class BeaconConfigurationImpl : RepeatingPointerConfigurationImpl(), BeaconConfi
   private class BeaconColorDefaults : TypeAdapter<Map<Type, BeaconColor>> {
     override fun get(section: ConfigurationSection, path: String) =
         mutableMapOf<Type, BeaconColor>().also { map ->
-          Type.values().forEach {
+          Type.entries.forEach {
             map[it] = BeaconColor.valueOf(section.getStringNotNull("$path.${it.name.lowercase()}"))
           }
         }

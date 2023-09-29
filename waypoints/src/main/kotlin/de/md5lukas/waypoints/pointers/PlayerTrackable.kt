@@ -14,9 +14,10 @@ class PlayerTrackable(private val plugin: WaypointsPlugin, val player: Player) :
   override val location: Location
     get() = player.location
 
-  override fun getHologramText(player: Player) =
+  override fun getHologramText(player: Player, translatedTarget: Location) =
       plugin.translations.POINTERS_HOLOGRAM_PLAYER_TRACKING.withReplacements(
-          "name" placeholder this.player.displayName(), *location.getResolvers(plugin, player))
+          "name" placeholder this.player.displayName(),
+          *location.getResolvers(plugin, player, translatedTarget))
 
   override val hologramItem =
       ItemStack(Material.PLAYER_HEAD).also { stack ->

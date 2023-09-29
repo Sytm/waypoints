@@ -89,7 +89,7 @@ class Translations(tl: TranslationLoader) {
   val TEXT_DISTANCE_OTHER_WORLD = Translation(tl, "text.distance.otherWorld")
 
   val TEXT_BEACON_COLORS =
-      BeaconColor.values().map {
+      BeaconColor.entries.map {
         it to
             Translation(
                 tl, "text.beaconColors.${it.name.lowercase()}", miniMessage = tl.itemMiniMessage)
@@ -178,7 +178,7 @@ class Translations(tl: TranslationLoader) {
       Translation(
           tl, "inventory.overview.cycleSort.inactiveColor", miniMessage = tl.itemMiniMessage)
   val OVERVIEW_CYCLE_SORT_OPTIONS =
-      OverviewSort.values().map { it to Translation(tl, "text.sortOptions.${it.name.lowercase()}") }
+      OverviewSort.entries.map { it to Translation(tl, "text.sortOptions.${it.name.lowercase()}") }
   val OVERVIEW_SETTINGS = ItemTranslation(tl, "inventory.overview.settings")
   val OVERVIEW_DESELECT = ItemTranslation(tl, "inventory.overview.deselect")
   val OVERVIEW_DESELECT_SELECTED = InventoryTranslation(tl, "inventory.overview.deselect.selected")
@@ -223,14 +223,14 @@ class Translations(tl: TranslationLoader) {
   val SETTINGS_POINTERS_NAMES: Map<PointerVariant, Translation> =
       mutableMapOf<PointerVariant, Translation>().also { map ->
         map.putAll(
-            PointerVariant.values().map {
+            PointerVariant.entries.map {
               it to Translation(tl, "inventory.settings.pointers.${it.key}.name")
             })
       }
   val SETTINGS_POINTERS_DESCRIPTIONS: Map<PointerVariant, InventoryTranslation> =
       mutableMapOf<PointerVariant, InventoryTranslation>().also { map ->
         map.putAll(
-            PointerVariant.values().map {
+            PointerVariant.entries.map {
               it to InventoryTranslation(tl, "inventory.settings.pointers.${it.key}.description")
             })
       }
