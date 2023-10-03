@@ -83,6 +83,10 @@ internal class HologramPointer(
     scheduler.schedule { activeHolograms.remove(trackable)?.remove() }
   }
 
+  override fun immediateCleanup(trackable: Trackable, translatedTarget: Location?) {
+    activeHolograms.remove(trackable)?.remove()
+  }
+
   private inner class Hologram(
       private val trackable: Trackable,
       var location: Location,

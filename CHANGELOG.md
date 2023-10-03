@@ -8,6 +8,7 @@
 
 ### Changed
 - ProtocolLib is no longer required for hologram pointers
+- The titles of the anvil text prompts are now customized
 
 ### Fixed
 - Hologram pointers work across dimensions changes
