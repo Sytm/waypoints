@@ -90,8 +90,7 @@ internal class ManagedPlayer(
               .thenAccept { enabled ->
                 PointerVariant.entries
                     .filter {
-                      it.isEnabled(pointerManager.configuration) &&
-                          enabled.getOrDefault(it.key, true)
+                      it.isEnabled(pointerManager.configuration) && enabled.getOrDefault(it, true)
                     }
                     .forEach {
                       val pointer = it.create(pointerManager, player, scheduler)

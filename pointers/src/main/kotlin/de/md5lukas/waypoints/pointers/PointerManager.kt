@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.pointers
 
 import de.md5lukas.waypoints.pointers.config.PointerConfiguration
+import de.md5lukas.waypoints.pointers.variants.PointerVariant
 import de.md5lukas.waypoints.pointers.variants.TrailPointer
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
@@ -47,6 +48,13 @@ class PointerManager(
     players.values.forEach { it.reapplyConfiguration() }
   }
 
+  /**
+   * This method should be called when a player edits his enabled pointers to apply the changes
+   * immediately
+   *
+   * @param player the player to restart the pointers for
+   * @see Hooks.loadEnabledPointers
+   */
   fun reapplyConfiguration(player: Player) {
     players[player]?.reapplyConfiguration()
   }
@@ -152,7 +160,7 @@ class PointerManager(
      * @param player The player that had the trackable enabled
      * @param tracked The new trackable or <code>null</code> if it has been disabled
      */
-    fun saveActiveTrackables(player: Player, tracked: Collection<Trackable>)
+    fun saveActiveTrackables(player: Player, tracked: Collection<Trackable>) {}
 
     /**
      * Load the last active trackables from non-volatile storage.
@@ -162,7 +170,9 @@ class PointerManager(
      * @param player The player that had the trackable enabled
      * @return The last trackable or <code>null</code> if it has been disabled
      */
-    fun loadActiveTrackables(player: Player): CompletableFuture<Collection<Trackable>>
+    fun loadActiveTrackables(player: Player): CompletableFuture<Collection<Trackable>> {
+      return CompletableFuture.completedFuture(emptyList())
+    }
 
     /**
      * Save the last active compass target of a player to non-volatile storage.
@@ -170,7 +180,7 @@ class PointerManager(
      * @param player The player to store the compass location for
      * @param location The compass location the player previously had set
      */
-    fun saveCompassTarget(player: Player, location: Location)
+    fun saveCompassTarget(player: Player, location: Location) {}
 
     /**
      * Load the last compass target from non-volatile storage.
@@ -178,9 +188,21 @@ class PointerManager(
      * @param player The player to load the compass location for
      * @return The previous compass target or <code>null</code> if there is none
      */
-    fun loadCompassTarget(player: Player): CompletableFuture<Location?>
+    fun loadCompassTarget(player: Player): CompletableFuture<Location?> {
+      return CompletableFuture.completedFuture(null)
+    }
 
-    fun loadEnabledPointers(player: Player): CompletableFuture<Map<String, Boolean>>
+    /**
+     * Load the pointers the player has enabled for himself.
+     *
+     * If a [PointerVariant] is not present in the map the default of `true` is used.
+     *
+     * @param player The player to load the enabled pointers for
+     * @return The enabled pointers
+     */
+    fun loadEnabledPointers(player: Player): CompletableFuture<Map<PointerVariant, Boolean>> {
+      return CompletableFuture.completedFuture(emptyMap())
+    }
 
     interface ActionBar {
       /**

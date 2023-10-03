@@ -5,6 +5,7 @@ import com.okkero.skedule.skedule
 import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.pointers.PointerManager.Hooks
+import de.md5lukas.waypoints.pointers.variants.PointerVariant
 import java.util.concurrent.CompletableFuture
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
@@ -38,7 +39,14 @@ class PointerManagerHooks(private val plugin: WaypointsPlugin) : Hooks {
       plugin.future { plugin.api.getWaypointPlayer(player.uniqueId).getCompassTarget() }
 
   override fun loadEnabledPointers(player: Player) =
-      plugin.future { plugin.api.getWaypointPlayer(player.uniqueId).enabledPointers }
+      plugin.future {
+        val result = mutableMapOf<PointerVariant, Boolean>()
+        plugin.api.getWaypointPlayer(player.uniqueId).enabledPointers.forEach { (storedKey, value)
+          ->
+          PointerVariant.entries.firstOrNull { it.key == storedKey }?.let { result[it] = value }
+        }
+        result as Map<PointerVariant, Boolean>
+      }
 
   private inner class ActionBarPointerHooks : Hooks.ActionBar {
     override fun formatDistanceMessage(
