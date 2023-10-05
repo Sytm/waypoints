@@ -5,6 +5,10 @@
 ### Added
 - Support for Minecraft 1.20.2
 - Death folders can now be deleted in its entirety
+- Temporary waypoints can be set for other players with `/waypoints setTemporary x y z [<players>]`
+  - `[<players>]` can either be a player name or a selector like `@a`
+  - The permission `waypoints.temporaryWaypoint.others` is required to perform this action, but all players have it by default
+  - Players can disable the receiving of temporary waypoints by others in their settings
 
 ### Changed
 - ProtocolLib is no longer required for hologram pointers

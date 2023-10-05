@@ -138,6 +138,9 @@ class Translations(tl: TranslationLoader) {
   val MESSAGE_ALLOWED_ICONS_WHITELIST = Translation(tl, "message.allowedIcons.whitelist")
   val MESSAGE_ALLOWED_ICONS_BLACKLIST = Translation(tl, "message.allowedIcons.blacklist")
 
+  val MESSAGE_TEMPORARY_WAYPOINTS_BLOCKED =
+      Translation(tl, "message.temporaryWaypoints.blocked", PREFIX)
+
   val MESSAGE_TELEPORT_ON_COOLDOWN = Translation(tl, "message.teleport.onCooldown", PREFIX)
   val MESSAGE_TELEPORT_NOT_ALLOWED = Translation(tl, "message.teleport.notAllowed", PREFIX)
   val MESSAGE_TELEPORT_NOT_ENOUGH_XP = Translation(tl, "message.teleport.notEnough.xp", PREFIX)
@@ -215,6 +218,10 @@ class Translations(tl: TranslationLoader) {
       ItemTranslation(tl, "inventory.settings.toggleGlobals.visible")
   val SETTINGS_TOGGLE_GLOBALS_HIDDEN =
       ItemTranslation(tl, "inventory.settings.toggleGlobals.hidden")
+  val SETTINGS_TEMPORARY_WAYPOINTS_RECEIVABLE =
+      ItemTranslation(tl, "inventory.settings.temporaryWaypoints.receivable")
+  val SETTINGS_TEMPORARY_WAYPOINTS_BLOCKED =
+      ItemTranslation(tl, "inventory.settings.temporaryWaypoints.blocked")
   val SETTINGS_POINTERS_TITLE = ItemTranslation(tl, "inventory.settings.pointers.title")
   // "on" and "off" in the keys are also interpreted as booleans by yaml. whyyy
   val SETTINGS_POINTERS_ON = ItemTranslation(tl, "inventory.settings.pointers.true")

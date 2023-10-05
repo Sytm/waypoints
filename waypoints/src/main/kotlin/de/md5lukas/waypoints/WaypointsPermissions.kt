@@ -10,6 +10,7 @@ object WaypointsPermissions {
 
   const val UNLIMITED = "waypoints.unlimited"
   const val TEMPORARY_WAYPOINT = "waypoints.temporaryWaypoint"
+  const val TEMPORARY_WAYPOINT_OTHERS = "waypoints.temporaryWaypoint.others"
 
   const val MODIFY_PRIVATE = "waypoints.modify.private"
   const val MODIFY_PUBLIC = "waypoints.modify.public"

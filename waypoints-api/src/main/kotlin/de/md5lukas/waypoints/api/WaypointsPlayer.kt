@@ -28,6 +28,11 @@ interface WaypointsPlayer : WaypointHolder {
 
   suspend fun setCanBeTracked(canBeTracked: Boolean)
 
+  /** Whether the player can receive temporary waypoints from other players or not */
+  val canReceiveTemporaryWaypoints: Boolean
+
+  suspend fun setCanReceiveTemporaryWaypoints(canReceiveTemporaryWaypoints: Boolean)
+
   val enabledPointers: Map<String, Boolean>
 
   suspend fun setEnabledPointers(enabledPointers: Map<String, Boolean>)

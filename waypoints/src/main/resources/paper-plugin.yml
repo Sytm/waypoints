@@ -42,6 +42,7 @@ permissions:
       - waypoints.command.reload
       - waypoints.unlimited
       - waypoints.temporaryWaypoint
+      - waypoints.temporaryWaypoint.others
       - waypoints.modify.private
       - waypoints.modify.public
       - waypoints.modify.permission
@@ -61,6 +62,8 @@ permissions:
 
   waypoints.unlimited: { }
   waypoints.temporaryWaypoint:
+    default: true
+  waypoints.temporaryWaypoint.others:
     default: true
 
   waypoints.modify.private:

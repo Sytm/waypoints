@@ -16,15 +16,7 @@ import de.md5lukas.waypoints.util.labelResolver
 import de.md5lukas.waypoints.util.searchWaypoint
 import dev.jorel.commandapi.arguments.GreedyStringArgument
 import dev.jorel.commandapi.arguments.LocationType
-import dev.jorel.commandapi.kotlindsl.anyExecutor
-import dev.jorel.commandapi.kotlindsl.argument
-import dev.jorel.commandapi.kotlindsl.commandTree
-import dev.jorel.commandapi.kotlindsl.greedyStringArgument
-import dev.jorel.commandapi.kotlindsl.literalArgument
-import dev.jorel.commandapi.kotlindsl.locationArgument
-import dev.jorel.commandapi.kotlindsl.offlinePlayerArgument
-import dev.jorel.commandapi.kotlindsl.playerExecutor
-import dev.jorel.commandapi.kotlindsl.stringArgument
+import dev.jorel.commandapi.kotlindsl.*
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
@@ -182,16 +174,31 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
       literalArgument("setTemporary") {
         withPermission(WaypointsPermissions.TEMPORARY_WAYPOINT)
         locationArgument("target", LocationType.BLOCK_POSITION) {
-          playerExecutor { player, args ->
-            val location = args["target"] as Location
+          entitySelectorArgumentManyPlayers("players", optional = true) {
+            withPermission(WaypointsPermissions.TEMPORARY_WAYPOINT_OTHERS)
+            playerExecutor { player, args ->
+              val location = args["target"] as Location
+              @Suppress("UNCHECKED_CAST")
+              val players = args["players"] as? Collection<Player> ?: listOf(player)
 
-            if (location.isOutOfBounds) {
-              translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
-            } else {
-              plugin.pointerManager.enable(player, TemporaryWaypointTrackable(plugin, location))
+              if (location.isOutOfBounds) {
+                translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(player)
+              } else {
+                plugin.skedule {
+                  players.forEach {
+                    if (it == player ||
+                        plugin.api.getWaypointPlayer(it.uniqueId).canReceiveTemporaryWaypoints) {
+                      plugin.pointerManager.enable(it, TemporaryWaypointTrackable(plugin, location))
+                    } else {
+                      translations.MESSAGE_TEMPORARY_WAYPOINTS_BLOCKED.send(
+                          player, "name" placeholder it.displayName())
+                    }
+                  }
+                }
+              }
             }
+            anyExecutor { sender, _ -> translations.COMMAND_NOT_A_PLAYER.send(sender) }
           }
-          anyExecutor { sender, _ -> translations.COMMAND_NOT_A_PLAYER.send(sender) }
         }
       }
       literalArgument("other") {

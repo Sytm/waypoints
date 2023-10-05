@@ -447,6 +447,9 @@ inventory:
     toggleGlobals:
       visible: ENDER_CHEST
       hidden: CHEST
+    temporaryWaypoints:
+      receivable: AMETHYST_CLUSTER
+      blocked: SMALL_AMETHYST_BUD
     pointers:
       title: OAK_SIGN
       on: LIME_CONCRETE
