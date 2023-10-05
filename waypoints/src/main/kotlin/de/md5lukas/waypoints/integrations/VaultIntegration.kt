@@ -8,8 +8,10 @@ class VaultIntegration(private val plugin: WaypointsPlugin) {
 
   private var economy: Economy? = null
 
+  @Suppress("UnstableApiUsage")
   fun setupEconomy(): Boolean {
-    if (plugin.server.pluginManager.getPlugin("Vault") === null) {
+    if ("Vault" !in plugin.pluginMeta.pluginSoftDependencies ||
+        plugin.server.pluginManager.getPlugin("Vault") === null) {
       return false
     }
     val rsp = plugin.server.servicesManager.getRegistration(Economy::class.java) ?: return false
