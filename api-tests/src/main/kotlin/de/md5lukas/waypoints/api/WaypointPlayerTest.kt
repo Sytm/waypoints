@@ -39,21 +39,47 @@ abstract class WaypointPlayerTest : TestBase() {
   }
 
   @Test
+  fun canBeTrackedIsSaved() = runBlocking {
+    val id = UUID.randomUUID()
+    var player = api.getWaypointPlayer(id)
+
+    val invertedValue = !player.canBeTracked
+    player.setCanBeTracked(invertedValue)
+
+    player = api.getWaypointPlayer(id) // Recreate WaypointsPlayer, to fetch value
+
+    assertEquals(invertedValue, player.canBeTracked)
+  }
+
+  @Test
+  fun canReceiveTemporaryWaypointsIsSaved() = runBlocking {
+    val id = UUID.randomUUID()
+    var player = api.getWaypointPlayer(id)
+
+    val invertedValue = !player.canReceiveTemporaryWaypoints
+    player.setCanReceiveTemporaryWaypoints(invertedValue)
+
+    player = api.getWaypointPlayer(id) // Recreate WaypointsPlayer, to fetch value
+
+    assertEquals(invertedValue, player.canReceiveTemporaryWaypoints)
+  }
+
+  @Test
   fun enabledPointersAreEmpty() = runBlocking {
     assertTrue(api.getWaypointPlayer(UUID.randomUUID()).enabledPointers.isEmpty())
   }
 
   @Test
-  fun enabledPointersAreSaved() = runBlocking {
+  fun disabledPointersAreSaved() = runBlocking {
     val id = UUID.randomUUID()
     var player = api.getWaypointPlayer(id)
 
     val map =
         mapOf(
-            "type1" to true,
-            "type2" to true,
+            "type1" to false,
+            "type2" to false,
             "type3" to false,
-            "type4" to true,
+            "type4" to false,
         )
 
     player.setEnabledPointers(map)
@@ -61,6 +87,26 @@ abstract class WaypointPlayerTest : TestBase() {
     player = api.getWaypointPlayer(id) // Recreate WaypointsPlayer, to fetch value
 
     assertEquals(map, player.enabledPointers)
+  }
+
+  @Test
+  fun enabledPointersAreRemovedOnSave() = runBlocking {
+    val id = UUID.randomUUID()
+    var player = api.getWaypointPlayer(id)
+
+    val map =
+        mapOf(
+            "type1" to true,
+            "type2" to true,
+            "type3" to true,
+            "type4" to true,
+        )
+
+    player.setEnabledPointers(map)
+
+    player = api.getWaypointPlayer(id) // Recreate WaypointsPlayer, to fetch value
+
+    assertEquals(emptyMap(), player.enabledPointers)
   }
 
   @Test

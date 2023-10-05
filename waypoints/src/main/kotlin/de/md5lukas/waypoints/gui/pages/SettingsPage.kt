@@ -6,18 +6,25 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.gui.items.ToggleGlobalsItem
 import de.md5lukas.waypoints.gui.items.TogglePointerItem
+import de.md5lukas.waypoints.gui.items.ToggleTemporaryWaypointsItem
 import de.md5lukas.waypoints.pointers.variants.PointerVariant
 
 class SettingsPage(wpGUI: WaypointsGUI) :
     BasePage(wpGUI, wpGUI.extendApi { Type.PRIVATE.getBackgroundItem() }) {
   private companion object {
-    /** q = question f = false t = true */
+    /**
+     * - p = Title for pointer settings
+     * - 0-8 = Pointer settings
+     * - g = Global waypoints toggle
+     * - t = Temporary waypoints toggle
+     * - b = Back
+     */
     val settingsPattern =
         GUIPattern(
             "____p____",
             "753102468",
             "_________",
-            "____g____",
+            "___g_t___",
             "________b",
         )
   }
@@ -33,9 +40,9 @@ class SettingsPage(wpGUI: WaypointsGUI) :
                 },
             'g' to
                 if (wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
-                  ToggleGlobalsItem(wpGUI) { updatePage(true) }
+                  ToggleGlobalsItem(wpGUI)
                 } else background,
-        )
+            't' to ToggleTemporaryWaypointsItem(wpGUI))
 
     val enabledPointers =
         PointerVariant.entries.mapNotNull {
@@ -54,7 +61,6 @@ class SettingsPage(wpGUI: WaypointsGUI) :
     enabledPointers.forEach {
       mappings[counter.toString().first()] =
           TogglePointerItem(wpGUI, it) {
-            updatePage(true)
             wpGUI.playSound { clickNormal }
             wpGUI.plugin.pointerManager.reapplyConfiguration(wpGUI.viewer)
           }

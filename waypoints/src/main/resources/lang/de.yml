@@ -191,6 +191,9 @@ message:
     whitelist: "<red>Nur die folgenden Items sind erlaubt: <yellow><items>"
     blacklist: "<red>Die folgenden Items sind nicht erlaubt: <yellow><items>"
 
+  temporaryWaypoints:
+    blocked: "<red>Der Spieler <yellow><name></yellow> hat das Empfangen von temporären Wegpunkten blockiert."
+
   teleport:
     # remaining_cooldown: Time left until player can teleport again
     onCooldown: "<red>Du kannst für <yellow><remaining_cooldown><red> nicht teleportieren."
@@ -330,6 +333,23 @@ inventory:
       hidden:
         displayName: "<yellow>Globale Wegpunkte sind versteckt"
         description: "<gray>Drücke hier drauf um sie zu zeigen"
+    temporaryWaypoints:
+      receivable:
+        displayName: "<yellow>Temporäre Wegpunkte können empfangen werden"
+        description: |
+          <gray>Andere Spieler können dir einen temporären
+          <gray>Wegpunkt folgendermaßen senden:
+          <green>/waypoints setTemporary X Y Z <name>
+
+          <gray>Drücke hier drauf um das zu blockieren
+      blocked:
+        displayName: "<yellow>Temporäre Wegpunkte sind blockiert"
+        description: |
+          <gray>Andere Spieler könnten dir einen temporären
+          <gray>Wegpunkt folgendermaßen senden:
+          <green>/waypoints setTemporary X Y Z <name>
+
+          <gray>Drücke hier drauf um das erneut zu erlauben
     pointers:
       title:
         displayName: "<yellow>Passe die Wegweiser an"

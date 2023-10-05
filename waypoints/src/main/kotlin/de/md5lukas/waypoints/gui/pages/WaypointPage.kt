@@ -35,12 +35,24 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
 
   private companion object {
     /**
-     * spotless:off w = Waypoint Icon g = Change icon i = Get UUID (Global waypoints only) u = Move
-     * to public folder e = Move to permission folder p = Change permission s = Select y = WebMap
-     * custom icon c = Select beacon color f = Move to folder r = rename o = Edit custom description
-     * d = Delete t = Teleport h = Share b = Back spotless:on
+     * - w = Waypoint Icon
+     * - g = Change icon
+     * - i = Get UUID (Global waypoints only)
+     * - u = Move to public folder
+     * - e = Move to permission folder
+     * - p = Change permission
+     * - s = Select
+     * - y = WebMap custom icon
+     * - c = Select beacon color
+     * - f = Move to folder
+     * - r = rename
+     * - o = Edit custom description
+     * - d = Delete
+     * - t = Teleport
+     * - h = Share
+     * - b = Back
      */
-    val waypointPattern = // e t
+    val waypointPattern =
         GUIPattern(
             "u_p_w_y_i",
             "e_c___r__",

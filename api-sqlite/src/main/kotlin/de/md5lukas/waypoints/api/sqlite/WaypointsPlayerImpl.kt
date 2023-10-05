@@ -27,6 +27,7 @@ private constructor(
     showGlobals: Boolean,
     sortBy: OverviewSort,
     canBeTracked: Boolean,
+    canReceiveTemporaryWaypoints: Boolean,
     enabledPointers: Map<String, Boolean>,
 ) : WaypointHolderImpl(dm, Type.PRIVATE, id), WaypointsPlayer {
 
@@ -38,7 +39,8 @@ private constructor(
       if (enabledPointers.isEmpty()) {
         return null
       }
-      return gson.toJson(enabledPointers, typeToken)
+      // Remove entries where the pointers would be explicitly enabled
+      return gson.toJson(enabledPointers.filterValues { !it }, typeToken)
     }
 
     private fun deserializeEnabledPointers(json: String?): Map<String, Boolean> {
@@ -58,6 +60,7 @@ private constructor(
       showGlobals = row.getBoolean("showGlobals"),
       sortBy = OverviewSort.valueOf(row.getString("sortBy")),
       canBeTracked = row.getBoolean("canBeTracked"),
+      canReceiveTemporaryWaypoints = row.getBoolean("canReceiveTemporaryWaypoints"),
       enabledPointers = deserializeEnabledPointers(row.getString("enabledPointers")),
   )
 
@@ -83,6 +86,14 @@ private constructor(
   override suspend fun setCanBeTracked(canBeTracked: Boolean) {
     this.canBeTracked = canBeTracked
     set("canBeTracked", canBeTracked)
+  }
+
+  override var canReceiveTemporaryWaypoints: Boolean = canReceiveTemporaryWaypoints
+    private set
+
+  override suspend fun setCanReceiveTemporaryWaypoints(canReceiveTemporaryWaypoints: Boolean) {
+    this.canReceiveTemporaryWaypoints = canReceiveTemporaryWaypoints
+    set("canReceiveTemporaryWaypoints", canReceiveTemporaryWaypoints)
   }
 
   override var enabledPointers: Map<String, Boolean> = enabledPointers

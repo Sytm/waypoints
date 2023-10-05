@@ -11,7 +11,7 @@ import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.gui.WaypointsGUI
-import de.md5lukas.waypoints.gui.items.TrackableToggleItem
+import de.md5lukas.waypoints.gui.items.ToggleTrackableItem
 import de.md5lukas.waypoints.pointers.PlayerTrackable
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.minimessage.tag.Tag
@@ -133,7 +133,7 @@ class PlayerTrackingPage(
             },
         't' to
             if (wpGUI.plugin.waypointsConfig.playerTracking.toggleable) {
-              TrackableToggleItem(wpGUI)
+              ToggleTrackableItem(wpGUI)
             } else {
               background
             },

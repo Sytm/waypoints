@@ -21,7 +21,7 @@ class SQLiteManager(
     testing: Boolean = false,
 ) : DatabaseManager(plugin, databaseConfiguration, testing) {
 
-  private val schemaVersion: Int = 6
+  private val schemaVersion: Int = 7
   private val sqliteHelper =
       if (file === null) {
         SQLiteHelper()
@@ -57,6 +57,7 @@ class SQLiteManager(
                   showGlobals BOOLEAN NOT NULL DEFAULT 1,
                   sortBy TEXT NOT NULL DEFAULT '${OverviewSort.TYPE_ASCENDING.name}',
                   canBeTracked BOOLEAN NOT NULL DEFAULT 0,
+                  canReceiveTemporaryWaypoints BOOLEAN NOT NULL DEFAULT 1,
                   enabledPointers TEXT
                 );
             """)
@@ -247,6 +248,11 @@ class SQLiteManager(
               }
         }
         it[6] = { update("ALTER TABLE player_data ADD COLUMN enabledPointers TEXT;") }
+        it[7] = {
+          update(
+              "ALTER TABLE player_data ADD COLUMN canReceiveTemporaryWaypoints BOOLEAN NOT NULL DEFAULT 0;")
+          update("UPDATE player_data SET canReceiveTemporaryWaypoints = 1;")
+        }
       }
 
   override fun upgradeDatabase() {
