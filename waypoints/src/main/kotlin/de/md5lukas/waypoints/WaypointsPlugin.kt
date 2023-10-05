@@ -16,6 +16,7 @@ import de.md5lukas.waypoints.config.MaterialListAdapter
 import de.md5lukas.waypoints.config.SoundAdapter
 import de.md5lukas.waypoints.config.StyleAdapter
 import de.md5lukas.waypoints.config.WaypointsConfiguration
+import de.md5lukas.waypoints.config.general.TeleportPaymentType
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
@@ -242,7 +243,17 @@ class WaypointsPlugin : JavaPlugin() {
             else -> "none"
           }
         })
-    metrics.addCustomChart(SimplePie("uses_vault") { (vaultIntegration0 !== null).toString() })
+    metrics.addCustomChart(
+        SimplePie("actually_uses_vault") {
+          if (vaultIntegration0 !== null) {
+                waypointsConfig.general.teleport
+                    .let { arrayOf(it.private, it.death, it.public, it.permission) }
+                    .any { it.paymentType === TeleportPaymentType.VAULT }
+              } else {
+                false
+              }
+              .toString()
+        })
     metrics.addCustomChart(
         SimplePie("global_waypoints_enabled") {
           waypointsConfig.general.features.globalWaypoints.toString()
