@@ -13,6 +13,7 @@
 ### Changed
 - ProtocolLib is no longer required for hologram pointers
 - The titles of the anvil text prompts are now customized
+- Updated Vault usage metric to better reflect actual usage
 
 ### Fixed
 - Hologram pointers work across dimensions changes
