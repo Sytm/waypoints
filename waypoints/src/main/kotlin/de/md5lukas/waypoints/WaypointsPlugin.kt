@@ -96,6 +96,7 @@ class WaypointsPlugin : JavaPlugin() {
 
         startMetrics()
         startBackgroundTasks()
+        logger.log(Level.WARNING, "Version 3.X is end of life. Consider updating to 4.X (https://modrinth.com/plugin/waypoints)")
     }
 
     //<editor-fold desc="onEnable Methods">
@@ -211,9 +212,6 @@ class WaypointsPlugin : JavaPlugin() {
                 blueMapIntegrationAvailable -> "BlueMap"
                 else -> "none"
             }
-        })
-        metrics.addCustomChart(SimplePie("uses_vault") {
-            (vaultIntegration0 !== null).toString()
         })
         metrics.addCustomChart(SimplePie("global_waypoints_enabled") {
             waypointsConfig.general.features.globalWaypoints.toString()
