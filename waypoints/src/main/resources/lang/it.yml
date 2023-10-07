@@ -246,12 +246,12 @@ pointers:
     # world: World where the waypoint is located at
     # x, y, z: Coordinates of the waypoint
     # blockX, blockY, blockZ: Coordinates of the block nearest to the waypoint
-    private: "<dark_purple><name> (<distance:'.0'>m)"
-    death: "<red>Morte <created_at:'dd.MM.uuuu kk:mm'> (<distance:'.0'>m)"
-    public: "<aqua><name> (<distance:'.0'>m)"
-    permission: "<light_purple><name> (<distance:'.0'>m)"
-    temporary: "<dark_purple>Waypoint temporaneo (<distance:'.0'>m)"
-    playerTracking: "<blue><name> <reset><blue>(<distance:'.0'>m)"
+    private: "<dark_purple><name><br>(<distance:'.0'>m)"
+    death: "<red>Morte <created_at:'dd.MM.uuuu kk:mm'><br>(<distance:'.0'>m)"
+    public: "<aqua><name><br>(<distance:'.0'>m)"
+    permission: "<light_purple><name><br>(<distance:'.0'>m)"
+    temporary: "<dark_purple>Waypoint temporaneo<br>(<distance:'.0'>m)"
+    playerTracking: "<blue><name> <reset><blue><br>(<distance:'.0'>m)"
 
 integrations:
   maps:
