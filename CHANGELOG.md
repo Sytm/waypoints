@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+- The GUI supports the usage of custom player heads
+
+### Changed
+- Partial update of chinese translations by [SnowCutieOwO](https://github.com/SnowCutieOwO)
+- The default config has been updated to replace some items with custom player heads
+
 ## 4.2.0
 
 ### Added

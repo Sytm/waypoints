@@ -28,34 +28,37 @@ class ItemTranslation(
   private val rawDescription: String
     get() = translationLoader[descriptionKey]
 
-  val material: Material
+  val rawStack: ItemStack
     get() =
-        fixedMaterial
-            ?: translationLoader.plugin.waypointsConfig.inventory.getMaterial(
-                key + if (appendItemSuffix) ".item" else "")
+        fixedMaterial?.let(::ItemStack)
+            ?: translationLoader.plugin.waypointsConfig.inventory.createNewStack(
+                translationLoader.plugin,
+                key + if (appendItemSuffix) ".item" else "",
+            )
 
   val item: ItemStack
     get() = getItem()
 
-  fun getItem(vararg resolvers: TagResolver): ItemStack =
-      ItemStack(material).also {
-        it.itemMeta =
-            it.itemMeta!!.also { itemMeta ->
-              itemMeta.displayName(
-                  translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))
-              var discard = true // Remove leading blank lines
-              itemMeta.lore(
-                  rawDescription.lineSequence().mapNotNullTo(mutableListOf()) { line ->
-                    if (line.isNotBlank()) {
-                      discard = false
-                    }
-                    if (discard) {
-                      null
-                    } else {
-                      translationLoader.itemMiniMessage.deserialize(line, *resolvers)
-                    }
-                  })
-            }
+  fun getItem(vararg resolvers: TagResolver): ItemStack = getItem(null, *resolvers)
+
+  fun getItem(materialOverride: Material?, vararg resolvers: TagResolver): ItemStack =
+      (materialOverride?.let(::ItemStack) ?: rawStack).also {
+        it.editMeta { itemMeta ->
+          itemMeta.displayName(
+              translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))
+          var discard = true // Remove leading blank lines
+          itemMeta.lore(
+              rawDescription.lineSequence().mapNotNullTo(mutableListOf()) { line ->
+                if (line.isNotBlank()) {
+                  discard = false
+                }
+                if (discard) {
+                  null
+                } else {
+                  translationLoader.itemMiniMessage.deserialize(line, *resolvers)
+                }
+              })
+        }
       }
 
   override fun reset() {}

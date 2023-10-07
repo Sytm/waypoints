@@ -1,8 +1,13 @@
 package de.md5lukas.waypoints.util
 
+import de.md5lukas.commons.paper.editMeta
+import java.net.URL
+import java.util.*
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.plugin.Plugin
 
 fun parseLocationString(player: Player, input: String): Location? {
@@ -35,4 +40,15 @@ fun minecraftVersionAtLeast(plugin: Plugin, minor: Int, patch: Int = 0): Boolean
     }
   }
   return parsedVersion[1] >= minor && parsedVersion[2] >= patch
+}
+
+fun createCustomPlayerHead(plugin: Plugin, textureId: String): ItemStack {
+  val profile = plugin.server.createProfile(UUID.randomUUID())
+
+  profile.setTextures(
+      profile.textures.also { it.skin = URL("https://textures.minecraft.net/texture/$textureId") })
+
+  val stack = ItemStack(Material.PLAYER_HEAD)
+  stack.editMeta<SkullMeta> { playerProfile = profile }
+  return stack
 }
