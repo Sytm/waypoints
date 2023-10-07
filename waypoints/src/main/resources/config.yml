@@ -425,8 +425,8 @@ sounds:
 
 inventory:
   general:
-    previous: ARROW
-    next: ARROW
+    previous: "PLAYER_HEAD:bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9"
+    next: "PLAYER_HEAD:19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf"
     back: BARRIER
 
   background:
@@ -437,7 +437,7 @@ inventory:
 
   overview:
     cycleSort: HOPPER
-    settings: CRAFTING_TABLE
+    settings: "PLAYER_HEAD:e4d49bae95c790c3b1ff5b2f01052a714d6185481d5b1c85930b3f99d2321674"
     deselect: MILK_BUCKET
     setWaypoint: TORCH
     createFolder: WRITABLE_BOOK
@@ -471,7 +471,7 @@ inventory:
     deselect: MILK_BUCKET
     delete:
       item: LAVA_BUCKET
-      question: OAK_SIGN
+      question: "PLAYER_HEAD:badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
       confirm: LAVA_BUCKET
       cancel: WATER_BUCKET
     rename: NAME_TAG
@@ -486,12 +486,12 @@ inventory:
     make:
       public:
         item: ENCHANTED_BOOK
-        question: OAK_SIGN
+        question: "PLAYER_HEAD:badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
         confirm: ENCHANTED_BOOK
         cancel: BARRIER
       permission:
         item: ENCHANTED_BOOK
-        question: OAK_SIGN
+        question: "PLAYER_HEAD:badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
         confirm: ENCHANTED_BOOK
         cancel: BARRIER
     changeMapIcon: FILLED_MAP
@@ -505,7 +505,7 @@ inventory:
 
     delete:
       item: LAVA_BUCKET
-      question: OAK_SIGN
+      question: "PLAYER_HEAD:badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
       confirm: LAVA_BUCKET
       cancel: WATER_BUCKET
     rename: NAME_TAG
@@ -515,14 +515,14 @@ inventory:
     noFolder: MINECART
 
   selectBeaconColor:
-    moveLeft: ARROW
-    moveRight: ARROW
+    moveLeft: "PLAYER_HEAD:8652e2b936ca8026bd28651d7c9f2819d2e923697734d18dfdb13550f8fdad5f"
+    moveRight: "PLAYER_HEAD:2a3b8f681daad8bf436cae8da3fe8131f62a162ab81af639c3e0644aa6abac2f"
 
   confirm:
     background: GRAY_STAINED_GLASS_PANE
 
   playerList:
-    refresh: FISHING_ROD
+    refresh: "PLAYER_HEAD:e887cc388c8dcfcf1ba8aa5c3c102dce9cf7b1b63e786b34d4f1c3796d3e9d61"
 
   tracking:
     background: GRAY_STAINED_GLASS_PANE

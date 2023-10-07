@@ -4,7 +4,6 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Waypoint
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 
 class WaypointTrackable(private val plugin: WaypointsPlugin, val waypoint: Waypoint) :
     StaticTrackable {
@@ -28,8 +27,7 @@ class WaypointTrackable(private val plugin: WaypointsPlugin, val waypoint: Waypo
             .withReplacements(*waypoint.getResolvers(player, translatedTarget))
       }
 
-  override val hologramItem =
-      ItemStack(waypoint.material ?: plugin.apiExtensions.run { waypoint.getIconMaterial() })
+  override val hologramItem = plugin.apiExtensions.run { waypoint.getIconStack() }
 
   override fun equals(other: Any?): Boolean {
     return waypoint == (other as? WaypointTrackable)?.waypoint

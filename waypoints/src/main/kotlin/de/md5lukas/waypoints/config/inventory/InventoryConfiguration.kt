@@ -4,8 +4,11 @@ import de.md5lukas.commons.paper.getStringNotNull
 import de.md5lukas.konfig.Configurable
 import de.md5lukas.konfig.ExportConfigurationSection
 import de.md5lukas.konfig.SkipConfig
+import de.md5lukas.waypoints.util.createCustomPlayerHead
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.inventory.ItemStack
+import org.bukkit.plugin.Plugin
 
 @Configurable
 class InventoryConfiguration {
@@ -16,25 +19,37 @@ class InventoryConfiguration {
   private var rootConfig: ConfigurationSection
     set(value) {
       _rootConfig = value
-      materialCache.clear()
+      itemCache.clear()
     }
     get() = _rootConfig!!
 
-  private val materialCache = HashMap<String, Material>()
+  private val itemCache = HashMap<String, ItemStack>()
 
-  fun getMaterial(path: String): Material {
-    val cached = materialCache[path]
+  private val headPrefix = Material.PLAYER_HEAD.name + ":"
+
+  fun createNewStack(plugin: Plugin, path: String): ItemStack {
+    val cached = itemCache[path]
     if (cached != null) {
-      return cached
+      return cached.clone()
     }
 
     val materialString = rootConfig.getStringNotNull(path)
-    val material =
-        Material.matchMaterial(materialString)
-            ?: throw IllegalArgumentException("The material $materialString at $path is not valid")
+    val stack =
+        if (materialString.startsWith(headPrefix)) {
+          try {
+            createCustomPlayerHead(plugin, materialString.substring(headPrefix.length))
+          } catch (t: Throwable) {
+            throw IllegalArgumentException("Invalid player head format at $path", t)
+          }
+        } else {
+          ItemStack(
+              Material.matchMaterial(materialString)
+                  ?: throw IllegalArgumentException(
+                      "The material $materialString at $path is not valid"))
+        }
 
-    materialCache[path] = material
+    itemCache[path] = stack
 
-    return material
+    return stack.clone()
   }
 }

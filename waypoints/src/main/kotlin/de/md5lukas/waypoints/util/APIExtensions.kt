@@ -15,7 +15,6 @@ import de.md5lukas.waypoints.gui.SharedDisplayable
 import de.md5lukas.waypoints.lang.InventoryTranslation
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
@@ -42,7 +41,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
           Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
           Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
-        }.getItem(*getResolvers(player))
+        }.getItem(material, *getResolvers(player))
 
     when (type) {
       Type.DEATH -> null
@@ -50,8 +49,6 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
       Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC_CUSTOM_DESCRIPTION
       Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION_CUSTOM_DESCRIPTION
     }?.let { stack.applyDescription(it, description) }
-
-    material?.also { stack.type = it }
 
     return stack
   }
@@ -77,14 +74,14 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           },
       )
 
-  fun Waypoint.getIconMaterial(): Material =
-      material
+  fun Waypoint.getIconStack(): ItemStack =
+      material?.let(::ItemStack)
           ?: when (type) {
             Type.DEATH -> translations.WAYPOINT_ICON_DEATH
             Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
             Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
             Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
-          }.material
+          }.rawStack
 
   fun Waypoint.getHologramTranslations() =
       when (type) {
@@ -142,6 +139,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION
           else -> throw IllegalStateException("An folder with the type $type should not exist")
         }.getItem(
+            material,
             "name" placeholder name,
             "description" placeholder (description ?: ""),
             "created_at" placeholder createdAt,
@@ -155,8 +153,6 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
       Type.PUBLIC -> translations.FOLDER_ICON_PUBLIC_CUSTOM_DESCRIPTION
       Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION_CUSTOM_DESCRIPTION
     }?.let { stack.applyDescription(it, description) }
-
-    material?.also { stack.type = it }
 
     return stack
   }
