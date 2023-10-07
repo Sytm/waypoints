@@ -14,15 +14,28 @@ command:
       header: "$[scriptPrefix] &7&n帮助界面"
       deselectWaypoint: "&7 - &e/${label} deselectWaypoint <玩家名称> &7&l|&r&7 为玩家删除选择的路径点"
       selectWaypoint: "&7 - &e/${label} selectWaypoint <玩家名称> <Waypoint-UUID> &7&l|&r&7 为玩家设置一个将要去到的路径点"
+      temporaryWaypoint: "&7 - &e/${label} temporaryWaypoint <玩家名称> <X> <Y> <Z> [光柱颜色] &7&l|&r&7 为玩家创建临时路径点"
+      uuid: "&7 - &e/${label} uuid <名称> &7&l|&r&7 通过关键词搜索路径点并返回其 UUID"
 
     selectWaypoint:
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "$[scriptPrefix] &c找不到 UUID 为 &e${uuid}&c 的路径点."
 
+    temporaryWaypoint:
+      beaconColorNotFound: "$[scriptPrefix] &c所提供的信标颜色不存在."
+
+    uuid:
+      noMatch: "$[scriptPrefix] &指定关键词没有对应搜索结果."
+      header: "$[scriptPrefix] &7路径点: (点击可将 UUID 复制至剪贴板)"
+      result: "&7 - 名称: &e${name}&7 文件夹: &e${folder}"
+
   help:
     header: "$[prefix] &7&n帮助界面"
     gui: "&7 - &e/${label} &7&l|&r&7 打开路径点 GUI"
     help: "&7 - &e/${label} help &7&l|&r&7 显示该帮助界面"
+    select: "&7 - &e/${label} select <路径点名称> &7&l|&r&7 选中路径点"
+    deselect: "&7 - &e/${label} deselect &7&l|&r&7 取消选择当前选中的路径点"
+    teleport: "&7 - &e/${label} teleport <路径点名称> &7&l|&r&7 传送至对应路径点"
     set:
       private: "&7 - &e/${label} set <路径点名称> &7&l|&r&7 创建一个新的路径点"
       public: "&7 - &e/${label} setPublic <路径点名称> &7&l|&r&7 创建一个新的公开路径点"
@@ -32,6 +45,19 @@ command:
     statistics: "&7 - &e/${label} statistics &7&l|&r&7 查看数据库统计信息"
     import: "&7 - &e/${label} import &7&l|&r&7 从 Waypoints V2 版本导入路径点数据"
     reload: "&7 - &e/${label} reload &7&l|&r&7 重载配置文件"
+
+  search:
+    prefix:
+      public: "开放"
+      permission: "权限"
+    notFound:
+      waypoint: "$[prefix] &c对应关键词没有搜索结果."
+
+  select:
+    selected: "$[prefix] &7路径点 &e${name} &7已被选中."
+
+  deselect:
+    done: "$[prefix] &7已取消选择当前路径点."
 
   other:
     playerNoWaypoints: "$[prefix] &c指定玩家无现有路径点."
@@ -150,6 +176,7 @@ message:
   teleport:
     # remainingCooldown: Time left until player can teleport again
     onCooldown: "$[prefix] &c你仍需等待 &e${remainingCooldown}&c 秒后才可以再次传送."
+    notAllowed: "$[prefix] &c你不能传送至该路径点."
     notEnough:
       # currentLevel: Level of the player
       # requiredLevel: Level required for teleportation
