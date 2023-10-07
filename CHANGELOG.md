@@ -8,6 +8,7 @@
 ### Changed
 - Partial update of chinese translations by [SnowCutieOwO](https://github.com/SnowCutieOwO)
 - The default config has been updated to replace some items with custom player heads
+- Holograms are now multiline by default
 
 ## 4.2.0
 
