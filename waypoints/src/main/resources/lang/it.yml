@@ -161,7 +161,7 @@ message:
         outOfBounds: "<red>La posizione in cui stai cercando di creare il waypoint è fuori dai limiti."
         invalidFormat: |
           <red>Le coordinate devono essere fornite nel seguente formato:
-          <green>102/35/-238
+          <green>102 35 -238
     limitReached:
       private: "<red>Hai raggiunto il tuo limite personale di waypoint che puoi creare."
     nameDuplicate:
@@ -192,6 +192,9 @@ message:
   allowedIcons:
     whitelist: "<red>Sono consentiti solo i seguenti oggetti: <yellow><items>"
     blacklist: "<red>Non sono consentiti i seguenti oggetti: <yellow><items>"
+
+#  temporaryWaypoints:
+#    blocked: "<red>The player <yellow><name></yellow> has blocked the receiving of temporary waypoints."
 
   teleport:
     # remaining_cooldown: Time left until player can teleport again
@@ -332,6 +335,23 @@ inventory:
       hidden:
         displayName: "<yellow>I waypoints globali sono nascosti."
         description: "<gray>Clicca qui per mostrarli"
+#    temporaryWaypoints:
+#      receivable:
+#        displayName: "<yellow>Temporary waypoints can be received"
+#        description: |
+#          <gray>Other players can send you a
+#          <gray>temporary waypoint with:
+#          <green>/waypoints setTemporary X Y Z <name>
+#
+#          <gray>Click here to block them
+#      blocked:
+#        displayName: "<yellow>Temporary waypoints are blocked"
+#        description: |
+#          <gray>Other players could send you
+#          <gray>a temporary waypoint with:
+#          <green>/waypoints setTemporary X Y Z <name>
+#
+#          <gray>Click here to be able to receive them again
     pointers:
       title:
         displayName: "<yellow>Personalizza quali puntatori vengono utilizzati"

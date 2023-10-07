@@ -1,3 +1,5 @@
+
+
 prefix: "<aqua><bold>Waypoints <yellow><bold>><reset> "
 scriptPrefix: "<aqua><bold>Waypoints<green>Script <yellow><bold>><reset> "
 
@@ -154,12 +156,12 @@ text:
 message:
   waypoint:
     create:
-      worldUnavailable: "<red>In world you are in waypoints are unavailable."
+      worldUnavailable: "<red>In the world you are in waypoints are unavailable."
       coordinates:
         outOfBounds: "<red>The location you are trying to create the waypoint at is out of bounds."
         invalidFormat: |
           <red>The coordinates must be provided in the following format:
-          <green>102/35/-238
+          <green>102 35 -238
     limitReached:
       private: "<red>You have reached your personal limit of waypoints you can create."
     nameDuplicate:

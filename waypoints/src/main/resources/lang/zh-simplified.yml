@@ -156,12 +156,12 @@ text:
 message:
   waypoint:
     create:
-      #      worldUnavailable: "<red>In world you are in waypoints are unavailable."
+#      worldUnavailable: "<red>In the world you are in waypoints are unavailable."
       coordinates:
         outOfBounds: "<red>创建路径点的位置过远."
         invalidFormat: |
           <red>指定坐标需为以下格式:
-          <green>102/35/-238
+          <green>102 35 -238
     limitReached:
       private: "<red>你不能再创建更多的路径点了."
     nameDuplicate:
@@ -189,6 +189,13 @@ message:
       permission: "<gray>权限路径点组已成功创建."
     newIconInvalid: "<red>尝试用作路径点组图标的物品未在允许列表内."
 
+#  allowedIcons:
+#    whitelist: "<red>Only the following items are allowed: <yellow><items>"
+#    blacklist: "<red>The following items are not allowed: <yellow><items>"
+
+#  temporaryWaypoints:
+#    blocked: "<red>The player <yellow><name></yellow> has blocked the receiving of temporary waypoints."
+
   teleport:
     # remaining_cooldown: Time left until player can teleport again
     onCooldown: "<red>你仍需等待 <yellow><remaining_cooldown><red> 秒后才可以再次传送."
@@ -213,6 +220,15 @@ message:
     playerNoLongerOnline: "<red>玩家不在线."
     trackableRequired: "<red>若要追踪其他玩家, 你自己必须取消隐身状态."
     notification: "<gray>玩家 <yellow><name><gray> 正在追踪你."
+#    request:
+#      sent: "<gray>A tracking request has been sent to <yellow><to><gray>. It will expire in <yellow><valid_for><gray>."
+#      request: |
+#        <yellow><from><gray> wants to track your location. This request will expire in <yellow><valid_for><gray>.
+#        <gray>[<green><accept>Accept request</accept><gray>]
+
+#  sharing:
+#    alreadyShared: "<red>You have already shared this waypoint with <yellow><name></yellow>."
+#    success: "<gray>The waypoint has been shared with <yellow><name></yellow>."
 
 pointers:
   actionBar:
@@ -279,8 +295,26 @@ inventory:
       activeColor: "<gold>"
       inactiveColor: "<gray>"
 
+#    settings:
+#      displayName: "<yellow>Settings"
+#      description: |
+#        <gray>Change visibility of global
+#        <gray>waypoints and used pointers
+
     deselect:
+#      displayName: "<yellow>Deselect all waypoints"
       description: "<gray>导航消息将不再提醒"
+#      selected: "<gray>Currently the following waypoints are selected:"
+#      names:
+#        waypoint:
+#          private: "<dark_purple><path>"
+#          death: "<red>Death <created_at:'dd.MM.uuuu kk:mm'>"
+#          public: "<aqua>Public/<path>"
+#          permission: "<light_purple>Permission/<path>"
+#          temporary: "<dark_purple>A Temporary Waypoint"
+#        playerTracking: "<blue>Player: <name>"
+#        unknown: "<red>Unknown"
+
     setWaypoint:
       displayName: "<yellow>创建一个新的路径点"
       description: |
@@ -300,6 +334,78 @@ inventory:
       hidden:
         displayName: "<yellow>全局路径点隐藏"
         description: "<gray>点击显示"
+#    temporaryWaypoints:
+#      receivable:
+#        displayName: "<yellow>Temporary waypoints can be received"
+#        description: |
+#          <gray>Other players can send you a
+#          <gray>temporary waypoint with:
+#          <green>/waypoints setTemporary X Y Z <name>
+#
+#          <gray>Click here to block them
+#      blocked:
+#        displayName: "<yellow>Temporary waypoints are blocked"
+#        description: |
+#          <gray>Other players could send you
+#          <gray>a temporary waypoint with:
+#          <green>/waypoints setTemporary X Y Z <name>
+#
+#          <gray>Click here to be able to receive them again
+#    pointers:
+#      title:
+#        displayName: "<yellow>Customize which pointers are used"
+#        description: ""
+#      on:
+#        displayName: "<bold><green><name>"
+#        description: ""
+#      off:
+#        displayName: "<bold><red><name>"
+#        description: ""
+#      actionBar:
+#        name: "Action Bar"
+#        description: |
+#          <gray>In your action bar an indicator is show
+#          <gray>that tells you in which direction you must
+#          <gray>look to get to the Waypoint
+#      beacon:
+#        name: "Beacon"
+#        description: |
+#          <gray>After you entered the view distance of the
+#          <gray>Waypoint a beacon beam with customizable color
+#          <gray>appears on top of the Waypoint
+#      blinkingBlock:
+#        name: "Blinking Block"
+#        description: |
+#          <gray>After you got into the vicinity of the Waypoint
+#          <gray>a blinking block on top of the Waypoint shows you
+#          <gray>the exact location
+#      bossBar:
+#        name: "Boss Bar"
+#        description: |
+#          <gray>A compass is displayed in the boss bar
+#          <gray>with markers for waypoints you have selected
+#      compass:
+#        name: "Compass"
+#        description: |
+#          <gray>Any compass in your inventory now points
+#          <gray>towards the waypoint
+#      hologram:
+#        name: "Hologram"
+#        description: |
+#          <gray>A hologram hovers near you in the direction
+#          <gray>of the Waypoint and displays the name, icon
+#          <gray>and distance to the Waypoint
+#      particle:
+#        name: "Particle Compass"
+#        description: |
+#          <gray>Particles near your feet show you in
+#          <gray>which direction the waypoint is located
+#      trail:
+#        name: "Particle Trail"
+#        description: |
+#          <gray>A possible Path towards the Waypoint
+#          <gray>is calculated and then displayed
+#          <gray>with a particle trail
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:
@@ -312,6 +418,11 @@ inventory:
     tracking:
       displayName: "<green>玩家"
       description: "<gray>追踪其他玩家"
+#    shared:
+#      displayName: "<aqua>Shared waypoints"
+#      description: |
+#        <gray>Waypoints that have been shared
+#        <gray>with you by other players
 
   waypoint:
     # name: Name of the waypoint
@@ -330,9 +441,14 @@ inventory:
 
         <gray>创建时间: <gold><created_at:'dd.MM.uuuu kk:mm'>
 
+      customDescription: &waypointCustomDescription |
+        <light_purple><italic><description1>
+        <light_purple><italic><description2>
+
       private:
         displayName: "<dark_purple><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
       death:
         displayName: "<red>死亡位置 <created_at:'dd.MM.uuuu kk:mm'>"
         description: |
@@ -344,15 +460,18 @@ inventory:
       public:
         displayName: "<aqua><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
       permission:
         displayName: "<light_purple><name>"
         description: *waypointDescription
+        customDescription: *waypointCustomDescription
 
     select:
       displayName: "<yellow>选择路径点"
       description: "<gray>点击设置该路径点为你的目的地"
     deselect:
-      displayName: "<yellow>取消选择路径点"
+#      displayName: "<yellow>Deselect this waypoint"
+#      description: ""
     delete:
       displayName: "<dark_red>删除路径点"
       description: ""
@@ -368,6 +487,21 @@ inventory:
     rename:
       displayName: "<yellow>重命名路径点"
       description: ""
+#    editIcon:
+#      displayName: "<yellow>Edit icon"
+#      description: |
+#        <gray>Click here to make the item in your
+#        <gray>main hand the icon for this Waypoint.
+#
+#        <gray>If you want to change the icon of a
+#        <gray>folder you must click on its icon
+#        <gray>after you opened it.
+#
+#        <gray>In both cases performing a shift-click
+#        <gray>resets the icon to the default
+#    editDescription:
+#      displayName: "<yellow>Edit description"
+#      description: "<gray>All changes will <bold>always</bold> be saved"
     moveToFolder:
       displayName: "<yellow>将路径点移动至路径点组"
       description: |
@@ -379,12 +513,20 @@ inventory:
       xpLevel: "<gray>你需要 <yellow><levels><gray> 级来传送至该路径点."
       # balance: The amount of balance required for teleportation
       balance: "<gray>你需要 <yellow><balance><gray> 金币来传送至该路径点."
+#      mustVisit: |
+#        <red>You must have visited this waypoint before to
+#        <red>be able to teleport to it.
     selectBeaconColor:
       displayName: "<yellow>修改信标颜色"
       description: ""
     getUuid:
       displayName: "<yellow>获取路径点 UUID"
       description: "<gray>向聊天栏发送该路径点的 UUID"
+#    share:
+#      displayName: "<yellow>Share the waypoint"
+#      description: |
+#        <gray>Share the waypoint with other players
+#        <gray>or remove shares again.
     editPermission:
       displayName: "<yellow>修改所需权限"
       description: "<gray>当前所需权限为 <yellow><permission>"
@@ -422,23 +564,35 @@ inventory:
       enterCoordinates: "在此输入坐标"
       enterPermission: "在此输入权限"
 
+#    edit:
+#      enterName: "Enter new name"
+#      enterPermission: "Enter new permission"
+#      enterWebMapIcon: "Enter WebMap icon"
+
   folder:
     # name: Name of the folder
     # created_at: Date at which the folder was created
     # amount: Amount of waypoints visible to the player
     icon:
+      customDescription: &folderCustomDescription |
+        <light_purple><italic><description1>
+        <light_purple><italic><description2>
+
       private:
         displayName: "<dark_purple><name>"
         description: "<gray>路径点组中的路径点数: <gold><amount>"
+        customDescription: *folderCustomDescription
       death:
         displayName: "<red>Deaths"
         description: "<gray>路径点组中的路径点数: <gold><amount>"
       public:
         displayName: "<aqua><name>"
         description: "<gray>路径点组中的路径点数: <gold><amount>"
+        customDescription: *folderCustomDescription
       permission:
         displayName: "<light_purple><name>"
         description: "<gray>路径点组中的路径点数: <gold><amount>"
+        customDescription: *folderCustomDescription
 
     delete:
       displayName: "<dark_red>删除路径点组"
@@ -452,12 +606,19 @@ inventory:
       cancel:
         displayName: "<green>否, 不要删除路径点组 <yellow><name><green>."
         description: ""
+#      deathName: "Deaths"
     rename:
       displayName: "<yellow>重命名路径点组"
       description: ""
+#    editDescription:
+#      displayName: "<yellow>Edit description"
+#      description: "<gray>All changes will <bold>always</bold> be saved"
 
     create:
       enterName: "在此输入名称"
+
+#    edit:
+#      enterName: "Enter new name"
 
   selectFolder:
     noFolder:
@@ -504,3 +665,25 @@ inventory:
       description: |
         <gray>世界: <gold><world>
         <gray>距离: <gold><distance:'.0'>
+
+#  sharing:
+#    player:
+#      select:
+#        displayName: "<aqua><name>"
+#        description: ""
+#      delete:
+#        displayName: "<aqua><name>"
+#        description: |
+#          <gray>Click here to revoke access to this
+#          <gray>waypoint for <yellow><name>
+#    viewSharing:
+#      displayName: "<yellow>Shared with"
+#      description: |
+#        <gray>See which players have access to this
+#        <gray>waypoint and optionally remove them.
+#    sharedBy: |
+#
+#      <gray>This waypoint has been shared to you
+#      <gray>by <yellow><name></yellow>.
+#      <gray>Shift-Click to remove this share.
+#    unknownPlayer: "<red>Unknown"
