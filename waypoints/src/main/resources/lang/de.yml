@@ -159,7 +159,7 @@ message:
         outOfBounds: "<red>Die Position an der du den Wegpunkt erstellen möchtest liegt außerhalb der Grenzen."
         invalidFormat: |
           <red>Die Koordinaten müssen im folgenden Format angegeben werden:
-          <green>102/35/-238
+          <green>102 35 -238
     limitReached:
       private: "<red>Du hast die maximale Anzahl an Wegpunkten erreicht die du erstellen kannst."
     nameDuplicate:
