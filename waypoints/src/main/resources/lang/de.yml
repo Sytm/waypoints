@@ -58,7 +58,7 @@ command:
       permission: "Eingeschränkt"
     notFound:
       waypoint: "<red>Es konnte kein Wegpunkt mit dieser Suchanfrage gefunden werden."
-    # Set the text of the floating hologram here.
+    # Set the text of the tooltip here.
     # name: Name of the waypoint
     # createdAt: Date at which the waypoint was created
     # world: World where the waypoint is located at
