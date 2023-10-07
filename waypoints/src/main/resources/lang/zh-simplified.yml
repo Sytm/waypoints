@@ -8,6 +8,13 @@ worlds:
   world_nether: "地狱"
   world_the_end: "末地"
 
+#update:
+#  error: "<red>Could not retrieve latest release data"
+#  upToDate: "<green>The latest version of Waypoints is used"
+#  outdated: |
+#    <gray>The version <yellow><latest></yellow> for Waypoints is available.
+#    Checkout the release here: <yellow><link></yellow>
+
 command:
   notAPlayer: "<red>你必须是玩家才可执行此命令."
 
@@ -16,15 +23,28 @@ command:
       header: "<gray><underlined>帮助界面"
       deselectWaypoint: "<gray> - <yellow>/<label> deselectWaypoint <玩家名称> <gray><bold>|<reset><gray> 为玩家删除选择的路径点"
       selectWaypoint: "<gray> - <yellow>/<label> selectWaypoint <玩家名称> <Waypoint-UUID> <gray><bold>|<reset><gray> 为玩家设置一个将要去到的路径点"
+      temporaryWaypoint: "<gray> - <yellow>/<label> temporaryWaypoint <玩家名称> <X> <Y> <Z> [光柱颜色] <gray><bold>|<reset><gray> 为玩家创建临时路径点"
+      uuid: "<gray> - <yellow>/<label> uuid <名称> <gray><bold>|<reset><gray> 通过关键词搜索路径点并返回其 UUID"
 
     selectWaypoint:
       # uuid: ID of the waypoint that could not be found
       waypointNotFound: "<red>找不到 UUID 为 <yellow><uuid><red> 的路径点."
 
+    temporaryWaypoint:
+      beaconColorNotFound: "<red>所提供的信标颜色不存在."
+
+    uuid:
+      noMatch: "<red>指定关键词没有对应搜索结果."
+      header: "<gray>路径点: (点击可将 UUID 复制至剪贴板)"
+      result: "<gray> - 名称: <yellow><name><gray> 文件夹: <yellow><folder>"
+
   help:
     header: "<gray><underlined>帮助界面"
     gui: "<gray> - <yellow>/<label> <gray><bold>|<reset><gray> 打开路径点 GUI"
     help: "<gray> - <yellow>/<label> help <gray><bold>|<reset><gray> 显示该帮助界面"
+    select: "<gray> - <yellow>/<label> select <路径点名称> <gray><bold>|<reset><gray> 选中路径点"
+    deselect: "<gray> - <yellow>/<label> deselect <gray><bold>|<reset><gray> 取消选择当前选中的路径点"
+    teleport: "<gray> - <yellow>/<label> teleport <路径点名称> <gray><bold>|<reset><gray> 传送至对应路径点"
     set:
       private: "<gray> - <yellow>/<label> set <路径点名称> <gray><bold>|<reset><gray> 创建一个新的路径点"
       public: "<gray> - <yellow>/<label> setPublic <路径点名称> <gray><bold>|<reset><gray> 创建一个新的公开路径点"
@@ -33,6 +53,27 @@ command:
     other: "<gray> - <yellow>/<label> other <Name|UUID> <gray><bold>|<reset><gray> 查看其他玩家的路径点"
     statistics: "<gray> - <yellow>/<label> statistics <gray><bold>|<reset><gray> 查看数据库统计信息"
     reload: "<gray> - <yellow>/<label> reload <gray><bold>|<reset><gray> 重载配置文件"
+
+  search:
+    prefix:
+      public: "开放"
+      permission: "权限"
+    notFound:
+      waypoint: "&c对应关键词没有搜索结果."
+    # Set the text of the tooltip here.
+    # name: Name of the waypoint
+    # createdAt: Date at which the waypoint was created
+    # world: World where the waypoint is located at
+    # x, y, z: Coordinates of the waypoint
+    # block_x, block_y, block_z: Coordinates of the block nearest to the waypoint
+    # distance: Distance in blocks to the player
+    tooltip: "<created_at:'dd.MM.uuuu kk:mm'>"
+
+  select:
+    selected: "<gray>路径点 <yellow><name> <gray>已被选中."
+
+  deselect:
+    done: "<gray>已取消选择当前路径点."
 
   other:
     playerNoWaypoints: "<red>指定玩家无现有路径点."
@@ -151,6 +192,7 @@ message:
   teleport:
     # remaining_cooldown: Time left until player can teleport again
     onCooldown: "<red>你仍需等待 <yellow><remaining_cooldown><red> 秒后才可以再次传送."
+    notAllowed: "<red>你不能传送至该路径点."
     notEnough:
       # current_level: Level of the player
       # required_level: Level required for teleportation

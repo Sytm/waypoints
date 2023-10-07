@@ -90,6 +90,14 @@ please report them on the GitHub issue tracker or on the Discord server.
 ### Removed
 - Compass pointer nether support has been removed, because any possible implementation is inherently inconsistent
 
+## 3.6.6
+This is _the last_ v3 release. v3 is **END OF LIFE**.
+
+All further updates (like v4) will only be available on [Modrinth](https://modrinth.com/plugin/waypoints)
+
+### Added
+- Support for Minecraft 1.20.2
+
 ## 3.6.5
 
 ### Added

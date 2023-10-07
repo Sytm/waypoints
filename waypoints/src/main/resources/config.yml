@@ -258,7 +258,7 @@ pointers:
     minDistance: 50
     # If set to auto it will use the render distance of the server
     maxDistance: auto
-    # The base block for the beacon. Use one of these for it to work: IRON_BLOCK, GOLD_BLOCK, DIAMOND_BLOCK, EMERALD_BLOCK (or NETHERITE_BLOCK if on 1.16 or higher)
+    # The base block for the beacon. Use one of these for it to work: IRON_BLOCK, GOLD_BLOCK, DIAMOND_BLOCK, EMERALD_BLOCK or NETHERITE_BLOCK
     baseBlock: IRON_BLOCK
     defaultColor:
       private: CLEAR
@@ -362,7 +362,6 @@ pointers:
     highlightDistance: 7
 
   hologram:
-    # Requires ProtocolLib to be actually available
     enabled: true
 
     interval: 5
