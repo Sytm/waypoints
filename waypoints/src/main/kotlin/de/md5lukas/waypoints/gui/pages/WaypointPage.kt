@@ -15,18 +15,7 @@ import de.md5lukas.waypoints.integrations.DynMapIntegration
 import de.md5lukas.waypoints.integrations.Pl3xMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.pointers.WaypointTrackable
-import de.md5lukas.waypoints.util.SuccessWaypoint
-import de.md5lukas.waypoints.util.checkMaterialForCustomIcon
-import de.md5lukas.waypoints.util.checkWaypointName
-import de.md5lukas.waypoints.util.component1
-import de.md5lukas.waypoints.util.component2
-import de.md5lukas.waypoints.util.copyFieldsTo
-import de.md5lukas.waypoints.util.createWaypointPermission
-import de.md5lukas.waypoints.util.createWaypointPublic
-import de.md5lukas.waypoints.util.getAllowedItemsForCustomIconMessage
-import de.md5lukas.waypoints.util.minecraftVersionAtLeast
-import de.md5lukas.waypoints.util.onClickSuspending
-import de.md5lukas.waypoints.util.replaceInputText
+import de.md5lukas.waypoints.util.*
 import net.kyori.adventure.text.event.ClickEvent
 import net.wesjd.anvilgui.AnvilGUI
 
@@ -82,16 +71,16 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
         'g' to
             if (canModifyWaypoint) {
               GUIItem(wpGUI.translations.WAYPOINT_EDIT_ICON.item) {
-                val newMaterial =
+                val newIcon =
                     if (it.isShiftClick) {
                       null
                     } else {
-                      wpGUI.viewer.inventory.itemInMainHand.type
+                      wpGUI.viewer.inventory.itemInMainHand.toIcon()
                     }
 
-                if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
+                if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.material)) {
                   wpGUI.skedule {
-                    waypoint.setMaterial(newMaterial)
+                    waypoint.setMaterial(newIcon)
                     updatePage()
                   }
                   wpGUI.playSound { clickSuccess }

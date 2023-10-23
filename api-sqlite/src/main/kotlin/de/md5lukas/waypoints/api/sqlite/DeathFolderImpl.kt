@@ -4,6 +4,7 @@ import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.Folder
+import de.md5lukas.waypoints.api.Icon
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.base.DatabaseManager
@@ -13,7 +14,6 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.util.*
 import kotlinx.coroutines.withContext
-import org.bukkit.Material
 import org.bukkit.permissions.Permissible
 
 class DeathFolderImpl(
@@ -41,10 +41,10 @@ class DeathFolderImpl(
       throw UnsupportedOperationException(
           "Changing the description of the death folder is not supported")
 
-  override val material: Material?
+  override val material: Icon?
     get() = null
 
-  override suspend fun setMaterial(material: Material?) =
+  override suspend fun setMaterial(material: Icon?) =
       throw UnsupportedOperationException(
           "Changing the material of the death folder is not supported")
 

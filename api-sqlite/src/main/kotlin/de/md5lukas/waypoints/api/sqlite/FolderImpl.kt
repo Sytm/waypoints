@@ -4,10 +4,13 @@ import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.Folder
+import de.md5lukas.waypoints.api.Icon
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import de.md5lukas.waypoints.api.base.asString
 import de.md5lukas.waypoints.api.base.getUUID
+import de.md5lukas.waypoints.api.base.parseIcon
 import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
@@ -15,7 +18,6 @@ import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.UUID
 import kotlinx.coroutines.withContext
-import org.bukkit.Material
 import org.bukkit.permissions.Permissible
 
 internal class FolderImpl
@@ -27,7 +29,7 @@ private constructor(
     override val owner: UUID?,
     name: String,
     description: String?,
-    material: Material?,
+    material: Icon?,
 ) : Folder {
 
   constructor(
@@ -41,7 +43,7 @@ private constructor(
       owner = row.getUUID("owner"),
       name = row.getString("name"),
       description = row.getString("description"),
-      material = row.getString("material")?.let { Material.valueOf(it) },
+      material = row.getString("material")?.parseIcon(),
   )
 
   override var name: String = name
@@ -60,12 +62,12 @@ private constructor(
     set("description", description)
   }
 
-  override var material: Material? = material
+  override var material: Icon? = material
     private set
 
-  override suspend fun setMaterial(material: Material?) {
+  override suspend fun setMaterial(material: Icon?) {
     this.material = material
-    set("material", material?.name)
+    set("material", material?.asString())
   }
 
   override suspend fun getAmount(): Int =

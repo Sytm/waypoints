@@ -48,9 +48,9 @@ interface Waypoint : GUIDisplayable {
   suspend fun setPermission(permission: String)
 
   /** The optional customized material this waypoint should appear as in the GUI */
-  val material: Material?
+  val material: Icon?
 
-  suspend fun setMaterial(material: Material?)
+  suspend fun setMaterial(material: Icon?)
 
   val beaconColor: Material?
 
