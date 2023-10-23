@@ -41,7 +41,7 @@ abstract class WaypointTest : TestBase() {
     if (type === Type.PERMISSION) {
       waypoint.setPermission("permission")
     }
-    waypoint.setMaterial(Material.GRASS_BLOCK)
+    waypoint.setMaterial(Icon(Material.GRASS_BLOCK, null))
     waypoint.setBeaconColor(Material.LIGHT_GRAY_STAINED_GLASS)
 
     waypoint = holder.getWaypoints()[0]
@@ -54,8 +54,21 @@ abstract class WaypointTest : TestBase() {
             assertEquals("permission", waypoint.permission)
           }
         },
-        { assertEquals(Material.GRASS_BLOCK, waypoint.material) },
+        { assertEquals(Icon(Material.GRASS_BLOCK, null), waypoint.material) },
         { assertEquals(Material.LIGHT_GRAY_STAINED_GLASS, waypoint.beaconColor) })
+  }
+
+  @TypesNoDeath
+  fun customModelDataSaved(type: Type) = runBlocking {
+    val holder = api.holderOfType(type)
+
+    var waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
+
+    waypoint.setMaterial(Icon(Material.GRASS_BLOCK, 1))
+
+    waypoint = holder.getWaypoints()[0]
+
+    assertEquals(Icon(Material.GRASS_BLOCK, 1), waypoint.material)
   }
 
   @Nested
