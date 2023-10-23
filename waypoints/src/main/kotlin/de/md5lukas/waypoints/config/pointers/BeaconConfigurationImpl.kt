@@ -6,11 +6,7 @@ import de.md5lukas.konfig.Configurable
 import de.md5lukas.konfig.TypeAdapter
 import de.md5lukas.konfig.UseAdapter
 import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.pointers.BeaconColor
-import de.md5lukas.waypoints.pointers.PlayerTrackable
-import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
-import de.md5lukas.waypoints.pointers.Trackable
+import de.md5lukas.waypoints.pointers.*
 import de.md5lukas.waypoints.pointers.config.BeaconConfiguration
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -44,7 +40,7 @@ class BeaconConfigurationImpl : RepeatingPointerConfigurationImpl(), BeaconConfi
 
   override fun getDefaultColor(trackable: Trackable) =
       when (trackable) {
-        is Waypoint -> defaultColor[trackable.type]
+        is WaypointTrackable -> defaultColor[trackable.waypoint.type]
         is PlayerTrackable -> playerTrackableColor
         is TemporaryWaypointTrackable -> temporaryTrackableColor
         else -> null
