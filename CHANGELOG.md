@@ -12,6 +12,9 @@
 - The default config has been updated to replace some items with custom player heads
 - Holograms are now multiline by default
 
+### Fixed
+- Default colors for beacon beams are not applied
+
 ## 4.2.0
 
 ### Added
