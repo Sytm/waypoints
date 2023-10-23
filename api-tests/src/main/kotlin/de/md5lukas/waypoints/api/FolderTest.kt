@@ -33,13 +33,26 @@ abstract class FolderTest : TestBase() {
 
     folder.setName("Other name")
     folder.setDescription("Some description")
-    folder.setMaterial(Material.GRASS_BLOCK)
+    folder.setMaterial(Icon(Material.GRASS_BLOCK, null))
 
     folder = holder.getFolders()[0]
 
     assertAll(
         { assertEquals("Other name", folder.name) },
         { assertEquals("Some description", folder.description) },
-        { assertEquals(Material.GRASS_BLOCK, folder.material) })
+        { assertEquals(Icon(Material.GRASS_BLOCK, null), folder.material) })
+  }
+
+  @TypesNoDeath
+  fun customModelDataSaved(type: Type) = runBlocking {
+    val holder = api.holderOfType(type)
+
+    var folder = holder.createFolder("Test")
+
+    folder.setMaterial(Icon(Material.GRASS_BLOCK, 1))
+
+    folder = holder.getFolders()[0]
+
+    assertEquals(Icon(Material.GRASS_BLOCK, 1), folder.material)
   }
 }
