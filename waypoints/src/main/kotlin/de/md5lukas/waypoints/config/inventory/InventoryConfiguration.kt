@@ -1,13 +1,16 @@
 package de.md5lukas.waypoints.config.inventory
 
+import de.md5lukas.commons.paper.editMeta
 import de.md5lukas.commons.paper.getStringNotNull
 import de.md5lukas.konfig.Configurable
 import de.md5lukas.konfig.ExportConfigurationSection
 import de.md5lukas.konfig.SkipConfig
+import de.md5lukas.waypoints.api.base.parseIcon
 import de.md5lukas.waypoints.util.createCustomPlayerHead
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.Plugin
 
 @Configurable
@@ -42,10 +45,17 @@ class InventoryConfiguration {
             throw IllegalArgumentException("Invalid player head format at $path", t)
           }
         } else {
-          ItemStack(
-              Material.matchMaterial(materialString)
-                  ?: throw IllegalArgumentException(
-                      "The material $materialString at $path is not valid"))
+          try {
+            materialString.parseIcon().let { icon ->
+              ItemStack(icon.material).also { stack ->
+                icon.customModelData?.let { customModelData ->
+                  stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
+                }
+              }
+            }
+          } catch (t: Throwable) {
+            throw IllegalArgumentException("The material $materialString at $path is not valid", t)
+          }
         }
 
     itemCache[path] = stack

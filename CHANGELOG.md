@@ -4,6 +4,8 @@
 
 ### Added
 - The GUI supports the usage of custom player heads
+- Custom model data is stored when changing the icon of a Waypoint or folder
+- Custom model data can be set for items in the GUI like this: `DIAMOND|1`
 
 ### Changed
 - Partial update of chinese translations by [SnowCutieOwO](https://github.com/SnowCutieOwO)
