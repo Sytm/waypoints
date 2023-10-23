@@ -1,13 +1,11 @@
 package de.md5lukas.waypoints.util
 
+import de.md5lukas.commons.paper.editMeta
 import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.commons.paper.placeholderIgnoringArguments
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.api.Folder
-import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.api.WaypointHolder
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
@@ -17,6 +15,7 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 
 class APIExtensions(private val plugin: WaypointsPlugin) {
   private val translations
@@ -41,7 +40,11 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
           Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
           Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
-        }.getItem(material, *getResolvers(player))
+        }.getItem(material?.material, *getResolvers(player))
+
+    material?.customModelData?.let { customModelData ->
+      stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
+    }
 
     when (type) {
       Type.DEATH -> null
@@ -75,7 +78,13 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
       )
 
   fun Waypoint.getIconStack(): ItemStack =
-      material?.let(::ItemStack)
+      material?.let { icon ->
+        ItemStack(icon.material).also { stack ->
+          icon.customModelData?.let { customModelData ->
+            stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
+          }
+        }
+      }
           ?: when (type) {
             Type.DEATH -> translations.WAYPOINT_ICON_DEATH
             Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
@@ -139,11 +148,15 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION
           else -> throw IllegalStateException("An folder with the type $type should not exist")
         }.getItem(
-            material,
+            material?.material,
             "name" placeholder name,
             "description" placeholder (description ?: ""),
             "created_at" placeholder createdAt,
             "amount" placeholder fetchedAmount)
+
+    material?.customModelData?.let { customModelData ->
+      stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
+    }
 
     stack.amountClamped = fetchedAmount
 
@@ -187,3 +200,6 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
     }
   }
 }
+
+fun ItemStack.toIcon() =
+    Icon(type, if (itemMeta.hasCustomModelData()) itemMeta.customModelData else null)

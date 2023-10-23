@@ -271,16 +271,16 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                     (guiFolder as Folder).getItem(wpGUI.viewer),
                     if (canModify) {
                       {
-                        val newMaterial =
+                        val newIcon =
                             if (it.isShiftClick) {
                               null
                             } else {
-                              wpGUI.viewer.inventory.itemInMainHand.type
+                              wpGUI.viewer.inventory.itemInMainHand.toIcon()
                             }
 
-                        if (checkMaterialForCustomIcon(wpGUI.plugin, newMaterial)) {
+                        if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.material)) {
                           wpGUI.skedule {
-                            guiFolder.setMaterial(newMaterial)
+                            guiFolder.setMaterial(newIcon)
                             updateControls()
                           }
                           wpGUI.playSound { clickSuccess }

@@ -2,7 +2,6 @@ package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.gui.GUIFolder
 import java.util.*
-import org.bukkit.Material
 import org.bukkit.permissions.Permissible
 
 interface Folder : GUIFolder {
@@ -27,9 +26,9 @@ interface Folder : GUIFolder {
   suspend fun setDescription(description: String?)
 
   /** The optional customized material this folder should appear as in the GUI */
-  val material: Material?
+  val material: Icon?
 
-  suspend fun setMaterial(material: Material?)
+  suspend fun setMaterial(material: Icon?)
 
   /** The total amount of waypoints in this folder. */
   suspend fun getAmount(): Int

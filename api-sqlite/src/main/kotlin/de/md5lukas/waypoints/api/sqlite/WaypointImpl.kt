@@ -3,13 +3,11 @@ package de.md5lukas.waypoints.api.sqlite
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
-import de.md5lukas.waypoints.api.Folder
-import de.md5lukas.waypoints.api.Type
-import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.api.WaypointMeta
-import de.md5lukas.waypoints.api.WaypointShare
+import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.base.DatabaseManager
+import de.md5lukas.waypoints.api.base.asString
 import de.md5lukas.waypoints.api.base.getUUID
+import de.md5lukas.waypoints.api.base.parseIcon
 import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
@@ -33,7 +31,7 @@ private constructor(
     name: String,
     description: String?,
     permission: String?,
-    material: Material?,
+    material: Icon?,
     beaconColor: Material?,
 ) : Waypoint {
 
@@ -57,7 +55,7 @@ private constructor(
       name = row.getString("name"),
       description = row.getString("description"),
       permission = row.getString("permission"),
-      material = row.getString("material")?.let { Material.valueOf(it) },
+      material = row.getString("material")?.parseIcon(),
       beaconColor = row.getString("beaconColor")?.let { Material.valueOf(it) })
 
   private var folderId: UUID? = folder
@@ -103,12 +101,12 @@ private constructor(
     set("permission", permission)
   }
 
-  override var material: Material? = material
+  override var material: Icon? = material
     private set
 
-  override suspend fun setMaterial(material: Material?) {
+  override suspend fun setMaterial(material: Icon?) {
     this.material = material
-    set("material", material?.name)
+    set("material", material?.asString())
   }
 
   override var beaconColor: Material? = beaconColor
