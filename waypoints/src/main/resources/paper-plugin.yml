@@ -27,9 +27,6 @@ dependencies:
     BlueMap:
       load: BEFORE
       required: false
-    Pl3xMap:
-      load: BEFORE
-      required: false
 
 permissions:
   waypoints.*:

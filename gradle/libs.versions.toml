@@ -43,7 +43,6 @@ dynmap-coreApi = { group = "us.dynmap", name = "DynmapCoreAPI", version.ref = "d
 dynmap-api = { group = "us.dynmap", name = "dynmap-api", version.ref = "dynmap" }
 squaremapApi = { group = "xyz.jpenilla", name = "squaremap-api", version = "1.1.16" }
 bluemapApi = { group = "com.github.BlueMap-Minecraft", name = "BlueMapAPI", version = "2.6.0" }
-pl3xmap = { group = "maven.modrinth", name = "pl3xmap", version = "1.20.1-469" }
 
 # Links to the various projects to check versions:
 #
@@ -54,7 +53,6 @@ pl3xmap = { group = "maven.modrinth", name = "pl3xmap", version = "1.20.1-469" }
 # https://github.com/jpenilla/squaremap
 # https://github.com/BlueMap-Minecraft/BlueMapAPI
 # https://github.com/dmulloy2/ProtocolLib
-# https://modrinth.com/plugin/pl3xmap
 
 # Test dependencies
 junitLauncher = { group = "org.junit.platform", name = "junit-platform-launcher" }

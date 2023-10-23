@@ -12,7 +12,6 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.integrations.DynMapIntegration
-import de.md5lukas.waypoints.integrations.Pl3xMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.*
@@ -284,11 +283,6 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                   createChangeCustomMapIconItem(
                       SquareMapIntegration.CUSTOM_DATA_KEY,
                       wpGUI.plugin.waypointsConfig.integrations.squaremap.icon)
-                }
-                wpGUI.plugin.pl3xMapIntegrationAvailable -> {
-                  createChangeCustomMapIconItem(
-                      Pl3xMapIntegration.CUSTOM_DATA_KEY,
-                      wpGUI.plugin.waypointsConfig.integrations.pl3xmap.icon)
                 }
                 else -> {
                   background
