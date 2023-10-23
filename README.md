@@ -84,7 +84,6 @@ And if your language is not there, the plugin is fully translatable
   - [Dynmap](https://www.spigotmc.org/resources/dynmap%C2%AE.274/)
   - [SquareMap](https://github.com/jpenilla/squaremap)
   - [BlueMap](https://bluemap.bluecolored.de/)
-  - [Pl3xMap](https://modrinth.com/plugin/pl3xmap)
 
 ## Commands
 
