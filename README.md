@@ -85,6 +85,11 @@ And if your language is not there, the plugin is fully translatable
   - [SquareMap](https://github.com/jpenilla/squaremap)
   - [BlueMap](https://bluemap.bluecolored.de/)
 
+## Videos
+
+DonKolia made a small video series of this plugins functionality where he demonstrates the basic functionality and all the available pointers.
+It is in Spanish but with English subtitles: [Link to playlist](https://www.youtube.com/watch?v=mt3lmGMKZV8&list=PLop1Uc5d4Z6pTJIBRwTFumdL7cInrE7fL)
+
 ## Commands
 
 `/waypoints` - Opens the GUI
