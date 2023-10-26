@@ -15,9 +15,6 @@
 ### Fixed
 - Default colors for beacon beams are not applied
 
-### Removed
-- Pl3xMap support because the project disappeared
-
 ## 4.2.0
 
 ### Added

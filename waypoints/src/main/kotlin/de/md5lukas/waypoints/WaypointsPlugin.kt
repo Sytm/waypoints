@@ -22,6 +22,7 @@ import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
 import de.md5lukas.waypoints.integrations.BlueMapIntegration
 import de.md5lukas.waypoints.integrations.DynMapIntegration
+import de.md5lukas.waypoints.integrations.Pl3xMapIntegration
 import de.md5lukas.waypoints.integrations.SquareMapIntegration
 import de.md5lukas.waypoints.integrations.VaultIntegration
 import de.md5lukas.waypoints.lang.Translations
@@ -86,6 +87,9 @@ class WaypointsPlugin : JavaPlugin() {
     private set
 
   var squareMapIntegrationAvailable = false
+    private set
+
+  var pl3xMapIntegrationAvailable = false
     private set
 
   private var blueMapIntegrationAvailable = false
@@ -205,6 +209,9 @@ class WaypointsPlugin : JavaPlugin() {
         if (bluemap.enabled) {
           blueMapIntegrationAvailable = BlueMapIntegration(this@WaypointsPlugin).setupBlueMap()
         }
+        if (pl3xmap.enabled) {
+          pl3xMapIntegrationAvailable = Pl3xMapIntegration(this@WaypointsPlugin).setupPl3xMap()
+        }
       }
     }
   }
@@ -232,6 +239,7 @@ class WaypointsPlugin : JavaPlugin() {
             dynMapIntegrationAvailable -> "DynMap"
             squareMapIntegrationAvailable -> "squaremap"
             blueMapIntegrationAvailable -> "BlueMap"
+            pl3xMapIntegrationAvailable -> "Pl3xMap"
             else -> "none"
           }
         })
