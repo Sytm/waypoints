@@ -17,6 +17,10 @@ repositories {
   maven("https://libraries.minecraft.net") // Brigadier
 
   maven("https://repo.mikeprimm.com/") // DynMap
+  exclusiveContent { // Pl3xMap
+    forRepository { maven("https://api.modrinth.com/maven") }
+    filter { includeGroup("maven.modrinth") }
+  }
 }
 
 dependencies {
@@ -54,6 +58,7 @@ dependencies {
   implementation(variantOf(libs.dynmap.api) { classifier("unshaded") }) { isTransitive = false }
   implementation(libs.squaremapApi)
   implementation(libs.bluemapApi)
+  implementation(libs.pl3xmap)
 
   // Testing
   testImplementation(kotlin("test-junit5"))
@@ -177,6 +182,7 @@ modrinth {
 
   dependencies {
     with(optional) {
+      project("pl3xmap")
       project("bluemap")
       project("squaremap")
       project("dynmap")

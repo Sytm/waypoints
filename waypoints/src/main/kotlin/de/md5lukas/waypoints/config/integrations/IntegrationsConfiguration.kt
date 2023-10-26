@@ -8,4 +8,5 @@ class IntegrationsConfiguration {
   val dynmap = DynMapConfiguration()
   val squaremap = SquareMapConfiguration()
   val bluemap = BlueMapConfiguration()
+  val pl3xmap = Pl3xMapConfiguration()
 }
