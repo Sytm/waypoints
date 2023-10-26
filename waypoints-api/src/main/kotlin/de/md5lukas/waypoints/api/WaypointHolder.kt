@@ -13,16 +13,22 @@ interface WaypointHolder : GUIFolder {
    * @see getWaypointsAmount If you just need the total amount without the overhead of creating the
    *   objects and counting the list.
    */
-  suspend fun getAllWaypoints(): List<Waypoint>
+  @JvmSynthetic suspend fun getAllWaypoints(): List<Waypoint>
+
+  fun getAllWaypointsCF() = future { getAllWaypoints() }
 
   /**
    * The total amount of waypoints that belong to this WaypointHolder disregarding the folder it is
    * in.
    */
-  suspend fun getWaypointsAmount(): Int
+  @JvmSynthetic suspend fun getWaypointsAmount(): Int
+
+  fun getWaypointsAmountCF() = future { getWaypointsAmount() }
 
   /** The total amount of folders that belong to this WaypointHolder. */
-  suspend fun getFoldersAmount(): Int
+  @JvmSynthetic suspend fun getFoldersAmount(): Int
+
+  fun getFoldersAmountCF() = future { getFoldersAmount() }
 
   /**
    * The total amount of waypoints that belong to this WaypointHolder disregarding the folder it is
@@ -31,7 +37,11 @@ interface WaypointHolder : GUIFolder {
    * If the type of this holder is [Type.PERMISSION], then the waypoints the player does not have
    * the permission for are omitted from the amount.
    */
-  suspend fun getWaypointsVisibleForPlayer(permissible: Permissible): Int
+  @JvmSynthetic suspend fun getWaypointsVisibleForPlayer(permissible: Permissible): Int
+
+  fun getWaypointsVisibleForPlayerCF(permissible: Permissible) = future {
+    getWaypointsVisibleForPlayer(permissible)
+  }
 
   /**
    * Creates a new Waypoint in this holder with the given name and location
@@ -40,7 +50,9 @@ interface WaypointHolder : GUIFolder {
    * @param location The location of the waypoint
    * @return The newly created waypoint
    */
-  suspend fun createWaypoint(name: String, location: Location): Waypoint
+  @JvmSynthetic suspend fun createWaypoint(name: String, location: Location): Waypoint
+
+  fun createWaypointCF(name: String, location: Location) = future { createWaypoint(name, location) }
 
   /**
    * Creates a new folder in this holder with the given name
@@ -48,7 +60,9 @@ interface WaypointHolder : GUIFolder {
    * @param name The name of the folder
    * @return The newly created folder
    */
-  suspend fun createFolder(name: String): Folder
+  @JvmSynthetic suspend fun createFolder(name: String): Folder
+
+  fun createFolderCF(name: String) = future { createFolder(name) }
 
   /**
    * Checks if a waypoint with the provided name already exists. The case of the name is ignored
@@ -57,7 +71,9 @@ interface WaypointHolder : GUIFolder {
    * @param name The name to look for
    * @return `true` if a waypoint exists with the name
    */
-  suspend fun isDuplicateWaypointName(name: String): Boolean
+  @JvmSynthetic suspend fun isDuplicateWaypointName(name: String): Boolean
+
+  fun isDuplicateWaypointNameCF(name: String) = future { isDuplicateWaypointName(name) }
 
   /**
    * Checks if a folder with the provided name already exists. The case of the name is ignored
@@ -66,7 +82,9 @@ interface WaypointHolder : GUIFolder {
    * @param name The name to look for
    * @return `true` if a folder exists with the name
    */
-  suspend fun isDuplicateFolderName(name: String): Boolean
+  @JvmSynthetic suspend fun isDuplicateFolderName(name: String): Boolean
+
+  fun isDuplicateFolderNameCF(name: String) = future { isDuplicateFolderName(name) }
 
   /**
    * Searches for folders
@@ -77,10 +95,16 @@ interface WaypointHolder : GUIFolder {
    * @param permissible The permissible to check the permissions for
    * @return All matching folders, or none
    */
+  @JvmSynthetic
   suspend fun searchFolders(
       query: String,
       permissible: Permissible? = null
   ): List<SearchResult<out Folder>>
+
+  fun searchFoldersCF(
+      query: String,
+      permissible: Permissible?,
+  ) = future { searchFolders(query, permissible) }
 
   /**
    * Searches for waypoints in this holder, case is ignored.
@@ -93,8 +117,14 @@ interface WaypointHolder : GUIFolder {
    * @param query The text that waypoint names must match
    * @return All matching waypoints, or none
    */
+  @JvmSynthetic
   suspend fun searchWaypoints(
       query: String,
       permissible: Permissible? = null
   ): List<SearchResult<out Waypoint>>
+
+  fun searchWaypointsCF(
+      query: String,
+      permissible: Permissible?,
+  ) = future { searchWaypoints(query, permissible) }
 }
