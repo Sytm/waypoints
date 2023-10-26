@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.pointers
 
+import kotlin.random.Random
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -29,6 +30,9 @@ interface Trackable {
    */
   val hologramItem: ItemStack?
     get() = null
+
+  val seed: Long
+    get() = Random.nextLong()
 
   fun asPredicate(): TrackablePredicate = { it === this }
 }

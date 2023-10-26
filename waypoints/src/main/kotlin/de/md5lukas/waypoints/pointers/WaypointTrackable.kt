@@ -29,6 +29,9 @@ class WaypointTrackable(private val plugin: WaypointsPlugin, val waypoint: Waypo
 
   override val hologramItem = plugin.apiExtensions.run { waypoint.getIconStack() }
 
+  override val seed: Long
+    get() = waypoint.id.mostSignificantBits
+
   override fun equals(other: Any?): Boolean {
     return waypoint == (other as? WaypointTrackable)?.waypoint
   }

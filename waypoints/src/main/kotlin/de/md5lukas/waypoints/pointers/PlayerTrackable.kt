@@ -27,6 +27,9 @@ class PlayerTrackable(private val plugin: WaypointsPlugin, val player: Player) :
         }
       }
 
+  override val seed: Long
+    get() = player.uniqueId.mostSignificantBits
+
   override fun equals(other: Any?): Boolean {
     return player == (other as? PlayerTrackable)?.player
   }
