@@ -41,10 +41,10 @@ class DeathFolderImpl(
       throw UnsupportedOperationException(
           "Changing the description of the death folder is not supported")
 
-  override val material: Icon?
+  override val icon: Icon?
     get() = null
 
-  override suspend fun setMaterial(material: Icon?) =
+  override suspend fun setIcon(icon: Icon?) =
       throw UnsupportedOperationException(
           "Changing the material of the death folder is not supported")
 

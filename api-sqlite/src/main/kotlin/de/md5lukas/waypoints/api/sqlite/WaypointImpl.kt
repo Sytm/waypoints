@@ -101,12 +101,12 @@ private constructor(
     set("permission", permission)
   }
 
-  override var material: Icon? = material
+  override var icon: Icon? = material
     private set
 
-  override suspend fun setMaterial(material: Icon?) {
-    this.material = material
-    set("material", material?.asString())
+  override suspend fun setIcon(icon: Icon?) {
+    this.icon = icon
+    set("material", icon?.asString())
   }
 
   override var beaconColor: Material? = beaconColor

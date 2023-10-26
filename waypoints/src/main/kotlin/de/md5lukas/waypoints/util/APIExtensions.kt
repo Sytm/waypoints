@@ -40,9 +40,9 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
           Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
           Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
-        }.getItem(material?.material, *getResolvers(player))
+        }.getItem(icon?.material, *getResolvers(player))
 
-    material?.customModelData?.let { customModelData ->
+    icon?.customModelData?.let { customModelData ->
       stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
     }
 
@@ -78,7 +78,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
       )
 
   fun Waypoint.getIconStack(): ItemStack =
-      material?.let { icon ->
+      icon?.let { icon ->
         ItemStack(icon.material).also { stack ->
           icon.customModelData?.let { customModelData ->
             stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
@@ -148,13 +148,13 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION
           else -> throw IllegalStateException("An folder with the type $type should not exist")
         }.getItem(
-            material?.material,
+            icon?.material,
             "name" placeholder name,
             "description" placeholder (description ?: ""),
             "created_at" placeholder createdAt,
             "amount" placeholder fetchedAmount)
 
-    material?.customModelData?.let { customModelData ->
+    icon?.customModelData?.let { customModelData ->
       stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
     }
 
