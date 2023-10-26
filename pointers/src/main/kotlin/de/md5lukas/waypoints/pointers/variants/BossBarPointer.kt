@@ -63,7 +63,7 @@ internal class BossBarPointer(
 
     val data =
         targetData.computeIfAbsent(trackable) {
-          TargetData(0f, (it as? StaticTrackable)?.beaconColor?.textColor ?: randomColor())
+          TargetData(0f, (it as? StaticTrackable)?.beaconColor?.textColor ?: randomColor(it.seed))
         }
 
     // Don't calculate the position of the indicator everytime in favour to make the compass update
@@ -131,5 +131,6 @@ internal class BossBarPointer(
     return substring(modOffset, min(length, modOffset + size)) + substring(0, overhang)
   }
 
-  private fun randomColor() = TextColor.color(HSVLike.hsvLike(Random.nextFloat(), 1f, 1f))
+  private fun randomColor(seed: Long) =
+      TextColor.color(HSVLike.hsvLike(Random(seed).nextFloat(), 1f, 1f))
 }

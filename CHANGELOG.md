@@ -11,6 +11,7 @@
 - Partial update of chinese translations by [SnowCutieOwO](https://github.com/SnowCutieOwO)
 - The default config has been updated to replace some items with custom player heads
 - Holograms are now multiline by default
+- The color of the indicators in the boss bar no longer change every settings change or plugin config reload
 
 ### Fixed
 - Default colors for beacon beams are not applied
