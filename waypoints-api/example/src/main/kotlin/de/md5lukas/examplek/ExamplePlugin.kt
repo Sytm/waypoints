@@ -1,6 +1,7 @@
 package de.md5lukas.examplek
 
 import de.md5lukas.waypoints.api.WaypointsAPI
+import de.md5lukas.waypoints.pointers.PointerManager
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -13,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin
 class ExamplePlugin : JavaPlugin() {
 
   private lateinit var api: WaypointsAPI
+  private lateinit var pointers: PointerManager
 
   override fun onEnable() {
     val localApi = server.servicesManager.load(WaypointsAPI::class.java)
@@ -20,8 +22,8 @@ class ExamplePlugin : JavaPlugin() {
       server.pluginManager.disablePlugin(this)
       return
     }
-
     this.api = localApi
+    this.pointers = server.servicesManager.load(PointerManager::class.java)!!
 
     CoroutineScope(EmptyCoroutineContext).launch {
       api.publicWaypoints.getAllWaypoints().forEach { waypoint ->

@@ -28,7 +28,7 @@ subprojects {
 spotless {
   java {
     target(
-        "*/src/*/java/**/*.java",
+        "**/src/*/java/**/*.java",
     )
     palantirJavaFormat().style("GOOGLE")
     formatAnnotations()

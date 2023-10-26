@@ -6,7 +6,7 @@ import java.util.UUID
 import org.bukkit.Location
 import org.bukkit.Material
 
-interface Waypoint : GUIDisplayable {
+interface Waypoint : GUIDisplayable, Deletable {
 
   /**
    * The unique ID of the waypoint.
@@ -22,22 +22,32 @@ interface Waypoint : GUIDisplayable {
   val owner: UUID?
 
   /** The folder this waypoint is inside, null otherwise */
-  suspend fun getFolder(): Folder?
+  @JvmSynthetic suspend fun getFolder(): Folder?
 
-  suspend fun setFolder(folder: Folder?)
+  fun getFolderCF() = future { getFolder() }
+
+  @JvmSynthetic suspend fun setFolder(folder: Folder?)
+
+  fun setFolderCF(folder: Folder?) = future { setFolder(folder) }
 
   /** The name of the waypoint */
   override val name: String
 
-  suspend fun setName(name: String)
+  @JvmSynthetic suspend fun setName(name: String)
+
+  fun setNameCF(name: String) = future { setName(name) }
 
   /** The name of the waypoint, optionally prefixed with the folder name */
-  suspend fun getFullPath(): String
+  @JvmSynthetic suspend fun getFullPath(): String
+
+  fun getFullPathCF() = future { getFullPath() }
 
   /** The description of the waypoint, null if none has been provided */
   val description: String?
 
-  suspend fun setDescription(description: String?)
+  @JvmSynthetic suspend fun setDescription(description: String?)
+
+  fun setDescriptionCF(description: String?) = future { setDescription(description) }
 
   /**
    * The required permission to see this waypoint. Required to be non-null if the waypoint is of
@@ -45,16 +55,22 @@ interface Waypoint : GUIDisplayable {
    */
   val permission: String?
 
-  suspend fun setPermission(permission: String)
+  @JvmSynthetic suspend fun setPermission(permission: String)
+
+  fun setPermissionCF(permission: String) = future { setPermission(permission) }
 
   /** The optional customized material this waypoint should appear as in the GUI */
   val material: Icon?
 
-  suspend fun setMaterial(material: Icon?)
+  @JvmSynthetic suspend fun setMaterial(material: Icon?)
+
+  fun setMaterialCF(material: Icon?) = future { setMaterial(material) }
 
   val beaconColor: Material?
 
-  suspend fun setBeaconColor(beaconColor: Material?)
+  @JvmSynthetic suspend fun setBeaconColor(beaconColor: Material?)
+
+  fun setBeaconColorCF(beaconColor: Material?) = future { setBeaconColor(beaconColor) }
 
   /** The location the waypoint has been created at */
   val location: Location
@@ -65,7 +81,9 @@ interface Waypoint : GUIDisplayable {
    * @param owner The UUID of the player to get the metadata for
    * @return The unique WaypointMeta instance
    */
-  suspend fun getWaypointMeta(owner: UUID): WaypointMeta
+  @JvmSynthetic suspend fun getWaypointMeta(owner: UUID): WaypointMeta
+
+  fun getWaypointMetaCF(owner: UUID) = future { getWaypointMeta(owner) }
 
   /**
    * Get custom data for this waypoint.
@@ -73,7 +91,9 @@ interface Waypoint : GUIDisplayable {
    * @param key The key of the custom data
    * @return The data associated with the key
    */
-  suspend fun getCustomData(key: String): String?
+  @JvmSynthetic suspend fun getCustomData(key: String): String?
+
+  fun getCustomDataCF(key: String) = future { getCustomData(key) }
 
   /**
    * Set custom data for this waypoint.
@@ -83,11 +103,17 @@ interface Waypoint : GUIDisplayable {
    * @param key The key of the custom data
    * @param data The data to save with the key
    */
-  suspend fun setCustomData(key: String, data: String?)
+  @JvmSynthetic suspend fun setCustomData(key: String, data: String?)
 
-  suspend fun shareWith(with: UUID, expires: OffsetDateTime? = null)
+  fun setCustomDataCF(key: String, data: String?) = future { setCustomData(key, data) }
 
-  suspend fun getSharedWith(): List<WaypointShare>
+  @JvmSynthetic suspend fun shareWith(with: UUID, expires: OffsetDateTime? = null)
+
+  fun shareWithCF(with: UUID, expires: OffsetDateTime?) = future { shareWith(with, expires) }
+
+  @JvmSynthetic suspend fun getSharedWith(): List<WaypointShare>
+
+  fun getSharedWithCF() = future { getSharedWith() }
 
   /**
    * Deletes this waypoint from the database.
@@ -97,5 +123,5 @@ interface Waypoint : GUIDisplayable {
    * [de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent] is triggered with the waypoint
    * removed from the database.
    */
-  suspend fun delete()
+  @JvmSynthetic override suspend fun delete()
 }

@@ -17,10 +17,14 @@ interface WaypointMeta {
   /** The amount of teleportations the player has performed to this waypoint */
   val teleportations: Int
 
-  suspend fun setTeleportations(teleportations: Int)
+  @JvmSynthetic suspend fun setTeleportations(teleportations: Int)
+
+  fun setTeleportationsCF(teleportations: Int) = future { setTeleportations(teleportations) }
 
   /** Whether the player has visited the location of this waypoint or not */
   val visited: Boolean
 
-  suspend fun setVisited(visited: Boolean)
+  @JvmSynthetic suspend fun setVisited(visited: Boolean)
+
+  fun setVisitedCF(visited: Boolean) = future { setVisited(visited) }
 }

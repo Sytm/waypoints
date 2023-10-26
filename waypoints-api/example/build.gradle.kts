@@ -5,4 +5,5 @@ dependencies {
   api(libs.stdlib)
   implementation(libs.coroutines)
   implementation(project(":waypoints-api"))
+  implementation(project(":pointers"))
 }
