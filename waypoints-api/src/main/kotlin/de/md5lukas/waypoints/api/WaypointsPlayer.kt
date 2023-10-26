@@ -118,7 +118,7 @@ interface WaypointsPlayer : WaypointHolder {
    * - [Folder.createdAt] is always at Epoch in the System-Timezone
    * - [Folder.name] cannot be changed
    * - [Folder.description] cannot be changed
-   * - [Folder.material] cannot be changed
+   * - [Folder.icon] cannot be changed
    * - [Folder.delete] cannot be called
    */
   val deathFolder: Folder

@@ -41,7 +41,7 @@ abstract class WaypointTest : TestBase() {
     if (type === Type.PERMISSION) {
       waypoint.setPermission("permission")
     }
-    waypoint.setMaterial(Icon(Material.GRASS_BLOCK, null))
+    waypoint.setIcon(Icon(Material.GRASS_BLOCK, null))
     waypoint.setBeaconColor(Material.LIGHT_GRAY_STAINED_GLASS)
 
     waypoint = holder.getWaypoints()[0]
@@ -54,7 +54,7 @@ abstract class WaypointTest : TestBase() {
             assertEquals("permission", waypoint.permission)
           }
         },
-        { assertEquals(Icon(Material.GRASS_BLOCK, null), waypoint.material) },
+        { assertEquals(Icon(Material.GRASS_BLOCK, null), waypoint.icon) },
         { assertEquals(Material.LIGHT_GRAY_STAINED_GLASS, waypoint.beaconColor) })
   }
 
@@ -64,11 +64,11 @@ abstract class WaypointTest : TestBase() {
 
     var waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
-    waypoint.setMaterial(Icon(Material.GRASS_BLOCK, 1))
+    waypoint.setIcon(Icon(Material.GRASS_BLOCK, 1))
 
     waypoint = holder.getWaypoints()[0]
 
-    assertEquals(Icon(Material.GRASS_BLOCK, 1), waypoint.material)
+    assertEquals(Icon(Material.GRASS_BLOCK, 1), waypoint.icon)
   }
 
   @Nested

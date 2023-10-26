@@ -319,6 +319,6 @@ suspend fun searchWaypoint(
 
 suspend fun Waypoint.copyFieldsTo(waypoint: Waypoint) {
   waypoint.setDescription(this.description)
-  waypoint.setMaterial(this.material)
+  waypoint.setIcon(this.icon)
   waypoint.setBeaconColor(this.beaconColor)
 }

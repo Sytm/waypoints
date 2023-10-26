@@ -280,7 +280,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
 
                         if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.material)) {
                           wpGUI.skedule {
-                            guiFolder.setMaterial(newIcon)
+                            guiFolder.setIcon(newIcon)
                             updateControls()
                           }
                           wpGUI.playSound { clickSuccess }

@@ -33,14 +33,14 @@ abstract class FolderTest : TestBase() {
 
     folder.setName("Other name")
     folder.setDescription("Some description")
-    folder.setMaterial(Icon(Material.GRASS_BLOCK, null))
+    folder.setIcon(Icon(Material.GRASS_BLOCK, null))
 
     folder = holder.getFolders()[0]
 
     assertAll(
         { assertEquals("Other name", folder.name) },
         { assertEquals("Some description", folder.description) },
-        { assertEquals(Icon(Material.GRASS_BLOCK, null), folder.material) })
+        { assertEquals(Icon(Material.GRASS_BLOCK, null), folder.icon) })
   }
 
   @TypesNoDeath
@@ -49,10 +49,10 @@ abstract class FolderTest : TestBase() {
 
     var folder = holder.createFolder("Test")
 
-    folder.setMaterial(Icon(Material.GRASS_BLOCK, 1))
+    folder.setIcon(Icon(Material.GRASS_BLOCK, 1))
 
     folder = holder.getFolders()[0]
 
-    assertEquals(Icon(Material.GRASS_BLOCK, 1), folder.material)
+    assertEquals(Icon(Material.GRASS_BLOCK, 1), folder.icon)
   }
 }

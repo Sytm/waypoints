@@ -79,7 +79,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
 
                 if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.material)) {
                   wpGUI.skedule {
-                    waypoint.setMaterial(newIcon)
+                    waypoint.setIcon(newIcon)
                     updatePage()
                   }
                   wpGUI.playSound { clickSuccess }

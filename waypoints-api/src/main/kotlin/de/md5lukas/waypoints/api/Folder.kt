@@ -30,11 +30,11 @@ interface Folder : GUIFolder, Deletable {
   fun setDescriptionCF(description: String?) = future { setDescription(description) }
 
   /** The optional customized material this folder should appear as in the GUI */
-  val material: Icon?
+  val icon: Icon?
 
-  @JvmSynthetic suspend fun setMaterial(material: Icon?)
+  @JvmSynthetic suspend fun setIcon(icon: Icon?)
 
-  fun setMaterialCF(material: Icon?) = future { setMaterial(material) }
+  fun setMaterialCF(icon: Icon?) = future { setIcon(icon) }
 
   /** The total amount of waypoints in this folder. */
   @JvmSynthetic suspend fun getAmount(): Int

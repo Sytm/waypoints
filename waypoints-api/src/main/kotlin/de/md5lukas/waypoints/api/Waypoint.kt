@@ -60,11 +60,11 @@ interface Waypoint : GUIDisplayable, Deletable {
   fun setPermissionCF(permission: String) = future { setPermission(permission) }
 
   /** The optional customized material this waypoint should appear as in the GUI */
-  val material: Icon?
+  val icon: Icon?
 
-  @JvmSynthetic suspend fun setMaterial(material: Icon?)
+  @JvmSynthetic suspend fun setIcon(icon: Icon?)
 
-  fun setMaterialCF(material: Icon?) = future { setMaterial(material) }
+  fun setIconCF(icon: Icon?) = future { setIcon(icon) }
 
   val beaconColor: Material?
 
