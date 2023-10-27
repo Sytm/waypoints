@@ -43,7 +43,7 @@ fun minecraftVersionAtLeast(plugin: Plugin, minor: Int, patch: Int = 0): Boolean
 }
 
 fun createCustomPlayerHead(plugin: Plugin, textureId: String): ItemStack {
-  val profile = plugin.server.createProfile(UUID.randomUUID())
+  val profile = plugin.server.createProfile(UUID.randomUUID(), "CUSTOM_HEAD")
 
   profile.setTextures(
       profile.textures.also { it.skin = URL("https://textures.minecraft.net/texture/$textureId") })
