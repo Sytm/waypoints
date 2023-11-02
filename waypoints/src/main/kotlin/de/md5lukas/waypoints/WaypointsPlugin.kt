@@ -34,8 +34,6 @@ import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.APIExtensions
 import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.UpdateChecker
-import dev.jorel.commandapi.CommandAPI
-import dev.jorel.commandapi.CommandAPIBukkitConfig
 import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.Dispatchers
@@ -97,13 +95,10 @@ class WaypointsPlugin : JavaPlugin() {
   private lateinit var metrics: Metrics
 
   override fun onLoad() {
-    CommandAPI.onLoad(CommandAPIBukkitConfig(this).silentLogs(true))
     Konfig.preloadClasses<WaypointsConfiguration>()
   }
 
   override fun onEnable() {
-    CommandAPI.onEnable()
-
     loadConfiguration()
     initDatabase()
     initApiServiceProvider()
@@ -306,7 +301,6 @@ class WaypointsPlugin : JavaPlugin() {
   // </editor-fold>
 
   override fun onDisable() {
-    CommandAPI.onDisable()
     if (this::databaseManager.isInitialized) {
       databaseManager.close()
     }
