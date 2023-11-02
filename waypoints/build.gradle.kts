@@ -79,7 +79,6 @@ tasks {
                 libs.versions.paper.get().substringBefore('-').split('.').take(2).joinToString("."),
             "kotlinVersion" to libs.versions.kotlin.get(),
             "coroutinesVersion" to libs.versions.coroutines.get(),
-            "commandApiVersion" to libs.versions.commandApi.get(),
         )
 
     inputs.properties(properties)
@@ -148,6 +147,8 @@ tasks {
   runServer {
     dependsOn("jar")
     minecraftVersion(libs.versions.paper.get().substringBefore('-'))
+
+    downloadPlugins { modrinth("commandapi", libs.versions.commandApi.get()) }
   }
 
   test { useJUnitPlatform() }
@@ -181,13 +182,13 @@ modrinth {
       })
 
   dependencies {
+    with(required) { project("commandapi") }
     with(optional) {
       project("pl3xmap")
       project("bluemap")
       project("squaremap")
       project("dynmap")
     }
-    with(embedded) { project("commandapi") }
   }
 
   debugMode.set(false)

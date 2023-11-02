@@ -12,6 +12,9 @@ folia-supported: true
 
 dependencies:
   server:
+    CommandAPI:
+      load: BEFORE
+      required: true
     Vault:
       load: BEFORE
       required: false
