@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 4.3.0
+
 ### Added
 - The GUI supports the usage of custom player heads
 - Custom model data is stored when changing the icon of a Waypoint or folder
