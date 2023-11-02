@@ -8,12 +8,12 @@
 - Custom model data can be set for items in the GUI like this: `DIAMOND|1`
 
 ### Changed
+- **CommandAPI is no longer bundled with Waypoints, but needs to be downloaded separately from [here](https://modrinth.com/plugin/commandapi)**
+  - Now Waypoints itself no longer requires updates between different Minecraft versions at all, only CommandAPI
 - Partial update of chinese translations by [SnowCutieOwO](https://github.com/SnowCutieOwO)
 - The default config has been updated to replace some items with custom player heads
 - Holograms are now multiline by default
 - The color of the indicators in the boss bar no longer change every settings change or plugin config reload
-- CommandAPI is no longer bundled with Waypoints, but needs to be downloaded separately from [here](https://modrinth.com/plugin/commandapi)
-  - Now Waypoints itself no longer requires updates between different Minecraft versions at all, only CommandAPI
 
 ### Fixed
 - Default colors for beacon beams are not applied
