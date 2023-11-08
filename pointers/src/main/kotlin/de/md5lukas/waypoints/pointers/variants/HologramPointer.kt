@@ -6,12 +6,16 @@ import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.util.minus
 import io.papermc.paper.entity.TeleportFlag
+import java.lang.invoke.MethodHandle
+import java.lang.invoke.MethodHandles
 import java.util.concurrent.ConcurrentHashMap
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.entity.*
 import org.bukkit.entity.ItemDisplay.*
 import org.bukkit.event.player.PlayerTeleportEvent
+import org.bukkit.util.Consumer
 import org.bukkit.util.Transformation
 import org.joml.AxisAngle4f
 import org.joml.Vector3f
@@ -21,6 +25,30 @@ internal class HologramPointer(
     player: Player,
     scheduler: AbstractScheduler,
 ) : Pointer(pointerManager, player, scheduler) {
+
+  private companion object {
+    val spawn: MethodHandle =
+        try {
+              World::class
+                  .java
+                  .getMethod(
+                      "spawn",
+                      Location::class.java,
+                      Class::class.java,
+                      java.util.function.Consumer::class.java,
+                  )
+            } catch (_: NoSuchMethodException) {
+              World::class
+                  .java
+                  .getMethod(
+                      "spawn",
+                      Location::class.java,
+                      Class::class.java,
+                      Consumer::class.java,
+                  )
+            }
+            .let(MethodHandles.lookup()::unreflect)
+  }
 
   private val config = pointerManager.configuration.hologram
 
@@ -116,27 +144,35 @@ internal class HologramPointer(
       } else {
         val world = player.world
         smoothingArmorStand =
-            world.spawn(location, ArmorStand::class.java) {
-              it.isPersistent = false
-              it.isVisibleByDefault = false
+            spawn.invoke(
+                world,
+                location,
+                ArmorStand::class.java,
+                Consumer<ArmorStand> {
+                  it.isPersistent = false
+                  it.isVisibleByDefault = false
 
-              it.setGravity(false)
-              it.isVisible = false
-              it.isMarker = true
-            }
+                  it.setGravity(false)
+                  it.isVisible = false
+                  it.isMarker = true
+                }) as ArmorStand
         player.showEntity(pointerManager.plugin, smoothingArmorStand)
 
         textDisplay =
-            world.spawn(location, TextDisplay::class.java) {
-              it.isPersistent = false
-              it.isVisibleByDefault = false
+            spawn.invoke(
+                world,
+                location,
+                TextDisplay::class.java,
+                Consumer<TextDisplay> {
+                  it.isPersistent = false
+                  it.isVisibleByDefault = false
 
-              it.billboard = Display.Billboard.CENTER
+                  it.billboard = Display.Billboard.CENTER
 
-              it.text(text)
-              it.isDefaultBackground = true
-              it.isSeeThrough = true
-            }
+                  it.text(text)
+                  it.isDefaultBackground = true
+                  it.isSeeThrough = true
+                }) as TextDisplay
         smoothingArmorStand.addPassenger(textDisplay)
         player.showEntity(pointerManager.plugin, textDisplay)
 
@@ -144,28 +180,32 @@ internal class HologramPointer(
           itemDisplay =
               trackable.hologramItem
                   ?.let { itemStack ->
-                    world.spawn(location, ItemDisplay::class.java) {
-                      it.isPersistent = false
-                      it.isVisibleByDefault = false
+                    spawn.invoke(
+                        world,
+                        location,
+                        ItemDisplay::class.java,
+                        Consumer<ItemDisplay> {
+                          it.isPersistent = false
+                          it.isVisibleByDefault = false
 
-                      it.itemStack = itemStack
+                          it.itemStack = itemStack
 
-                      val isBlock = itemStack.type.isBlock
-                      it.billboard =
-                          if (isBlock) {
-                            Display.Billboard.FIXED
-                          } else {
-                            Display.Billboard.CENTER
-                          }
-                      it.transformation =
-                          Transformation(
-                              Vector3f(0.0f, config.iconOffset, 0.0f),
-                              AxisAngle4f(),
-                              Vector3f(if (isBlock) 1.0f else 0.6f),
-                              AxisAngle4f(),
-                          )
-                      it.itemDisplayTransform = ItemDisplayTransform.FIXED
-                    }
+                          val isBlock = itemStack.type.isBlock
+                          it.billboard =
+                              if (isBlock) {
+                                Display.Billboard.FIXED
+                              } else {
+                                Display.Billboard.CENTER
+                              }
+                          it.transformation =
+                              Transformation(
+                                  Vector3f(0.0f, config.iconOffset, 0.0f),
+                                  AxisAngle4f(),
+                                  Vector3f(if (isBlock) 1.0f else 0.6f),
+                                  AxisAngle4f(),
+                              )
+                          it.itemDisplayTransform = ItemDisplayTransform.FIXED
+                        }) as ItemDisplay
                   }
                   ?.also {
                     smoothingArmorStand.addPassenger(it)
