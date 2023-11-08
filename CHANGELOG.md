@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Hologram pointer throwing errors on servers running Paper 1.20.1 and earlier.
+
 ## 4.3.0
 
 ### Added
