@@ -36,6 +36,7 @@ import de.md5lukas.waypoints.util.TeleportManager
 import de.md5lukas.waypoints.util.UpdateChecker
 import java.io.File
 import java.util.concurrent.TimeUnit
+import java.util.logging.Level
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import org.bstats.bukkit.Metrics
@@ -99,6 +100,13 @@ class WaypointsPlugin : JavaPlugin() {
   }
 
   override fun onEnable() {
+    try {
+      Class.forName("io.papermc.paper.configuration.Configuration")
+    } catch (_: ClassNotFoundException) {
+      logger.log(Level.SEVERE, "Waypoints requires the Paper server implementation")
+      server.pluginManager.disablePlugin(this)
+      return
+    }
     loadConfiguration()
     initDatabase()
     initApiServiceProvider()

@@ -1,5 +1,77 @@
 name: Waypoints
 authors:
   - Md5Lukas
-main: de.md5lukas.waypoints.legacy.RequiresPaperPlugins
+main: de.md5lukas.waypoints.WaypointsPlugin
 version: ${version}
+
+website: https://github.com/Sytm/waypoints
+
+api-version: "${apiVersion}"
+folia-supported: true
+
+depend:
+  - CommandAPI
+
+softdepend:
+  - Vault
+  - dynmap
+  - ProtocolLib
+  - squaremap
+  - BlueMap
+  - Pl3xMap
+
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}
+  - org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutinesVersion}
+
+permissions:
+  waypoints.*:
+    default: op
+    children:
+      - waypoints.command.scripting
+      - waypoints.command.use
+      - waypoints.command.other
+      - waypoints.command.statistics
+      - waypoints.command.reload
+      - waypoints.unlimited
+      - waypoints.temporaryWaypoint
+      - waypoints.temporaryWaypoint.others
+      - waypoints.modify.private
+      - waypoints.modify.public
+      - waypoints.modify.permission
+      - waypoints.modify.anywhere
+      - waypoints.teleport.private
+      - waypoints.teleport.public
+      - waypoints.teleport.permission
+      - waypoints.tracking.enabled
+      - waypoints.tracking.trackAll
+      - waypoints.updateNotification
+
+  waypoints.command.scripting: { }
+  waypoints.command.use:
+    default: true
+  waypoints.command.other: { }
+  waypoints.command.statistics: { }
+
+  waypoints.unlimited: { }
+  waypoints.temporaryWaypoint:
+    default: true
+  waypoints.temporaryWaypoint.others:
+    default: true
+
+  waypoints.modify.private:
+    default: true
+  waypoints.modify.public: { }
+  waypoints.modify.permission: { }
+  waypoints.modify.anywhere: { }
+
+  waypoints.teleport.private: { }
+  waypoints.teleport.public: { }
+  waypoints.teleport.permission: { }
+
+  waypoints.tracking.enabled:
+    default: true
+  waypoints.tracking.trackAll: { }
+
+  waypoints.updateNotification: { }
