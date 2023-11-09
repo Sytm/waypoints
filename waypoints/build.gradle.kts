@@ -41,7 +41,6 @@ dependencies {
   implementation(libs.md5Commons)
   implementation(libs.kinvs)
   implementation(libs.konfig)
-  implementation(libs.dependencyLoader)
 
   // Required dependencies
   implementation(libs.schedulers)
@@ -49,7 +48,6 @@ dependencies {
   implementation(libs.anvilGui)
   implementation(libs.bStats)
   implementation(libs.bundles.commandApi)
-  implementation(libs.papertrail)
 
   // Optional dependencies
   implementation(libs.vaultApi)
@@ -85,9 +83,7 @@ tasks {
 
     filteringCharset = "UTF-8"
 
-    filesMatching(listOf("paper-plugin.yml", "plugin.yml", "dependencies.yml")) {
-      expand(properties)
-    }
+    filesMatching("plugin.yml") { expand(properties) }
   }
 
   compileKotlin {
@@ -102,11 +98,6 @@ tasks {
     archiveClassifier.set("")
 
     minimize {
-      // Only referenced by the paper-plugin.yml
-      exclude(dependency(libs.dependencyLoader.get()))
-      // Only referenced by the plugin.yml
-      exclude(dependency(libs.papertrail.get()))
-
       exclude(project(":waypoints-api"))
       exclude(project(":utils"))
     }
@@ -124,12 +115,10 @@ tasks {
       include(dependency(libs.md5Commons.get()))
       include(dependency(libs.kinvs.get()))
       include(dependency(libs.konfig.get()))
-      include(dependency(libs.dependencyLoader.get()))
 
       include(dependency(libs.schedulers.get()))
       include(dependency(libs.skedule.get()))
       include(dependency(libs.anvilGui.get()))
-      include(dependency(libs.papertrail.get()))
       include(dependency("org.bstats::"))
     }
 
