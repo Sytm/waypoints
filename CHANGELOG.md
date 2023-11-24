@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 4.3.2
+
+### Fixed
+- Anvil text input not working with EcoEnchants or UberEnchant installed
+
 ## 4.3.1
 
 ### Fixed
