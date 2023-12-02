@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.pointers.util
 
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
@@ -12,7 +13,7 @@ internal operator fun Vector.div(d: Int) =
         this.z / d,
     )
 
-operator fun Vector.div(d: Double) =
+internal operator fun Vector.div(d: Double) =
     Vector(
         this.x / d,
         this.y / d,
@@ -32,3 +33,15 @@ internal val Location.highestBlock: Block
 
 internal fun Player.sendActualBlock(location: Location) =
     this.sendBlockChange(location, location.block.blockData)
+
+private lateinit var parsedVersion: IntArray
+
+internal fun minecraftVersionAtLeast(minor: Int, patch: Int = 0): Boolean {
+  if (!::parsedVersion.isInitialized) {
+    parsedVersion = IntArray(3)
+    Bukkit.getMinecraftVersion().split('.').forEachIndexed { index, s ->
+      parsedVersion[index] = s.toInt()
+    }
+  }
+  return parsedVersion[1] >= minor && parsedVersion[2] >= patch
+}
