@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Changed
+- The movement of the hologram pointer has been smoothed, but are disabled on Minecraft versions < 1.20.2
+
 ## 4.3.2
 
 ### Fixed

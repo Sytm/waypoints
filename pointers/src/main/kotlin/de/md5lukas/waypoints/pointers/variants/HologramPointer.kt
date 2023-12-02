@@ -5,14 +5,13 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.util.minus
-import io.papermc.paper.entity.TeleportFlag
 import java.util.concurrent.ConcurrentHashMap
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.entity.*
 import org.bukkit.entity.ItemDisplay.*
-import org.bukkit.event.player.PlayerTeleportEvent
 import org.bukkit.util.Transformation
+import org.bukkit.util.Vector
 import org.joml.AxisAngle4f
 import org.joml.Vector3f
 
@@ -36,9 +35,11 @@ internal class HologramPointer(
   private val activeHolograms: MutableMap<Trackable, Hologram> = ConcurrentHashMap()
 
   private lateinit var playerEyes: Location
+  private lateinit var velocityOffset: Vector
 
   override fun preUpdates() {
     playerEyes = player.eyeLocation.clone()
+    velocityOffset = player.velocity.setY(0).multiply(interval)
   }
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
@@ -62,7 +63,10 @@ internal class HologramPointer(
 
           val direction = (tVec - pVec).normalize()
 
-          pVec.add(direction.multiply(config.distanceFromPlayer)).toLocation(playerEyes.world!!)
+          pVec
+              .add(direction.multiply(config.distanceFromPlayer))
+              .add(velocityOffset)
+              .toLocation(playerEyes.world!!)
         }
 
     if (trackable in activeHolograms) {
@@ -93,43 +97,23 @@ internal class HologramPointer(
       var text: Component
   ) {
 
-    private lateinit var smoothingArmorStand: ArmorStand
     private lateinit var textDisplay: TextDisplay
     private var itemDisplay: ItemDisplay? = null
 
     fun update() {
-      if (::smoothingArmorStand.isInitialized) {
-        if (player.world == smoothingArmorStand.world) {
-          smoothingArmorStand.teleport(
-              location,
-              PlayerTeleportEvent.TeleportCause.PLUGIN,
-              TeleportFlag.EntityState.RETAIN_PASSENGERS)
-        } else {
-          // Cannot teleport entities with passengers, so eject, teleport separately, and remount
-          // them
-          smoothingArmorStand.eject()
-          arrayOf(smoothingArmorStand, textDisplay, itemDisplay).forEach { it?.teleport(location) }
-          smoothingArmorStand.addPassenger(textDisplay)
-          itemDisplay?.let { smoothingArmorStand.addPassenger(it) }
-        }
+      if (::textDisplay.isInitialized) {
+        textDisplay.teleportAsync(location)
+        itemDisplay?.teleportAsync(location)
         textDisplay.text(text)
       } else {
         val world = player.world
-        smoothingArmorStand =
-            world.spawn(location, ArmorStand::class.java) {
-              it.isPersistent = false
-              it.isVisibleByDefault = false
-
-              it.setGravity(false)
-              it.isVisible = false
-              it.isMarker = true
-            }
-        player.showEntity(pointerManager.plugin, smoothingArmorStand)
 
         textDisplay =
             world.spawn(location, TextDisplay::class.java) {
               it.isPersistent = false
               it.isVisibleByDefault = false
+
+              it.teleportDuration = interval
 
               it.billboard = Display.Billboard.CENTER
 
@@ -137,16 +121,17 @@ internal class HologramPointer(
               it.isDefaultBackground = true
               it.isSeeThrough = true
             }
-        smoothingArmorStand.addPassenger(textDisplay)
         player.showEntity(pointerManager.plugin, textDisplay)
 
         if (config.iconEnabled) {
           itemDisplay =
-              trackable.hologramItem
-                  ?.let { itemStack ->
-                    world.spawn(location, ItemDisplay::class.java) {
+              trackable.hologramItem?.let { itemStack ->
+                world
+                    .spawn(location, ItemDisplay::class.java) {
                       it.isPersistent = false
                       it.isVisibleByDefault = false
+
+                      it.teleportDuration = interval
 
                       it.itemStack = itemStack
 
@@ -166,17 +151,13 @@ internal class HologramPointer(
                           )
                       it.itemDisplayTransform = ItemDisplayTransform.FIXED
                     }
-                  }
-                  ?.also {
-                    smoothingArmorStand.addPassenger(it)
-                    player.showEntity(pointerManager.plugin, it)
-                  }
+                    .also { player.showEntity(pointerManager.plugin, it) }
+              }
         }
       }
     }
 
     fun remove() {
-      smoothingArmorStand.remove()
       textDisplay.remove()
       itemDisplay?.remove()
     }

@@ -12,7 +12,7 @@ plugins {
 repositories {}
 
 dependencies {
-  api("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+  api(libs.paper)
   api(libs.stdlib)
 
   implementation(libs.schedulers)
