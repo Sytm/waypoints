@@ -34,8 +34,7 @@ internal class WaypointsAPIImpl(
         dm.connection.selectFirst(
             "SELECT EXISTS(SELECT 1 FROM player_data WHERE id = ?);", uuid.toString()) {
               getInt(1) == 1
-            }
-            ?: false
+            } ?: false
       }
 
   override val publicWaypoints: WaypointHolder = WaypointHolderImpl(dm, Type.PUBLIC, null)

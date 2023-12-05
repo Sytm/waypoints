@@ -38,7 +38,7 @@ internal class HologramPointer(
   private lateinit var velocityOffset: Vector
 
   override fun preUpdates() {
-    playerEyes = player.eyeLocation.clone()
+    playerEyes = player.eyeLocation
     velocityOffset = player.velocity.setY(0).multiply(interval)
   }
 

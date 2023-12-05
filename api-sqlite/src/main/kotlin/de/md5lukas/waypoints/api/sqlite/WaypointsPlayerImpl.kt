@@ -136,8 +136,7 @@ private constructor(
             type.name,
         ) {
           getInt("teleportations")
-        }
-            ?: 0
+        } ?: 0
       }
 
   override suspend fun setTeleportations(type: Type, teleportations: Int) {
@@ -232,8 +231,7 @@ private constructor(
             OffsetDateTime.now().toString(),
         ) {
           getInt(1) == 1
-        }
-            ?: false
+        } ?: false
       }
 
   override suspend fun getSharedWaypoints(): List<WaypointShare> =
