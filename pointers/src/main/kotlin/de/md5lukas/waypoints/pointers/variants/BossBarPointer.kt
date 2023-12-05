@@ -46,7 +46,7 @@ internal class BossBarPointer(
   private lateinit var playerLocation: Location
 
   override fun preUpdates() {
-    playerLocation = player.location.clone()
+    playerLocation = player.location
     if (bossBar === null) {
       bossBar =
           BossBar.bossBar(Component.empty(), 1f, config.barColor, config.barStyle).also {

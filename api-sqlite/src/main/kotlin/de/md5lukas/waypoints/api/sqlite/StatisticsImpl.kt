@@ -37,14 +37,12 @@ class StatisticsImpl(private val dm: SQLiteManager) : Statistics {
   private fun getWaypointCount(type: Type) =
       dm.connection.selectFirst("SELECT COUNT(*) FROM waypoints WHERE type = ?;", type.name) {
         getInt(1)
-      }
-          ?: 0
+      } ?: 0
 
   private fun getFolderCount(type: Type) =
       dm.connection.selectFirst("SELECT COUNT(*) FROM folders WHERE type = ?;", type.name) {
         getInt(1)
-      }
-          ?: 0
+      } ?: 0
 
   override val databaseSize: Long
     get() = dm.file?.length() ?: 0

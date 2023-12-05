@@ -28,7 +28,7 @@ internal class ActionBarPointer(
     get() = true
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
-    val playerLocation = player.location.clone()
+    val playerLocation = player.location
 
     player.sendActionBar(
         if (translatedTarget !== null) {

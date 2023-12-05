@@ -143,8 +143,7 @@ internal open class WaypointHolderImpl(
             name,
         ) {
           getInt(1) == 1
-        }
-            ?: false
+        } ?: false
       }
 
   override suspend fun isDuplicateFolderName(name: String): Boolean =
@@ -156,8 +155,7 @@ internal open class WaypointHolderImpl(
             name,
         ) {
           getInt(1) == 1
-        }
-            ?: false
+        } ?: false
       }
 
   override suspend fun searchFolders(

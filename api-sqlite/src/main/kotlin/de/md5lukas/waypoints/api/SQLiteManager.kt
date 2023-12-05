@@ -260,8 +260,7 @@ class SQLiteManager(
       val currentSchemaVersion =
           selectFirst("SELECT schemaVersion FROM database_meta WHERE id = ?;", 0) {
             getInt("schemaVersion")
-          }
-              ?: throw IllegalStateException("Could not retrieve schema version of database")
+          } ?: throw IllegalStateException("Could not retrieve schema version of database")
       if (currentSchemaVersion > schemaVersion) {
         throw IllegalStateException(
             "The database uses a schema that is newer than the plugin is made for (Database: $currentSchemaVersion, Plugin: $schemaVersion)")
