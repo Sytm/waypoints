@@ -201,5 +201,10 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
   }
 }
 
-fun ItemStack.toIcon() =
-    Icon(type, if (itemMeta.hasCustomModelData()) itemMeta.customModelData else null)
+fun ItemStack.toIcon(): Icon {
+  val itemMeta = this.itemMeta
+  return Icon(
+      type,
+      if (itemMeta !== null && itemMeta.hasCustomModelData()) itemMeta.customModelData else null,
+  )
+}
