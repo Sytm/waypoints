@@ -4,7 +4,6 @@ import de.md5lukas.schedulers.AbstractScheduler
 import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.config.PointerConfiguration
-import de.md5lukas.waypoints.pointers.util.minecraftVersionAtLeast
 import org.bukkit.entity.Player
 
 enum class PointerVariant(
@@ -17,8 +16,7 @@ enum class PointerVariant(
   BLINKING_BLOCK("blinkingBlock", { it.blinkingBlock.enabled }, ::BlinkingBlockPointer),
   BOSS_BAR("bossBar", { it.bossBar.enabled }, ::BossBarPointer),
   COMPASS("compass", { it.compass.enabled }, ::CompassPointer),
-  HOLOGRAM(
-      "hologram", { it.hologram.enabled && minecraftVersionAtLeast(20, 2) }, ::HologramPointer),
+  HOLOGRAM("hologram", { it.hologram.enabled }, ::HologramPointer),
   PARTICLE("particle", { it.particle.enabled }, ::ParticlePointer),
   TRAIL("trail", { it.trail.enabled }, ::TrailPointer)
 }
