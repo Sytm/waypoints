@@ -4,6 +4,10 @@
 
 ### Changed
 - The movement of the hologram pointer has been smoothed, but the plugin requires at least 1.20.2
+- The seeds for sounds are now set by the plugin instead of the server to prevent them breaking in a future Paper update
+
+### Fixed
+- NullPointerException is thrown when trying to edit the icon of something with empty hands
 
 ## 4.3.2
 
