@@ -76,6 +76,10 @@ general:
   waypoints:
     # Maximum amount of private waypoints a player can have. Players with the permission waypoints.unlimited are not affected by this restriction
     limit: 200
+    # Limit values to check for in permissions.
+    # If the list contains the value "400", the plugin looks for the permission "waypoints.limit.waypoints.400", and if a player has this permission the limit is lifted
+    permissionLimits:
+      - 400
     # Allow or disallow duplicate names for private, public or permission waypoints
     allowDuplicateNames:
       private: true
@@ -85,6 +89,10 @@ general:
   folders:
     # Maximum amount of private folders a player can have. Players with the permission waypoints.unlimited are not affected by this restriction
     limit: 20
+    # Limit values to check for in permissions.
+    # If the list contains the value "40", the plugin looks for the permission "waypoints.limit.folders.40", and if a player has this permission the limit is lifted
+    permissionLimits:
+      - 40
     # Allow or disallow duplicate names for private, public or permission folders
     allowDuplicateNames:
       private: true
