@@ -42,6 +42,7 @@ import kotlinx.coroutines.asExecutor
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
+import org.bukkit.permissions.Permission
 import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -118,6 +119,7 @@ class WaypointsPlugin : JavaPlugin() {
 
     registerCommands()
     registerEvents()
+    registerCustomizablePermissions(false)
 
     startMetrics()
     startBackgroundTasks()
@@ -146,6 +148,7 @@ class WaypointsPlugin : JavaPlugin() {
     konfig.deserializeInto(config, waypointsConfig)
 
     ConfigReloadEvent(waypointsConfig).callEvent()
+    registerCustomizablePermissions(true)
   }
 
   private fun initDatabase() {
@@ -227,6 +230,29 @@ class WaypointsPlugin : JavaPlugin() {
   private fun registerEvents() {
     registerEvents(WaypointsListener(this))
     registerEvents(PointerEvents(this))
+  }
+
+  private fun registerCustomizablePermissions(clearPrevious: Boolean) {
+    val pm = server.pluginManager
+    if (clearPrevious) {
+      pm.permissions.forEach {
+        val name = it.name
+        if (name.startsWith(WaypointsPermissions.LIMIT_PREFIX_WAYPOINTS) ||
+            name.startsWith(WaypointsPermissions.LIMIT_PREFIX_FOLDERS)) {
+          pm.removePermission(name)
+        }
+      }
+    }
+
+    val permissions = mutableListOf<Permission>()
+    waypointsConfig.general.waypoints.permissionLimits.mapTo(permissions) {
+      Permission(WaypointsPermissions.LIMIT_PREFIX_WAYPOINTS + it)
+    }
+    waypointsConfig.general.folders.permissionLimits.mapTo(permissions) {
+      Permission(WaypointsPermissions.LIMIT_PREFIX_FOLDERS + it)
+    }
+
+    pm.addPermissions(permissions)
   }
 
   private fun startMetrics() {

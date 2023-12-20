@@ -7,12 +7,14 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.config.general.FilterType
+import de.md5lukas.waypoints.config.general.LimitConfiguration
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.permissions.Permissible
 
 sealed class CreateResult
 
@@ -85,11 +87,11 @@ suspend fun createWaypointPrivate(
 
   val waypointsPlayer = plugin.api.getWaypointPlayer(player.uniqueId)
 
-  val waypointLimit = plugin.waypointsConfig.general.waypoints.limit
-
-  if (!player.hasPermission(WaypointsPermissions.UNLIMITED) &&
-      waypointLimit > 0 &&
-      waypointsPlayer.getWaypointsAmount() >= waypointLimit) {
+  if (limitReached(
+      player,
+      waypointsPlayer.getWaypointsAmount(),
+      WaypointsPermissions.LIMIT_PREFIX_WAYPOINTS,
+      plugin.waypointsConfig.general.waypoints)) {
     plugin.translations.WAYPOINT_LIMIT_REACHED_PRIVATE.send(player)
     return LimitReached
   }
@@ -195,11 +197,11 @@ suspend fun createFolderPrivate(
 ): CreateResult {
   val waypointsPlayer = plugin.api.getWaypointPlayer(player.uniqueId)
 
-  val folderLimit = plugin.waypointsConfig.general.folders.limit
-
-  if (!player.hasPermission(WaypointsPermissions.UNLIMITED) &&
-      folderLimit > 0 &&
-      waypointsPlayer.getFoldersAmount() >= folderLimit) {
+  if (limitReached(
+      player,
+      waypointsPlayer.getFoldersAmount(),
+      WaypointsPermissions.LIMIT_PREFIX_FOLDERS,
+      plugin.waypointsConfig.general.folders)) {
     plugin.translations.FOLDER_LIMIT_REACHED_PRIVATE.send(player)
     return LimitReached
   }
@@ -321,4 +323,24 @@ suspend fun Waypoint.copyFieldsTo(waypoint: Waypoint) {
   waypoint.setDescription(this.description)
   waypoint.setIcon(this.icon)
   waypoint.setBeaconColor(this.beaconColor)
+}
+
+private fun limitReached(
+    permissible: Permissible,
+    currentAmount: Int,
+    permissionPrefix: String,
+    limits: LimitConfiguration,
+): Boolean {
+  if (limits.limit == 0 ||
+      currentAmount < limits.limit ||
+      permissible.hasPermission(WaypointsPermissions.UNLIMITED))
+      return false
+
+  limits.permissionLimits.forEach {
+    if (permissible.hasPermission(permissionPrefix + it) && currentAmount < it) {
+      return false
+    }
+  }
+
+  return true
 }
