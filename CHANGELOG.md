@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- Ability to pay for teleportations with experience points in addition to levels
+
 ## 4.4.0
 
 ### Added
