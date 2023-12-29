@@ -204,8 +204,12 @@ message:
       # current_level: Level of the player
       # required_level: Level required for teleportation
       xp: |
-        <red>Du hast nicht genügend Erfahrungs-Level für eine Teleportation.
+        <red>Du hast nicht genügend Erfahrungslevel für eine Teleportation.
         <red>Benötigtes Level: <yellow><required_level>
+      xpPoints: |
+        <red>Du hast nicht genügend Erfahrungspunkte für eine Teleportation.
+        <red>Deine aktuelle Anzahl an Punkten: <yellow><current_points>
+        <red>Benötigte Punkte: <yellow><required_points>
       # current_balance: Vault balance of the player
       # required_balance: Vault balance required for teleportation
       balance: |
@@ -517,7 +521,11 @@ inventory:
       displayName: "<yellow>Zum Wegpunkt teleportieren"
       description: ""
       # levels: The amount of levels required for teleportation
-      xpLevel: "<gray>Du benötigst <yellow><levels><gray> Erfahrungs-Level um diese Teleportation durchzuführen."
+      xpLevel: "<gray>Du benötigst <yellow><levels><gray> Erfahrungslevel um diese Teleportation durchzuführen."
+      # points: The amount of experience points required for teleportation
+      xpPoints: |
+        <gray>Du benötigst <yellow><points><gray> Erfahrungspunkte
+        <gray>um diese Teleportation durchzuführen.
       # balance: The amount of balance required for teleportation
       balance: "<gray>Du benötigst <yellow><balance><gray> auf deinem Konto um diese Teleportation durchzuführen."
       mustVisit: |

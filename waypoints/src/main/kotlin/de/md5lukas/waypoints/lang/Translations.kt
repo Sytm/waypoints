@@ -144,6 +144,8 @@ class Translations(tl: TranslationLoader) {
   val MESSAGE_TELEPORT_ON_COOLDOWN = Translation(tl, "message.teleport.onCooldown", PREFIX)
   val MESSAGE_TELEPORT_NOT_ALLOWED = Translation(tl, "message.teleport.notAllowed", PREFIX)
   val MESSAGE_TELEPORT_NOT_ENOUGH_XP = Translation(tl, "message.teleport.notEnough.xp", PREFIX)
+  val MESSAGE_TELEPORT_NOT_ENOUGH_XP_POINTS =
+      Translation(tl, "message.teleport.notEnough.xpPoints", PREFIX)
   val MESSAGE_TELEPORT_NOT_ENOUGH_BALANCE =
       Translation(tl, "message.teleport.notEnough.balance", PREFIX)
   val MESSAGE_TELEPORT_STAND_STILL_NOTICE =
@@ -270,6 +272,7 @@ class Translations(tl: TranslationLoader) {
   val WAYPOINT_MOVE_TO_FOLDER = ItemTranslation(tl, "inventory.waypoint.moveToFolder")
   val WAYPOINT_TELEPORT = ItemTranslation(tl, "inventory.waypoint.teleport")
   val WAYPOINT_TELEPORT_XP_LEVEL = InventoryTranslation(tl, "inventory.waypoint.teleport.xpLevel")
+  val WAYPOINT_TELEPORT_XP_POINTS = InventoryTranslation(tl, "inventory.waypoint.teleport.xpPoints")
   val WAYPOINT_TELEPORT_BALANCE = InventoryTranslation(tl, "inventory.waypoint.teleport.balance")
   val WAYPOINT_TELEPORT_MUST_VISIT =
       InventoryTranslation(tl, "inventory.waypoint.teleport.mustVisit")

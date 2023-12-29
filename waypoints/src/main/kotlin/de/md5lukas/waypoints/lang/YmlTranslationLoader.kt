@@ -26,12 +26,7 @@ class YmlTranslationLoader(
               build()
             })
         postProcessor {
-          if (it.hasDecoration(TextDecoration.ITALIC)) {
-                it
-              } else {
-                it.decoration(TextDecoration.ITALIC, false)
-              }
-              .compact()
+          it.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE).compact()
         }
 
         build()

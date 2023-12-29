@@ -89,6 +89,9 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
       TeleportPaymentType.XP ->
           plugin.translations.WAYPOINT_TELEPORT_XP_LEVEL.withReplacements(
               "levels" placeholder ceil(getTeleportationPrice(player, waypoint)).toInt())
+      TeleportPaymentType.XP_POINTS ->
+          plugin.translations.WAYPOINT_TELEPORT_XP_POINTS.withReplacements(
+              "points" placeholder ceil(getTeleportationPrice(player, waypoint)).toInt())
       TeleportPaymentType.VAULT ->
           plugin.translations.WAYPOINT_TELEPORT_BALANCE.withReplacements(
               "balance" placeholder getTeleportationPrice(player, waypoint))
@@ -147,6 +150,17 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
             }
             canTeleport
           }
+          TeleportPaymentType.XP_POINTS -> {
+            val points = player.calculateTotalExperiencePoints()
+            val canTeleport = points >= price
+            if (!canTeleport) {
+              plugin.translations.MESSAGE_TELEPORT_NOT_ENOUGH_XP_POINTS.send(
+                  player,
+                  "current_points" placeholder points,
+                  "required_points" placeholder ceil(price).toInt())
+            }
+            canTeleport
+          }
           TeleportPaymentType.VAULT -> {
             val balance = plugin.vaultIntegration.getBalance(player)
             val canTeleport = balance >= price
@@ -180,8 +194,14 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
             TeleportPaymentType.DISABLED -> false
             TeleportPaymentType.FREE -> true
             TeleportPaymentType.XP -> {
-              player.giveExpLevels((-price).toInt())
               modifyTeleportations(player, waypoint, 1)
+              player.giveExpLevels((-ceil(price)).toInt())
+              true
+            }
+            TeleportPaymentType.XP_POINTS -> {
+              modifyTeleportations(player, waypoint, 1)
+              player.setExperienceLevelAndProgress(
+                  player.calculateTotalExperiencePoints() - ceil(price).toInt())
               true
             }
             TeleportPaymentType.VAULT -> {
@@ -201,7 +221,10 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         } else {
           when (config.paymentType) {
             TeleportPaymentType.XP -> {
-              player.giveExpLevels(price.toInt())
+              player.giveExpLevels(ceil(price).toInt())
+            }
+            TeleportPaymentType.XP_POINTS -> {
+              player.giveExp(ceil(price).toInt())
               modifyTeleportations(player, waypoint, -1)
             }
             TeleportPaymentType.VAULT -> {
