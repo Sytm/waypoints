@@ -5,6 +5,9 @@
 ### Added
 - Ability to pay for teleportations with experience points in addition to levels
 
+### Fixed
+- Thread check is triggered when a player sees the blinking block and teleports away on Folia [Sytm/quest-pointers#1](https://github.com/Sytm/quest-pointers/issues/1)
+
 ## 4.4.0
 
 ### Added

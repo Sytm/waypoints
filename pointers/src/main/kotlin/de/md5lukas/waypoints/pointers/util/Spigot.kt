@@ -30,5 +30,8 @@ internal fun Location.blockEquals(other: Location): Boolean =
 internal val Location.highestBlock: Block
   get() = world!!.getHighestBlockAt(this)
 
-internal fun Player.sendActualBlock(location: Location) =
+internal fun Player.sendActualBlock(location: Location) {
+  if (server.isOwnedByCurrentRegion(location)) {
     this.sendBlockChange(location, location.block.blockData)
+  }
+}
