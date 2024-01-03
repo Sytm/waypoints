@@ -2,11 +2,14 @@
 
 ## [Unreleased]
 
+## 4.4.1
+
 ### Added
 - Ability to pay for teleportations with experience points in addition to levels
 
 ### Fixed
 - Thread check is triggered when a player sees the blinking block and teleports away on Folia [Sytm/quest-pointers#1](https://github.com/Sytm/quest-pointers/issues/1)
+- An exception is thrown when using the trail pointer to point to a waypoint in another world [#106](https://github.com/Sytm/waypoints/issues/106)
 
 ## 4.4.0
 
@@ -22,7 +25,7 @@
 
 ## 4.3.2
 
-### Fixed
+### Fixed*
 - Anvil text input not working with EcoEnchants or UberEnchant installed
 
 ## 4.3.1

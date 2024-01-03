@@ -76,10 +76,12 @@ internal class TrailPointer(
   private val locationTrail: CopyOnWriteArrayList<Location> = CopyOnWriteArrayList()
   private var lastFuture: CompletableFuture<*> = CompletableFuture.completedFuture(Unit)
 
-  // From 229 70 169 to -9 70 154
-
   override fun update(trackable: Trackable, translatedTarget: Location?) {
     if (translatedTarget === null || trackable !is StaticTrackable) {
+      return
+    }
+    if (player.world !== translatedTarget.world) {
+      hide(trackable, translatedTarget)
       return
     }
 
