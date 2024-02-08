@@ -89,11 +89,13 @@ internal class TrailPointer(
       // If the player has moved too far away from any parts of the calculated trail invalidate the
       // previous trail or if the calculated trail is only one block long because the path couldn't
       // be calculated
-      if (locationTrail.all {
-        val squared = player.location.distanceSquared(it)
-        val outOfReach = squared >= config.pathInvalidationDistanceSquared
-        outOfReach
-      } || (locationTrail.size == 1 && !locationTrail.last().blockEquals(translatedTarget))) {
+      if (player.world !== locationTrail.firstOrNull()?.world ||
+          locationTrail.all {
+            val squared = player.location.distanceSquared(it)
+            val outOfReach = squared >= config.pathInvalidationDistanceSquared
+            outOfReach
+          } ||
+          (locationTrail.size == 1 && !locationTrail.last().blockEquals(translatedTarget))) {
         locationTrail.clear()
       }
 
