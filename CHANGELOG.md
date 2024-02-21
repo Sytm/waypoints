@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 4.4.2
+
+### Fixed
+- Error messages get printed into the console when the trail pointer is active and the player switches worlds
+
 ## 4.4.1
 
 ### Added
