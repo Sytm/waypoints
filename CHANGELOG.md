@@ -6,6 +6,7 @@
 
 ### Fixed
 - More world checks added to the trail pointer logic to prevent error spam on world switching
+- Error spam from the hologram pointer when switching worlds outside the spawn chunks
 
 ## 4.4.2
 
