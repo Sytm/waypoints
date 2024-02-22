@@ -10,7 +10,7 @@ dependencies {
 }
 
 java {
-  toolchain.languageVersion.set(JavaLanguageVersion.of(libs.versions.jvmToolchain.get().toInt()))
+  toolchain.languageVersion = JavaLanguageVersion.of(libs.versions.jvmToolchain.get().toInt())
   withSourcesJar()
   withJavadocJar()
 }

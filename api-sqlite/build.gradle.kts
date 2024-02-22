@@ -22,7 +22,7 @@ kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
 tasks {
   shadowJar {
-    archiveClassifier.set("")
+    archiveClassifier = ""
 
     dependencies { include(dependency(libs.sqliteHelper.get())) }
 

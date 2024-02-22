@@ -95,7 +95,7 @@ tasks {
   }
 
   shadowJar {
-    archiveClassifier.set("")
+    archiveClassifier = ""
 
     minimize {
       exclude(project(":waypoints-api"))
@@ -147,28 +147,25 @@ runPaper.folia.registerTask()
 
 kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
-changelog { path.set(rootProject.relativePath("CHANGELOG.md")) }
+changelog { path = rootProject.relativePath("CHANGELOG.md") }
 
 modrinth {
   val modrinthToken: String? by project
 
-  token.set(modrinthToken)
+  token = modrinthToken
 
-  projectId.set("waypoints")
-  versionType.set("release")
+  projectId = "waypoints"
+  versionType = "release"
   uploadFile.set(tasks.shadowJar)
 
   gameVersions.addAll("1.20.2", libs.versions.paper.get().substringBefore('-'))
   loaders.addAll("paper", "folia")
 
-  syncBodyFrom.set(rootProject.file("README.md").readText())
+  syncBodyFrom = provider { rootProject.file("README.md").readText() }
 
-  changelog.set(
-      provider {
-        with(project.changelog) {
-          renderItem(getLatest().withEmptySections(false).withHeader(false))
-        }
-      })
+  changelog = provider {
+    with(project.changelog) { renderItem(getLatest().withEmptySections(false).withHeader(false)) }
+  }
 
   dependencies {
     with(required) { project("commandapi") }
@@ -180,5 +177,5 @@ modrinth {
     }
   }
 
-  debugMode.set(false)
+  debugMode = false
 }
