@@ -101,13 +101,25 @@ internal class HologramPointer(
     private var itemDisplay: ItemDisplay? = null
 
     fun update() {
-      if (::textDisplay.isInitialized) {
+      // When teleporting between worlds, the chunks are immediately unloaded, so the display
+      // entities are no longer valid and must be recreated
+      if (::textDisplay.isInitialized && textDisplay.isValid && itemDisplay?.isValid != false) {
         textDisplay.teleportAsync(location)
         itemDisplay?.teleportAsync(location)
-        textDisplay.text(text)
+
+        // Only update the text if the display entity has been teleported into the same region as
+        // the player again
+        if (textDisplay.server.isOwnedByCurrentRegion(textDisplay)) {
+          textDisplay.text(text)
+        }
       } else {
         val world = player.world
 
+        // Clean up possible remains of a previous entity
+        if (::textDisplay.isInitialized && textDisplay.isValid) {
+          val capture = textDisplay
+          capture.scheduler.run(pointerManager.plugin, { capture.remove() }, {})
+        }
         textDisplay =
             world.spawn(location, TextDisplay::class.java) {
               it.isPersistent = false
@@ -124,6 +136,11 @@ internal class HologramPointer(
         player.showEntity(pointerManager.plugin, textDisplay)
 
         if (config.iconEnabled) {
+          // Clean up possible remains of a previous entity
+          if (itemDisplay?.isValid == true) {
+            val capture = itemDisplay!!
+            capture.scheduler.run(pointerManager.plugin, { capture.remove() }, {})
+          }
           itemDisplay =
               trackable.hologramItem?.let { itemStack ->
                 world
