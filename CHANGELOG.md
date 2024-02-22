@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 4.4.3
+
+### Fixed
+- More world checks added to the trail pointer logic to prevent error spam on world switching
+
 ## 4.4.2
 
 ### Fixed

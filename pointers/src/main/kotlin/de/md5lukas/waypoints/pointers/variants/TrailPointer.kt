@@ -114,7 +114,8 @@ internal class TrailPointer(
       } else {
         val last = locationTrail.last()
         if (!last.blockEquals(translatedTarget) &&
-            player.location.distanceSquared(last) < config.pathCalculateAheadDistanceSquared) {
+            (player.world !== last.world ||
+                player.location.distanceSquared(last) < config.pathCalculateAheadDistanceSquared)) {
           lastFuture =
               pathfinder
                   .findPath(last, translatedTarget)
@@ -123,8 +124,9 @@ internal class TrailPointer(
                       // Remove everything behind the player further away than X
                       val lastIndex =
                           locationTrail.indexOfLast {
-                            player.location.distanceSquared(it) >=
-                                config.retainMaxPlayerDistanceSquared
+                            player.world !== it.world ||
+                                player.location.distanceSquared(it) >=
+                                    config.retainMaxPlayerDistanceSquared
                           }
                       if (lastIndex > 0) {
                         locationTrail.subList(0, lastIndex).clear()
