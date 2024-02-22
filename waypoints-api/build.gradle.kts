@@ -20,7 +20,7 @@ kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
 val sourcesJar by
     tasks.creating(Jar::class) {
-      archiveClassifier.set("sources")
+      archiveClassifier = "sources"
       from(sourceSets.main.get().allSource)
     }
 
@@ -40,7 +40,7 @@ val dokkaHtml by
 val dokkaHtmlJar by
     tasks.creating(Jar::class) {
       dependsOn(tasks.dokkaHtml)
-      archiveClassifier.set("javadoc")
+      archiveClassifier = "javadoc"
       from(tasks.dokkaHtml)
     }
 
