@@ -12,6 +12,7 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.command.arguments.BeaconColorArgument
 import de.md5lukas.waypoints.command.arguments.WaypointsSuggestionProvider
 import de.md5lukas.waypoints.pointers.BeaconColor
+import de.md5lukas.waypoints.pointers.PlayerTrackable
 import de.md5lukas.waypoints.pointers.TemporaryWaypointTrackable
 import de.md5lukas.waypoints.pointers.WaypointTrackable
 import de.md5lukas.waypoints.util.labelResolver
@@ -91,6 +92,18 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                     player,
                     context.getBlockPosition("target").toLocation(player.world),
                     null)
+              }
+            }
+          }
+        }
+        literal("trackPlayer") {
+          player("player") {
+            player("target") {
+              executes<CommandSender> { sender, context ->
+                val player = context.getPlayer("player")
+                val target = context.getPlayer("target")
+
+                plugin.pointerManager.enable(player, PlayerTrackable(plugin, target))
               }
             }
           }
