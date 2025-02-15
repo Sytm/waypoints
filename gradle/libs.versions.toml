@@ -1,8 +1,9 @@
 [versions]
-kotlin = "2.0.21"
-coroutines = "1.9.0"
+kotlin = "2.1.10"
+coroutines = "1.10.1"
 jvmToolchain = "21"
 paper = "1.20.6-R0.1-SNAPSHOT"
+paperTestServer = "1.21.4-R0.1-SNAPSHOT"
 
 dynmap = "3.5-SNAPSHOT"
 
@@ -59,7 +60,7 @@ sqliteJdbc = { group = "org.xerial", name = "sqlite-jdbc", version = "3.36.0.3" 
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-shadow = { id = "io.github.goooler.shadow", version = "8.1.7" }
+shadow = { id = "com.gradleup.shadow", version = "8.3.6" }
 dokka = { id = "org.jetbrains.dokka", version = "1.+" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.+" }
 runPaper = { id = "xyz.jpenilla.run-paper", version = "2.+" }

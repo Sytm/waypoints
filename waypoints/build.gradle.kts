@@ -135,7 +135,7 @@ tasks {
 
   runServer {
     dependsOn("jar")
-    minecraftVersion(libs.versions.paper.get().substringBefore('-'))
+    minecraftVersion(libs.versions.paperTestServer.get().substringBefore('-'))
 
     downloadPlugins {
       url(

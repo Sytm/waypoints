@@ -5,6 +5,9 @@
 ### Added
 - `/waypointsscript trackPlayer <player> <target>` command to script the tracking of other players. Does not require player tracking to be enabled in the config*
 
+### Fixed
+- Immediately cancel pointer tasks at server shutdown [#116](https://github.com/Sytm/waypoints/issues/116)
+
 ## 4.5.5
 
 ### Fixed

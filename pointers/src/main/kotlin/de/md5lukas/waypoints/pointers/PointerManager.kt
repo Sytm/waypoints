@@ -145,9 +145,8 @@ class PointerManager(
   internal fun onPluginDisable(e: PluginDisableEvent) {
     if (e.plugin !== plugin) return
 
-    players.keys.forEach { uuid ->
-      plugin.server.getPlayer(uuid)?.let { disable(it, { true }, false) }
-    }
+    players.values.forEach(ManagedPlayer::immediateCleanup)
+    players.clear()
   }
 
   /** Hooks that get called by the [PointerManager] and some pointers */
