@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 4.5.6
+
 ### Added
 - `/waypointsscript trackPlayer <player> <target>` command to script the tracking of other players. Does not require player tracking to be enabled in the config*
 

@@ -37,7 +37,7 @@ class BeaconColorArgument(private val plugin: WaypointsPlugin) :
 
   override fun getNativeType(): ArgumentType<String> = nativeType
 
-  override fun <S> listSuggestions(
+  override fun <S : Any> listSuggestions(
       context: CommandContext<S>,
       builder: SuggestionsBuilder
   ): CompletableFuture<Suggestions> {

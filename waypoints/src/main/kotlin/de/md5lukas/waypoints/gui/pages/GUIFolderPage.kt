@@ -416,17 +416,14 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                           } else {
                             wpGUI.schedule {
                               wpGUI.openCreateWaypoint(
-                                  guiFolder.type,
-                                  if (guiFolder is Folder) guiFolder else null,
-                                  location)
+                                  guiFolder.type, guiFolder as? Folder, location)
                             }
                           }
                         }
                       }
                       .open(wpGUI.viewer)
                 } else {
-                  wpGUI.openCreateWaypoint(
-                      guiFolder.type, if (guiFolder is Folder) guiFolder else null)
+                  wpGUI.openCreateWaypoint(guiFolder.type, guiFolder as? Folder)
                 }
                 wpGUI.playSound { clickNormal }
               }

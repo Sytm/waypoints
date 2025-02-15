@@ -2,7 +2,7 @@
 kotlin = "2.1.10"
 coroutines = "1.10.1"
 jvmToolchain = "21"
-paper = "1.20.6-R0.1-SNAPSHOT"
+paper = "1.21.1-R0.1-SNAPSHOT"
 paperTestServer = "1.21.4-R0.1-SNAPSHOT"
 
 dynmap = "3.5-SNAPSHOT"
@@ -28,7 +28,7 @@ pathfinder = { group = "de.md5lukas", name = "pathfinder", version = "1.0.0-SNAP
 # (external)
 schedulers = { group = "de.md5lukas", name = "schedulers", version = "1.0.1" }
 skedule = { group = "de.md5lukas", name = "skedule", version = "2.0.1" }
-anvilGui = { group = "de.md5lukas", name = "anvilgui", version = "2.0.0-SNAPSHOT" }
+anvilGui = { group = "de.md5lukas", name = "anvilgui", version = "2.0.0" }
 bStats = { group = "org.bstats", name = "bstats-bukkit", version = "3.0.2" }
 
 # Optional dependencies
