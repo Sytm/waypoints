@@ -2,7 +2,9 @@ package de.md5lukas.waypoints.pointers.util
 
 import org.bukkit.Location
 import org.bukkit.block.Block
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
 import org.bukkit.util.Vector
 
 internal operator fun Vector.div(d: Int) =
@@ -33,5 +35,13 @@ internal val Location.highestBlock: Block
 internal fun Player.sendActualBlock(location: Location) {
   if (server.isOwnedByCurrentRegion(location)) {
     this.sendBlockChange(location, location.block.blockData)
+  }
+}
+
+internal fun Entity.safeRemove(plugin: Plugin) {
+  if (server.isOwnedByCurrentRegion(this)) {
+    if (this.isValid) this.remove()
+  } else {
+    this.scheduler.run(plugin, { if (this.isValid) this.remove() }, {})
   }
 }

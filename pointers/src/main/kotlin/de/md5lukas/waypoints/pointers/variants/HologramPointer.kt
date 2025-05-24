@@ -5,6 +5,7 @@ import de.md5lukas.waypoints.pointers.Pointer
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.util.minus
+import de.md5lukas.waypoints.pointers.util.safeRemove
 import java.util.concurrent.ConcurrentHashMap
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
@@ -97,50 +98,49 @@ internal class HologramPointer(
       var text: Component
   ) {
 
-    private lateinit var textDisplay: TextDisplay
+    private var textDisplay: TextDisplay? = null
     private var itemDisplay: ItemDisplay? = null
 
     fun update() {
-      // When teleporting between worlds, the chunks are immediately unloaded, so the display
-      // entities are no longer valid and must be recreated
-      if (::textDisplay.isInitialized && textDisplay.isValid && itemDisplay?.isValid != false) {
-        textDisplay.teleportAsync(location)
-        itemDisplay?.teleportAsync(location)
+      val textCapture = textDisplay
+      val itemCapture = itemDisplay
 
-        // Only update the text if the display entity has been teleported into the same region as
-        // the player again
-        if (textDisplay.server.isOwnedByCurrentRegion(textDisplay)) {
-          textDisplay.text(text)
-        }
+      // When the display entities are no longer owned by the player region, immediately discard
+      // them, as isValid checks no longer works from this thread
+      if (textCapture != null && !server.isOwnedByCurrentRegion(textCapture)) {
+        textCapture.scheduler.run(pointerManager.plugin, { textCapture.remove() }, {})
+        itemCapture?.scheduler?.run(pointerManager.plugin, { itemCapture.remove() }, {})
+        textDisplay = null
+        itemDisplay = null
+      } else if (textCapture != null && textCapture.isValid && itemCapture?.isValid != false) {
+        textCapture.text(text)
+
+        textCapture.teleportAsync(location)
+        itemCapture?.teleportAsync(location)
       } else {
         val world = player.world
 
-        // Clean up possible remains of a previous entity
-        if (::textDisplay.isInitialized && textDisplay.isValid) {
-          val capture = textDisplay
-          capture.scheduler.run(pointerManager.plugin, { capture.remove() }, {})
-        }
+        // Clean up possible remains if somehow one display disappeared but the other one remained
+        textCapture?.safeRemove(pointerManager.plugin)
+        itemCapture?.safeRemove(pointerManager.plugin)
+
         textDisplay =
-            world.spawn(location, TextDisplay::class.java) {
-              it.isPersistent = false
-              it.isVisibleByDefault = false
+            world
+                .spawn(location, TextDisplay::class.java) {
+                  it.isPersistent = false
+                  it.isVisibleByDefault = false
 
-              it.teleportDuration = interval
+                  it.teleportDuration = interval
 
-              it.billboard = Display.Billboard.CENTER
+                  it.billboard = Display.Billboard.CENTER
 
-              it.text(text)
-              it.isDefaultBackground = true
-              it.isSeeThrough = true
-            }
-        player.showEntity(pointerManager.plugin, textDisplay)
+                  it.text(text)
+                  it.isDefaultBackground = true
+                  it.isSeeThrough = true
+                }
+                .also { player.showEntity(pointerManager.plugin, it) }
 
         if (config.iconEnabled) {
-          // Clean up possible remains of a previous entity
-          if (itemDisplay?.isValid == true) {
-            val capture = itemDisplay!!
-            capture.scheduler.run(pointerManager.plugin, { capture.remove() }, {})
-          }
           itemDisplay =
               trackable.hologramItem?.let { itemStack ->
                 world
@@ -175,8 +175,8 @@ internal class HologramPointer(
     }
 
     fun remove() {
-      textDisplay.remove()
-      itemDisplay?.remove()
+      textDisplay?.safeRemove(pointerManager.plugin)
+      itemDisplay?.safeRemove(pointerManager.plugin)
     }
   }
 }
