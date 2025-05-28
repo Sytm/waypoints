@@ -142,7 +142,7 @@ public class SignGUI {
     private Player player;
     private Consumer<@NotNull String @NotNull []> onClose;
     private @NotNull DyeColor color = DyeColor.BLACK;
-    private @NotNull List<@NotNull Component> lines = EMPTY_LINES;
+    private @NotNull List<@NotNull Component> lines = new ArrayList<>(EMPTY_LINES);
 
     public @NotNull Builder plugin(@NotNull Plugin plugin) {
       Preconditions.checkNotNull(plugin);
