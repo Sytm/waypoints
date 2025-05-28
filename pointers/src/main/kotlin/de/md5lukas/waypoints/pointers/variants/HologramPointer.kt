@@ -107,9 +107,10 @@ internal class HologramPointer(
 
       // When the display entities are no longer owned by the player region, immediately discard
       // them, as isValid checks no longer works from this thread
-      if (textCapture != null && !server.isOwnedByCurrentRegion(textCapture)) {
-        textCapture.scheduler.run(pointerManager.plugin, { textCapture.remove() }, {})
-        itemCapture?.scheduler?.run(pointerManager.plugin, { itemCapture.remove() }, {})
+      if ((textCapture != null && !server.isOwnedByCurrentRegion(textCapture)) ||
+          (itemCapture != null && !server.isOwnedByCurrentRegion(itemCapture))) {
+        textCapture?.safeRemove(pointerManager.plugin)
+        itemCapture?.safeRemove(pointerManager.plugin)
         textDisplay = null
         itemDisplay = null
       } else if (textCapture != null && textCapture.isValid && itemCapture?.isValid != false) {
