@@ -6,11 +6,15 @@ import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.Trackable
 import de.md5lukas.waypoints.pointers.util.minus
 import de.md5lukas.waypoints.pointers.util.safeRemove
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
-import org.bukkit.entity.*
-import org.bukkit.entity.ItemDisplay.*
+import org.bukkit.entity.Display
+import org.bukkit.entity.ItemDisplay
+import org.bukkit.entity.ItemDisplay.ItemDisplayTransform
+import org.bukkit.entity.Player
+import org.bukkit.entity.TextDisplay
 import org.bukkit.util.Transformation
 import org.bukkit.util.Vector
 import org.joml.AxisAngle4f
@@ -116,62 +120,83 @@ internal class HologramPointer(
       } else if (textCapture != null && textCapture.isValid && itemCapture?.isValid != false) {
         textCapture.text(text)
 
-        textCapture.teleportAsync(location)
-        itemCapture?.teleportAsync(location)
-      } else {
-        val world = player.world
+        val textTeleport = textCapture.teleportAsync(location)
+        val itemTeleport = itemCapture?.teleportAsync(location)
 
-        // Clean up possible remains if somehow one display disappeared but the other one remained
-        textCapture?.safeRemove(pointerManager.plugin)
-        itemCapture?.safeRemove(pointerManager.plugin)
-
-        textDisplay =
-            world
-                .spawn(location, TextDisplay::class.java) {
-                  it.isPersistent = false
-                  it.isVisibleByDefault = false
-
-                  it.teleportDuration = interval
-
-                  it.billboard = Display.Billboard.CENTER
-
-                  it.text(text)
-                  it.isDefaultBackground = true
-                  it.isSeeThrough = true
-                }
-                .also { player.showEntity(pointerManager.plugin, it) }
-
-        if (config.iconEnabled) {
-          itemDisplay =
-              trackable.hologramItem?.let { itemStack ->
-                world
-                    .spawn(location, ItemDisplay::class.java) {
-                      it.isPersistent = false
-                      it.isVisibleByDefault = false
-
-                      it.teleportDuration = interval
-
-                      it.itemStack = itemStack
-
-                      val isBlock = itemStack.type.isBlock
-                      it.billboard =
-                          if (isBlock) {
-                            Display.Billboard.FIXED
-                          } else {
-                            Display.Billboard.CENTER
-                          }
-                      it.transformation =
-                          Transformation(
-                              Vector3f(0.0f, config.iconOffset, 0.0f),
-                              AxisAngle4f(),
-                              Vector3f(if (isBlock) 1.0f else 0.6f),
-                              AxisAngle4f(),
-                          )
-                      it.itemDisplayTransform = ItemDisplayTransform.FIXED
-                    }
-                    .also { player.showEntity(pointerManager.plugin, it) }
+        // Workaround for PaperMC/Paper#12599
+        if (!player.canSee(textCapture) || (itemCapture != null && !player.canSee(itemCapture))) {
+          val combinedFuture =
+              if (itemTeleport == null) {
+                textTeleport
+              } else {
+                CompletableFuture.allOf(textTeleport, itemTeleport)
               }
+
+          combinedFuture.thenRunAsync(
+              {
+                if (!player.canSee(textCapture)) {
+                  player.showEntity(pointerManager.plugin, textCapture)
+                }
+                if (itemCapture != null && !player.canSee(itemCapture)) {
+                  player.showEntity(pointerManager.plugin, itemCapture)
+                }
+              },
+              syncExecutor)
         }
+        return
+      }
+      val world = player.world
+
+      // Clean up possible remains if somehow one display disappeared but the other one remained
+      textCapture?.safeRemove(pointerManager.plugin)
+      itemCapture?.safeRemove(pointerManager.plugin)
+
+      textDisplay =
+          world
+              .spawn(location, TextDisplay::class.java) {
+                it.isPersistent = false
+                it.isVisibleByDefault = false
+
+                it.teleportDuration = interval
+
+                it.billboard = Display.Billboard.CENTER
+
+                it.text(text)
+                it.isDefaultBackground = true
+                it.isSeeThrough = true
+              }
+              .also { player.showEntity(pointerManager.plugin, it) }
+
+      if (config.iconEnabled) {
+        itemDisplay =
+            trackable.hologramItem?.let { itemStack ->
+              world
+                  .spawn(location, ItemDisplay::class.java) {
+                    it.isPersistent = false
+                    it.isVisibleByDefault = false
+
+                    it.teleportDuration = interval
+
+                    it.itemStack = itemStack
+
+                    val isBlock = itemStack.type.isBlock
+                    it.billboard =
+                        if (isBlock) {
+                          Display.Billboard.FIXED
+                        } else {
+                          Display.Billboard.CENTER
+                        }
+                    it.transformation =
+                        Transformation(
+                            Vector3f(0.0f, config.iconOffset, 0.0f),
+                            AxisAngle4f(),
+                            Vector3f(if (isBlock) 1.0f else 0.6f),
+                            AxisAngle4f(),
+                        )
+                    it.itemDisplayTransform = ItemDisplayTransform.FIXED
+                  }
+                  .also { player.showEntity(pointerManager.plugin, it) }
+            }
       }
     }
 

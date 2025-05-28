@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixed
+- Error when trying to edit the description of a waypoint / folder
+- Error when switching worlds with the Hologram pointer enabled
+- Workaround fix for hologram disappearing when switching worlds
+
 ## 4.5.6
 
 ### Added
