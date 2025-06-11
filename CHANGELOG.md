@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 4.5.7
+
 ### Changed
 - Improved error message when the loading of a custom web map icon from `plugins/Waypoints/icons` fails
 
