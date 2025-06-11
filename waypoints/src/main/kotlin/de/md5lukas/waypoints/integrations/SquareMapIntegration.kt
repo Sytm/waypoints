@@ -110,6 +110,8 @@ class SquareMapIntegration(private val plugin: WaypointsPlugin) : Listener {
     }
   }
 
+  private val warnedKeys = mutableSetOf<String>()
+
   private suspend fun getMarkerForWaypoint(waypoint: Waypoint): Key {
     val rawKey =
         waypoint.getCustomData(CUSTOM_DATA_KEY)
@@ -124,7 +126,22 @@ class SquareMapIntegration(private val plugin: WaypointsPlugin) : Listener {
 
     if (!api.iconRegistry().hasEntry(key)) {
       val image = File(iconFolder, "$rawKey.png")
-      api.iconRegistry().register(key, ImageIO.read(image))
+      if (image.exists()) {
+        try {
+          api.iconRegistry().register(key, ImageIO.read(image))
+        } catch (e: Exception) {
+          throw RuntimeException(
+              "Could not load icon file ${image.absolutePath} for public waypoint ${waypoint.name}",
+              e)
+        }
+      } else if (rawKey !in warnedKeys) {
+        warnedKeys.add(rawKey)
+        plugin.slF4JLogger.error(
+            "The public waypoint {} has the custom map icon key '{}' set, but the actual image is not present at {}",
+            waypoint.name,
+            rawKey,
+            image.absolutePath)
+      }
     }
 
     return key

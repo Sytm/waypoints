@@ -2,10 +2,14 @@
 
 ## [Unreleased]
 
+### Changed
+- Improved error message when the loading of a custom web map icon from `plugins/Waypoints/icons` fails
+
 ### Fixed
 - Error when trying to edit the description of a waypoint / folder
 - Error when switching worlds with the Hologram pointer enabled
 - Workaround fix for hologram disappearing when switching worlds
+- Error when a waypoint has a custom web map icon set and the file does not exist in the `plugins/Waypoints/icons` directory
 
 ## 4.5.6
 

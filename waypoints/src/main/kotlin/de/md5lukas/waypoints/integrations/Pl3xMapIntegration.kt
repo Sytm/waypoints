@@ -112,6 +112,8 @@ class Pl3xMapIntegration(private val plugin: WaypointsPlugin) : Listener {
     }
   }
 
+  private val warnedKeys = mutableSetOf<String>()
+
   private suspend fun getMarkerForWaypoint(waypoint: Waypoint): String {
     val key =
         waypoint.getCustomData(CUSTOM_DATA_KEY) ?: plugin.waypointsConfig.integrations.pl3xmap.icon
@@ -124,7 +126,22 @@ class Pl3xMapIntegration(private val plugin: WaypointsPlugin) : Listener {
 
     if (!api.iconRegistry.has(prefixedKey)) {
       val image = File(iconFolder, "$key.png")
-      api.iconRegistry.register(IconImage(prefixedKey, ImageIO.read(image), "png"))
+      if (image.exists()) {
+        try {
+          api.iconRegistry.register(IconImage(prefixedKey, ImageIO.read(image), "png"))
+        } catch (e: Exception) {
+          throw RuntimeException(
+              "Could not load icon file ${image.absolutePath} for public waypoint ${waypoint.name}",
+              e)
+        }
+      } else if (key !in warnedKeys) {
+        warnedKeys.add(key)
+        plugin.slF4JLogger.error(
+            "The public waypoint {} has the custom map icon key '{}' set, but the actual image is not present at {}",
+            waypoint.name,
+            key,
+            image.absolutePath)
+      }
     }
 
     return prefixedKey
