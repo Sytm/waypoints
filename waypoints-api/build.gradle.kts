@@ -19,7 +19,7 @@ dependencies {
 kotlin { jvmToolchain(libs.versions.jvmToolchain.get().toInt()) }
 
 val sourcesJar by
-    tasks.creating(Jar::class) {
+    tasks.registering(Jar::class) {
       archiveClassifier = "sources"
       from(sourceSets.main.get().allSource)
     }
@@ -38,7 +38,7 @@ val dokkaHtml by
     }
 
 val dokkaHtmlJar by
-    tasks.creating(Jar::class) {
+    tasks.registering(Jar::class) {
       dependsOn(tasks.dokkaHtml)
       archiveClassifier = "javadoc"
       from(tasks.dokkaHtml)

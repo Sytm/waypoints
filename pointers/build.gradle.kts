@@ -24,7 +24,7 @@ kotlin { jvmToolchain(17) }
 version = project.property("pointersVersion") as String
 
 val sourcesJar by
-    tasks.creating(Jar::class) {
+    tasks.registering(Jar::class) {
       archiveClassifier = "sources"
       from(sourceSets.main.get().allSource)
     }
@@ -43,7 +43,7 @@ val dokkaHtml by
     }
 
 val dokkaHtmlJar by
-    tasks.creating(Jar::class) {
+    tasks.registering(Jar::class) {
       dependsOn(tasks.dokkaHtml)
       archiveClassifier = "javadoc"
       from(tasks.dokkaHtml)
@@ -80,7 +80,7 @@ publishing {
   }
   publications {
     create<MavenPublication>("maven") {
-      project.shadow.component(this)
+      from(components["shadow"])
       artifact(sourcesJar)
       artifact(dokkaHtmlJar)
     }
