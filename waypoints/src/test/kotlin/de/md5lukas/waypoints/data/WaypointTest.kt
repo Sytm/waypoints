@@ -27,8 +27,8 @@ class WaypointTest : TestBase() {
 
     waypoint.delete()
 
-    server.pluginManager.assertEventFired(WaypointPreDeleteEvent::class.java)
-    server.pluginManager.assertEventFired(WaypointPostDeleteEvent::class.java)
+    server.pluginManager.assertEvent<WaypointPreDeleteEvent>()
+    server.pluginManager.assertEvent<WaypointPostDeleteEvent>()
 
     assertEquals(0, holder.getWaypointsAmount())
   }

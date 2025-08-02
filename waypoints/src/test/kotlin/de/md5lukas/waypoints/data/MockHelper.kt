@@ -3,10 +3,13 @@ package de.md5lukas.waypoints.data
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointsAPI
 import java.util.UUID
+import kotlin.test.assertTrue
 import org.bukkit.Location
+import org.bukkit.event.Event
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.mockbukkit.mockbukkit.ServerMock
+import org.mockbukkit.mockbukkit.plugin.PluginManagerMock
 
 fun ServerMock.createLocation(world: String, x: Int, y: Int, z: Int): Location {
   return Location(
@@ -20,6 +23,10 @@ suspend fun WaypointsAPI.holderOfType(type: Type) =
       Type.PRIVATE -> getWaypointPlayer(UUID.randomUUID())
       else -> throw IllegalArgumentException("A holder of type $type is not available")
     }
+
+inline fun <reified T : Event> PluginManagerMock.assertEvent() {
+  assertTrue(firedEvents.anyMatch { it is T }, "${T::class.simpleName} not fired.")
+}
 
 @ParameterizedTest
 @EnumSource(value = Type::class, mode = EnumSource.Mode.EXCLUDE, names = ["DEATH"])

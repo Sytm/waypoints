@@ -21,8 +21,8 @@ class FolderTest : TestBase() {
 
     folder.delete()
 
-    server.pluginManager.assertEventFired(FolderPreDeleteEvent::class.java)
-    server.pluginManager.assertEventFired(FolderPostDeleteEvent::class.java)
+    server.pluginManager.assertEvent<FolderPreDeleteEvent>()
+    server.pluginManager.assertEvent<FolderPostDeleteEvent>()
 
     assertEquals(0, holder.getFoldersAmount())
   }

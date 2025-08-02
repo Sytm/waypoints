@@ -249,7 +249,7 @@ class WaypointPlayerTest : TestBase() {
       val player = api.getWaypointPlayer(UUID.randomUUID())
 
       player.addDeathLocation(location)
-      server.pluginManager.assertEventFired(WaypointCreateEvent::class.java)
+      server.pluginManager.assertEvent<WaypointCreateEvent>()
 
       val deathFolder = player.deathFolder
       assertEquals(1, deathFolder.getAmount())

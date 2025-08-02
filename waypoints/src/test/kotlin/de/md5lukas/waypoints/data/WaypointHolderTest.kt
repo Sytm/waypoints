@@ -40,7 +40,7 @@ class WaypointHolderTest : TestBase() {
               }
             }
             .id
-    server.pluginManager.assertEventFired(WaypointCreateEvent::class.java)
+    server.pluginManager.assertEvent<WaypointCreateEvent>()
 
     assertEquals(1, holder.getWaypoints().size)
     assertEquals(1, holder.getWaypointsAmount())
@@ -75,7 +75,7 @@ class WaypointHolderTest : TestBase() {
     val holder = api.holderOfType(type)
 
     val id = holder.createFolder("Test").id
-    server.pluginManager.assertEventFired(FolderCreateEvent::class.java)
+    server.pluginManager.assertEvent<FolderCreateEvent>()
 
     assertEquals(1, holder.getFolders().size)
     assertEquals(1, holder.getFoldersAmount())
