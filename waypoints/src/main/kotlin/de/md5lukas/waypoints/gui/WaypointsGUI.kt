@@ -210,13 +210,14 @@ class WaypointsGUI(
     gui.update()
   }
 
-  internal fun goBack() {
+  internal fun goBack(n: Int = 1) {
     if (pageStack.isEmpty()) {
       viewer.closeInventory()
       return
     }
 
-    val page = pageStack.pop()
+    var page = pageStack.pop()
+    repeat(n - 1) { page = pageStack.pop() }
     page.update()
 
     gui.activePage = page

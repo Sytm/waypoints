@@ -221,8 +221,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                           wpGUI.skedule {
                             (guiFolder as Folder).delete()
                             switchContext(SynchronizationContext.SYNC)
-                            wpGUI.goBack()
-                            wpGUI.goBack()
+                            wpGUI.goBack(2)
                             wpGUI.playSound { clickNormal }
                           }
                         } else {
@@ -411,7 +410,6 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                       .onClose {
                         parsedLocation.let { location ->
                           if (location === null) {
-                            wpGUI.goBack()
                             wpGUI.schedule { wpGUI.gui.open() }
                           } else {
                             wpGUI.schedule {

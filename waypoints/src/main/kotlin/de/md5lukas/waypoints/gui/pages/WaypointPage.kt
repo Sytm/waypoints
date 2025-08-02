@@ -151,10 +151,11 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                             is SuccessWaypoint -> {
                               waypoint.copyFieldsTo(result.waypoint)
                               waypoint.delete()
-                              wpGUI.goBack()
-                              wpGUI.goBack()
+                              switchContext(SynchronizationContext.SYNC)
+                              wpGUI.goBack(2)
                             }
                             else -> {
+                              switchContext(SynchronizationContext.SYNC)
                               wpGUI.playSound { clickError }
                               wpGUI.goBack()
                             }
@@ -209,16 +210,17 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                                 is SuccessWaypoint -> {
                                   waypoint.copyFieldsTo(result.waypoint)
                                   waypoint.delete()
-                                  wpGUI.goBack()
-                                  wpGUI.goBack()
+                                  switchContext(SynchronizationContext.SYNC)
+                                  wpGUI.goBack(2)
                                 }
                                 else -> {
                                   wpGUI.playSound { clickError }
+                                  switchContext(SynchronizationContext.SYNC)
                                   wpGUI.goBack()
                                 }
                               }
 
-                              return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
+                              return@onClickSuspending emptyList()
                             }
                             .onClose {
                               (wpGUI.gui.activePage as BasePage).update()
@@ -431,8 +433,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                         wpGUI.skedule {
                           waypoint.delete()
                           switchContext(SynchronizationContext.SYNC)
-                          wpGUI.goBack()
-                          wpGUI.goBack()
+                          wpGUI.goBack(2)
                           wpGUI.playSound { clickSuccess }
                         }
                       } else {
