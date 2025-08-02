@@ -6,7 +6,6 @@ plugins {
 dependencies {
   api(libs.paper)
   compileOnly(libs.annotations)
-  implementation(libs.protocollib)
 }
 
 java {

@@ -130,11 +130,6 @@ tasks {
   runServer {
     dependsOn("jar")
     minecraftVersion(libs.versions.paperTestServer.get().substringBefore('-'))
-
-    downloadPlugins {
-      url(
-          "https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar")
-    }
   }
 
   test { useJUnitPlatform() }

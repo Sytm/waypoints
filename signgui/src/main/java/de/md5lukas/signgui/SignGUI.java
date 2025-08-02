@@ -1,14 +1,7 @@
 package de.md5lukas.signgui;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.wrappers.BlockPosition;
 import com.google.common.base.Preconditions;
+import io.papermc.paper.event.packet.UncheckedSignChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -21,18 +14,20 @@ import org.bukkit.block.Sign;
 import org.bukkit.block.TileState;
 import org.bukkit.block.sign.Side;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
-public class SignGUI {
+public class SignGUI implements Listener {
 
   private static final int OFFSET = 4; // Needs to be closer to the player since 1.20
   private static final List<Component> EMPTY_LINES =
       List.of(Component.empty(), Component.empty(), Component.empty(), Component.empty());
 
   private final @NotNull Plugin plugin;
-  private final @NotNull ProtocolManager protocolManager;
   private final @NotNull Player player;
   private final @NotNull Consumer<@NotNull String @NotNull []> onClose;
 
@@ -48,7 +43,6 @@ public class SignGUI {
       @NotNull DyeColor color,
       @NotNull List<@NotNull Component> lines) {
     this.plugin = plugin;
-    this.protocolManager = ProtocolLibrary.getProtocolManager();
     this.player = player;
     this.onClose = onClose;
     this.color = color;
@@ -56,6 +50,7 @@ public class SignGUI {
     this.open = false;
   }
 
+  @SuppressWarnings("UnstableApiUsage")
   private void open() {
     if (open) {
       return;
@@ -64,31 +59,34 @@ public class SignGUI {
 
     final var signLocation = getSignLocation();
 
-    protocolManager.addPacketListener(
-        new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Client.UPDATE_SIGN) {
-          @Override
-          public void onPacketReceiving(PacketEvent event) {
-            if (event.getPlayer() != player) {
-              return;
-            }
-            protocolManager.removePacketListener(this);
-            event.setCancelled(true);
-            open = false;
-            final var realBlock = signLocation.getBlock();
-            player.sendBlockChange(signLocation, realBlock.getBlockData());
-            if (realBlock.getState() instanceof TileState tileState) {
-              player.sendBlockUpdate(signLocation, tileState);
-            }
+    plugin
+        .getServer()
+        .getPluginManager()
+        .registerEvent(
+            UncheckedSignChangeEvent.class,
+            this,
+            EventPriority.NORMAL,
+            (listener, event) -> {
+              if (listener == this && event instanceof UncheckedSignChangeEvent signChangeEvent) {
+                if (signChangeEvent.getPlayer() != player) {
+                  return;
+                }
+                HandlerList.unregisterAll(this);
+                signChangeEvent.setCancelled(true);
+                open = false;
 
-            final var lines = event.getPacket().getStringArrays().read(0);
+                final var realBlock = signLocation.getBlock();
+                player.sendBlockChange(signLocation, realBlock.getBlockData());
+                if (realBlock.getState() instanceof TileState tileState) {
+                  player.sendBlockUpdate(signLocation, tileState);
+                }
 
-            for (int index = 0; index < 3; index++) {
-              SignGUI.this.lines.set(index, fromPlain(lines[index]));
-            }
-
-            onClose.accept(lines);
-          }
-        });
+                onClose.accept(signChangeEvent.lines().stream()
+                    .map(PlainTextComponentSerializer.plainText()::serialize)
+                    .toArray(String[]::new));
+              }
+            },
+            plugin);
 
     final var blockData = plugin.getServer().createBlockData(Material.OAK_SIGN);
     player.sendBlockChange(signLocation, blockData);
@@ -105,15 +103,7 @@ public class SignGUI {
       player.sendBlockUpdate(signLocation, blockState);
     }
 
-    final var openSignPacket = new PacketContainer(PacketType.Play.Server.OPEN_SIGN_EDITOR);
-    openSignPacket
-        .getBlockPositionModifier()
-        .write(
-            0,
-            new BlockPosition(
-                signLocation.getBlockX(), signLocation.getBlockY(), signLocation.getBlockZ()));
-    openSignPacket.getBooleans().writeSafely(0, true); // 1.20 front
-    protocolManager.sendServerPacket(player, openSignPacket);
+    player.openVirtualSign(signLocation, Side.FRONT);
   }
 
   private @NotNull Location getSignLocation() {
@@ -127,10 +117,6 @@ public class SignGUI {
     return signLocation;
   }
 
-  private @NotNull Component fromPlain(@NotNull String json) {
-    return PlainTextComponentSerializer.plainText().deserialize(json);
-  }
-
   public static @NotNull Builder newBuilder() {
     return new Builder();
   }
@@ -142,7 +128,7 @@ public class SignGUI {
     private Player player;
     private Consumer<@NotNull String @NotNull []> onClose;
     private @NotNull DyeColor color = DyeColor.BLACK;
-    private @NotNull List<@NotNull Component> lines = new ArrayList<>(EMPTY_LINES);
+    private @NotNull List<@NotNull Component> lines = EMPTY_LINES;
 
     public @NotNull Builder plugin(@NotNull Plugin plugin) {
       Preconditions.checkNotNull(plugin);
