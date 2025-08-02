@@ -13,8 +13,33 @@ subprojects {
 
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.md5lukas.de/public/")
-    maven("https://repo.dmulloy2.net/repository/public/")
-    maven("https://jitpack.io") // Vault
+    exclusiveContent { // ProtocolLib
+      forRepository { maven("https://repo.dmulloy2.net/repository/public/") }
+      filter { includeGroup("com.comphenix.protocol") }
+    }
+    exclusiveContent { // Vault
+      forRepository { maven("https://jitpack.io") }
+      filter { includeGroup("com.github.MilkBowl") }
+    }
+    exclusiveContent { // BlueMap
+      forRepository { maven("https://repo.bluecolored.de/releases") }
+      filter { includeGroup("de.bluecolored") }
+    }
+    exclusiveContent { // DynMap
+      forRepository { maven("https://repo.mikeprimm.com/") }
+      filter { includeGroup("us.dynmap") }
+    }
+    exclusiveContent { // Pl3xMap
+      forRepository { maven("https://api.modrinth.com/maven") }
+      filter { includeGroup("maven.modrinth") }
+    }
+    exclusiveContent { // Geyser
+      forRepository { maven("https://repo.opencollab.dev/main/") }
+      filter {
+        includeGroupByRegex("org\\.geysermc\\..+")
+        includeGroup("org.cloudburstmc.math")
+      }
+    }
   }
 
   tasks.withType<KotlinCompile> {

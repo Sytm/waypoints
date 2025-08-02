@@ -12,18 +12,6 @@ plugins {
 
 description = "Waypoints plugin"
 
-repositories {
-  maven("https://libraries.minecraft.net") // Brigadier
-
-  maven("https://repo.bluecolored.de/releases") // BlueMap
-  maven("https://repo.mikeprimm.com/") // DynMap
-  exclusiveContent { // Pl3xMap
-    forRepository { maven("https://api.modrinth.com/maven") }
-    filter { includeGroup("maven.modrinth") }
-  }
-  maven("https://repo.opencollab.dev/main/") // Geyser
-}
-
 dependencies {
   implementation(libs.paper)
   implementation(libs.stdlib)
@@ -92,6 +80,12 @@ tasks {
     // get a warning that we only depend on an output file and not the project itself
     dependsOn(project(":api-sqlite").tasks["shadowJar"])
     dependsOn(project(":pointers").tasks["shadowJar"])
+  }
+
+  test {
+    // This is sooooo stupid, literally the inverse of the above. Like gradle gfys
+    dependsOn(project(":api-sqlite").tasks["jar"])
+    dependsOn(project(":pointers").tasks["jar"])
   }
 
   shadowJar {

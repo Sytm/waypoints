@@ -9,8 +9,6 @@ plugins {
   `maven-publish`
 }
 
-repositories {}
-
 dependencies {
   api(libs.paperJava17)
   api(libs.stdlib)
