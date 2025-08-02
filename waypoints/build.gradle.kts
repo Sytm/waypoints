@@ -19,9 +19,7 @@ dependencies {
 
   compileOnly(libs.annotations)
 
-  implementation(project(":utils"))
   implementation(project(":pointers", "shadow"))
-  implementation(project(":waypoints-api"))
   implementation(project(":signgui"))
 
   // Dependencies on own projects
@@ -90,17 +88,12 @@ tasks {
   shadowJar {
     archiveClassifier = ""
 
-    minimize {
-      exclude(project(":waypoints-api"))
-      exclude(project(":utils"))
-    }
+    minimize()
 
     exclude("META-INF/")
 
     dependencies {
-      include(project(":utils"))
       include(project(":pointers"))
-      include(project(":waypoints-api"))
       include(project(":signgui"))
 
       include(dependency(libs.md5Commons.get()))
