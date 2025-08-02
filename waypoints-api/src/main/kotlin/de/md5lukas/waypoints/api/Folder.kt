@@ -42,7 +42,6 @@ interface Folder : GUIFolder, Deletable {
    */
   suspend fun getAmountVisibleForPlayer(permissible: Permissible): Int
 
-
   /**
    * Deletes this folder from the database.
    *

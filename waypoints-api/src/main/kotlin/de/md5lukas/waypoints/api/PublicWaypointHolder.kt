@@ -18,7 +18,7 @@ interface PublicWaypointHolder : WaypointHolder {
    * @param creator The player that created this waypoint
    * @return The newly created waypoint
    */
-    suspend fun createWaypoint(name: String, location: Location, creator: UUID): Waypoint
+  suspend fun createWaypoint(name: String, location: Location, creator: UUID): Waypoint
 
   /**
    * Creates a new folder in this holder with the given name

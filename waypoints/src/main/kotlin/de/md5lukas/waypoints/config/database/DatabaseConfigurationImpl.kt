@@ -3,7 +3,7 @@ package de.md5lukas.waypoints.config.database
 import de.md5lukas.konfig.Configurable
 import de.md5lukas.konfig.TypeAdapter
 import de.md5lukas.konfig.UseAdapter
-import de.md5lukas.waypoints.api.base.DatabaseConfiguration
+import de.md5lukas.waypoints.data.DatabaseConfiguration
 import java.time.Period
 import org.bukkit.configuration.ConfigurationSection
 

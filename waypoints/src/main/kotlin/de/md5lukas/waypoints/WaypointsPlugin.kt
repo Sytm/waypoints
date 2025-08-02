@@ -5,10 +5,8 @@ import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.commons.time.DurationFormatter
 import de.md5lukas.konfig.Konfig
 import de.md5lukas.schedulers.Schedulers
-import de.md5lukas.waypoints.api.SQLiteManager
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.WaypointsPointerManager
-import de.md5lukas.waypoints.api.base.DatabaseManager
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.BlockDataAdapter
@@ -18,6 +16,8 @@ import de.md5lukas.waypoints.config.SoundAdapter
 import de.md5lukas.waypoints.config.StyleAdapter
 import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.config.general.TeleportPaymentType
+import de.md5lukas.waypoints.data.DatabaseManager
+import de.md5lukas.waypoints.data.SQLiteManager
 import de.md5lukas.waypoints.events.ConfigReloadEvent
 import de.md5lukas.waypoints.events.PointerEvents
 import de.md5lukas.waypoints.events.WaypointsListener
@@ -239,7 +239,6 @@ class WaypointsPlugin : JavaPlugin() {
     }
   }
 
-  @Suppress("UnstableApiUsage")
   private fun registerCommands() {
     lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
       val registrar = it.registrar()

@@ -39,7 +39,7 @@ interface WaypointsPlayer : WaypointHolder {
 
   fun isPointerEnabled(key: String) = enabledPointers.getOrDefault(key, true)
 
-    suspend fun setPointerEnabled(key: String, value: Boolean) {
+  suspend fun setPointerEnabled(key: String, value: Boolean) {
     setEnabledPointers(enabledPointers.toMutableMap().also { it[key] = value })
   }
 

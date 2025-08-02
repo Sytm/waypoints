@@ -22,8 +22,6 @@ dependencies {
   implementation(project(":utils"))
   implementation(project(":pointers", "shadow"))
   implementation(project(":waypoints-api"))
-  implementation(project(":api-base"))
-  implementation(project(":api-sqlite", "shadow"))
   implementation(project(":signgui"))
 
   // Dependencies on own projects
@@ -31,6 +29,7 @@ dependencies {
   implementation(libs.kinvs)
   implementation(libs.konfig)
   implementation(libs.paperBrigadier) { this.isChanging = true }
+  implementation(libs.sqliteHelper)
 
   // Required dependencies
   implementation(libs.schedulers)
@@ -51,6 +50,8 @@ dependencies {
   // Testing
   testImplementation(kotlin("test-junit5"))
   testImplementation(libs.junitJupiter)
+  testImplementation(libs.mockBukkit)
+  testRuntimeOnly(libs.sqliteJdbc)
   testRuntimeOnly(libs.junitLauncher)
 }
 
@@ -78,13 +79,11 @@ tasks {
   compileKotlin {
     // To make sure we have an explicit dependency on the project itself because otherwise we will
     // get a warning that we only depend on an output file and not the project itself
-    dependsOn(project(":api-sqlite").tasks["shadowJar"])
     dependsOn(project(":pointers").tasks["shadowJar"])
   }
 
   test {
     // This is sooooo stupid, literally the inverse of the above. Like gradle gfys
-    dependsOn(project(":api-sqlite").tasks["jar"])
     dependsOn(project(":pointers").tasks["jar"])
   }
 
@@ -102,14 +101,13 @@ tasks {
       include(project(":utils"))
       include(project(":pointers"))
       include(project(":waypoints-api"))
-      include(project(":api-base"))
-      include(project(":api-sqlite"))
       include(project(":signgui"))
 
       include(dependency(libs.md5Commons.get()))
       include(dependency(libs.kinvs.get()))
       include(dependency(libs.konfig.get()))
       include(dependency(libs.paperBrigadier.get()))
+      include(dependency(libs.sqliteHelper.get()))
 
       include(dependency(libs.schedulers.get()))
       include(dependency(libs.skedule.get()))

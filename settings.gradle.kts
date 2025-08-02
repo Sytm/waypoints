@@ -6,9 +6,7 @@ include(
     ":waypoints",
     ":waypoints-api",
     // ":waypoints-api:example",
-    ":api-base",
-    ":api-sqlite",
-    ":api-tests",
+
     ":signgui",
     ":utils",
     ":pointers",

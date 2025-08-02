@@ -77,7 +77,7 @@ interface WaypointHolder : GUIFolder {
    * @param permissible The permissible to check the permissions for
    * @return All matching folders, or none
    */
-    suspend fun searchFolders(
+  suspend fun searchFolders(
       query: String,
       permissible: Permissible? = null
   ): List<SearchResult<out Folder>>
@@ -93,7 +93,7 @@ interface WaypointHolder : GUIFolder {
    * @param query The text that waypoint names must match
    * @return All matching waypoints, or none
    */
-    suspend fun searchWaypoints(
+  suspend fun searchWaypoints(
       query: String,
       permissible: Permissible? = null
   ): List<SearchResult<out Waypoint>>
