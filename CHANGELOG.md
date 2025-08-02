@@ -2,8 +2,10 @@
 
 ## [Unreleased]
 
+## 4.5.8
+
 ### Fixed
-- Fix RunningOnDifferentThreadException that sometimes occurs when using the GUI
+- RunningOnDifferentThreadException that sometimes occurs when using the GUI
 
 ## 4.5.7
 
