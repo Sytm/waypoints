@@ -16,49 +16,32 @@ interface WaypointsPlayer : WaypointHolder {
   /** Whether the player wants to see global waypoints in the GUI */
   val showGlobals: Boolean
 
-  @JvmSynthetic suspend fun setShowGlobals(showGlobals: Boolean)
-
-  fun setShowGlobalsCF(showGlobals: Boolean) = future { setShowGlobals(showGlobals) }
+  suspend fun setShowGlobals(showGlobals: Boolean)
 
   /** The method to sort the items in GUI with */
   val sortBy: OverviewSort
 
-  @JvmSynthetic suspend fun setSortBy(sortBy: OverviewSort)
-
-  fun setSortByCF(sortBy: OverviewSort) = future { setSortBy(sortBy) }
+  suspend fun setSortBy(sortBy: OverviewSort)
 
   /** Whether the player wants to be trackable with player-tracking or not. */
   val canBeTracked: Boolean
 
-  @JvmSynthetic suspend fun setCanBeTracked(canBeTracked: Boolean)
-
-  fun setCanBeTrackedCF(canBeTracked: Boolean) = future { setCanBeTracked(canBeTracked) }
+  suspend fun setCanBeTracked(canBeTracked: Boolean)
 
   /** Whether the player can receive temporary waypoints from other players or not */
   val canReceiveTemporaryWaypoints: Boolean
 
-  @JvmSynthetic suspend fun setCanReceiveTemporaryWaypoints(canReceiveTemporaryWaypoints: Boolean)
-
-  fun setCanReceiveTemporaryWaypointsCF(canReceiveTemporaryWaypoints: Boolean) = future {
-    setCanReceiveTemporaryWaypoints(canReceiveTemporaryWaypoints)
-  }
+  suspend fun setCanReceiveTemporaryWaypoints(canReceiveTemporaryWaypoints: Boolean)
 
   val enabledPointers: Map<String, Boolean>
 
-  @JvmSynthetic suspend fun setEnabledPointers(enabledPointers: Map<String, Boolean>)
-
-  fun setEnabledPointersCF(enabledPointers: Map<String, Boolean>) = future {
-    setEnabledPointers(enabledPointers)
-  }
+  suspend fun setEnabledPointers(enabledPointers: Map<String, Boolean>)
 
   fun isPointerEnabled(key: String) = enabledPointers.getOrDefault(key, true)
 
-  @JvmSynthetic
-  suspend fun setPointerEnabled(key: String, value: Boolean) {
+    suspend fun setPointerEnabled(key: String, value: Boolean) {
     setEnabledPointers(enabledPointers.toMutableMap().also { it[key] = value })
   }
-
-  fun setPointerEnabledCF(key: String, value: Boolean) = future { setPointerEnabled(key, value) }
 
   /**
    * Get the point in time at which a cooldown for teleporting has expired if present.
@@ -66,9 +49,7 @@ interface WaypointsPlayer : WaypointHolder {
    * @param type The type the cooldown is valid for
    * @return The time the cooldown expires or null
    */
-  @JvmSynthetic suspend fun getCooldownUntil(type: Type): OffsetDateTime?
-
-  fun getCooldownUntilCF(type: Type) = future { getCooldownUntil(type) }
+  suspend fun getCooldownUntil(type: Type): OffsetDateTime?
 
   /**
    * Set a new cooldown for the player and the time at which it expires.
@@ -76,11 +57,7 @@ interface WaypointsPlayer : WaypointHolder {
    * @param type The type the cooldown is valid for
    * @param cooldownUntil The point in time at which the cooldown should expire
    */
-  @JvmSynthetic suspend fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime)
-
-  fun setCooldownUntilCF(type: Type, cooldownUntil: OffsetDateTime) = future {
-    setCooldownUntil(type, cooldownUntil)
-  }
+  suspend fun setCooldownUntil(type: Type, cooldownUntil: OffsetDateTime)
 
   /**
    * Get the amount of teleportations this player has performed to the given waypoint type
@@ -88,9 +65,7 @@ interface WaypointsPlayer : WaypointHolder {
    * @param type The type the counter is applicable to
    * @return The amount of teleportations
    */
-  @JvmSynthetic suspend fun getTeleportations(type: Type): Int
-
-  fun getTeleporationsCF(type: Type) = future { getTeleportations(type) }
+  suspend fun getTeleportations(type: Type): Int
 
   /**
    * Update the amount of teleportations the player has performed to the given waypoint type
@@ -98,16 +73,10 @@ interface WaypointsPlayer : WaypointHolder {
    * @param type The type the counter is applicable to
    * @param teleportations The new amount of teleportations
    */
-  @JvmSynthetic suspend fun setTeleportations(type: Type, teleportations: Int)
-
-  fun setTeleportationsCF(type: Type, teleportations: Int) = future {
-    setTeleportations(type, teleportations)
-  }
+  suspend fun setTeleportations(type: Type, teleportations: Int)
 
   /** Adds a new location to the death history of the player. */
-  @JvmSynthetic suspend fun addDeathLocation(location: Location)
-
-  fun addDeathLocationCF(location: Location) = future { addDeathLocation(location) }
+  suspend fun addDeathLocation(location: Location)
 
   /**
    * Abstract folder representing the saved death history of the player. The only way to add
@@ -124,34 +93,20 @@ interface WaypointsPlayer : WaypointHolder {
   val deathFolder: Folder
 
   /** All the concurrent Waypoints the player has selected */
-  @JvmSynthetic suspend fun getSelectedWaypoints(): List<Waypoint>
+  suspend fun getSelectedWaypoints(): List<Waypoint>
 
-  fun getSelectedWaypointsCF() = future { getSelectedWaypoints() }
-
-  @JvmSynthetic suspend fun setSelectedWaypoints(selected: List<Waypoint>)
-
-  fun setSelectedWaypointsCF(selected: List<Waypoint>) = future { setSelectedWaypoints(selected) }
+  suspend fun setSelectedWaypoints(selected: List<Waypoint>)
 
   /**
    * The compass target the player currently has before it got overwritten by the compass pointer
    */
-  @JvmSynthetic suspend fun getCompassTarget(): Location?
+  suspend fun getCompassTarget(): Location?
 
-  fun getCompassTargetCF() = future { getCompassTarget() }
+  suspend fun setCompassTarget(location: Location)
 
-  @JvmSynthetic suspend fun setCompassTarget(location: Location)
+  suspend fun getSharingWaypoints(): List<WaypointShare>
 
-  fun setCompassTargetCF(location: Location) = future { setCompassTarget(location) }
+  suspend fun hasSharedWaypoints(): Boolean
 
-  @JvmSynthetic suspend fun getSharingWaypoints(): List<WaypointShare>
-
-  fun getSharingWaypointsCF() = future { getSharingWaypoints() }
-
-  @JvmSynthetic suspend fun hasSharedWaypoints(): Boolean
-
-  fun hasSharedWaypointsCF() = future { hasSharedWaypoints() }
-
-  @JvmSynthetic suspend fun getSharedWaypoints(): List<WaypointShare>
-
-  fun getSharedWaypointsCF() = future { getSharedWaypoints() }
+  suspend fun getSharedWaypoints(): List<WaypointShare>
 }

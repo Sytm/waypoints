@@ -5,13 +5,9 @@ import org.bukkit.Location
 
 interface PublicWaypointHolder : WaypointHolder {
 
-  @JvmSynthetic suspend fun getWaypointsAmount(creator: UUID): Int
+  suspend fun getWaypointsAmount(creator: UUID): Int
 
-  fun getWaypointsAmountCF(creator: UUID) = future { getWaypointsAmount(creator) }
-
-  @JvmSynthetic suspend fun getFoldersAmount(creator: UUID): Int
-
-  fun getFoldersAmountCF(creator: UUID) = future { getFoldersAmount(creator) }
+  suspend fun getFoldersAmount(creator: UUID): Int
 
   /**
    * Creates a new Waypoint in this holder with the given name and location, created by an arbitrary
@@ -22,12 +18,7 @@ interface PublicWaypointHolder : WaypointHolder {
    * @param creator The player that created this waypoint
    * @return The newly created waypoint
    */
-  @JvmSynthetic
-  suspend fun createWaypoint(name: String, location: Location, creator: UUID): Waypoint
-
-  fun createWaypointCF(name: String, location: Location, creator: UUID) = future {
-    createWaypoint(name, location, creator)
-  }
+    suspend fun createWaypoint(name: String, location: Location, creator: UUID): Waypoint
 
   /**
    * Creates a new folder in this holder with the given name
@@ -35,7 +26,5 @@ interface PublicWaypointHolder : WaypointHolder {
    * @param name The name of the folder
    * @return The newly created folder
    */
-  @JvmSynthetic suspend fun createFolder(name: String, creator: UUID): Folder
-
-  fun createFolderCF(name: String, creator: UUID) = future { createFolder(name, creator) }
+  suspend fun createFolder(name: String, creator: UUID): Folder
 }

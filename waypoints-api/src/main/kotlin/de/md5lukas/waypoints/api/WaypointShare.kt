@@ -10,15 +10,11 @@ interface WaypointShare : Deletable {
 
   val waypointId: UUID
 
-  @JvmSynthetic suspend fun getWaypoint(): Waypoint
-
-  fun getWaypointCF() = future { getWaypoint() }
+  suspend fun getWaypoint(): Waypoint
 
   val expires: OffsetDateTime?
 
-  @JvmSynthetic suspend fun setExpires(expires: OffsetDateTime?)
+  suspend fun setExpires(expires: OffsetDateTime?)
 
-  fun setExpiresCF(expires: OffsetDateTime?) = future { setExpires(expires) }
-
-  @JvmSynthetic override suspend fun delete()
+  override suspend fun delete()
 }

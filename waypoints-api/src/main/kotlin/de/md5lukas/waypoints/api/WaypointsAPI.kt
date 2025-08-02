@@ -29,9 +29,7 @@ interface WaypointsAPI {
    * @param uuid The UUID of the player
    * @return true if the player has been requested before
    */
-  @JvmSynthetic suspend fun waypointsPlayerExists(uuid: UUID): Boolean
-
-  fun waypointsPlayerExistsCF(uuid: UUID) = future { waypointsPlayerExists(uuid) }
+  suspend fun waypointsPlayerExists(uuid: UUID): Boolean
 
   /**
    * Get the player-profile for the matching UUID. If the player-profile has never been requested
@@ -40,9 +38,7 @@ interface WaypointsAPI {
    * @param uuid The UUID of the player
    * @return The player-profile
    */
-  @JvmSynthetic suspend fun getWaypointPlayer(uuid: UUID): WaypointsPlayer
-
-  fun getWaypointPlayerCF(uuid: UUID) = future { getWaypointPlayer(uuid) }
+  suspend fun getWaypointPlayer(uuid: UUID): WaypointsPlayer
 
   /** The abstract holder containing public waypoints and folders. */
   val publicWaypoints: PublicWaypointHolder
@@ -56,9 +52,7 @@ interface WaypointsAPI {
    * @param uuid The UUID of the waypoint
    * @return The waypoint if it exists
    */
-  @JvmSynthetic suspend fun getWaypointByID(uuid: UUID): Waypoint?
-
-  fun getWaypointByIDCF(uuid: UUID) = future { getWaypointByID(uuid) }
+  suspend fun getWaypointByID(uuid: UUID): Waypoint?
 
   /**
    * Retrieve a folder of any type with the given UUID from the database.
@@ -66,9 +60,7 @@ interface WaypointsAPI {
    * @param uuid The UUID of the folder
    * @return The folder if it exists
    */
-  @JvmSynthetic suspend fun getFolderByID(uuid: UUID): Folder?
-
-  fun getFolderByIDCF(uuid: UUID) = future { getFolderByID(uuid) }
+  suspend fun getFolderByID(uuid: UUID): Folder?
 
   /** Get access to some interesting statistics of total waypoints and folders. */
   val statistics: Statistics
