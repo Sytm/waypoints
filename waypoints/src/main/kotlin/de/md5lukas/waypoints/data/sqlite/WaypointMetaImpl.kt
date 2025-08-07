@@ -3,7 +3,7 @@ package de.md5lukas.waypoints.data.sqlite
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.WaypointMeta
 import de.md5lukas.waypoints.data.DatabaseManager
-import de.md5lukas.waypoints.data.getUUID
+import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.util.*
 import kotlinx.coroutines.withContext

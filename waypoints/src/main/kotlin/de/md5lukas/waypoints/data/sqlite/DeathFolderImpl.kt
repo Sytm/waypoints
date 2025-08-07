@@ -68,7 +68,7 @@ class DeathFolderImpl(
             "SELECT * FROM waypoints WHERE type = ? AND owner = ?;",
             Type.DEATH.name,
             owner.toString()) {
-              _root_ide_package_.de.md5lukas.waypoints.data.sqlite.WaypointImpl(dm, this)
+              WaypointImpl(dm, this)
             }
       }
 

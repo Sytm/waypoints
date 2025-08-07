@@ -12,7 +12,7 @@ import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointShare
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.data.DatabaseManager
-import de.md5lukas.waypoints.data.getUUID
+import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.UUID
