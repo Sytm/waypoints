@@ -7,6 +7,8 @@ paperTestServer = "1.21.8-R0.1-SNAPSHOT"
 
 dynmap = "3.6"
 
+configurate = "4.2.0"
+
 [libraries]
 stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -30,6 +32,8 @@ schedulers = { group = "de.md5lukas", name = "schedulers", version = "1.0.1" }
 skedule = { group = "de.md5lukas", name = "skedule", version = "2.0.1" }
 anvilGui = { group = "de.md5lukas", name = "anvilgui", version = "2.0.0" }
 bStats = { group = "org.bstats", name = "bstats-bukkit", version = "3.1.0" }
+configurate-core = { group = "org.spongepowered", name = "configurate-core", version.ref = "configurate" }
+configurate-kotlin = { group = "org.spongepowered", name = "configurate-extra-kotlin", version.ref = "configurate" }
 
 # Optional dependencies
 vaultApi = { group = "com.github.MilkBowl", name = "VaultAPI", version = "1.7.1" }

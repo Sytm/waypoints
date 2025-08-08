@@ -40,17 +40,16 @@ internal class TrailPointer(
           return it
         }
         val pathfinder =
-            with(config) {
+            with(config.pathing) {
               Pathfinder(
                   plugin = plugin,
                   executor = Schedulers.global(plugin).asExecutor(async = true),
-                  maxIterations = pathingMaxIterations,
-                  maxLength = pathingMaxLength,
-                  pathingStrategy =
-                      BasicPlayerPathingStrategy(pathingSwimPenalty > 0.0, pathingSwimPenalty),
-                  allowChunkLoading = pathingAllowChunkLoading,
-                  allowChunkGeneration = pathingAllowChunkGeneration,
-                  weigher = ConstantFWeigher(pathingHeuristicWeight),
+                  maxIterations = maxIterations,
+                  maxLength = maxLength,
+                  pathingStrategy = BasicPlayerPathingStrategy(swimPenalty > 0.0, swimPenalty),
+                  allowChunkLoading = allowChunkLoading,
+                  allowChunkGeneration = allowChunkGeneration,
+                  weigher = ConstantFWeigher(heuristicWeight),
               )
             }
         this.pathfinder = pathfinder
@@ -92,7 +91,7 @@ internal class TrailPointer(
       if (player.world !== locationTrail.firstOrNull()?.world ||
           locationTrail.all {
             val squared = player.location.distanceSquared(it)
-            val outOfReach = squared >= config.pathInvalidationDistanceSquared
+            val outOfReach = squared >= config.pathInvalidationDistance
             outOfReach
           } ||
           (locationTrail.size == 1 && !locationTrail.last().blockEquals(translatedTarget))) {
@@ -115,7 +114,7 @@ internal class TrailPointer(
         val last = locationTrail.last()
         if (!last.blockEquals(translatedTarget) &&
             (player.world !== last.world ||
-                player.location.distanceSquared(last) < config.pathCalculateAheadDistanceSquared)) {
+                player.location.distanceSquared(last) < config.pathCalculateAheadDistance)) {
           lastFuture =
               pathfinder
                   .findPath(last, translatedTarget)
@@ -126,7 +125,7 @@ internal class TrailPointer(
                           locationTrail.indexOfLast {
                             player.world !== it.world ||
                                 player.location.distanceSquared(it) >=
-                                    config.retainMaxPlayerDistanceSquared
+                                    config.retainMaxPlayerDistance
                           }
                       if (lastIndex > 0) {
                         locationTrail.subList(0, lastIndex).clear()
@@ -154,23 +153,25 @@ internal class TrailPointer(
     locationTrail.forEachIndexed { index, location ->
       val isHighlight = ((index - highlightCounter) % config.highlightDistance) == 0
 
-      player.spawnParticle(
-          if (isHighlight) {
-            config.particleHighlight
-          } else {
-            config.particleNormal
-          },
-          location,
-          if (isHighlight) {
-            ceil(config.particleAmount * 1.5).toInt()
-          } else {
-            config.particleAmount
-          },
-          config.particleSpread,
-          config.particleSpread,
-          config.particleSpread,
-          0.0,
-      )
+      with(config.particles) {
+        player.spawnParticle(
+            if (isHighlight) {
+              highlight
+            } else {
+              normal
+            },
+            location,
+            if (isHighlight) {
+              ceil(amount * 1.5).toInt()
+            } else {
+              amount
+            },
+            spread,
+            spread,
+            spread,
+            0.0,
+        )
+      }
     }
 
     highlightCounter = (highlightCounter + 1) % config.highlightDistance

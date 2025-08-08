@@ -1,22 +1,58 @@
 package de.md5lukas.waypoints.pointers.config
 
+import de.md5lukas.configurate.NonEmptyString
+import de.md5lukas.configurate.Positive
 import net.kyori.adventure.bossbar.BossBar.Color
 import net.kyori.adventure.bossbar.BossBar.Overlay
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
+import org.spongepowered.configurate.objectmapping.meta.Comment
 
-interface BossBarConfiguration : RepeatingPointerConfiguration {
+class BossBarConfiguration : RepeatingPointerConfiguration {
 
-  val recalculateEveryNthInterval: Int
+  override var enabled = true
+    private set
 
-  val barColor: Color
+  @Comment(
+      "The tick interval where the boss bar is updated to account for the rotation of the player")
+  @Positive
+  override var interval = 4
+    private set
 
-  val barStyle: Overlay
+  @Comment(
+      "Only every n intervals the angle between the player and the waypoints is calculated to save computational power")
+  @Positive
+  var recalculateEveryNthInterval: Int = 5
+    private set
 
-  val title: String
+  @Comment(
+      """
+    Color of the boss bar
+    Available values: pink, blue, red, green, yellow, purple, white
+  """)
+  var barColor: Color = Color.BLUE
+    private set
 
-  val indicator: String
+  @Comment(
+      """
+    Style of the boss bar
+    Available values: progress, notched_6, notched_10, notched_12, notched_20
+  """)
+  var barStyle: Overlay = Overlay.PROGRESS
+    private set
 
-  val indicatorStyle: Style
+  @NonEmptyString
+  var title: String = " · · ◈ · · ◈ · · E · · ◈ · · ◈ · · S · · ◈ · · ◈ · · W · · ◈ · · ◈ · · N"
+    private set
 
-  val normalColor: Style
+  @NonEmptyString
+  var indicator: String = "⬛"
+    private set
+
+  @Comment("For example add <bold> if the indicator should be bold. The colors are randomized")
+  var indicatorStyle: Style = Style.empty()
+    private set
+
+  var normalColor: Style = Style.style(NamedTextColor.WHITE)
+    private set
 }

@@ -32,7 +32,7 @@ internal class ActionBarPointer(
 
     player.sendActionBar(
         if (translatedTarget !== null) {
-          if (config.showDistanceEnabled && player.isSneaking) {
+          if (config.showDistance && player.isSneaking) {
             pointerManager.hooks.actionBarHooks.formatDistanceMessage(
                 player,
                 playerLocation.distance(translatedTarget),

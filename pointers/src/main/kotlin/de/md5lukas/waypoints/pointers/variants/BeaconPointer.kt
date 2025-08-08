@@ -34,7 +34,7 @@ internal class BeaconPointer(
     if (translatedTarget !== null) {
       val distance = player.location.distanceSquared(translatedTarget)
 
-      if (distance >= config.minDistanceSquared && distance < config.maxDistanceSquared) {
+      if (distance >= config.minDistance && distance < config.maxDistance.value()) {
         val beaconBase = translatedTarget.highestBlock.location
 
         val lastBeaconPosition = activeBeacons[trackable]
@@ -72,7 +72,7 @@ internal class BeaconPointer(
       player.sendBlockChange(
           loc,
           ((trackable as? StaticTrackable)?.beaconColor
-                  ?: config.getDefaultColor(trackable)
+                  ?: pointerManager.hooks.getDefaultBeaconColor(trackable)
                   ?: BeaconColor.CLEAR)
               .blockData)
     } else {

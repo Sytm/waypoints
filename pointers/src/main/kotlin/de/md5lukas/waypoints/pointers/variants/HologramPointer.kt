@@ -60,7 +60,7 @@ internal class HologramPointer(
     val distanceSquared = playerEyes.distanceSquared(translatedTarget)
 
     val location =
-        if (distanceSquared <= config.distanceFromPlayerSquared) {
+        if (distanceSquared <= config.distanceFromPlayer) {
           hologramTarget
         } else {
           val pVec = playerEyes.toVector()
@@ -177,7 +177,7 @@ internal class HologramPointer(
 
                     it.teleportDuration = interval
 
-                    it.itemStack = itemStack
+                    it.setItemStack(itemStack)
 
                     val isBlock = itemStack.type.isBlock
                     it.billboard =

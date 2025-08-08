@@ -206,11 +206,12 @@ class PointerManager(
       return CompletableFuture.completedFuture(emptyMap())
     }
 
+    fun getDefaultBeaconColor(trackable: Trackable): BeaconColor?
+
     interface ActionBar {
       /**
        * Format a message for the player to show him the distance to his target. Only called if
-       * [de.md5lukas.waypoints.pointers.config.ActionBarConfiguration.showDistanceEnabled] is set
-       * to true.
+       * [de.md5lukas.waypoints.pointers.config.ActionBarConfiguration.showDistance] is set to true.
        *
        * @param player The player that will see this message
        * @param distance3D The distance between the player and the target taking every axis into

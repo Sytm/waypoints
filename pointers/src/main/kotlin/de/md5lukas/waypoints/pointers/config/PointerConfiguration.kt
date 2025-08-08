@@ -1,26 +1,30 @@
 package de.md5lukas.waypoints.pointers.config
 
-import com.google.common.collect.BiMap
+import org.spongepowered.configurate.objectmapping.ConfigSerializable
 
-interface PointerConfiguration {
+class PointerConfiguration {
 
-  val disableWhenReachedRadiusSquared: Int
+  var disableWhenReachedRadiusSquared: Int = 5
+    get() = field * field
+    private set
 
-  val connectedWorlds: BiMap<String, String>
+  var connectedWorlds: List<WorldConnection> = listOf(WorldConnection("world", "world_the_nether"))
 
-  val actionBar: ActionBarConfiguration
+  var actionBar: ActionBarConfiguration = ActionBarConfiguration()
 
-  val beacon: BeaconConfiguration
+  var beacon: BeaconConfiguration = BeaconConfiguration()
 
-  val blinkingBlock: BlinkingBlockConfiguration
+  var blinkingBlock: BlinkingBlockConfiguration = BlinkingBlockConfiguration()
 
-  val compass: CompassConfiguration
+  var compass: CompassConfiguration = CompassConfiguration()
 
-  val particle: ParticleConfiguration
+  var particle: ParticleConfiguration = ParticleConfiguration()
 
-  val hologram: HologramConfiguration
+  var hologram: HologramConfiguration = HologramConfiguration()
 
-  val bossBar: BossBarConfiguration
+  var bossBar: BossBarConfiguration = BossBarConfiguration()
 
-  val trail: TrailConfiguration
+  var trail: TrailConfiguration = TrailConfiguration()
+
+  @ConfigSerializable data class WorldConnection(val overworld: String, val underworld: String)
 }

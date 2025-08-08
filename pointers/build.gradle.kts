@@ -10,14 +10,16 @@ plugins {
 }
 
 dependencies {
-  api(libs.paperJava17)
+  api(libs.paper)
   api(libs.stdlib)
 
+  api(libs.configurate.core)
+  api(project(":configurate-helpers"))
   implementation(libs.schedulers)
   implementation(libs.pathfinder)
 }
 
-kotlin { jvmToolchain(17) }
+kotlin { jvmToolchain(21) }
 
 version = project.property("pointersVersion") as String
 

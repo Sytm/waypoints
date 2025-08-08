@@ -201,13 +201,13 @@ internal class ManagedPlayer(
       return trackable.location
     }
 
-    pointerManager.configuration.connectedWorlds.entries.forEach {
-      if (it.key == player.world.name && it.value == trackable.location.world?.name ||
-          it.value == player.world.name && it.key == trackable.location.world?.name) {
+    pointerManager.configuration.connectedWorlds.forEach {
+      if (it.overworld == player.world.name && it.underworld == trackable.location.world?.name ||
+          it.underworld == player.world.name && it.overworld == trackable.location.world?.name) {
         val target = trackable.location.clone()
         target.world = player.world
 
-        if (player.world.name == it.key) {
+        if (player.world.name == it.overworld) {
           target.x *= 8
           target.z *= 8
         } else {

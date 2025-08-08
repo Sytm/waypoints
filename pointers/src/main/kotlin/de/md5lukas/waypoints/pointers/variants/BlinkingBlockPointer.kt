@@ -31,7 +31,7 @@ internal class BlinkingBlockPointer(
     if (trackable !is StaticTrackable) return
     if (translatedTarget !== null) {
       val distance = player.location.distanceSquared(translatedTarget)
-      if (distance >= config.minDistanceSquared && distance < config.maxDistanceSquared) {
+      if (distance >= config.minDistance && distance < config.maxDistance) {
         val currentCounter =
             counters.compute(trackable) { _, count ->
               if (count == null) {
