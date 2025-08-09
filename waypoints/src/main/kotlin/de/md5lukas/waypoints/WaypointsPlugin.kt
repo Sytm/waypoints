@@ -264,7 +264,9 @@ class WaypointsPlugin : JavaPlugin() {
       pm.permissions.forEach {
         val name = it.name
         if (name.startsWith(WaypointsPermissions.LIMIT_PREFIX_WAYPOINTS) ||
-            name.startsWith(WaypointsPermissions.LIMIT_PREFIX_FOLDERS)) {
+            name.startsWith(WaypointsPermissions.LIMIT_PREFIX_FOLDERS) ||
+            name.startsWith(WaypointsPermissions.LIMIT_PREFIX_PUBLIC_WAYPOINTS) ||
+            name.startsWith(WaypointsPermissions.LIMIT_PREFIX_PUBLIC_FOLDERS)) {
           pm.removePermission(name)
         }
       }
@@ -277,11 +279,18 @@ class WaypointsPlugin : JavaPlugin() {
     waypointsConfig.limits.folders.permissionLimits.mapTo(permissions) {
       Permission(WaypointsPermissions.LIMIT_PREFIX_FOLDERS + it)
     }
+    waypointsConfig.limits.waypoints.public.permissionLimits.mapTo(permissions) {
+      Permission(WaypointsPermissions.LIMIT_PREFIX_PUBLIC_WAYPOINTS + it)
+    }
+    waypointsConfig.limits.folders.public.permissionLimits.mapTo(permissions) {
+      Permission(WaypointsPermissions.LIMIT_PREFIX_PUBLIC_FOLDERS + it)
+    }
 
     pm.addPermissions(permissions)
   }
 
   private fun startMetrics() {
+    if (Environment.DEV) return
     metrics = Metrics(this, METRICS_PLUGIN_ID)
 
     with(api.statistics) {
@@ -352,7 +361,7 @@ class WaypointsPlugin : JavaPlugin() {
     // Run once every day
     scheduler.scheduleAtFixedRateAsync(
         20 * 60 * 60 * 24, 20 * 60 * 60 * 24, CleanDatabaseTask(this))
-    if (waypointsConfig.general.updateChecker) {
+    if (!Environment.DEV && waypointsConfig.general.updateChecker) {
       scheduler.scheduleAsync(UpdateChecker(this, "Sytm", "waypoints"))
     }
   }
