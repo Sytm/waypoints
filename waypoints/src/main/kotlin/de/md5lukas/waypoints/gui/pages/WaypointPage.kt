@@ -389,10 +389,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
               background
             },
         'o' to
-            if (canModifyWaypoint &&
-                isNotDeathWaypoint &&
-                minecraftVersionAtLeast(wpGUI.plugin, 20, 1) &&
-                wpGUI.plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
+            if (canModifyWaypoint && isNotDeathWaypoint) {
               GUIItem(wpGUI.translations.WAYPOINT_EDIT_DESCRIPTION.item) {
                 wpGUI.viewer.closeInventory()
                 val builder =
