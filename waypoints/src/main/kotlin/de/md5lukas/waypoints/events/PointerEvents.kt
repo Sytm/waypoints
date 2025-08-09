@@ -27,8 +27,8 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
   @EventHandler(priority = EventPriority.MONITOR)
   fun onPlayerRespawn(e: PlayerRespawnEvent) {
     val player = e.player
-    val config = plugin.waypointsConfig.general.pointToDeathWaypointOnDeath
-    if (plugin.waypointsConfig.general.features.deathWaypoints &&
+    val config = plugin.waypointsConfig.pointToDeathWaypointOnDeath
+    if (plugin.waypointsConfig.features.deathWaypoints &&
         config.enabled &&
         checkWorldAvailability(plugin, e.respawnLocation.world!!)) {
       plugin.skedule(e.player) {
@@ -60,7 +60,7 @@ class PointerEvents(private val plugin: WaypointsPlugin) : Listener {
 
   @EventHandler
   fun onMove(e: PlayerMoveEvent) {
-    val visitedRadius = plugin.waypointsConfig.general.teleport.visitedRadiusSquared
+    val visitedRadius = plugin.waypointsConfig.teleport.visitedRadius
 
     plugin.pointerManager
         .getCurrentTargets(e.player)

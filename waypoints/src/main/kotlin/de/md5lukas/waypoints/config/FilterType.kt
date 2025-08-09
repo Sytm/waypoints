@@ -1,4 +1,4 @@
-package de.md5lukas.waypoints.config.general
+package de.md5lukas.waypoints.config
 
 enum class FilterType {
   WHITELIST,

@@ -65,18 +65,18 @@ class PlayerTrackingPage(
               .also { stack -> stack.editMeta<SkullMeta> { owningPlayer = value } }) {
             if (!wpGUI.viewerData.canBeTracked &&
                 wpGUI.plugin.waypointsConfig.playerTracking.trackingRequiresTrackable) {
-              wpGUI.playSound { clickError }
+              wpGUI.playSound { click.error }
               wpGUI.translations.MESSAGE_TRACKING_TRACKABLE_REQUIRED.send(wpGUI.viewer)
             } else if (!value.isOnline) {
-              wpGUI.playSound { clickError }
+              wpGUI.playSound { click.error }
               wpGUI.translations.MESSAGE_TRACKING_PLAYER_NO_LONGER_ONLINE.send(wpGUI.viewer)
             } else {
               fun activatePlayerTracking() {
-                wpGUI.playSound { playerSelected }
+                wpGUI.playSound { player.selected }
                 wpGUI.plugin.pointerManager.enable(
                     wpGUI.viewer, PlayerTrackable(wpGUI.plugin, value))
                 if (wpGUI.plugin.waypointsConfig.playerTracking.notification) {
-                  wpGUI.playSound { playerNotification }
+                  wpGUI.playSound { player.notification }
                   wpGUI.translations.MESSAGE_TRACKING_NOTIFICATION.send(
                       value, "name" placeholder wpGUI.viewer.displayName())
                 }
@@ -84,9 +84,9 @@ class PlayerTrackingPage(
 
               wpGUI.viewer.closeInventory()
 
-              if (wpGUI.plugin.waypointsConfig.playerTracking.requestEnabled) {
+              if (wpGUI.plugin.waypointsConfig.playerTracking.request.enabled) {
                 val geyser = wpGUI.plugin.geyserIntegration
-                val validFor = wpGUI.plugin.waypointsConfig.playerTracking.requestValidFor
+                val validFor = wpGUI.plugin.waypointsConfig.playerTracking.request.validFor
                 val validForResolver =
                     "valid_for" placeholder wpGUI.plugin.durationFormatter.formatDuration(validFor)
 
@@ -143,7 +143,7 @@ class PlayerTrackingPage(
         background,
         'p' to
             GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               previousPage()
             },
         't' to
@@ -154,17 +154,17 @@ class PlayerTrackingPage(
             },
         'r' to
             GUIItem(wpGUI.translations.PLAYER_LIST_REFRESH_LISTING.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               wpGUI.skedule { updateListingContent() }
             },
         'b' to
             GUIItem(wpGUI.translations.GENERAL_BACK.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               wpGUI.goBack()
             },
         'n' to
             GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               nextPage()
             },
     )

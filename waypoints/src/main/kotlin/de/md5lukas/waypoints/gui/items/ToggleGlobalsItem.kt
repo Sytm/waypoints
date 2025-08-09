@@ -10,7 +10,7 @@ class ToggleGlobalsItem(wpGUI: WaypointsGUI) :
             false to wpGUI.translations.SETTINGS_TOGGLE_GLOBALS_HIDDEN.item),
         {
           wpGUI.skedule { wpGUI.viewerData.setShowGlobals(it) }
-          wpGUI.playSound { clickNormal }
+          wpGUI.playSound { click.normal }
           wpGUI.gui.update()
         }) {
   init {

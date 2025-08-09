@@ -31,7 +31,7 @@ class ItemTranslation(
   val rawStack: ItemStack
     get() =
         fixedMaterial?.let(::ItemStack)
-            ?: translationLoader.plugin.waypointsConfig.inventory.createNewStack(
+            ?: translationLoader.plugin.inventoryConfig.createNewStack(
                 translationLoader.plugin,
                 key + if (appendItemSuffix) ".item" else "",
             )

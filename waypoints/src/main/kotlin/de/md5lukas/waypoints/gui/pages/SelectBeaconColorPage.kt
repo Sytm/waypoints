@@ -41,7 +41,7 @@ class SelectBeaconColorPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint)
                 wpGUI.skedule {
                   waypoint.setBeaconColor(pair.first.material)
                   switchContext(SynchronizationContext.SYNC)
-                  wpGUI.playSound { clickSuccess }
+                  wpGUI.playSound { click.success }
                   wpGUI.goBack()
                   (wpGUI.gui.activePage as BasePage).update()
                 }
@@ -68,19 +68,19 @@ class SelectBeaconColorPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint)
         background,
         'p' to
             GUIItem(wpGUI.translations.SELECT_BEACON_COLOR_MOVE_LEFT.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               colors.next()
               updateColorSelection()
             },
         'n' to
             GUIItem(wpGUI.translations.SELECT_BEACON_COLOR_MOVE_RIGHT.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               colors.previous()
               updateColorSelection()
             },
         'b' to
             GUIItem(wpGUI.translations.GENERAL_BACK.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               wpGUI.goBack()
             })
   }

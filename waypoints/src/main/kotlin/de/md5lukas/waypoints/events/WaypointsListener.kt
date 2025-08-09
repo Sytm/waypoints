@@ -14,7 +14,7 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
 
   @EventHandler
   fun onPlayerDeath(e: PlayerDeathEvent) {
-    if (plugin.waypointsConfig.general.features.deathWaypoints &&
+    if (plugin.waypointsConfig.features.deathWaypoints &&
         checkWorldAvailability(plugin, e.entity.world)) {
       plugin.skedule {
         plugin.api.getWaypointPlayer(e.entity.uniqueId).addDeathLocation(e.entity.location)
@@ -24,11 +24,11 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
 
   @EventHandler
   fun onPlayerInteract(e: PlayerInteractEvent) {
-    val config = plugin.waypointsConfig.general.openWithItem
+    val config = plugin.waypointsConfig.openWithItem
     if (config.enabled &&
         (!config.mustSneak || e.player.isSneaking) &&
-        e.action in config.validClicks &&
-        e.material in config.items) {
+        e.action in config.click.actions &&
+        e.material.asItemType() in config.items) {
       // Run in next tick to hopefully fix https://github.com/Sytm/waypoints/issues/86 (will be run
       // automatically in next tick due to context switch)
       WaypointsGUI(plugin, e.player, e.player.uniqueId)

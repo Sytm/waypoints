@@ -19,14 +19,14 @@ dependencies {
 
   compileOnly(libs.annotations)
 
-  implementation(project(":pointers", "shadow"))
+  implementation(project(":configurate-helpers"))
+  implementation(project(":pointers"))
   implementation(project(":signgui"))
 
   // Dependencies on own projects
   implementation(libs.md5Commons)
   implementation(libs.kinvs)
-  implementation(libs.konfig)
-  implementation(libs.paperBrigadier) { this.isChanging = true }
+  implementation(libs.paperBrigadier)
   implementation(libs.sqliteHelper)
 
   // Required dependencies
@@ -34,6 +34,8 @@ dependencies {
   implementation(libs.skedule)
   implementation(libs.anvilGui)
   implementation(libs.bStats)
+  implementation(libs.configurate.core)
+  implementation(libs.configurate.kotlin)
 
   // Optional dependencies
   implementation(libs.vaultApi)
@@ -74,17 +76,6 @@ tasks {
     filesMatching("plugin.yml") { expand(properties) }
   }
 
-  compileKotlin {
-    // To make sure we have an explicit dependency on the project itself because otherwise we will
-    // get a warning that we only depend on an output file and not the project itself
-    dependsOn(project(":pointers").tasks["shadowJar"])
-  }
-
-  test {
-    // This is sooooo stupid, literally the inverse of the above. Like gradle gfys
-    dependsOn(project(":pointers").tasks["jar"])
-  }
-
   shadowJar {
     archiveClassifier = ""
 
@@ -94,11 +85,12 @@ tasks {
 
     dependencies {
       include(project(":pointers"))
+      include(dependency(libs.pathfinder.get()))
       include(project(":signgui"))
+      include(project(":configurate-helpers"))
 
       include(dependency(libs.md5Commons.get()))
       include(dependency(libs.kinvs.get()))
-      include(dependency(libs.konfig.get()))
       include(dependency(libs.paperBrigadier.get()))
       include(dependency(libs.sqliteHelper.get()))
 
@@ -108,9 +100,19 @@ tasks {
       include(dependency("org.bstats::"))
     }
 
-    arrayOf("commons", "kinvs", "konfig", "schedulers", "signgui", "paper.brigadier").forEach {
-      relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}")
-    }
+    arrayOf(
+            "commons",
+            "kinvs",
+            "konfig",
+            "schedulers",
+            "signgui",
+            "paper.brigadier",
+            "pathfinder",
+            "configurate",
+            "jdbc")
+        .forEach {
+          relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}")
+        }
     arrayOf("com.okkero.skedule", "net.wesjd.anvilgui", "org.bstats").forEach {
       relocate(it, "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}")
     }

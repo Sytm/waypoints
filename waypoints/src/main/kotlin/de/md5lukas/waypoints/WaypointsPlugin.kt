@@ -3,19 +3,14 @@ package de.md5lukas.waypoints
 import de.md5lukas.commons.paper.UUIDUtils
 import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.commons.time.DurationFormatter
-import de.md5lukas.konfig.Konfig
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.WaypointsPointerManager
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
-import de.md5lukas.waypoints.config.BlockDataAdapter
-import de.md5lukas.waypoints.config.DurationAdapter
-import de.md5lukas.waypoints.config.MaterialListAdapter
-import de.md5lukas.waypoints.config.SoundAdapter
-import de.md5lukas.waypoints.config.StyleAdapter
+import de.md5lukas.waypoints.config.InventoryConfiguration
+import de.md5lukas.waypoints.config.TeleportPaymentType
 import de.md5lukas.waypoints.config.WaypointsConfiguration
-import de.md5lukas.waypoints.config.general.TeleportPaymentType
 import de.md5lukas.waypoints.data.DatabaseManager
 import de.md5lukas.waypoints.data.SQLiteManager
 import de.md5lukas.waypoints.events.ConfigReloadEvent
@@ -41,6 +36,7 @@ import kotlinx.coroutines.asExecutor
 import org.bstats.bukkit.Metrics
 import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.permissions.Permission
 import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
@@ -51,6 +47,9 @@ class WaypointsPlugin : JavaPlugin() {
 
   internal lateinit var databaseManager: DatabaseManager
   lateinit var waypointsConfig: WaypointsConfiguration
+    private set
+
+  lateinit var inventoryConfig: InventoryConfiguration
     private set
 
   lateinit var api: WaypointsAPI
@@ -98,10 +97,6 @@ class WaypointsPlugin : JavaPlugin() {
 
   private lateinit var metrics: Metrics
 
-  override fun onLoad() {
-    Konfig.preloadClasses<WaypointsConfiguration>()
-  }
-
   override fun onEnable() {
     try {
       Class.forName("io.papermc.paper.configuration.Configuration")
@@ -128,26 +123,21 @@ class WaypointsPlugin : JavaPlugin() {
   }
 
   // <editor-fold desc="onEnable Methods">
-  private val konfig =
-      Konfig(
-          listOf(
-              MaterialListAdapter,
-              BlockDataAdapter,
-              DurationAdapter,
-              StyleAdapter,
-              SoundAdapter,
-          ))
-
   private fun loadConfiguration() {
-    saveDefaultConfig()
     waypointsConfig = WaypointsConfiguration()
-    konfig.deserializeInto(config, waypointsConfig)
+    // TODO configurate load
+    // TODO save inventory config with fallback loading from jar?
+    saveResource("inventory.yml", false)
+    inventoryConfig =
+        InventoryConfiguration(
+            YamlConfiguration.loadConfiguration(File(dataFolder, "inventory.yml")))
   }
 
   fun reloadConfiguration() {
-    saveDefaultConfig()
-    reloadConfig()
-    konfig.deserializeInto(config, waypointsConfig)
+    // TODO configurate reload
+    inventoryConfig =
+        InventoryConfiguration(
+            YamlConfiguration.loadConfiguration(File(dataFolder, "inventory.yml")))
 
     ConfigReloadEvent(waypointsConfig).callEvent()
     registerCustomizablePermissions(true)
@@ -220,7 +210,7 @@ class WaypointsPlugin : JavaPlugin() {
       }
     }
 
-    if (waypointsConfig.general.features.globalWaypoints) {
+    if (waypointsConfig.features.globalWaypoints) {
       with(waypointsConfig.integrations) {
         if (dynmap.enabled) {
           dynMapIntegrationAvailable = DynMapIntegration(this@WaypointsPlugin).setupDynMap()
@@ -243,10 +233,10 @@ class WaypointsPlugin : JavaPlugin() {
     lifecycleManager.registerEventHandler(LifecycleEvents.COMMANDS) {
       val registrar = it.registrar()
       registrar.register(
-          WaypointsCommand(this).buildCommand(), waypointsConfig.general.commands.waypointsAliases)
+          WaypointsCommand(this).buildCommand(), waypointsConfig.commandAliases.waypoints)
       registrar.register(
           WaypointsScriptCommand(this).buildCommand(),
-          waypointsConfig.general.commands.waypointsScriptAliases)
+          waypointsConfig.commandAliases.waypointsScript)
     }
   }
 
@@ -268,10 +258,10 @@ class WaypointsPlugin : JavaPlugin() {
     }
 
     val permissions = mutableListOf<Permission>()
-    waypointsConfig.general.waypoints.permissionLimits.mapTo(permissions) {
+    waypointsConfig.limits.waypoints.permissionLimits.mapTo(permissions) {
       Permission(WaypointsPermissions.LIMIT_PREFIX_WAYPOINTS + it)
     }
-    waypointsConfig.general.folders.permissionLimits.mapTo(permissions) {
+    waypointsConfig.limits.folders.permissionLimits.mapTo(permissions) {
       Permission(WaypointsPermissions.LIMIT_PREFIX_FOLDERS + it)
     }
 
@@ -298,7 +288,7 @@ class WaypointsPlugin : JavaPlugin() {
     metrics.addCustomChart(
         SimplePie("actually_uses_vault") {
           if (vaultIntegration0 !== null) {
-                waypointsConfig.general.teleport
+                waypointsConfig.teleport
                     .let { arrayOf(it.private, it.death, it.public, it.permission) }
                     .any { it.paymentType === TeleportPaymentType.VAULT }
               } else {
@@ -308,12 +298,10 @@ class WaypointsPlugin : JavaPlugin() {
         })
     metrics.addCustomChart(
         SimplePie("global_waypoints_enabled") {
-          waypointsConfig.general.features.globalWaypoints.toString()
+          waypointsConfig.features.globalWaypoints.toString()
         })
     metrics.addCustomChart(
-        SimplePie("death_waypoints_enabled") {
-          waypointsConfig.general.features.deathWaypoints.toString()
-        })
+        SimplePie("death_waypoints_enabled") { waypointsConfig.features.deathWaypoints.toString() })
     metrics.addCustomChart(
         SimplePie("player_tracking_enabled") { waypointsConfig.playerTracking.enabled.toString() })
     metrics.addCustomChart(

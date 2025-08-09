@@ -4,5 +4,5 @@ kotlin { jvmToolchain(21) }
 
 dependencies {
   implementation(libs.paper)
-  implementation(libs.configurate.core)
+  api(libs.configurate.core)
 }

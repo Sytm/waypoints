@@ -39,11 +39,11 @@ class SettingsPage(wpGUI: WaypointsGUI) :
             'p' to GUIItem(wpGUI.translations.SETTINGS_POINTERS_TITLE.item),
             'b' to
                 GUIItem(wpGUI.translations.GENERAL_BACK.item) {
-                  wpGUI.playSound { clickNormal }
+                  wpGUI.playSound { click.normal }
                   wpGUI.goBack()
                 },
             'g' to
-                if (wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
+                if (wpGUI.plugin.waypointsConfig.features.globalWaypoints) {
                   ToggleGlobalsItem(wpGUI)
                 } else background,
             't' to ToggleTemporaryWaypointsItem(wpGUI))
@@ -65,7 +65,7 @@ class SettingsPage(wpGUI: WaypointsGUI) :
     enabledPointers.forEach {
       mappings[counter.toString().first()] =
           TogglePointerItem(wpGUI, it) {
-            wpGUI.playSound { clickNormal }
+            wpGUI.playSound { click.normal }
             wpGUI.plugin.pointerManager.reapplyConfiguration(wpGUI.viewer)
           }
       counter++

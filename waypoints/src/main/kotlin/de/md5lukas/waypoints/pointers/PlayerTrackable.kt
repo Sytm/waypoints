@@ -23,7 +23,7 @@ class PlayerTrackable(private val plugin: WaypointsPlugin, val player: Player) :
       ItemStack(Material.PLAYER_HEAD).also { stack ->
         stack.editMeta {
           it as SkullMeta
-          it.setOwningPlayer(player)
+          it.owningPlayer = player
         }
       }
 

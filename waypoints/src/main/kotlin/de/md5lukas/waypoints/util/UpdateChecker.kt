@@ -18,7 +18,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 
-@Suppress("UnstableApiUsage")
 class UpdateChecker(
     private val plugin: WaypointsPlugin,
     private val owner: String,
@@ -77,7 +76,7 @@ class UpdateChecker(
       val response =
           try {
             client.send(request, BodyHandlers.ofInputStream())
-          } catch (e: Exception) {
+          } catch (_: Exception) {
             return null
           }
 

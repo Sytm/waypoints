@@ -16,14 +16,12 @@ coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core"
 annotations = { group = "org.jetbrains", name = "annotations", version = "24.0.1" }
 
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
-paperJava17 = { group = "io.papermc.paper", name = "paper-api", version = "1.20.4-R0.1-SNAPSHOT" }
 
 # Required dependencies
 # (own)
 md5Commons = { group = "de.md5lukas", name = "md5-commons", version = "3.0.0-SNAPSHOT" }
 kinvs = { group = "de.md5lukas", name = "kinvs", version = "1.1.0" }
 sqliteHelper = { group = "de.md5lukas", name = "sqlite-kotlin-helper", version = "1.2.2" }
-konfig = { group = "de.md5lukas", name = "spigot-konfig", version = "1.0.1" }
 paperBrigadier = { group = "de.md5lukas.paper", name = "paper-brigadier", version = "1.0.0" }
 pathfinder = { group = "de.md5lukas", name = "pathfinder", version = "1.0.0-SNAPSHOT" }
 

@@ -12,7 +12,6 @@ import io.papermc.paper.command.brigadier.MessageComponentSerializer
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType
 import java.util.concurrent.CompletableFuture
 
-@Suppress("UnstableApiUsage")
 class BeaconColorArgument(private val plugin: WaypointsPlugin) :
     CustomArgumentType.Converted<BeaconColor, String> {
 

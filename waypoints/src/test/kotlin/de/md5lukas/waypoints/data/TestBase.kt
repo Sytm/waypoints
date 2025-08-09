@@ -1,6 +1,7 @@
 package de.md5lukas.waypoints.data
 
 import de.md5lukas.waypoints.api.WaypointsAPI
+import de.md5lukas.waypoints.config.WaypointsConfiguration
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.mockbukkit.mockbukkit.MockBukkit
@@ -17,7 +18,7 @@ abstract class TestBase {
   fun createAPI() {
     server = MockBukkit.mock()
     plugin = MockBukkit.createMockPlugin()
-    val manager = SQLiteManager(plugin, DummyDatabaseConfiguration, null, true)
+    val manager = SQLiteManager(plugin, WaypointsConfiguration.Database(), null, true)
     manager.initDatabase()
     api = manager.api
   }

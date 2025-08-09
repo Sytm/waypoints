@@ -1,4 +1,4 @@
-package de.md5lukas.configurate
+package de.md5lukas.configurate.serializers
 
 import java.lang.reflect.Type
 import java.util.function.Predicate

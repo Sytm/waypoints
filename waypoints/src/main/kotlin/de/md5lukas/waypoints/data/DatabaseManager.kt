@@ -1,13 +1,14 @@
 package de.md5lukas.waypoints.data
 
 import de.md5lukas.waypoints.api.WaypointsAPI
+import de.md5lukas.waypoints.config.WaypointsConfiguration
 import java.sql.Connection
 import kotlinx.coroutines.Dispatchers
 import org.bukkit.plugin.Plugin
 
 abstract class DatabaseManager(
     val plugin: Plugin,
-    val databaseConfiguration: DatabaseConfiguration,
+    val databaseConfiguration: WaypointsConfiguration.Database,
     val testing: Boolean,
 ) {
 

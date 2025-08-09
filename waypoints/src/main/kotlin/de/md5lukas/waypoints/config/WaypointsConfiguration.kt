@@ -1,26 +1,626 @@
 package de.md5lukas.waypoints.config
 
-import de.md5lukas.waypoints.config.database.DatabaseConfigurationImpl
-import de.md5lukas.waypoints.config.general.GeneralConfiguration
-import de.md5lukas.waypoints.config.integrations.IntegrationsConfiguration
-import de.md5lukas.waypoints.config.inventory.InventoryConfiguration
-import de.md5lukas.waypoints.config.pointers.PointerConfigurationImpl
-import de.md5lukas.waypoints.config.sounds.SoundsConfiguration
-import de.md5lukas.waypoints.config.tracking.PlayerTrackingConfiguration
+import de.md5lukas.configurate.NonEmptyString
+import de.md5lukas.configurate.Positive
+import de.md5lukas.waypoints.api.Type
+import de.md5lukas.waypoints.pointers.BeaconColor
+import de.md5lukas.waypoints.pointers.config.PointerConfiguration
+import de.md5lukas.waypoints.util.Expression
+import de.md5lukas.waypoints.util.Items
+import de.md5lukas.waypoints.util.MathParser
+import de.md5lukas.waypoints.util.getValue
+import java.time.Duration
+import java.time.Period
+import net.kyori.adventure.key.Key
+import net.kyori.adventure.sound.Sound
+import org.spongepowered.configurate.objectmapping.meta.Comment
+import org.spongepowered.configurate.objectmapping.meta.PostProcess
+import org.spongepowered.configurate.serialize.SerializationException
 
 class WaypointsConfiguration {
 
-  val general = GeneralConfiguration()
+  var database = Database()
+    private set
 
-  val pointers = PointerConfigurationImpl()
+  class Database {
+    @Comment(
+        "Time period after which death waypoints are deleted. Set all values to zero to disable")
+    var deathWaypointRetentionPeriod: Period = Period.ofDays(7)
+      private set
+  }
 
-  val inventory = InventoryConfiguration()
+  var general = General()
+    private set
 
-  val sounds = SoundsConfiguration()
+  class General {
+    @Comment("Set the language for the plugin here")
+    @NonEmptyString
+    var language = "en"
+      private set
 
-  val integrations = IntegrationsConfiguration()
+    var updateChecker = true
+      private set
 
-  val playerTracking = PlayerTrackingConfiguration()
+    @Comment(
+        """
+      What to do when a waypoint is loaded that is in a world that has been deleted / renamed. Available options:
+      SHOW: Shows the waypoint normally, but cannot be selected or teleported to
+      HIDE: The waypoint will be hidden in the GUI, but will reappear once the world is back
+      DELETE: The waypoint will be permanently deleted
+    """)
+    var worldNotFound = WorldNotFoundAction.HIDE
+      private set
 
-  val database = DatabaseConfigurationImpl()
+    @Comment(
+        "When this option is enabled players will only see waypoints that are in the same world as themselves")
+    var hideWaypointsFromDifferentWorlds = false
+      private set
+  }
+
+  var features = Features()
+    private set
+
+  class Features {
+    @Comment("Set to \"false\" to disable global waypoints")
+    var globalWaypoints = true
+      private set
+
+    @Comment("Set to \"false\" to disable death waypoints")
+    var deathWaypoints = true
+      private set
+
+    @Comment("Set to \"false\" to disable teleportations for everyone entirely")
+    var teleportation = true
+      private set
+
+    var publicOwnership = PublicOwnership()
+      private set
+
+    class PublicOwnership {
+      @Comment(
+          "Set to \"true\" to allow all players to create public waypoints, but only be allowed to edit the ones they created")
+      var waypoints = false
+        private set
+
+      @Comment(
+          """
+        Set to "true" to allow all players to create public folders, but only be allowed to edit the ones they created
+        Players can only move waypoints into folders they created
+      """)
+      var folders = true
+        get() = waypoints && field
+        private set
+    }
+  }
+
+  @Comment(
+      "Specify additional aliases for the two commands Waypoints uses in case other plugins overwrite them")
+  var commandAliases = CommandAliases()
+    private set
+
+  class CommandAliases {
+    var waypoints = setOf("wp")
+      private set
+
+    var waypointsScript = setOf("wps")
+      private set
+  }
+
+  var pointToDeathWaypointOnDeath = PointToDeathWaypointOnDeath()
+    private set
+
+  class PointToDeathWaypointOnDeath {
+    var enabled = true
+      private set
+
+    @Comment(
+        "When set to a value greater than zero, the death waypoint will be automatically deselected after the set time")
+    var autoDeselectAfter: Duration = Duration.ZERO
+      private set
+  }
+
+  @Comment(
+      """
+      Specify in which worlds waypoints can be created
+      Players with the permission waypoints.modify.anywhere can place waypoints wherever they want.
+      Automatic waypoint-creation in disabled worlds will not occur
+    """)
+  var availableWorlds = AvailableWorlds()
+    private set
+
+  class AvailableWorlds {
+    @Comment(
+        """
+        Available options:
+        blacklist: Worlds in the list are not available
+        whitelist: Only worlds on the list are available
+      """)
+    var type = FilterType.BLACKLIST
+      private set
+
+    // TODO set or list?
+    var worlds = arrayOf("hub")
+      private set
+
+    @PostProcess
+    fun postProcess() {
+      worlds = worlds.map { it.lowercase() }.toTypedArray()
+    }
+  }
+
+  var openWithItem = OpenWithItem()
+    private set
+
+  class OpenWithItem {
+    var enabled = true
+      private set
+
+    @Comment("Available options are RIGHT (right-click) and LEFT (left-click)")
+    var click = ClickType.RIGHT
+      private set
+
+    @Comment(
+        """
+        If set to true the player must sneak and then use the item to open the inventory
+        Otherwise it doesn't matter if the player is sneaking
+      """)
+    var mustSneak = true
+      private set
+
+    // TODO type
+    @Comment("Any of the following item can be used to open the GUI")
+    var items = arrayOf(Items.COMPASS.getValue())
+      private set
+  }
+
+  var customIconFilter = CustomIconFilter()
+    private set
+
+  class CustomIconFilter {
+    @Comment(
+        """
+        Available options:
+        blacklist: Items in the list are forbidden
+        whitelist: Only items on the list are allowed
+      """)
+    var type = FilterType.BLACKLIST
+      private set
+
+    @Comment("AIR is always disallowed")
+    var materials = arrayOf(Items.BARRIER.getValue(), Items.BEDROCK.getValue())
+      private set
+  }
+
+  var limits = Limits()
+    private set
+
+  class Limits {
+
+    var waypoints = Limits0(true)
+      private set
+
+    var folders = Limits0(false)
+      private set
+
+    class Limits0(waypoints: Boolean) {
+      constructor() : this(true)
+
+      @Comment(
+          "Maximum amount of private waypoints/folders a player can have. Players with the permission waypoints.unlimited are not affected by this restriction")
+      @Positive(true)
+      var limit = if (waypoints) 200 else 20
+        private set
+
+      @Comment(
+          """
+        Limit values to check for in permissions.
+        For waypoints the checked permission looks like "waypoints.limit.waypoints.NUMBER" and for folders "waypoints.limit.folders.NUMBER"
+        If the player has this permission, his limit is lifted to NUMBER. Higher numbers are checked first       
+      """)
+      var permissionLimits = listOf(if (waypoints) 400 else 40)
+        private set
+
+      @Comment(
+          "These settings are only applicable if the feature \"publicOwnership.waypoints\" is enabled")
+      var public = Public(waypoints)
+        private set
+
+      class Public(waypoints: Boolean) {
+        constructor() : this(true)
+
+        @Comment(
+            "Maximum amount of public waypoints/folders a player without the permission waypoints.modify.public can create")
+        var limit = if (waypoints) 20 else 2
+          private set
+
+        @Comment(
+            """
+          Limit values to check for in permissions.
+          For waypoints the checked permission looks like "waypoints.limit.waypoints.public.NUMBER" and for folders "waypoints.limit.folders.public.NUMBER"
+          If the player has this permission, his limit is lifted to NUMBER. Higher numbers are checked first       
+        """)
+        var permissionLimits = listOf(if (waypoints) 40 else 4)
+          private set
+      }
+
+      @Comment(
+          "Allow or disallow duplicate names for private, public or permission waypoints/folders")
+      var allowDuplicateNames = AllowDuplicateNames()
+        private set
+
+      class AllowDuplicateNames {
+        var private = true
+          private set
+
+        var public = false
+          private set
+
+        var permission = false
+          private set
+      }
+
+      @PostProcess
+      fun postProcess() {
+        permissionLimits = permissionLimits.sortedDescending()
+      }
+    }
+  }
+
+  var teleport = Teleport()
+    private set
+
+  class Teleport {
+    @Comment(
+        """
+      When a player clicks the teleport button he has to stand still for at least x amount of time before getting teleported.
+      Set to 0s to disable
+    """)
+    var standStillTime: Duration = Duration.ofSeconds(3)
+      private set
+
+    @Comment(
+        """
+      The radius in blocks a player needs to be in from a waypoint to mark that waypoint as visited for the player
+      This should be bigger or the same size as the disableWhenReached radius
+    """)
+    var visitedRadius = 10L
+      get() = field * field
+      private set
+
+    var private =
+        TypedTeleport(Duration.ofHours(24), listOf(Type.DEATH), true, false, true, 10, "1 + n")
+    var death =
+        TypedTeleport(Duration.ofHours(24), listOf(Type.PRIVATE), false, true, true, 10, "10")
+    var public = TypedTeleport(Duration.ofHours(24), emptyList(), true, false, false, 8, "2 + n")
+    var permission = TypedTeleport(Duration.ofHours(4), emptyList(), false, false, false, 3, "n")
+
+    class TypedTeleport(
+        cooldown: Duration,
+        alsoApplyCooldownTo: List<Type>,
+        mustVisit: Boolean,
+        onlyLastWaypoint: Boolean,
+        perCategory: Boolean,
+        maxCost: Long,
+        formula: String
+    ) {
+      constructor() : this(Duration.ZERO, emptyList(), false, false, false, 0, "")
+
+      @Comment(
+          """
+        The cooldown between each teleportation for a player
+        Set to 0s to disable
+      """)
+      var cooldown = cooldown
+        private set
+
+      @Comment(
+          "When teleporting to a waypoint of this type, all listed types will also receive the same cooldown as this one")
+      var alsoApplyCooldownTo = alsoApplyCooldownTo
+        private set
+
+      @Comment(
+          """
+        If set to true, the player must have visited the waypoint before.
+        To mark a waypoint as visited the player must have either created it at his current location without coordinates
+        or have the waypoint selected and reach the visited radius
+        Only applicable to non-death waypoints
+      """)
+      var mustVisit = mustVisit
+        private set
+
+      @Comment(
+          """
+        Allows the player to only teleport to the last location they died at, not all of them.
+        Only applicable to death waypoints
+      """)
+      var onlyLastWaypoint = onlyLastWaypoint
+        private set
+
+      @Comment(
+          """
+        Available types are: disabled, free, xp (levels), xp_points, vault (your economy plugins currency)
+        When using the payment method xp the returned value is rounded to the closest full value
+      """)
+      var paymentType: TeleportPaymentType = TeleportPaymentType.DISABLED
+        private set
+
+      @Comment(
+          """
+        Optionally the counter can be applied to the entire category (e.g. private, death, public, permission) per player or per waypoint per player
+        This only affects the price of the teleportation
+      """)
+      var perCategory = perCategory
+        private set
+
+      @Comment("The maximum cost at which the result of the formula is capped at")
+      var maxCost = maxCost
+        private set
+
+      @Comment(
+          """
+        You can provide a formula to calculate the price
+        The following variables are available:
+        - n => how often a player teleported
+        - distance => the distance between the player and waypoint
+      """)
+      var formula = formula
+        private set
+
+      @Transient
+      var parsedFormula: Expression = Expression { 0.0 }
+        private set
+
+      var differentWorld = DifferentWorld()
+        private set
+
+      class DifferentWorld {
+
+        @Comment("Set to false to disallow teleportations to other worlds")
+        var allow = true
+          private set
+
+        @Comment(
+            "The distance to assume between the player and waypoint if they are in different worlds, because now they cannot be properly measured anymore")
+        var distance = 1000.0
+          private set
+      }
+
+      @PostProcess
+      fun postProcess() {
+        try {
+          parsedFormula = MathParser.parse(formula, "n", "distance")
+        } catch (e: Exception) {
+          throw SerializationException(String::class.java, "Could not parse formula: $formula", e)
+        }
+      }
+    }
+  }
+
+  var integrations = Integrations()
+    private set
+
+  class Integrations {
+
+    var geyser = Geyser()
+      private set
+
+    class Geyser {
+      var enabled = false
+        private set
+
+      @Comment("The icons to use for the tracking request menu")
+      var icon = Icon()
+        private set
+
+      class Icon {
+        @NonEmptyString
+        var accept = "textures/ui/confirm"
+          private set
+
+        @NonEmptyString
+        var decline = "textures/ui/redX1"
+          private set
+      }
+    }
+
+    var dynmap = DynMap()
+      private set
+
+    class DynMap {
+      var enabled = true
+        private set
+
+      @Comment(
+          "See https://github.com/webbukkit/dynmap/wiki/Using-Markers#marker-icons for more information")
+      @NonEmptyString
+      var icon = "default"
+        private set
+    }
+
+    var squaremap = SquareMap()
+      private set
+
+    class SquareMap {
+      var enabled = true
+        private set
+
+      @Comment(
+          """
+        The icon id must either be the full key of an existing icon that got registered by another plugin (see "plugins/squaremap/web/images/icon/registered")
+        Or it must be the name of an icon in the folder "plugins/Waypoints/icons".
+        Examples:
+        plugins/squaremap/web/images/icon/registered/squaremap-spawn_icon.png -> squaremap-spawn_icon.png
+        plugins/Waypoints/icons/special.png -> special
+      """)
+      @NonEmptyString
+      var icon = "w"
+        private set
+
+      @Positive
+      var iconSize: Int = 20
+        private set
+    }
+
+    var pl3xmap = Pl3xMap()
+      private set
+
+    class Pl3xMap {
+      var enabled = true
+        private set
+
+      @Comment(
+          """
+        The icon id must either be the full key of an existing icon that got registered by another plugin (see "plugins/Pl3xMap/web/images/icon/registered")
+        Or it must be the name of an icon in the folder "plugins/Waypoints/icons".
+        Examples:
+        plugins/Pl3xMap/web/images/icon/registered/spawn.png -> spawn
+        plugins/Waypoints/icons/special.png -> special
+      """)
+      @NonEmptyString
+      var icon = "w"
+        private set
+
+      @Positive
+      var iconSize: Double = 20.0
+        private set
+    }
+
+    var bluemap = BlueMap()
+      private set
+
+    class BlueMap {
+      var enabled = true
+        private set
+    }
+  }
+
+  var playerTracking = PlayerTracking()
+    private set
+
+  class PlayerTracking {
+    var enabled = false
+      private set
+
+    @Comment("When true, players can enable / disable being able to be tracked in the GUI")
+    var toggleable = true
+      private set
+
+    @Comment(
+        "When true, players can only track other players when they themselves can be tracked by other players")
+    var trackingRequiresTrackable = false
+      private set
+
+    var request = Request()
+      private set
+
+    class Request {
+      @Comment(
+          "When true, the player to be tracked first needs to accept the request of the tracking player to begin tracking")
+      var enabled = false
+        private set
+
+      @Comment("The amount of time the request is valid for")
+      var validFor: Duration = Duration.ofSeconds(30)
+        private set
+    }
+
+    @Comment("When true, the tracked player is notified when someone starts to track them")
+    var notification = true
+      private set
+  }
+
+  @Comment(
+      """
+    Customize the used sounds
+    For available names enter "/playsound" and view the suggested sounds. Technically custom sounds from resource packs can also be used
+    Pitch and volume can both be customized
+  """)
+  var sounds = Sounds()
+    private set
+
+  class Sounds {
+    var openGui = Sound.sound().type(Key.key("block.ender_chest.open")).volume(0.5f).build()
+      private set
+
+    var click = Click()
+      private set
+
+    class Click {
+      var normal = Sound.sound().type(Key.key("ui.button.click")).volume(0.3f).build()
+        private set
+
+      var danger = Sound.sound().type(Key.key("block.lava.pop")).volume(0.75f).build()
+        private set
+
+      var dangerAbort = Sound.sound().type(Key.key("block.lava.extinguish")).volume(0.5f).build()
+        private set
+
+      var success =
+          Sound.sound().type(Key.key("entity.player.levelup")).volume(0.5f).pitch(2f).build()
+        private set
+
+      var error =
+          Sound.sound().type(Key.key("entity.villager.hurt")).volume(0.5f).pitch(1.5f).build()
+        private set
+    }
+
+    var waypoint = Waypoint()
+      private set
+
+    class Waypoint {
+      var created = Sound.sound().type(Key.key("block.beacon.activate")).pitch(1.5f).build()
+        private set
+
+      var selected = Sound.sound().type(Key.key("block.beacon.power_select")).volume(0.5f).build()
+        private set
+    }
+
+    var player = Player()
+      private set
+
+    class Player {
+      var selected = Sound.sound().type(Key.key("block.beacon.power_select")).volume(0.5f).build()
+        private set
+
+      var notification = Sound.sound().type(Key.key("entity.wither.spawn")).volume(0.1f).build()
+        private set
+    }
+
+    var teleport = Sound.sound().type(Key.key("entity.enderman.teleport")).volume(0.5f).build()
+      private set
+  }
+
+  var beaconPointerDefaultColors = BeaconPointerDefaultColors()
+    private set
+
+  class BeaconPointerDefaultColors {
+    var private = BeaconColor.CLEAR
+      private set
+
+    var death = BeaconColor.RED
+      private set
+
+    var public = BeaconColor.GREEN
+      private set
+
+    var permission = BeaconColor.PURPLE
+      private set
+
+    var player = BeaconColor.PINK
+      private set
+
+    var temporary = BeaconColor.ORANGE
+      private set
+
+    fun getDefaultColor(type: Type) =
+        when (type) {
+          Type.PUBLIC -> public
+          Type.PERMISSION -> permission
+          Type.DEATH -> death
+          Type.PRIVATE -> private
+        }
+  }
+
+  var pointers = PointerConfiguration()
+    private set
 }

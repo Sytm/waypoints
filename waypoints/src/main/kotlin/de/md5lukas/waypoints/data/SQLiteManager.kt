@@ -7,6 +7,7 @@ import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointsAPI
+import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.data.sqlite.WaypointsAPIImpl
 import java.io.File
 import java.sql.Connection
@@ -17,7 +18,7 @@ import org.bukkit.plugin.Plugin
 
 class SQLiteManager(
     plugin: Plugin,
-    databaseConfiguration: DatabaseConfiguration,
+    databaseConfiguration: WaypointsConfiguration.Database,
     val file: File?,
     testing: Boolean = false,
 ) : DatabaseManager(plugin, databaseConfiguration, testing) {

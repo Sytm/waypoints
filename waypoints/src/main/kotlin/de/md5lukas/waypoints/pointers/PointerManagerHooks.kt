@@ -48,6 +48,16 @@ class PointerManagerHooks(private val plugin: WaypointsPlugin) : Hooks {
         result
       }
 
+  override fun getDefaultBeaconColor(trackable: Trackable): BeaconColor? =
+      with(plugin.waypointsConfig.beaconPointerDefaultColors) {
+        when (trackable) {
+          is WaypointTrackable -> getDefaultColor(trackable.waypoint.type)
+          is PlayerTrackable -> player
+          is TemporaryWaypointTrackable -> temporary
+          else -> null
+        }
+      }
+
   private inner class ActionBarPointerHooks : Hooks.ActionBar {
     override fun formatDistanceMessage(
         player: Player,

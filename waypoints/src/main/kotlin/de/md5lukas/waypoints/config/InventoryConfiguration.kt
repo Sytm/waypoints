@@ -1,10 +1,7 @@
-package de.md5lukas.waypoints.config.inventory
+package de.md5lukas.waypoints.config
 
 import de.md5lukas.commons.paper.editMeta
 import de.md5lukas.commons.paper.getStringNotNull
-import de.md5lukas.konfig.Configurable
-import de.md5lukas.konfig.ExportConfigurationSection
-import de.md5lukas.konfig.SkipConfig
 import de.md5lukas.waypoints.api.base.parseIcon
 import de.md5lukas.waypoints.util.createCustomPlayerHead
 import org.bukkit.Material
@@ -13,18 +10,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.Plugin
 
-@Configurable
-class InventoryConfiguration {
-
-  @SkipConfig private var _rootConfig: ConfigurationSection? = null
-
-  @ExportConfigurationSection(true)
-  private var rootConfig: ConfigurationSection
-    set(value) {
-      _rootConfig = value
-      itemCache.clear()
-    }
-    get() = _rootConfig!!
+class InventoryConfiguration(private val config: ConfigurationSection) {
 
   private val itemCache = HashMap<String, ItemStack>()
 
@@ -36,7 +22,7 @@ class InventoryConfiguration {
       return cached.clone()
     }
 
-    val materialString = rootConfig.getStringNotNull(path)
+    val materialString = config.getStringNotNull(path)
     val stack =
         if (materialString.startsWith(headPrefix)) {
           try {

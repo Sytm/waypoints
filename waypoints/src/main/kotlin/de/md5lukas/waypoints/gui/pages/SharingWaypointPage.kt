@@ -49,7 +49,7 @@ class SharingWaypointPage(
           stack.editMeta<SkullMeta> { playerProfile = profile }
         }) {
           wpGUI.skedule {
-            wpGUI.playSound { clickDanger }
+            wpGUI.playSound { click.danger }
             value.delete()
             updateListingContent()
           }
@@ -77,17 +77,17 @@ class SharingWaypointPage(
         background,
         'p' to
             GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               previousPage()
             },
         'b' to
             GUIItem(wpGUI.translations.GENERAL_BACK.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               wpGUI.goBack()
             },
         'n' to
             GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               nextPage()
             },
     )

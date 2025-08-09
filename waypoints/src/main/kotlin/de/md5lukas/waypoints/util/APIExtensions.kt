@@ -57,7 +57,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
 
     val owner = this.owner
     if (type == Type.PUBLIC &&
-        plugin.waypointsConfig.general.features.publicOwnershipWaypoints &&
+        plugin.waypointsConfig.features.publicOwnership.waypoints &&
         owner != null) {
       val ownerName = plugin.uuidUtils.getNameAsync(owner).await()
       if (ownerName != null) {
@@ -182,7 +182,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
 
     val owner = this.owner
     if (type == Type.PUBLIC &&
-        plugin.waypointsConfig.general.features.publicOwnershipFolders &&
+        plugin.waypointsConfig.features.publicOwnership.folders &&
         owner != null) {
       val ownerName = plugin.uuidUtils.getNameAsync(owner).await()
       if (ownerName != null) {

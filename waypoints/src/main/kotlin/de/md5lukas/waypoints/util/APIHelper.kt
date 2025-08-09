@@ -6,8 +6,8 @@ import de.md5lukas.commons.paper.textComponent
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.*
-import de.md5lukas.waypoints.config.general.FilterType
-import de.md5lukas.waypoints.config.general.LimitConfiguration
+import de.md5lukas.waypoints.config.FilterType
+import de.md5lukas.waypoints.config.WaypointsConfiguration
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material
@@ -38,19 +38,19 @@ fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material?): Bo
     return false
   }
 
-  val filter = plugin.waypointsConfig.general.customIconFilter
+  val filter = plugin.waypointsConfig.customIconFilter
   return when (filter.type) {
-    FilterType.WHITELIST -> material in filter.materials
-    FilterType.BLACKLIST -> material !in filter.materials
+    FilterType.WHITELIST -> material.asItemType() in filter.materials
+    FilterType.BLACKLIST -> material.asItemType() !in filter.materials
   }
 }
 
 fun getAllowedItemsForCustomIconMessage(plugin: WaypointsPlugin): Component {
-  val filter = plugin.waypointsConfig.general.customIconFilter
+  val filter = plugin.waypointsConfig.customIconFilter
 
   val materialsComponent = textComponent {
     if (filter.type === FilterType.BLACKLIST) {
-      append(Component.translatable(Material.AIR))
+      append(Component.translatable(Items.AIR.getValue()))
       append(Component.text(", "))
     }
     filter.materials.forEachIndexed { index, material ->
@@ -68,7 +68,7 @@ fun getAllowedItemsForCustomIconMessage(plugin: WaypointsPlugin): Component {
 }
 
 fun checkWorldAvailability(plugin: WaypointsPlugin, world: World): Boolean {
-  val config = plugin.waypointsConfig.general.availableWorlds
+  val config = plugin.waypointsConfig.availableWorlds
   return when (config.type) {
     FilterType.WHITELIST -> world.name.lowercase() in config.worlds
     FilterType.BLACKLIST -> world.name.lowercase() !in config.worlds
@@ -91,7 +91,7 @@ suspend fun createWaypointPrivate(
       player,
       waypointsPlayer.getWaypointsAmount(),
       WaypointsPermissions.LIMIT_PREFIX_WAYPOINTS,
-      plugin.waypointsConfig.general.waypoints,
+      plugin.waypointsConfig.limits.waypoints,
       false)) {
     plugin.translations.WAYPOINT_LIMIT_REACHED_PRIVATE.send(player)
     return LimitReached
@@ -106,7 +106,7 @@ suspend fun createWaypointPrivate(
 
   checkVisited(plugin, waypoint, player)
 
-  player.playSound(plugin.waypointsConfig.sounds.waypointCreated)
+  player.playSoundSeeded(plugin.waypointsConfig.sounds.waypoint.created)
 
   return SuccessWaypoint(waypoint)
 }
@@ -125,7 +125,7 @@ suspend fun createWaypointPublic(
       player,
       plugin.api.publicWaypoints.getWaypointsAmount(player.uniqueId),
       WaypointsPermissions.LIMIT_PREFIX_PUBLIC_WAYPOINTS,
-      plugin.waypointsConfig.general.waypoints,
+      plugin.waypointsConfig.limits.waypoints,
       true)) {
     plugin.translations.WAYPOINT_LIMIT_REACHED_PUBLIC.send(player)
     return LimitReached
@@ -141,7 +141,7 @@ suspend fun createWaypointPublic(
 
   checkVisited(plugin, waypoint, player)
 
-  player.playSound(plugin.waypointsConfig.sounds.waypointCreated)
+  player.playSoundSeeded(plugin.waypointsConfig.sounds.waypoint.created)
 
   return SuccessWaypoint(waypoint)
 }
@@ -170,7 +170,7 @@ suspend fun createWaypointPermission(
 
   checkVisited(plugin, waypoint, player)
 
-  player.playSound(plugin.waypointsConfig.sounds.waypointCreated)
+  player.playSoundSeeded(plugin.waypointsConfig.sounds.waypoint.created)
 
   return SuccessWaypoint(waypoint)
 }
@@ -196,7 +196,7 @@ private fun creationPreChecks(
 private suspend fun checkVisited(plugin: WaypointsPlugin, waypoint: Waypoint, player: Player) {
   if (player.world === waypoint.location.world &&
       player.location.distanceSquared(waypoint.location) <=
-          plugin.waypointsConfig.general.teleport.visitedRadiusSquared) {
+          plugin.waypointsConfig.teleport.visitedRadius) {
     waypoint.getWaypointMeta(player.uniqueId).setVisited(true)
   }
 }
@@ -212,7 +212,7 @@ suspend fun createFolderPrivate(
       player,
       waypointsPlayer.getFoldersAmount(),
       WaypointsPermissions.LIMIT_PREFIX_FOLDERS,
-      plugin.waypointsConfig.general.folders,
+      plugin.waypointsConfig.limits.folders,
       false)) {
     plugin.translations.FOLDER_LIMIT_REACHED_PRIVATE.send(player)
     return LimitReached
@@ -242,7 +242,7 @@ suspend fun createFolderPublic(
       player,
       plugin.api.publicWaypoints.getFoldersAmount(player.uniqueId),
       WaypointsPermissions.LIMIT_PREFIX_PUBLIC_FOLDERS,
-      plugin.waypointsConfig.general.folders,
+      plugin.waypointsConfig.limits.folders,
       true)) {
     plugin.translations.FOLDER_LIMIT_REACHED_PUBLIC.send(player)
     return LimitReached
@@ -276,9 +276,9 @@ suspend fun checkWaypointName(
     name: String
 ): Boolean {
   if (when (holder.type) {
-    Type.PRIVATE -> plugin.waypointsConfig.general.waypoints.allowDuplicateNamesPrivate
-    Type.PUBLIC -> plugin.waypointsConfig.general.waypoints.allowDuplicateNamesPublic
-    Type.PERMISSION -> plugin.waypointsConfig.general.waypoints.allowDuplicateNamesPermission
+    Type.PRIVATE -> plugin.waypointsConfig.limits.waypoints.allowDuplicateNames.private
+    Type.PUBLIC -> plugin.waypointsConfig.limits.waypoints.allowDuplicateNames.public
+    Type.PERMISSION -> plugin.waypointsConfig.limits.waypoints.allowDuplicateNames.permission
     else -> throw IllegalArgumentException("Waypoints of the type ${holder.type} have no name")
   }) {
     return true
@@ -293,9 +293,9 @@ suspend fun checkFolderName(
     name: String
 ): Boolean {
   if (when (holder.type) {
-    Type.PRIVATE -> plugin.waypointsConfig.general.folders.allowDuplicateNamesPrivate
-    Type.PUBLIC -> plugin.waypointsConfig.general.folders.allowDuplicateNamesPublic
-    Type.PERMISSION -> plugin.waypointsConfig.general.folders.allowDuplicateNamesPermission
+    Type.PRIVATE -> plugin.waypointsConfig.limits.folders.allowDuplicateNames.private
+    Type.PUBLIC -> plugin.waypointsConfig.limits.folders.allowDuplicateNames.public
+    Type.PERMISSION -> plugin.waypointsConfig.limits.folders.allowDuplicateNames.permission
     else -> throw IllegalArgumentException("Folders of the type ${holder.type} have no name")
   }) {
     return true
@@ -351,12 +351,13 @@ private fun limitReached(
     permissible: Permissible,
     currentAmount: Int,
     permissionPrefix: String,
-    limitConfiguration: LimitConfiguration,
+    limitConfiguration: WaypointsConfiguration.Limits.Limits0,
     public: Boolean,
 ): Boolean {
-  val limit = if (public) limitConfiguration.publicLimit else limitConfiguration.limit
+  val limit = if (public) limitConfiguration.public.limit else limitConfiguration.limit
   val limits =
-      if (public) limitConfiguration.publicPermissionLimits else limitConfiguration.permissionLimits
+      if (public) limitConfiguration.public.permissionLimits
+      else limitConfiguration.permissionLimits
   val permission =
       if (public) WaypointsPermissions.MODIFY_PUBLIC else WaypointsPermissions.UNLIMITED
 

@@ -20,7 +20,6 @@ softdepend:
 
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}
-  - org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}
   - org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${coroutinesVersion}
 
 permissions:

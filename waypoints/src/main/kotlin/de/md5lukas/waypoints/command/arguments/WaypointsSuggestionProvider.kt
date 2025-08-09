@@ -15,7 +15,6 @@ import java.util.concurrent.CompletableFuture
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-@Suppress("UnstableApiUsage")
 class WaypointsSuggestionProvider(
     private val plugin: WaypointsPlugin,
     private val textMode: Boolean,

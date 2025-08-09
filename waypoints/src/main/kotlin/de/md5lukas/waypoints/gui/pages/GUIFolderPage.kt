@@ -15,7 +15,7 @@ import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.api.*
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
 import de.md5lukas.waypoints.api.gui.GUIFolder
-import de.md5lukas.waypoints.config.general.WorldNotFoundAction
+import de.md5lukas.waypoints.config.WorldNotFoundAction
 import de.md5lukas.waypoints.gui.PlayerTrackingDisplayable
 import de.md5lukas.waypoints.gui.SharedDisplayable
 import de.md5lukas.waypoints.gui.WaypointsGUI
@@ -65,8 +65,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
     val content = PaginationList<GUIDisplayable>(PAGINATION_LIST_PAGE_SIZE)
 
     if (wpGUI.isOwner && guiFolder === wpGUI.targetData) {
-      if (wpGUI.viewerData.showGlobals &&
-          wpGUI.plugin.waypointsConfig.general.features.globalWaypoints) {
+      if (wpGUI.viewerData.showGlobals && wpGUI.plugin.waypointsConfig.features.globalWaypoints) {
         val public = wpGUI.plugin.api.publicWaypoints
         if (public.getWaypointsAmount() > 0 ||
             wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
@@ -78,7 +77,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
           content.add(permission)
         }
       }
-      if (wpGUI.plugin.waypointsConfig.general.features.deathWaypoints) {
+      if (wpGUI.plugin.waypointsConfig.features.deathWaypoints) {
         val deathFolder = wpGUI.targetData.deathFolder
         if (deathFolder.getAmount() > 0) {
           content.add(deathFolder)
@@ -139,7 +138,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
     return wpGUI.extendApi {
       GUIItem(value.getItem(wpGUI.viewer)) {
         wpGUI.skedule {
-          wpGUI.playSound { clickNormal }
+          wpGUI.playSound { click.normal }
           when (value) {
             is WaypointHolder -> wpGUI.openHolder(value)
             is Folder -> wpGUI.openFolder(value)
@@ -168,12 +167,11 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
       }
 
   private val pow =
-      wpGUI.plugin.waypointsConfig.general.features.publicOwnershipWaypoints &&
+      wpGUI.plugin.waypointsConfig.features.publicOwnership.waypoints &&
           guiFolder.type == Type.PUBLIC
 
   private val pof =
-      wpGUI.plugin.waypointsConfig.general.features.publicOwnershipFolders &&
-          guiFolder.type == Type.PUBLIC
+      wpGUI.plugin.waypointsConfig.features.publicOwnership.folders && guiFolder.type == Type.PUBLIC
 
   override fun update() {
     wpGUI.skedule {
@@ -190,14 +188,14 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
         background,
         'p' to
             GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               previousPage()
             },
         'f' to
             if (canModify || pof) {
               if (isOverview) {
                 GUIItem(wpGUI.translations.OVERVIEW_CREATE_FOLDER.item) {
-                  wpGUI.playSound { clickNormal }
+                  wpGUI.playSound { click.normal }
                   wpGUI.openCreateFolder(guiFolder as WaypointHolder)
                 }
               } else if (canModify || wpGUI.viewer.uniqueId == (guiFolder as Folder).owner) {
@@ -222,14 +220,14 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                             (guiFolder as Folder).delete()
                             switchContext(SynchronizationContext.SYNC)
                             wpGUI.goBack(2)
-                            wpGUI.playSound { clickNormal }
+                            wpGUI.playSound { click.normal }
                           }
                         } else {
                           wpGUI.goBack()
-                          wpGUI.playSound { clickDangerAbort }
+                          wpGUI.playSound { click.dangerAbort }
                         }
                       })
-                  wpGUI.playSound { clickDanger }
+                  wpGUI.playSound { click.danger }
                 }
               } else {
                 background
@@ -260,7 +258,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
               }
 
               GUIItem(item) {
-                wpGUI.playSound { clickNormal }
+                wpGUI.playSound { click.normal }
                 wpGUI.plugin.pointerManager.disable(wpGUI.viewer) { true }
                 wpGUI.skedule { updateControls(true) }
               }
@@ -281,12 +279,12 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                         }
                         updateControls()
                         switchContext(SynchronizationContext.SYNC)
-                        wpGUI.playSound { clickSuccess }
+                        wpGUI.playSound { click.success }
                         wpGUI.gui.open()
                       }
                     }
                 guiFolder.description?.let { description -> builder.lines(description.split('\n')) }
-                wpGUI.playSound { clickNormal }
+                wpGUI.playSound { click.normal }
                 builder.open()
               }
             } else {
@@ -314,9 +312,9 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                             guiFolder.setIcon(newIcon)
                             updateControls()
                           }
-                          wpGUI.playSound { clickSuccess }
+                          wpGUI.playSound { click.success }
                         } else {
-                          wpGUI.playSound { clickError }
+                          wpGUI.playSound { click.error }
                           wpGUI.viewer.sendMessage(
                               wpGUI.translations.FOLDER_NEW_ICON_INVALID.text
                                   .appendSpace()
@@ -330,7 +328,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
             when {
               isPlayerOverview ->
                   GUIItem(wpGUI.translations.OVERVIEW_SETTINGS.item) {
-                    wpGUI.playSound { clickNormal }
+                    wpGUI.playSound { click.normal }
                     wpGUI.open(SettingsPage(wpGUI).apply { init() })
                   }
               guiFolder is Folder &&
@@ -360,16 +358,16 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                                   throw IllegalArgumentException(
                                       "Folders of the type ${guiFolder.type} have no name")
                             }.send(wpGUI.viewer)
-                            wpGUI.playSound { clickError }
+                            wpGUI.playSound { click.error }
                             return@onClickSuspending listOf(replaceInputText(name))
                           }
-                          wpGUI.playSound { clickNormal }
+                          wpGUI.playSound { click.normal }
 
                           return@onClickSuspending listOf(AnvilGUI.ResponseAction.close())
                         }
                         .onClose { wpGUI.schedule { wpGUI.gui.open() } }
                         .open(wpGUI.viewer)
-                    wpGUI.playSound { clickNormal }
+                    wpGUI.playSound { click.normal }
                   }
               else -> background
             },
@@ -395,13 +393,13 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                           if (location === null) {
                             wpGUI.translations.WAYPOINT_CREATE_COORDINATES_INVALID_FORMAT.send(
                                 wpGUI.viewer)
-                            wpGUI.playSound { clickError }
+                            wpGUI.playSound { click.error }
                           } else if (location.isOutOfBounds) {
                             wpGUI.translations.WAYPOINT_CREATE_COORDINATES_OUT_OF_BOUNDS.send(
                                 wpGUI.viewer)
-                            wpGUI.playSound { clickError }
+                            wpGUI.playSound { click.error }
                           } else {
-                            wpGUI.playSound { clickNormal }
+                            wpGUI.playSound { click.normal }
                             return@onClick listOf(AnvilGUI.ResponseAction.close())
                           }
                         }
@@ -423,7 +421,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                 } else {
                   wpGUI.openCreateWaypoint(guiFolder.type, guiFolder as? Folder)
                 }
-                wpGUI.playSound { clickNormal }
+                wpGUI.playSound { click.normal }
               }
             } else {
               background
@@ -433,13 +431,13 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
               background
             } else {
               GUIItem(wpGUI.translations.GENERAL_BACK.item) {
-                wpGUI.playSound { clickNormal }
+                wpGUI.playSound { click.normal }
                 wpGUI.goBack()
               }
             },
         'n' to
             GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               nextPage()
             },
     )

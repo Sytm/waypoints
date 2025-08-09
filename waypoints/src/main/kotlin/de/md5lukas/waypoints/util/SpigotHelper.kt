@@ -1,12 +1,19 @@
 package de.md5lukas.waypoints.util
 
 import de.md5lukas.commons.paper.editMeta
+import io.papermc.paper.registry.TypedKey
+import io.papermc.paper.registry.keys.BlockTypeKeys
+import io.papermc.paper.registry.keys.ItemTypeKeys
 import java.net.URI
 import java.util.*
+import net.kyori.adventure.sound.Sound
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Registry
+import org.bukkit.block.BlockType
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.ItemType
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.plugin.Plugin
 
@@ -54,3 +61,15 @@ fun createCustomPlayerHead(plugin: Plugin, textureId: String): ItemStack {
   stack.editMeta<SkullMeta> { playerProfile = profile }
   return stack
 }
+
+fun Player.playSoundSeeded(sound: Sound) {
+  playSound(Sound.sound(sound).seed(System.currentTimeMillis()).build())
+}
+
+typealias Items = ItemTypeKeys
+
+typealias Blocks = BlockTypeKeys
+
+fun TypedKey<ItemType>.getValue(): ItemType = Registry.ITEM.getOrThrow(this)
+
+fun TypedKey<BlockType>.getValue(): BlockType = Registry.BLOCK.getOrThrow(this)

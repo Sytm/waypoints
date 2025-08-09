@@ -9,7 +9,7 @@ import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.api.WaypointsPlayer
-import de.md5lukas.waypoints.config.general.TeleportPaymentType
+import de.md5lukas.waypoints.config.TeleportPaymentType
 import java.time.Duration
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -45,10 +45,10 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
 
   private fun getTeleportConfig(waypoint: Waypoint) =
       when (waypoint.type) {
-        Type.PRIVATE -> plugin.waypointsConfig.general.teleport.private
-        Type.DEATH -> plugin.waypointsConfig.general.teleport.death
-        Type.PUBLIC -> plugin.waypointsConfig.general.teleport.public
-        Type.PERMISSION -> plugin.waypointsConfig.general.teleport.permission
+        Type.PRIVATE -> plugin.waypointsConfig.teleport.private
+        Type.DEATH -> plugin.waypointsConfig.teleport.death
+        Type.PUBLIC -> plugin.waypointsConfig.teleport.public
+        Type.PERMISSION -> plugin.waypointsConfig.teleport.permission
       }
 
   suspend fun isTeleportEnabled(
@@ -59,8 +59,8 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
     val config = getTeleportConfig(waypoint)
     return when {
       config.paymentType === TeleportPaymentType.DISABLED -> false
-      waypoint.type !== Type.DEATH || config.onlyLastWaypoint == false -> {
-        config.differentWorldAllow || bukkitPlayer.world == waypoint.location.world
+      waypoint.type !== Type.DEATH || !config.onlyLastWaypoint -> {
+        config.differentWorld.allow || bukkitPlayer.world == waypoint.location.world
       }
       else -> player.deathFolder.getWaypoints().maxByOrNull { it.createdAt } == waypoint
     }
@@ -80,12 +80,12 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         if (player.world == waypoint.location.world) {
           player.location.distance(waypoint.location)
         } else {
-          config.differentWorldDistance
+          config.differentWorld.distance
         }
 
     return min(
         config.maxCost.toDouble(),
-        config.formula.eval(
+        config.parsedFormula.eval(
             mapOf(
                 "n" to teleportations.toDouble(),
                 "distance" to distance,
@@ -118,7 +118,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
     if (!isTeleportEnabled(player, plugin.api.getWaypointPlayer(player.uniqueId), waypoint))
         return false
     val config = getTeleportConfig(waypoint)
-    if (config.mustVisit?.not() != false) return true
+    if (!config.mustVisit) return true
     return waypoint.getWaypointMeta(player.uniqueId).visited
   }
 
@@ -189,7 +189,7 @@ class TeleportManager(private val plugin: WaypointsPlugin) : Listener {
         }
 
     if (canTeleport()) {
-      val standStillTime = plugin.waypointsConfig.general.teleport.standStillTime
+      val standStillTime = plugin.waypointsConfig.teleport.standStillTime
 
       if (standStillTime.toSeconds() > 0) {
         plugin.translations.MESSAGE_TELEPORT_STAND_STILL_NOTICE.send(

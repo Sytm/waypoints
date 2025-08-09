@@ -25,7 +25,7 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
         it.addAll(wpGUI.getHolderForType(waypoint.type).getFolders())
 
         val viewerId = wpGUI.viewerData.id
-        if (wpGUI.plugin.waypointsConfig.general.features.publicOwnershipFolders &&
+        if (wpGUI.plugin.waypointsConfig.features.publicOwnership.folders &&
             waypoint.type == Type.PUBLIC &&
             viewerId == waypoint.owner &&
             !wpGUI.viewer.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
@@ -36,7 +36,7 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
   override suspend fun toGUIContent(value: Folder) =
       wpGUI.extendApi {
         GUIItem(value.getItem(wpGUI.viewer)) {
-          wpGUI.playSound { clickSuccess }
+          wpGUI.playSound { click.success }
           wpGUI.skedule {
             waypoint.setFolder(value)
             switchContext(SynchronizationContext.SYNC)
@@ -58,17 +58,17 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
         background,
         'p' to
             GUIItem(wpGUI.translations.GENERAL_PREVIOUS.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               previousPage()
             },
         'n' to
             GUIItem(wpGUI.translations.GENERAL_NEXT.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               nextPage()
             },
         'g' to
             GUIItem(wpGUI.translations.SELECT_FOLDER_NO_FOLDER.item) {
-              wpGUI.playSound { clickSuccess }
+              wpGUI.playSound { click.success }
               wpGUI.skedule {
                 waypoint.setFolder(null)
                 switchContext(SynchronizationContext.SYNC)
@@ -77,7 +77,7 @@ class MoveToFolderPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
             },
         'b' to
             GUIItem(wpGUI.translations.GENERAL_BACK.item) {
-              wpGUI.playSound { clickNormal }
+              wpGUI.playSound { click.normal }
               wpGUI.goBack()
             })
   }

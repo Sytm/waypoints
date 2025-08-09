@@ -15,7 +15,7 @@ class CycleSortItem(wpGUI: WaypointsGUI, onCycle: suspend (OverviewSort) -> Unit
             launch { wpGUI.viewerData.setSortBy(it) }
             onCycle(it)
           }
-          wpGUI.playSound { clickNormal }
+          wpGUI.playSound { click.normal }
         }) {
 
   init {

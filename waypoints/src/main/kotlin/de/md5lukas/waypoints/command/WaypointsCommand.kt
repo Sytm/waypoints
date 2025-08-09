@@ -19,6 +19,7 @@ import de.md5lukas.waypoints.util.createWaypointPrivate
 import de.md5lukas.waypoints.util.createWaypointPublic
 import de.md5lukas.waypoints.util.humanReadableByteCountBin
 import de.md5lukas.waypoints.util.labelResolver
+import de.md5lukas.waypoints.util.playSoundSeeded
 import de.md5lukas.waypoints.util.searchWaypoint
 import io.papermc.paper.command.brigadier.CommandSourceStack
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
@@ -53,7 +54,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
               if (sender.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) {
                 translations.COMMAND_HELP_SET_PRIVATE.send(sender, labelResolver)
               }
-              if (plugin.waypointsConfig.general.features.globalWaypoints) {
+              if (plugin.waypointsConfig.features.globalWaypoints) {
                 if (sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)) {
                   translations.COMMAND_HELP_SET_PUBLIC.send(sender, labelResolver)
                 }
@@ -89,7 +90,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
                   plugin.pointerManager.enable(player, WaypointTrackable(plugin, waypoint))
                   translations.COMMAND_SELECT_SELECTED.send(
                       player, Placeholder.unparsed("name", waypoint.name))
-                  player.playSound(plugin.waypointsConfig.sounds.waypointSelected)
+                  player.playSoundSeeded(plugin.waypointsConfig.sounds.waypoint.selected)
                 }
               }
             }
@@ -103,7 +104,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
           }
         }
         literal("teleport") {
-          requires { plugin.waypointsConfig.general.features.teleportation }
+          requires { plugin.waypointsConfig.features.teleportation }
           requiresPlayer()
           greedyString("name") {
             suggests(
@@ -136,12 +137,12 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
           }
         }
         literal("setPublic") {
-          requires { plugin.waypointsConfig.general.features.globalWaypoints }
+          requires { plugin.waypointsConfig.features.globalWaypoints }
           requiresPlayer()
           andRequires {
             val sender = it.sender
 
-            plugin.waypointsConfig.general.features.publicOwnershipWaypoints ||
+            plugin.waypointsConfig.features.publicOwnership.waypoints ||
                 sender.hasPermission(WaypointsPermissions.MODIFY_PUBLIC)
           }
           greedyString("name") {
@@ -151,7 +152,7 @@ class WaypointsCommand(private val plugin: WaypointsPlugin) {
           }
         }
         literal("setPermission") {
-          requires { plugin.waypointsConfig.general.features.globalWaypoints }
+          requires { plugin.waypointsConfig.features.globalWaypoints }
           requiresPlayer()
           requiresPermission(WaypointsPermissions.MODIFY_PERMISSION)
           word("permission") {

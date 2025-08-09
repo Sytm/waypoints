@@ -17,7 +17,7 @@ class ToggleTemporaryWaypointsItem(wpGUI: WaypointsGUI) :
                 )),
         {
           wpGUI.skedule { wpGUI.viewerData.setCanReceiveTemporaryWaypoints(it) }
-          wpGUI.playSound { clickNormal }
+          wpGUI.playSound { click.normal }
           wpGUI.gui.update()
         }) {
   init {

@@ -2,7 +2,7 @@ package de.md5lukas.waypoints.integrations
 
 import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.waypoints.WaypointsPlugin
-import de.md5lukas.waypoints.config.integrations.GeyserConfiguration
+import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.lang.Translations
 import de.md5lukas.waypoints.util.asPlainText
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
@@ -16,7 +16,7 @@ class GeyserIntegration(private val plugin: WaypointsPlugin) {
   private val translations: Translations
     get() = plugin.translations
 
-  private val config: GeyserConfiguration
+  private val config: WaypointsConfiguration.Integrations.Geyser
     get() = plugin.waypointsConfig.integrations.geyser
 
   fun setupGeyser(): Boolean {
@@ -47,11 +47,11 @@ class GeyserIntegration(private val plugin: WaypointsPlugin) {
                 .button(
                     translations.MESSAGE_TRACKING_REQUEST_GEYSER_ACCEPT.text.asPlainText(),
                     FormImage.Type.PATH,
-                    config.acceptIcon)
+                    config.icon.accept)
                 .button(
                     translations.MESSAGE_TRACKING_REQUEST_GEYSER_DECLINE.text.asPlainText(),
                     FormImage.Type.PATH,
-                    config.declineIcon)
+                    config.icon.decline)
                 .validResultHandler { response ->
                   @Suppress(
                       "KotlinConstantConditions") // Annotation is messed up. The id is 0 based

@@ -8,7 +8,7 @@ import de.md5lukas.kinvs.GUI
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.WaypointsPlugin
 import de.md5lukas.waypoints.api.*
-import de.md5lukas.waypoints.config.sounds.SoundsConfiguration
+import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.gui.pages.*
 import de.md5lukas.waypoints.util.*
 import java.util.*
@@ -101,9 +101,9 @@ class WaypointsGUI(
               }
 
           if (result is SuccessFolder) {
-            playSound { clickSuccess }
+            playSound { click.success }
           } else {
-            playSound { clickError }
+            playSound { click.error }
           }
 
           return@onClickSuspending when (result) {
@@ -136,7 +136,7 @@ class WaypointsGUI(
             name = enteredText
 
             if (type == Type.PERMISSION && permission == null) {
-              playSound { clickNormal }
+              playSound { click.normal }
               return@onClickSuspending listOf(
                   AnvilGUI.ResponseAction.updateTitle(
                       translations.WAYPOINT_CREATE_ENTER_PERMISSION.text, false))
@@ -159,7 +159,7 @@ class WaypointsGUI(
               }
 
           if (result !is SuccessWaypoint) {
-            playSound { clickError }
+            playSound { click.error }
           }
 
           return@onClickSuspending when (result) {
@@ -241,8 +241,8 @@ class WaypointsGUI(
       block: suspend CoroutineScope.() -> Unit
   ) = scheduler.skedule(sync, block)
 
-  internal inline fun playSound(sound: SoundsConfiguration.() -> Sound) {
-    viewer.playSound(plugin.waypointsConfig.sounds.sound())
+  internal inline fun playSound(sound: WaypointsConfiguration.Sounds.() -> Sound) {
+    viewer.playSoundSeeded(plugin.waypointsConfig.sounds.sound())
   }
 
   init {
