@@ -13,15 +13,18 @@ import java.time.Duration
 import java.time.Period
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
+import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment
 import org.spongepowered.configurate.objectmapping.meta.PostProcess
 import org.spongepowered.configurate.serialize.SerializationException
 
+@ConfigSerializable
 class WaypointsConfiguration {
 
   var database = Database()
     private set
 
+  @ConfigSerializable
   class Database {
     @Comment(
         "Time period after which death waypoints are deleted. Set all values to zero to disable")
@@ -32,6 +35,7 @@ class WaypointsConfiguration {
   var general = General()
     private set
 
+  @ConfigSerializable
   class General {
     @Comment("Set the language for the plugin here")
     @NonEmptyString
@@ -60,6 +64,7 @@ class WaypointsConfiguration {
   var features = Features()
     private set
 
+  @ConfigSerializable
   class Features {
     @Comment("Set to \"false\" to disable global waypoints")
     var globalWaypoints = true
@@ -76,6 +81,7 @@ class WaypointsConfiguration {
     var publicOwnership = PublicOwnership()
       private set
 
+    @ConfigSerializable
     class PublicOwnership {
       @Comment(
           "Set to \"true\" to allow all players to create public waypoints, but only be allowed to edit the ones they created")
@@ -98,6 +104,7 @@ class WaypointsConfiguration {
   var commandAliases = CommandAliases()
     private set
 
+  @ConfigSerializable
   class CommandAliases {
     var waypoints = setOf("wp")
       private set
@@ -109,6 +116,7 @@ class WaypointsConfiguration {
   var pointToDeathWaypointOnDeath = PointToDeathWaypointOnDeath()
     private set
 
+  @ConfigSerializable
   class PointToDeathWaypointOnDeath {
     var enabled = true
       private set
@@ -128,6 +136,7 @@ class WaypointsConfiguration {
   var availableWorlds = AvailableWorlds()
     private set
 
+  @ConfigSerializable
   class AvailableWorlds {
     @Comment(
         """
@@ -139,18 +148,19 @@ class WaypointsConfiguration {
       private set
 
     // TODO set or list?
-    var worlds = arrayOf("hub")
+    var worlds = setOf("hub")
       private set
 
     @PostProcess
     fun postProcess() {
-      worlds = worlds.map { it.lowercase() }.toTypedArray()
+      worlds = worlds.mapTo(LinkedHashSet()) { it.lowercase() }
     }
   }
 
   var openWithItem = OpenWithItem()
     private set
 
+  @ConfigSerializable
   class OpenWithItem {
     var enabled = true
       private set
@@ -169,13 +179,14 @@ class WaypointsConfiguration {
 
     // TODO type
     @Comment("Any of the following item can be used to open the GUI")
-    var items = arrayOf(Items.COMPASS.getValue())
+    var items = setOf(Items.COMPASS.getValue())
       private set
   }
 
   var customIconFilter = CustomIconFilter()
     private set
 
+  @ConfigSerializable
   class CustomIconFilter {
     @Comment(
         """
@@ -187,13 +198,14 @@ class WaypointsConfiguration {
       private set
 
     @Comment("AIR is always disallowed")
-    var materials = arrayOf(Items.BARRIER.getValue(), Items.BEDROCK.getValue())
+    var materials = setOf(Items.BARRIER.getValue(), Items.BEDROCK.getValue())
       private set
   }
 
   var limits = Limits()
     private set
 
+  @ConfigSerializable
   class Limits {
 
     var waypoints = Limits0(true)
@@ -202,6 +214,7 @@ class WaypointsConfiguration {
     var folders = Limits0(false)
       private set
 
+    @ConfigSerializable
     class Limits0(waypoints: Boolean) {
       constructor() : this(true)
 
@@ -217,7 +230,7 @@ class WaypointsConfiguration {
         For waypoints the checked permission looks like "waypoints.limit.waypoints.NUMBER" and for folders "waypoints.limit.folders.NUMBER"
         If the player has this permission, his limit is lifted to NUMBER. Higher numbers are checked first       
       """)
-      var permissionLimits = listOf(if (waypoints) 400 else 40)
+      var permissionLimits = setOf(if (waypoints) 400 else 40)
         private set
 
       @Comment(
@@ -225,6 +238,7 @@ class WaypointsConfiguration {
       var public = Public(waypoints)
         private set
 
+      @ConfigSerializable
       class Public(waypoints: Boolean) {
         constructor() : this(true)
 
@@ -239,8 +253,13 @@ class WaypointsConfiguration {
           For waypoints the checked permission looks like "waypoints.limit.waypoints.public.NUMBER" and for folders "waypoints.limit.folders.public.NUMBER"
           If the player has this permission, his limit is lifted to NUMBER. Higher numbers are checked first       
         """)
-        var permissionLimits = listOf(if (waypoints) 40 else 4)
+        var permissionLimits = setOf(if (waypoints) 40 else 4)
           private set
+
+        @PostProcess
+        fun postProcess() {
+          permissionLimits = permissionLimits.toSortedSet(Comparator.reverseOrder())
+        }
       }
 
       @Comment(
@@ -248,6 +267,7 @@ class WaypointsConfiguration {
       var allowDuplicateNames = AllowDuplicateNames()
         private set
 
+      @ConfigSerializable
       class AllowDuplicateNames {
         var private = true
           private set
@@ -261,7 +281,7 @@ class WaypointsConfiguration {
 
       @PostProcess
       fun postProcess() {
-        permissionLimits = permissionLimits.sortedDescending()
+        permissionLimits = permissionLimits.toSortedSet(Comparator.reverseOrder())
       }
     }
   }
@@ -269,6 +289,7 @@ class WaypointsConfiguration {
   var teleport = Teleport()
     private set
 
+  @ConfigSerializable
   class Teleport {
     @Comment(
         """
@@ -287,82 +308,118 @@ class WaypointsConfiguration {
       get() = field * field
       private set
 
+    @Comment(
+        """
+      cooldown:
+      The cooldown between each teleportation for a player
+      Set to 0s to disable
+      
+      alsoApplyCooldownTo:
+      When teleporting to a waypoint of this type, all listed types will also receive the same cooldown as this one
+      
+      mustVisit:
+      If set to true, the player must have visited the waypoint before.
+      To mark a waypoint as visited the player must have either created it at his current location without coordinates
+      or have the waypoint selected and reach the visited radius
+      Only applicable to non-death waypoints
+      
+      onlyLastWaypoint:
+      Allows the player to only teleport to the last location they died at, not all of them.
+      Only applicable to death waypoints
+      
+      paymentType:
+      Available types are: disabled, free, xp (levels), xp_points, vault (your economy plugins currency)
+      When using the payment method xp the returned value is rounded to the closest full value
+      
+      perCategory:
+      Optionally the counter can be applied to the entire category (e.g. private, death, public, permission) per player or per waypoint per player
+      This only affects the price of the teleportation
+      
+      maxCost:
+      The maximum cost at which the result of the formula is capped at
+      
+      formula:
+      You can provide a formula to calculate the price
+      The following variables are available:
+      - n => how often a player teleported
+      - distance => the distance between the player and waypoint
+      
+      differentWorld.allow:
+      Set to false to disallow teleportations to other worlds
+      
+      differentWorld.distance:
+      The distance to assume between the player and waypoint if they are in different worlds, because now they cannot be properly measured anymore
+    """)
     var private =
-        TypedTeleport(Duration.ofHours(24), listOf(Type.DEATH), true, false, true, 10, "1 + n")
+        TypedTeleport(
+            cooldown = Duration.ofHours(24),
+            alsoApplyCooldownTo = setOf(Type.DEATH),
+            mustVisit = true,
+            onlyLastWaypoint = false,
+            perCategory = true,
+            maxCost = 10,
+            formula = "1 + n")
     var death =
-        TypedTeleport(Duration.ofHours(24), listOf(Type.PRIVATE), false, true, true, 10, "10")
-    var public = TypedTeleport(Duration.ofHours(24), emptyList(), true, false, false, 8, "2 + n")
-    var permission = TypedTeleport(Duration.ofHours(4), emptyList(), false, false, false, 3, "n")
+        TypedTeleport(
+            cooldown = Duration.ofHours(24),
+            alsoApplyCooldownTo = setOf(Type.PRIVATE),
+            mustVisit = false,
+            onlyLastWaypoint = true,
+            perCategory = true,
+            maxCost = 10,
+            formula = "10")
+    var public =
+        TypedTeleport(
+            cooldown = Duration.ofHours(24),
+            alsoApplyCooldownTo = emptySet(),
+            mustVisit = true,
+            onlyLastWaypoint = false,
+            perCategory = false,
+            maxCost = 8,
+            formula = "2 + n")
+    var permission =
+        TypedTeleport(
+            cooldown = Duration.ofHours(4),
+            alsoApplyCooldownTo = emptySet(),
+            mustVisit = false,
+            onlyLastWaypoint = false,
+            perCategory = false,
+            maxCost = 3,
+            formula = "n")
 
+    @ConfigSerializable
     class TypedTeleport(
         cooldown: Duration,
-        alsoApplyCooldownTo: List<Type>,
+        alsoApplyCooldownTo: Set<Type>,
         mustVisit: Boolean,
         onlyLastWaypoint: Boolean,
         perCategory: Boolean,
         maxCost: Long,
         formula: String
     ) {
-      constructor() : this(Duration.ZERO, emptyList(), false, false, false, 0, "")
+      constructor() : this(Duration.ZERO, emptySet(), false, false, false, 0, "")
 
-      @Comment(
-          """
-        The cooldown between each teleportation for a player
-        Set to 0s to disable
-      """)
       var cooldown = cooldown
         private set
 
-      @Comment(
-          "When teleporting to a waypoint of this type, all listed types will also receive the same cooldown as this one")
       var alsoApplyCooldownTo = alsoApplyCooldownTo
         private set
 
-      @Comment(
-          """
-        If set to true, the player must have visited the waypoint before.
-        To mark a waypoint as visited the player must have either created it at his current location without coordinates
-        or have the waypoint selected and reach the visited radius
-        Only applicable to non-death waypoints
-      """)
       var mustVisit = mustVisit
         private set
 
-      @Comment(
-          """
-        Allows the player to only teleport to the last location they died at, not all of them.
-        Only applicable to death waypoints
-      """)
       var onlyLastWaypoint = onlyLastWaypoint
         private set
 
-      @Comment(
-          """
-        Available types are: disabled, free, xp (levels), xp_points, vault (your economy plugins currency)
-        When using the payment method xp the returned value is rounded to the closest full value
-      """)
       var paymentType: TeleportPaymentType = TeleportPaymentType.DISABLED
         private set
 
-      @Comment(
-          """
-        Optionally the counter can be applied to the entire category (e.g. private, death, public, permission) per player or per waypoint per player
-        This only affects the price of the teleportation
-      """)
       var perCategory = perCategory
         private set
 
-      @Comment("The maximum cost at which the result of the formula is capped at")
       var maxCost = maxCost
         private set
 
-      @Comment(
-          """
-        You can provide a formula to calculate the price
-        The following variables are available:
-        - n => how often a player teleported
-        - distance => the distance between the player and waypoint
-      """)
       var formula = formula
         private set
 
@@ -373,14 +430,12 @@ class WaypointsConfiguration {
       var differentWorld = DifferentWorld()
         private set
 
+      @ConfigSerializable
       class DifferentWorld {
 
-        @Comment("Set to false to disallow teleportations to other worlds")
         var allow = true
           private set
 
-        @Comment(
-            "The distance to assume between the player and waypoint if they are in different worlds, because now they cannot be properly measured anymore")
         var distance = 1000.0
           private set
       }
@@ -399,11 +454,13 @@ class WaypointsConfiguration {
   var integrations = Integrations()
     private set
 
+  @ConfigSerializable
   class Integrations {
 
     var geyser = Geyser()
       private set
 
+    @ConfigSerializable
     class Geyser {
       var enabled = false
         private set
@@ -412,6 +469,7 @@ class WaypointsConfiguration {
       var icon = Icon()
         private set
 
+      @ConfigSerializable
       class Icon {
         @NonEmptyString
         var accept = "textures/ui/confirm"
@@ -426,6 +484,7 @@ class WaypointsConfiguration {
     var dynmap = DynMap()
       private set
 
+    @ConfigSerializable
     class DynMap {
       var enabled = true
         private set
@@ -440,6 +499,7 @@ class WaypointsConfiguration {
     var squaremap = SquareMap()
       private set
 
+    @ConfigSerializable
     class SquareMap {
       var enabled = true
         private set
@@ -464,6 +524,7 @@ class WaypointsConfiguration {
     var pl3xmap = Pl3xMap()
       private set
 
+    @ConfigSerializable
     class Pl3xMap {
       var enabled = true
         private set
@@ -488,6 +549,7 @@ class WaypointsConfiguration {
     var bluemap = BlueMap()
       private set
 
+    @ConfigSerializable
     class BlueMap {
       var enabled = true
         private set
@@ -497,6 +559,7 @@ class WaypointsConfiguration {
   var playerTracking = PlayerTracking()
     private set
 
+  @ConfigSerializable
   class PlayerTracking {
     var enabled = false
       private set
@@ -513,6 +576,7 @@ class WaypointsConfiguration {
     var request = Request()
       private set
 
+    @ConfigSerializable
     class Request {
       @Comment(
           "When true, the player to be tracked first needs to accept the request of the tracking player to begin tracking")
@@ -538,6 +602,7 @@ class WaypointsConfiguration {
   var sounds = Sounds()
     private set
 
+  @ConfigSerializable
   class Sounds {
     var openGui = Sound.sound().type(Key.key("block.ender_chest.open")).volume(0.5f).build()
       private set
@@ -545,6 +610,7 @@ class WaypointsConfiguration {
     var click = Click()
       private set
 
+    @ConfigSerializable
     class Click {
       var normal = Sound.sound().type(Key.key("ui.button.click")).volume(0.3f).build()
         private set
@@ -567,6 +633,7 @@ class WaypointsConfiguration {
     var waypoint = Waypoint()
       private set
 
+    @ConfigSerializable
     class Waypoint {
       var created = Sound.sound().type(Key.key("block.beacon.activate")).pitch(1.5f).build()
         private set
@@ -578,6 +645,7 @@ class WaypointsConfiguration {
     var player = Player()
       private set
 
+    @ConfigSerializable
     class Player {
       var selected = Sound.sound().type(Key.key("block.beacon.power_select")).volume(0.5f).build()
         private set
@@ -590,13 +658,16 @@ class WaypointsConfiguration {
       private set
   }
 
+  @Comment("Set default colors for the beacon pointer for the different waypoint types")
   var beaconPointerDefaultColors = BeaconPointerDefaultColors()
     private set
 
+  @ConfigSerializable
   class BeaconPointerDefaultColors {
     var private = BeaconColor.CLEAR
       private set
 
+    @Comment("The color of the death waypoint cannot be changed ingame")
     var death = BeaconColor.RED
       private set
 

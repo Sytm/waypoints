@@ -1,9 +1,10 @@
 package de.md5lukas.waypoints.pointers.config
 
 import de.md5lukas.configurate.Positive
+import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment
-import org.spongepowered.configurate.objectmapping.meta.Setting
 
+@ConfigSerializable
 class HologramConfiguration : RepeatingPointerConfiguration {
 
   override var enabled = true
@@ -28,12 +29,17 @@ class HologramConfiguration : RepeatingPointerConfiguration {
     private set
 
   @Comment("Displays the icon of the waypoint as a floating item below the text")
-  @Setting("icon.enabled")
-  var iconEnabled: Boolean = true
+  var icon = Icon()
     private set
 
-  @Comment("The vertical offset of the hovering item")
-  @Setting("icon.offset")
-  var iconOffset: Float = -0.3f
-    private set
+  @ConfigSerializable
+  class Icon {
+
+    var enabled: Boolean = true
+      private set
+
+    @Comment("The vertical offset of the hovering item")
+    var offset: Float = -0.3f
+      private set
+  }
 }

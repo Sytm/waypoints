@@ -50,22 +50,22 @@ internal class ActionBarPointer(
     if (angle > config.range) {
       return textComponent {
         style(config.indicatorColor)
-        content(config.leftArrow)
+        content(config.arrow.left)
         append(
             textComponent {
               style(config.normalColor)
-              content(config.section.repeat(config.amountOfSections) + config.rightArrow)
+              content(config.section.repeat(config.amountOfSections) + config.arrow.right)
             })
       }
     }
     if (-angle > config.range) {
       return textComponent {
         style(config.normalColor)
-        content(config.leftArrow + config.section.repeat(config.amountOfSections))
+        content(config.arrow.left + config.section.repeat(config.amountOfSections))
         append(
             textComponent {
               style(config.indicatorColor)
-              content(config.rightArrow)
+              content(config.arrow.right)
             })
       }
     }
@@ -78,7 +78,7 @@ internal class ActionBarPointer(
 
     return textComponent {
       style(config.normalColor)
-      content(config.leftArrow + config.section.repeat(nthSection - 1))
+      content(config.arrow.left + config.section.repeat(nthSection - 1))
       append(
           textComponent {
             style(config.indicatorColor)
@@ -86,7 +86,8 @@ internal class ActionBarPointer(
           })
       append(
           textComponent {
-            content(config.section.repeat(config.amountOfSections - nthSection) + config.rightArrow)
+            content(
+                config.section.repeat(config.amountOfSections - nthSection) + config.arrow.right)
           })
     }
   }

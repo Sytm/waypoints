@@ -7,7 +7,7 @@ import org.spongepowered.configurate.serialize.SerializationException
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
 annotation class Positive(val includeZero: Boolean = false) {
-  class Factory : Constraint.Factory<Positive, Number> {
+  object Factory : Constraint.Factory<Positive, Number?> {
     override fun make(
         data: Positive,
         type: Type,
@@ -32,7 +32,7 @@ annotation class Positive(val includeZero: Boolean = false) {
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
 annotation class Min(val min: Int) {
-  class Factory : Constraint.Factory<Min, Number> {
+  object Factory : Constraint.Factory<Min, Number?> {
     override fun make(
         data: Min,
         type: Type,
@@ -49,7 +49,7 @@ annotation class Min(val min: Int) {
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
 annotation class Max(val max: Int) {
-  class Factory : Constraint.Factory<Max, Number> {
+  object Factory : Constraint.Factory<Max, Number?> {
     override fun make(
         data: Max,
         type: Type,
@@ -66,7 +66,7 @@ annotation class Max(val max: Int) {
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
 annotation class NonEmptyString {
-  class Factory : Constraint.Factory<NonEmptyString, String> {
+  object Factory : Constraint.Factory<NonEmptyString, String?> {
     override fun make(
         data: NonEmptyString,
         type: Type,

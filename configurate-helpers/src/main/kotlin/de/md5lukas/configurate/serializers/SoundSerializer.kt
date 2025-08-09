@@ -8,13 +8,11 @@ import org.spongepowered.configurate.ConfigurationNode
 import org.spongepowered.configurate.serialize.SerializationException
 import org.spongepowered.configurate.serialize.TypeSerializer
 
-class SoundSerializer : TypeSerializer<Sound> {
+internal object SoundSerializer : TypeSerializer<Sound> {
 
-  private companion object {
-    const val NAME = "name"
-    const val VOLUME = "volume"
-    const val PITCH = "pitch"
-  }
+  private const val NAME = "name"
+  private const val VOLUME = "volume"
+  private const val PITCH = "pitch"
 
   override fun deserialize(type: Type, node: ConfigurationNode): Sound {
     val keyNode = node.nonVirtualNode(NAME)
@@ -37,12 +35,12 @@ class SoundSerializer : TypeSerializer<Sound> {
     if (obj.volume() == 1.0f) {
       node.node(VOLUME).raw(null)
     } else {
-      node.node(VOLUME).set(obj.volume())
+      node.node(VOLUME).set(obj.volume().toDouble())
     }
     if (obj.pitch() == 1.0f) {
       node.node(PITCH).raw(null)
     } else {
-      node.node(PITCH).set(obj.pitch())
+      node.node(PITCH).set(obj.pitch().toDouble())
     }
   }
 }

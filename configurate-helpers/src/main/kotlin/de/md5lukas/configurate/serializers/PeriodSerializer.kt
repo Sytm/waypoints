@@ -6,13 +6,11 @@ import java.time.Period
 import org.spongepowered.configurate.ConfigurationNode
 import org.spongepowered.configurate.serialize.TypeSerializer
 
-class PeriodSerializer : TypeSerializer<Period> {
+internal object PeriodSerializer : TypeSerializer<Period> {
 
-  private companion object {
-    const val YEARS = "years"
-    const val MONTHS = "months"
-    const val DAYS = "days"
-  }
+  private const val YEARS = "years"
+  private const val MONTHS = "months"
+  private const val DAYS = "days"
 
   override fun deserialize(type: Type, node: ConfigurationNode): Period {
     return Period.of(

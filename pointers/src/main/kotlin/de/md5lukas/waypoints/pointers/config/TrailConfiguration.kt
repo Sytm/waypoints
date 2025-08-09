@@ -2,8 +2,10 @@ package de.md5lukas.waypoints.pointers.config
 
 import de.md5lukas.configurate.Positive
 import org.bukkit.Particle
+import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment
 
+@ConfigSerializable
 class TrailConfiguration : RepeatingPointerConfiguration {
 
   override var enabled = true
@@ -17,6 +19,7 @@ class TrailConfiguration : RepeatingPointerConfiguration {
   var pathing = Pathing()
     private set
 
+  @ConfigSerializable
   class Pathing {
     @Comment(
         """
@@ -98,6 +101,7 @@ class TrailConfiguration : RepeatingPointerConfiguration {
   var particles = Particles()
     private set
 
+  @ConfigSerializable
   class Particles {
     @Comment("The spread of the particles")
     @Positive(true)

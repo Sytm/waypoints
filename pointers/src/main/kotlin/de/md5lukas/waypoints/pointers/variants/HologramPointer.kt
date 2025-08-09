@@ -167,7 +167,7 @@ internal class HologramPointer(
               }
               .also { player.showEntity(pointerManager.plugin, it) }
 
-      if (config.iconEnabled) {
+      if (config.icon.enabled) {
         itemDisplay =
             trackable.hologramItem?.let { itemStack ->
               world
@@ -188,7 +188,7 @@ internal class HologramPointer(
                         }
                     it.transformation =
                         Transformation(
-                            Vector3f(0.0f, config.iconOffset, 0.0f),
+                            Vector3f(0.0f, config.icon.offset, 0.0f),
                             AxisAngle4f(),
                             Vector3f(if (isBlock) 1.0f else 0.6f),
                             AxisAngle4f(),

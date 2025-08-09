@@ -7,7 +7,7 @@ import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.spongepowered.configurate.serialize.ScalarSerializer
 
-class StyleSerializer : ScalarSerializer<Style>(Style::class.java) {
+internal object StyleSerializer : ScalarSerializer<Style>(Style::class.java) {
 
   override fun deserialize(type: Type, obj: Any): Style? {
     return MiniMessage.miniMessage().deserialize(obj.toString()).style()

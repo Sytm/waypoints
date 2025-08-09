@@ -340,7 +340,7 @@ pointers:
     minDistance: 50
     # If set to auto it will use the render distance of the server
     maxDistance: auto
-    # The base block for the beacon. Use one of these for it to work: IRON_BLOCK, GOLD_BLOCK, DIAMOND_BLOCK, EMERALD_BLOCK or NETHERITE_BLOCK
+    # The base block for the beacon. Use one of these for it to work: iron_block, gold_block, diamond_block, emerald_block or netherite_block
     baseBlock: IRON_BLOCK
     defaultColor:
       private: CLEAR

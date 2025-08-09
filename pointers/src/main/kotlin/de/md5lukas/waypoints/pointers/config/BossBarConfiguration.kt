@@ -6,8 +6,10 @@ import net.kyori.adventure.bossbar.BossBar.Color
 import net.kyori.adventure.bossbar.BossBar.Overlay
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
+import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment
 
+@ConfigSerializable
 class BossBarConfiguration : RepeatingPointerConfiguration {
 
   override var enabled = true

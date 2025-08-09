@@ -8,7 +8,7 @@ import org.bukkit.block.BlockType
 import org.spongepowered.configurate.serialize.ScalarSerializer
 import org.spongepowered.configurate.serialize.SerializationException
 
-class BlockTypeSerializer : ScalarSerializer<BlockType>(BlockType::class.java) {
+internal object BlockTypeSerializer : ScalarSerializer<BlockType>(BlockType::class.java) {
 
   override fun deserialize(type: Type, obj: Any): BlockType {
     try {

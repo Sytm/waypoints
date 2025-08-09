@@ -3,6 +3,7 @@ package de.md5lukas.waypoints
 import de.md5lukas.commons.paper.UUIDUtils
 import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.commons.time.DurationFormatter
+import de.md5lukas.configurate.commonSerializers
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.api.WaypointsPointerManager
@@ -40,6 +41,10 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.permissions.Permission
 import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
+import org.spongepowered.configurate.kotlin.extensions.get
+import org.spongepowered.configurate.kotlin.extensions.set
+import org.spongepowered.configurate.yaml.NodeStyle
+import org.spongepowered.configurate.yaml.YamlConfigurationLoader
 
 class WaypointsPlugin : JavaPlugin() {
 
@@ -123,21 +128,44 @@ class WaypointsPlugin : JavaPlugin() {
   }
 
   // <editor-fold desc="onEnable Methods">
+  private val configLoader =
+      YamlConfigurationLoader.builder()
+          .path(dataFolder.toPath().resolve("config.yml"))
+          .defaultOptions { options ->
+            options.serializers {
+              it.registerAll(commonSerializers()).registerAll(PointerManager.serializers())
+            }
+          }
+          .commentsEnabled(true)
+          .nodeStyle(NodeStyle.BLOCK)
+          .indent(2)
+          .build()
+
   private fun loadConfiguration() {
-    waypointsConfig = WaypointsConfiguration()
-    // TODO configurate load
-    // TODO save inventory config with fallback loading from jar?
-    saveResource("inventory.yml", false)
-    inventoryConfig =
-        InventoryConfiguration(
-            YamlConfiguration.loadConfiguration(File(dataFolder, "inventory.yml")))
+    val node = configLoader.load()
+
+    waypointsConfig =
+        node.get<WaypointsConfiguration>()
+            ?: throw IllegalStateException("Config could not be loaded")
+    node.set(WaypointsConfiguration::class, waypointsConfig)
+    configLoader.save(node)
+
+    val inventoryFile = File(dataFolder, "inventory.yml")
+
+    if (!inventoryFile.exists()) {
+      saveResource("inventory.yml", false)
+    }
+
+    val inventoryYaml = YamlConfiguration.loadConfiguration(inventoryFile)
+    inventoryYaml.setDefaults(
+        YamlConfiguration.loadConfiguration(getResource("inventory.yml")!!.reader()))
+
+    inventoryConfig = InventoryConfiguration(inventoryYaml)
   }
 
   fun reloadConfiguration() {
-    // TODO configurate reload
-    inventoryConfig =
-        InventoryConfiguration(
-            YamlConfiguration.loadConfiguration(File(dataFolder, "inventory.yml")))
+    // TODO does it really work doe?
+    loadConfiguration()
 
     ConfigReloadEvent(waypointsConfig).callEvent()
     registerCustomizablePermissions(true)

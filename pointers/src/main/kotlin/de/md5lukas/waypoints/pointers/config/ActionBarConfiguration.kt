@@ -5,10 +5,11 @@ import de.md5lukas.configurate.Positive
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
+import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment
 import org.spongepowered.configurate.objectmapping.meta.PostProcess
-import org.spongepowered.configurate.objectmapping.meta.Setting
 
+@ConfigSerializable
 class ActionBarConfiguration() : RepeatingPointerConfiguration {
 
   override var enabled = false
@@ -34,15 +35,20 @@ class ActionBarConfiguration() : RepeatingPointerConfiguration {
 
   @Comment(
       "If you turn too much to either side these arrows are highlighted to indicate you need to turn more")
-  @Setting("arrow.left")
-  @NonEmptyString
-  var leftArrow: String = "<-"
+  var arrow = Arrow()
     private set
 
-  @Setting("arrow.right")
-  @NonEmptyString
-  var rightArrow: String = "->"
-    private set
+  @ConfigSerializable
+  class Arrow {
+
+    @NonEmptyString
+    var left: String = "<-"
+      private set
+
+    @NonEmptyString
+    var right: String = "->"
+      private set
+  }
 
   @Comment(
       "The amount of sections used to show if you are walking in the correct direction. Must be an odd number or the plugin will correct it by adding one")

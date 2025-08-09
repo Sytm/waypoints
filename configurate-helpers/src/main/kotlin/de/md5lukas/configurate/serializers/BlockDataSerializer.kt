@@ -8,7 +8,7 @@ import org.bukkit.block.data.BlockData
 import org.spongepowered.configurate.serialize.ScalarSerializer
 import org.spongepowered.configurate.serialize.SerializationException
 
-class BlockDataSerializer : ScalarSerializer<BlockData>(BlockData::class.java) {
+internal object BlockDataSerializer : ScalarSerializer<BlockData>(BlockData::class.java) {
 
   override fun deserialize(type: Type, obj: Any): BlockData? {
     val block = Registry.BLOCK.get(Key.key(obj.toString()))

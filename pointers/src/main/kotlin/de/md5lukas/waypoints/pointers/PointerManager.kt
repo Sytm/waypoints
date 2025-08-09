@@ -1,5 +1,6 @@
 package de.md5lukas.waypoints.pointers
 
+import de.md5lukas.waypoints.pointers.config.BeaconConfiguration
 import de.md5lukas.waypoints.pointers.config.PointerConfiguration
 import de.md5lukas.waypoints.pointers.variants.PointerVariant
 import de.md5lukas.waypoints.pointers.variants.TrailPointer
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.event.server.PluginDisableEvent
 import org.bukkit.plugin.Plugin
+import org.spongepowered.configurate.serialize.TypeSerializerCollection
 
 /**
  * The PointerManager handles the creation of the selected PointerTypes and manages their tasks
@@ -31,6 +33,13 @@ class PointerManager(
     internal val hooks: Hooks,
     internal var configuration: PointerConfiguration,
 ) : Listener {
+
+  companion object {
+    fun serializers(): TypeSerializerCollection =
+        TypeSerializerCollection.builder()
+            .register(BeaconConfiguration.ViewDistanceLong.ViewDistanceLongSerializer)
+            .build()
+  }
 
   init {
     plugin.server.pluginManager.registerEvents(this, plugin)
@@ -124,7 +133,7 @@ class PointerManager(
   internal fun onMove(e: PlayerMoveEvent) {
     val trackables = getCurrentTargets(e.player)
 
-    val disableWhenReachedRadius = configuration.disableWhenReachedRadiusSquared
+    val disableWhenReachedRadius = configuration.disableWhenReachedRadius
 
     if (trackables.isEmpty() || disableWhenReachedRadius == 0) {
       return

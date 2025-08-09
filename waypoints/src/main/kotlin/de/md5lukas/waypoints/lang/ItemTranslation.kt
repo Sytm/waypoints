@@ -33,7 +33,7 @@ class ItemTranslation(
         fixedMaterial?.let(::ItemStack)
             ?: translationLoader.plugin.inventoryConfig.createNewStack(
                 translationLoader.plugin,
-                key + if (appendItemSuffix) ".item" else "",
+                key.removePrefix("inventory.") + if (appendItemSuffix) ".item" else "",
             )
 
   val item: ItemStack

@@ -7,7 +7,7 @@ import kotlin.time.toJavaDuration
 import kotlin.time.toKotlinDuration
 import org.spongepowered.configurate.serialize.ScalarSerializer
 
-class DurationSerializer : ScalarSerializer<Duration>(Duration::class.java) {
+internal object DurationSerializer : ScalarSerializer<Duration>(Duration::class.java) {
 
   override fun deserialize(type: Type, obj: Any): Duration {
     return kotlin.time.Duration.parse(obj.toString()).toJavaDuration()

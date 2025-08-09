@@ -34,6 +34,7 @@ subprojects {
       filter {
         includeGroupByRegex("org\\.geysermc\\..+")
         includeGroup("org.cloudburstmc.math")
+        includeGroup("org.spongepowered")
       }
     }
   }

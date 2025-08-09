@@ -3,8 +3,10 @@ package de.md5lukas.waypoints.pointers.config
 import de.md5lukas.configurate.Positive
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData
+import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment
 
+@ConfigSerializable
 class BlinkingBlockConfiguration : RepeatingPointerConfiguration {
 
   override var enabled = true

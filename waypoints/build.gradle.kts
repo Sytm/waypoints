@@ -34,6 +34,7 @@ dependencies {
   implementation(libs.skedule)
   implementation(libs.anvilGui)
   implementation(libs.bStats)
+  implementation(libs.configurate.yaml)
   implementation(libs.configurate.core)
   implementation(libs.configurate.kotlin)
 
@@ -94,6 +95,10 @@ tasks {
       include(dependency(libs.paperBrigadier.get()))
       include(dependency(libs.sqliteHelper.get()))
 
+      include(dependency(libs.configurate.yaml.get()))
+      include(dependency(libs.configurate.core.get()))
+      include(dependency(libs.configurate.kotlin.get()))
+
       include(dependency(libs.schedulers.get()))
       include(dependency(libs.skedule.get()))
       include(dependency(libs.anvilGui.get()))
@@ -113,9 +118,12 @@ tasks {
         .forEach {
           relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}")
         }
-    arrayOf("com.okkero.skedule", "net.wesjd.anvilgui", "org.bstats").forEach {
-      relocate(it, "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}")
-    }
+    arrayOf(
+            "com.okkero.skedule",
+            "net.wesjd.anvilgui",
+            "org.bstats",
+            "org.spongepowered.configurate")
+        .forEach { relocate(it, "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}") }
 
     manifest { attributes("paperweight-mappings-namespace" to "mojang+yarn") }
   }

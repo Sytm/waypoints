@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemType
 import org.spongepowered.configurate.serialize.ScalarSerializer
 import org.spongepowered.configurate.serialize.SerializationException
 
-class ItemTypeSerializer : ScalarSerializer<ItemType>(ItemType::class.java) {
+internal object ItemTypeSerializer : ScalarSerializer<ItemType>(ItemType::class.java) {
 
   override fun deserialize(type: Type, obj: Any): ItemType {
     try {
