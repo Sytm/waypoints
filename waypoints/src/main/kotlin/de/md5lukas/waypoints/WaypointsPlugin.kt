@@ -6,7 +6,6 @@ import de.md5lukas.commons.time.DurationFormatter
 import de.md5lukas.configurate.commonSerializers
 import de.md5lukas.schedulers.Schedulers
 import de.md5lukas.waypoints.api.WaypointsAPI
-import de.md5lukas.waypoints.api.WaypointsPointerManager
 import de.md5lukas.waypoints.command.WaypointsCommand
 import de.md5lukas.waypoints.command.WaypointsScriptCommand
 import de.md5lukas.waypoints.config.InventoryConfiguration
@@ -23,7 +22,6 @@ import de.md5lukas.waypoints.lang.WorldTranslations
 import de.md5lukas.waypoints.lang.YmlTranslationLoader
 import de.md5lukas.waypoints.pointers.PointerManager
 import de.md5lukas.waypoints.pointers.PointerManagerHooks
-import de.md5lukas.waypoints.pointers.WaypointsPointerManagerImpl
 import de.md5lukas.waypoints.tasks.CleanDatabaseTask
 import de.md5lukas.waypoints.util.APIExtensions
 import de.md5lukas.waypoints.util.TeleportManager
@@ -39,7 +37,6 @@ import org.bstats.charts.SimplePie
 import org.bstats.charts.SingleLineChart
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.permissions.Permission
-import org.bukkit.plugin.ServicePriority
 import org.bukkit.plugin.java.JavaPlugin
 import org.spongepowered.configurate.kotlin.extensions.get
 import org.spongepowered.configurate.kotlin.extensions.set
@@ -112,7 +109,6 @@ class WaypointsPlugin : JavaPlugin() {
     }
     loadConfiguration()
     initDatabase()
-    initApiServiceProvider()
 
     initTranslations()
     initTeleportManager()
@@ -180,17 +176,6 @@ class WaypointsPlugin : JavaPlugin() {
     api = databaseManager.api
 
     pointerManager = PointerManager(this, PointerManagerHooks(this), waypointsConfig.pointers)
-  }
-
-  private fun initApiServiceProvider() {
-    server.servicesManager.register(WaypointsAPI::class.java, api, this, ServicePriority.Normal)
-    server.servicesManager.register(
-        WaypointsPointerManager::class.java,
-        WaypointsPointerManagerImpl(this),
-        this,
-        ServicePriority.Normal)
-    server.servicesManager.register(
-        PointerManager::class.java, pointerManager, this, ServicePriority.Normal)
   }
 
   private fun initTranslations() {
