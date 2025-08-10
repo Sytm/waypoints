@@ -320,10 +320,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                 wpGUI.plugin.waypointsConfig.pointers.beacon.enabled) {
               GUIItem(
                   wpGUI.translations.WAYPOINT_SELECT_BEACON_COLOR.getItem(
-                      waypoint.beaconColor
-                          ?: wpGUI.plugin.waypointsConfig.beaconPointerDefaultColors
-                              .getDefaultColor(waypoint.type)
-                              .material)) {
+                      (waypoint.beaconColor
+                              ?: wpGUI.plugin.waypointsConfig.beaconPointerDefaultColors
+                                  .getDefaultColor(waypoint.type))
+                          .material)) {
                     wpGUI.open(SelectBeaconColorPage(wpGUI, waypoint))
                     wpGUI.playSound { click.normal }
                   }

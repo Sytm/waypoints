@@ -2,7 +2,7 @@ package de.md5lukas.waypoints.config
 
 import de.md5lukas.commons.paper.editMeta
 import de.md5lukas.commons.paper.getStringNotNull
-import de.md5lukas.waypoints.api.base.parseIcon
+import de.md5lukas.waypoints.data.parseIcon
 import de.md5lukas.waypoints.util.createCustomPlayerHead
 import org.bukkit.Material
 import org.bukkit.configuration.ConfigurationSection

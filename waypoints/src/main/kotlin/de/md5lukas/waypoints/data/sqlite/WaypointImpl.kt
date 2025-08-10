@@ -4,20 +4,20 @@ import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
 import de.md5lukas.waypoints.api.*
-import de.md5lukas.waypoints.api.base.asString
-import de.md5lukas.waypoints.api.base.parseIcon
 import de.md5lukas.waypoints.api.event.WaypointCustomDataChangeEvent
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.data.DatabaseManager
+import de.md5lukas.waypoints.data.asString
+import de.md5lukas.waypoints.data.parseIcon
+import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime
 import java.util.UUID
 import kotlinx.coroutines.withContext
 import org.bukkit.Location
-import org.bukkit.Material
 
 class WaypointImpl
 private constructor(
@@ -32,7 +32,7 @@ private constructor(
     description: String?,
     permission: String?,
     material: Icon?,
-    beaconColor: Material?,
+    beaconColor: BeaconColor?,
 ) : Waypoint {
 
   constructor(
@@ -56,7 +56,7 @@ private constructor(
       description = row.getString("description"),
       permission = row.getString("permission"),
       material = row.getString("material")?.parseIcon(),
-      beaconColor = row.getString("beaconColor")?.let { Material.valueOf(it) })
+      beaconColor = row.getString("beaconColor")?.let { BeaconColor.valueOf(it) })
 
   private var folderId: UUID? = folder
 
@@ -109,10 +109,10 @@ private constructor(
     set("material", icon?.asString())
   }
 
-  override var beaconColor: Material? = beaconColor
+  override var beaconColor: BeaconColor? = beaconColor
     private set
 
-  override suspend fun setBeaconColor(beaconColor: Material?) {
+  override suspend fun setBeaconColor(beaconColor: BeaconColor?) {
     this.beaconColor = beaconColor
     set("beaconColor", beaconColor?.name)
   }

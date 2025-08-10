@@ -9,6 +9,7 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointsAPI
 import de.md5lukas.waypoints.config.WaypointsConfiguration
 import de.md5lukas.waypoints.data.sqlite.WaypointsAPIImpl
+import de.md5lukas.waypoints.pointers.BeaconColor
 import java.io.File
 import java.sql.Connection
 import java.time.OffsetDateTime
@@ -23,7 +24,7 @@ class SQLiteManager(
     testing: Boolean = false,
 ) : DatabaseManager(plugin, databaseConfiguration, testing) {
 
-  private val schemaVersion: Int = 7
+  private val schemaVersion: Int = 8
   private val sqliteHelper =
       if (file === null) {
         SQLiteHelper()
@@ -254,6 +255,13 @@ class SQLiteManager(
           update(
               "ALTER TABLE player_data ADD COLUMN canReceiveTemporaryWaypoints BOOLEAN NOT NULL DEFAULT 0;")
           update("UPDATE player_data SET canReceiveTemporaryWaypoints = 1;")
+        }
+        it[8] = {
+          BeaconColor.entries
+              .map { color -> color.material.name to color.name }
+              .forEach { (old, new) ->
+                update("UPDATE waypoints SET beaconColor = ? WHERE beaconColor = ?;", new, old)
+              }
         }
       }
 

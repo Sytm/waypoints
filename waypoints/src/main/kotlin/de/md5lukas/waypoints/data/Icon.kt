@@ -1,4 +1,4 @@
-package de.md5lukas.waypoints.api.base
+package de.md5lukas.waypoints.data
 
 import de.md5lukas.waypoints.api.Icon
 import org.bukkit.Material

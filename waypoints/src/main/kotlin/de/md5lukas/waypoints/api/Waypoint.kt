@@ -1,10 +1,10 @@
 package de.md5lukas.waypoints.api
 
 import de.md5lukas.waypoints.api.gui.GUIDisplayable
+import de.md5lukas.waypoints.pointers.BeaconColor
 import java.time.OffsetDateTime
 import java.util.UUID
 import org.bukkit.Location
-import org.bukkit.Material
 
 interface Waypoint : GUIDisplayable, Deletable {
 
@@ -52,9 +52,9 @@ interface Waypoint : GUIDisplayable, Deletable {
 
   suspend fun setIcon(icon: Icon?)
 
-  val beaconColor: Material?
+  val beaconColor: BeaconColor?
 
-  suspend fun setBeaconColor(beaconColor: Material?)
+  suspend fun setBeaconColor(beaconColor: BeaconColor?)
 
   /** The location the waypoint has been created at */
   val location: Location

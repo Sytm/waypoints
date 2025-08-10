@@ -39,7 +39,7 @@ class SelectBeaconColorPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint)
           list.add(
               GUIItem(item) {
                 wpGUI.skedule {
-                  waypoint.setBeaconColor(pair.first.material)
+                  waypoint.setBeaconColor(pair.first)
                   switchContext(SynchronizationContext.SYNC)
                   wpGUI.playSound { click.success }
                   wpGUI.goBack()

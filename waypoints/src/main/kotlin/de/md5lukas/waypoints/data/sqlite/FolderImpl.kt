@@ -7,12 +7,12 @@ import de.md5lukas.waypoints.api.Folder
 import de.md5lukas.waypoints.api.Icon
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
-import de.md5lukas.waypoints.api.base.asString
-import de.md5lukas.waypoints.api.base.parseIcon
 import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.data.DatabaseManager
+import de.md5lukas.waypoints.data.asString
+import de.md5lukas.waypoints.data.parseIcon
 import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime

@@ -5,6 +5,7 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
+import de.md5lukas.waypoints.pointers.BeaconColor
 import java.sql.SQLException
 import java.time.OffsetDateTime
 import java.util.*
@@ -45,7 +46,7 @@ class WaypointTest : TestBase() {
       waypoint.setPermission("permission")
     }
     waypoint.setIcon(Icon(Material.GRASS_BLOCK, null))
-    waypoint.setBeaconColor(Material.LIGHT_GRAY_STAINED_GLASS)
+    waypoint.setBeaconColor(BeaconColor.LIGHT_GRAY)
 
     waypoint = holder.getWaypoints()[0]
 
@@ -58,7 +59,7 @@ class WaypointTest : TestBase() {
           }
         },
         { assertEquals(Icon(Material.GRASS_BLOCK, null), waypoint.icon) },
-        { assertEquals(Material.LIGHT_GRAY_STAINED_GLASS, waypoint.beaconColor) })
+        { assertEquals(BeaconColor.LIGHT_GRAY, waypoint.beaconColor) })
   }
 
   @TypesNoDeath
