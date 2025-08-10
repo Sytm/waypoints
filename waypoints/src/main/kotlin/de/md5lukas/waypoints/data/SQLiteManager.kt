@@ -285,10 +285,22 @@ class SQLiteManager(
       databaseUpgrades.forEach { (upgradesTo, upgrade) ->
         if (currentSchemaVersion < upgradesTo) {
           try {
+            update("BEGIN TRANSACTION;")
             upgrade()
             update("UPDATE database_meta SET schemaVersion = ? WHERE id = ?;", upgradesTo, 0)
+            update("COMMIT TRANSACTION;")
           } catch (e: Exception) {
-            throw Exception("Could not perform database upgrade to version $upgradesTo", e)
+            var suppressed: Exception? = null
+            try {
+              update("ROLLBACK TRANSACTION;")
+            } catch (e2: Exception) {
+              suppressed = e2
+            }
+            throw Exception("Could not perform database upgrade to version $upgradesTo", e).also {
+              if (suppressed != null) {
+                it.addSuppressed(suppressed)
+              }
+            }
           }
         }
       }
