@@ -63,7 +63,7 @@ sqliteJdbc = { group = "org.xerial", name = "sqlite-jdbc", version = "3.36.0.3" 
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-shadow = { id = "com.gradleup.shadow", version = "8.3.6" }
+shadow = { id = "com.gradleup.shadow", version = "9.0.1" }
 dokka = { id = "org.jetbrains.dokka", version = "1.+" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.+" }
 runPaper = { id = "xyz.jpenilla.run-paper", version = "2.+" }

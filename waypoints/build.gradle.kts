@@ -89,7 +89,12 @@ tasks {
       }
     }
 
-    exclude("META-INF/")
+    exclude(
+        "META-INF/*.kotlin_module",
+        "META-INF/proguard/",
+        "META-INF/com.android.tools/",
+        "META-INF/services/",
+    )
     if (release) {
       exclude("DebugProbesKt.bin")
     }
