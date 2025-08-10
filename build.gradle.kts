@@ -25,10 +25,6 @@ subprojects {
       forRepository { maven("https://repo.mikeprimm.com/") }
       filter { includeGroup("us.dynmap") }
     }
-    exclusiveContent { // Pl3xMap
-      forRepository { maven("https://api.modrinth.com/maven") }
-      filter { includeGroup("maven.modrinth") }
-    }
     exclusiveContent { // Geyser
       forRepository { maven("https://repo.opencollab.dev/main/") }
       filter {
