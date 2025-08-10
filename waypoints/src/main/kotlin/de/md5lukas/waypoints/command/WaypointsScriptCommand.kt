@@ -124,9 +124,7 @@ class WaypointsScriptCommand(private val plugin: WaypointsPlugin) {
                                 "name" placeholder it.name,
                                 "folder" placeholder (it.getFolder()?.name ?: "null"),
                             )
-                            .clickEvent(
-                                ClickEvent.clickEvent(
-                                    ClickEvent.Action.COPY_TO_CLIPBOARD, it.id.toString())))
+                            .clickEvent(ClickEvent.copyToClipboard(it.id.toString())))
                   }
                 }
               }

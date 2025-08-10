@@ -119,9 +119,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                 wpGUI.viewer.sendMessage(
                     wpGUI.translations.MESSAGE_WAYPOINT_GET_UUID.withReplacements(
                             "name" placeholder waypoint.name)
-                        .clickEvent(
-                            ClickEvent.clickEvent(
-                                ClickEvent.Action.COPY_TO_CLIPBOARD, waypoint.id.toString())))
+                        .clickEvent(ClickEvent.copyToClipboard(waypoint.id.toString())))
                 wpGUI.viewer.closeInventory()
               }
             } else {
