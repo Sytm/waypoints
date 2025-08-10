@@ -10,6 +10,8 @@ plugins {
   }
 }
 
+val release = (project.property("release") as String).toBoolean()
+
 description = "Waypoints plugin"
 
 dependencies {
@@ -80,11 +82,22 @@ tasks {
   shadowJar {
     archiveClassifier = ""
 
-    minimize()
+    minimize {
+      if (!release) {
+        exclude(dependency(libs.stdlib.get()))
+        exclude(dependency(libs.coroutines.get()))
+      }
+    }
 
     exclude("META-INF/")
+    if (release) {
+      exclude("DebugProbesKt.bin")
+    }
 
     dependencies {
+      include(dependency(libs.stdlib.get()))
+      include(dependency(libs.coroutines.get()))
+
       include(project(":pointers"))
       include(dependency(libs.pathfinder.get()))
       include(project(":signgui"))
@@ -118,20 +131,27 @@ tasks {
         .forEach {
           relocate("de.md5lukas.$it", "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}")
         }
-    arrayOf(
+    val normalRelocations =
+        mutableListOf(
             "com.okkero.skedule",
             "net.wesjd.anvilgui",
             "org.bstats",
             "org.spongepowered.configurate")
-        .forEach { relocate(it, "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}") }
+
+    if (release) {
+      normalRelocations.add("kotlinx.coroutines")
+      normalRelocations.add("kotlin")
+      normalRelocations.add("_COROUTINE") // TODO maybe or maybe not (probably not)
+    }
+
+    normalRelocations.forEach {
+      relocate(it, "de.md5lukas.waypoints.libs.${it.substringAfterLast('.')}")
+    }
 
     manifest { attributes("paperweight-mappings-namespace" to "mojang+yarn") }
   }
 
-  runServer {
-    dependsOn("jar") // TODO
-    minecraftVersion(libs.versions.paperTestServer.get().substringBefore('-'))
-  }
+  runServer { minecraftVersion(libs.versions.paperTestServer.get().substringBefore('-')) }
 
   test { useJUnitPlatform() }
 }

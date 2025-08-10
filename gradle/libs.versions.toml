@@ -11,7 +11,7 @@ configurate = "4.2.0-GeyserMC-SNAPSHOT"
 
 [libraries]
 stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core-jvm", version.ref = "coroutines" }
 
 annotations = { group = "org.jetbrains", name = "annotations", version = "24.0.1" }
 
