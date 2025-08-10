@@ -5,6 +5,11 @@
 ### Changed
 - **1.21.8 is now required**
 - ProtocolLib is no longer required for editing descriptions of waypoints or folders
+- Config format changed
+- Inventory config changed
+  - Minecraft keys
+  - Custom model data changed/fixed
+- API for plugins to consume no longer available
 
 ## 4.5.8
 

@@ -32,17 +32,19 @@ class ItemTranslation(
     get() =
         fixedMaterial?.let(::ItemStack)
             ?: translationLoader.plugin.inventoryConfig.createNewStack(
-                translationLoader.plugin,
                 key.removePrefix("inventory.") + if (appendItemSuffix) ".item" else "",
             )
 
   val item: ItemStack
     get() = getItem()
 
-  fun getItem(vararg resolvers: TagResolver): ItemStack = getItem(null, *resolvers)
+  fun getItem(vararg resolvers: TagResolver): ItemStack = getItem(null as ItemStack?, *resolvers)
 
   fun getItem(materialOverride: Material?, vararg resolvers: TagResolver): ItemStack =
-      (materialOverride?.let(::ItemStack) ?: rawStack).also {
+      getItem(materialOverride?.let(::ItemStack), *resolvers)
+
+  fun getItem(itemOverride: ItemStack?, vararg resolvers: TagResolver): ItemStack =
+      (itemOverride ?: rawStack).also {
         it.editMeta { itemMeta ->
           itemMeta.displayName(
               translationLoader.itemMiniMessage.deserialize(rawDisplayName, *resolvers))

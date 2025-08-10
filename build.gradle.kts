@@ -43,6 +43,7 @@ subprojects {
     compilerOptions.freeCompilerArgs.addAll(
         "-Xjvm-default=all",
         "-Xlambdas=indy",
+        "-Xconsistent-data-class-copy-visibility",
     )
   }
 }

@@ -9,8 +9,6 @@ import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.data.DatabaseManager
-import de.md5lukas.waypoints.data.asString
-import de.md5lukas.waypoints.data.parseIcon
 import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
@@ -55,7 +53,7 @@ private constructor(
       name = row.getString("name"),
       description = row.getString("description"),
       permission = row.getString("permission"),
-      material = row.getString("material")?.parseIcon(),
+      material = Icon.nullableIcon(row.getString("material")),
       beaconColor = row.getString("beaconColor")?.let { BeaconColor.valueOf(it) })
 
   private var folderId: UUID? = folder

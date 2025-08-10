@@ -10,10 +10,10 @@ import de.md5lukas.waypoints.config.FilterType
 import de.md5lukas.waypoints.config.WaypointsConfiguration
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemType
 import org.bukkit.permissions.Permissible
 
 sealed class CreateResult
@@ -30,18 +30,18 @@ class SuccessWaypoint(val waypoint: Waypoint) : CreateResult()
 
 class SuccessFolder(val folder: Folder) : CreateResult()
 
-fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, material: Material?): Boolean {
-  if (material === null) {
+fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, itemType: ItemType?): Boolean {
+  if (itemType === null) {
     return true
   }
-  if (material === Material.AIR) {
+  if (itemType.key() == Items.AIR) {
     return false
   }
 
   val filter = plugin.waypointsConfig.customIconFilter
   return when (filter.type) {
-    FilterType.WHITELIST -> material.asItemType() in filter.materials
-    FilterType.BLACKLIST -> material.asItemType() !in filter.materials
+    FilterType.WHITELIST -> itemType in filter.materials
+    FilterType.BLACKLIST -> itemType !in filter.materials
   }
 }
 

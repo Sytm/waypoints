@@ -17,7 +17,6 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
 
 class APIExtensions(private val plugin: WaypointsPlugin) {
   private val translations
@@ -42,11 +41,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
           Type.PUBLIC -> translations.WAYPOINT_ICON_PUBLIC
           Type.PERMISSION -> translations.WAYPOINT_ICON_PERMISSION
-        }.getItem(icon?.material, *getResolvers(player))
-
-    icon?.customModelData?.let { customModelData ->
-      stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
-    }
+        }.getItem(icon?.asItemStack(), *getResolvers(player))
 
     when (type) {
       Type.DEATH -> null
@@ -91,13 +86,7 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
       )
 
   fun Waypoint.getIconStack(): ItemStack =
-      icon?.let { icon ->
-        ItemStack(icon.material).also { stack ->
-          icon.customModelData?.let { customModelData ->
-            stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
-          }
-        }
-      }
+      icon?.asItemStack()
           ?: when (type) {
             Type.DEATH -> translations.WAYPOINT_ICON_DEATH
             Type.PRIVATE -> translations.WAYPOINT_ICON_PRIVATE
@@ -161,15 +150,11 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
           Type.PERMISSION -> translations.FOLDER_ICON_PERMISSION
           else -> throw IllegalStateException("An folder with the type $type should not exist")
         }.getItem(
-            icon?.material,
+            icon?.asItemStack(),
             "name" placeholder name,
             "description" placeholder (description ?: ""),
             "created_at" placeholder createdAt,
             "amount" placeholder fetchedAmount)
-
-    icon?.customModelData?.let { customModelData ->
-      stack.editMeta<ItemMeta> { setCustomModelData(customModelData) }
-    }
 
     stack.amountClamped = fetchedAmount
 
@@ -223,12 +208,4 @@ class APIExtensions(private val plugin: WaypointsPlugin) {
       editMeta { meta -> meta.lore((meta.lore() ?: emptyList()) + customDescription) }
     }
   }
-}
-
-fun ItemStack.toIcon(): Icon {
-  val itemMeta = this.itemMeta
-  return Icon(
-      type,
-      if (itemMeta !== null && itemMeta.hasCustomModelData()) itemMeta.customModelData else null,
-  )
 }

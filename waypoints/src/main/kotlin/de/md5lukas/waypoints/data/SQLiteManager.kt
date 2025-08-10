@@ -1,9 +1,11 @@
 package de.md5lukas.waypoints.data
 
+import de.md5lukas.commons.paper.editMeta
 import de.md5lukas.jdbc.SQLiteHelper
 import de.md5lukas.jdbc.select
 import de.md5lukas.jdbc.selectFirst
 import de.md5lukas.jdbc.update
+import de.md5lukas.waypoints.api.Icon
 import de.md5lukas.waypoints.api.OverviewSort
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.WaypointsAPI
@@ -15,6 +17,8 @@ import java.sql.Connection
 import java.time.OffsetDateTime
 import java.util.logging.Level
 import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.plugin.Plugin
 
 class SQLiteManager(
@@ -24,7 +28,7 @@ class SQLiteManager(
     testing: Boolean = false,
 ) : DatabaseManager(plugin, databaseConfiguration, testing) {
 
-  private val schemaVersion: Int = 8
+  private val schemaVersion: Int = 9
   private val sqliteHelper =
       if (file === null) {
         SQLiteHelper()
@@ -262,6 +266,29 @@ class SQLiteManager(
               .forEach { (old, new) ->
                 update("UPDATE waypoints SET beaconColor = ? WHERE beaconColor = ?;", new, old)
               }
+        }
+        it[9] = {
+          @Suppress("DEPRECATION") // That's why we are gonna migrate away from it
+          fun parseIcon(string: String): ItemStack {
+            val index = string.indexOf('|')
+
+            return if (index >= 0) {
+              ItemStack.of(Material.valueOf(string.substring(0, index))).also { stack ->
+                stack.editMeta<ItemMeta> { setCustomModelData(string.substring(index + 1).toInt()) }
+              }
+            } else {
+              ItemStack.of(Material.valueOf(string))
+            }
+          }
+
+          select("SELECT id, material FROM folders WHERE material IS NOT NULL;") {
+            val newFormat = Icon.icon(parseIcon(getString("material"))).asString()
+            update("UPDATE folders SET material = ? WHERE id = ?;", newFormat, getString("id"))
+          }
+          select("SELECT id, material FROM waypoints WHERE material IS NOT NULL;") {
+            val newFormat = Icon.icon(parseIcon(getString("material"))).asString()
+            update("UPDATE waypoints SET material = ? WHERE id = ?;", newFormat, getString("id"))
+          }
         }
       }
 

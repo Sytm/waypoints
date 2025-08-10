@@ -129,7 +129,7 @@ tasks {
   }
 
   runServer {
-    dependsOn("jar")
+    dependsOn("jar") // TODO
     minecraftVersion(libs.versions.paperTestServer.get().substringBefore('-'))
   }
 

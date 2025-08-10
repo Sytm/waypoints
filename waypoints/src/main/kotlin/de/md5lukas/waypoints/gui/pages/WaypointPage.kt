@@ -8,6 +8,7 @@ import de.md5lukas.kinvs.GUIPattern
 import de.md5lukas.kinvs.items.GUIItem
 import de.md5lukas.signgui.SignGUI
 import de.md5lukas.waypoints.WaypointsPermissions
+import de.md5lukas.waypoints.api.Icon
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.Waypoint
 import de.md5lukas.waypoints.gui.WaypointsGUI
@@ -90,10 +91,10 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                     if (it.isShiftClick) {
                       null
                     } else {
-                      wpGUI.viewer.inventory.itemInMainHand.toIcon()
+                      Icon.icon(wpGUI.viewer.inventory.itemInMainHand)
                     }
 
-                if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.material)) {
+                if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.item)) {
                   wpGUI.skedule {
                     waypoint.setIcon(newIcon)
                     updatePage()

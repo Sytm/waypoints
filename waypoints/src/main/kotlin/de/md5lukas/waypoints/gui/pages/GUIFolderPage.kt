@@ -304,10 +304,10 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                             if (it.isShiftClick) {
                               null
                             } else {
-                              wpGUI.viewer.inventory.itemInMainHand.toIcon()
+                              Icon.icon(wpGUI.viewer.inventory.itemInMainHand)
                             }
 
-                        if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.material)) {
+                        if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.item)) {
                           wpGUI.skedule {
                             guiFolder.setIcon(newIcon)
                             updateControls()

@@ -11,8 +11,6 @@ import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
 import de.md5lukas.waypoints.api.gui.GUIType
 import de.md5lukas.waypoints.data.DatabaseManager
-import de.md5lukas.waypoints.data.asString
-import de.md5lukas.waypoints.data.parseIcon
 import de.md5lukas.waypoints.util.getUUID
 import java.sql.ResultSet
 import java.time.OffsetDateTime
@@ -43,7 +41,7 @@ private constructor(
       owner = row.getUUID("owner"),
       name = row.getString("name"),
       description = row.getString("description"),
-      material = row.getString("material")?.parseIcon(),
+      material = Icon.nullableIcon(row.getString("material")),
   )
 
   override var name: String = name
