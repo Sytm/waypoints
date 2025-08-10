@@ -60,7 +60,7 @@ internal constructor(val item: ItemType, val customModelData: String?, val textu
   companion object {
 
     private const val CUSTOM_MODEL_DATA_SEPARATOR = '|'
-    private const val CUSTOM_PLAYER_HEAD_SEPARATOR = ':'
+    private const val CUSTOM_PLAYER_HEAD_SEPARATOR = ';'
 
     fun nullableIcon(string: String?): Icon? {
       return string?.let { icon(string) }

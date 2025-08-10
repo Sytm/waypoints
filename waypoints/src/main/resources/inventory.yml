@@ -1,6 +1,6 @@
 general:
-  previous: "player_head:bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9"
-  next: "player_head:19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf"
+  previous: "player_head;bd69e06e5dadfd84e5f3d1c21063f2553b2fa945ee1d4d7152fdc5425bc12a9"
+  next: "player_head;19bf3292e126a105b54eba713aa1b152d541a1d8938829c56364d178ed22bf"
   back: barrier
 
 background:
@@ -11,7 +11,7 @@ background:
 
 overview:
   cycleSort: hopper
-  settings: "player_head:e4d49bae95c790c3b1ff5b2f01052a714d6185481d5b1c85930b3f99d2321674"
+  settings: "player_head;e4d49bae95c790c3b1ff5b2f01052a714d6185481d5b1c85930b3f99d2321674"
   deselect: milk_bucket
   setWaypoint: torch
   createFolder: writable_book
@@ -45,7 +45,7 @@ waypoint:
   deselect: milk_bucket
   delete:
     item: lava_bucket
-    question: "player_head:badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
+    question: "player_head;badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
     confirm: lava_bucket
     cancel: water_bucket
   rename: name_tag
@@ -60,12 +60,12 @@ waypoint:
   make:
     public:
       item: enchanted_book
-      question: "player_head:badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
+      question: "player_head;badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
       confirm: enchanted_book
       cancel: barrier
     permission:
       item: enchanted_book
-      question: "player_head:badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
+      question: "player_head;badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
       confirm: enchanted_book
       cancel: barrier
   changeMapIcon: filled_map
@@ -79,7 +79,7 @@ folder:
 
   delete:
     item: lava_bucket
-    question: "player_head:badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
+    question: "player_head;badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a"
     confirm: lava_bucket
     cancel: water_bucket
   rename: name_tag
@@ -89,14 +89,14 @@ selectFolder:
   noFolder: minecart
 
 selectBeaconColor:
-  moveLeft: "player_head:8652e2b936ca8026bd28651d7c9f2819d2e923697734d18dfdb13550f8fdad5f"
-  moveRight: "player_head:2a3b8f681daad8bf436cae8da3fe8131f62a162ab81af639c3e0644aa6abac2f"
+  moveLeft: "player_head;8652e2b936ca8026bd28651d7c9f2819d2e923697734d18dfdb13550f8fdad5f"
+  moveRight: "player_head;2a3b8f681daad8bf436cae8da3fe8131f62a162ab81af639c3e0644aa6abac2f"
 
 confirm:
   background: gray_stained_glass_pane
 
 playerList:
-  refresh: "player_head:e887cc388c8dcfcf1ba8aa5c3c102dce9cf7b1b63e786b34d4f1c3796d3e9d61"
+  refresh: "player_head;e887cc388c8dcfcf1ba8aa5c3c102dce9cf7b1b63e786b34d4f1c3796d3e9d61"
 
 tracking:
   background: gray_stained_glass_pane
