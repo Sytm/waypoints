@@ -13,10 +13,6 @@ subprojects {
 
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.md5lukas.de/public/")
-    exclusiveContent { // ProtocolLib
-      forRepository { maven("https://repo.dmulloy2.net/repository/public/") }
-      filter { includeGroup("com.comphenix.protocol") }
-    }
     exclusiveContent { // Vault
       forRepository { maven("https://jitpack.io") }
       filter { includeGroup("com.github.MilkBowl") }
