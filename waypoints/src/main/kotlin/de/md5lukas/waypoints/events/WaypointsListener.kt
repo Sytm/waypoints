@@ -10,6 +10,8 @@ import de.md5lukas.waypoints.gui.WaypointsGUI
 import de.md5lukas.waypoints.util.SuccessWaypoint
 import de.md5lukas.waypoints.util.checkWorldAvailability
 import de.md5lukas.waypoints.util.createWaypointPrivate
+import io.papermc.paper.datacomponent.DataComponentTypes
+import io.papermc.paper.datacomponent.item.BannerPatternLayers
 import java.util.UUID
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.NamespacedKey
@@ -53,7 +55,7 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   fun onBlockPlace(e: BlockPlaceEvent) {
-    if (!plugin.waypointsConfig.general.bannerWaypoints.enabled) return
+    if (!plugin.waypointsConfig.bannerWaypoints.enabled) return
     if (!e.player.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) return
 
     val state = e.block.state
@@ -65,7 +67,15 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
           val location = e.block.location.add(0.5, 0.0, 0.5)
           val result = createWaypointPrivate(plugin, e.player, name, location)
           if (result is SuccessWaypoint) {
-            result.waypoint.setIcon(Icon(e.block.type, null))
+            val item = state.type.asBlockType()!!.itemType.createItemStack()
+            if (state.numberOfPatterns() > 0) {
+              @Suppress("UnstableApiUsage")
+              item.setData(
+                  DataComponentTypes.BANNER_PATTERNS,
+                  BannerPatternLayers.bannerPatternLayers(state.patterns))
+            }
+            result.waypoint.setIcon(Icon.icon(item))
+
             switchContext(SynchronizationContext.SYNC)
             val freshState = e.block.state as? Banner ?: return@skedule
             freshState.persistentDataContainer.set(
@@ -79,8 +89,8 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
 
   @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
   fun onBlockBreak(e: BlockBreakEvent) {
-    val config = plugin.waypointsConfig.general.bannerWaypoints
-    if (!config.enabled || !config.bannerBreakingRemoveWaypoint) return
+    val config = plugin.waypointsConfig.bannerWaypoints
+    if (!config.enabled || !config.bannerBreaking.removeWaypoint) return
     if (!e.player.hasPermission(WaypointsPermissions.MODIFY_PRIVATE)) return
 
     val state = e.block.state
@@ -88,7 +98,7 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
       state.persistentDataContainer.get(bannerKey, PersistentDataType.STRING)?.let { waypointId ->
         plugin.skedule {
           plugin.api.getWaypointByID(UUID.fromString(waypointId))?.let { waypoint ->
-            if (!config.bannerBreakingTriggerOnlyForOwner || e.player.uniqueId == waypoint.owner) {
+            if (!config.bannerBreaking.triggerOnlyForOwner || e.player.uniqueId == waypoint.owner) {
               waypoint.delete()
             }
           }

@@ -183,6 +183,32 @@ class WaypointsConfiguration {
       private set
   }
 
+  @Comment(
+      "When placing named banners, they will automatically create a private waypoint at the location of the banner")
+  var bannerWaypoints = BannerWaypoints()
+    private set
+
+  @ConfigSerializable
+  class BannerWaypoints {
+    var enabled = true
+      private set
+
+    var bannerBreaking = BannerBreaking()
+      private set
+
+    @ConfigSerializable
+    class BannerBreaking {
+      @Comment("When breaking the banner, whether the waypoint should be removed as well")
+      var removeWaypoint = true
+        private set
+
+      @Comment(
+          "When true, the waypoint is only removed if the player who originally placed the banner was the one breaking it")
+      var triggerOnlyForOwner = true
+        private set
+    }
+  }
+
   var customIconFilter = CustomIconFilter()
     private set
 

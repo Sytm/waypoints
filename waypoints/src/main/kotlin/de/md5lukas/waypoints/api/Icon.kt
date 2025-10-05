@@ -97,6 +97,7 @@ sealed class Icon {
             DataComponentTypes.BANNER_PATTERNS,
             DataComponentTypes.BASE_COLOR,
             DataComponentTypes.PROFILE,
+            DataComponentTypes.DYED_COLOR,
         )
 
     fun nullableIcon(string: String?): Icon? {

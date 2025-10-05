@@ -10,6 +10,7 @@
   - Minecraft keys
   - Custom model data changed/fixed
 - API for plugins to consume no longer available
+- Banner patterns (also applied to banner waypoints), armor trims as well as dye colors are now stored for custom icons
 
 ## 4.5.9
 
