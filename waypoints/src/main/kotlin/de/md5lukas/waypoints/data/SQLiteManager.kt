@@ -273,7 +273,7 @@ class SQLiteManager(
             val index = string.indexOf('|')
 
             return if (index >= 0) {
-              ItemStack.of(Material.valueOf(string.substring(0, index))).also { stack ->
+              ItemStack.of(Material.valueOf(string.take(index))).also { stack ->
                 stack.editMeta<ItemMeta> { setCustomModelData(string.substring(index + 1).toInt()) }
               }
             } else {
