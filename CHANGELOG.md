@@ -11,6 +11,11 @@
   - Custom model data changed/fixed
 - API for plugins to consume no longer available
 
+## 4.5.9
+
+### Added
+- When placing named banners, private waypoints will automatically be created
+
 ## 4.5.8
 
 ### Fixed
