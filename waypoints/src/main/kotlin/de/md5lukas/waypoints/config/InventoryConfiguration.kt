@@ -7,18 +7,18 @@ import org.bukkit.inventory.ItemStack
 
 class InventoryConfiguration(private val config: ConfigurationSection) {
 
-  private val itemCache = HashMap<String, ItemStack>()
+  private val itemCache = HashMap<String, Icon>()
 
   fun createNewStack(path: String): ItemStack {
     val cached = itemCache[path]
     if (cached != null) {
-      return cached.clone()
+      return cached.asItemStack()
     }
 
-    val stack = Icon.icon(config.getStringNotNull(path)).asItemStack()
+    val icon = Icon.icon(config.getStringNotNull(path))
 
-    itemCache[path] = stack
+    itemCache[path] = icon
 
-    return stack.clone()
+    return icon.asItemStack()
   }
 }

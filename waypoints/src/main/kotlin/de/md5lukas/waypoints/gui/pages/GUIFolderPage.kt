@@ -307,7 +307,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                               Icon.icon(wpGUI.viewer.inventory.itemInMainHand)
                             }
 
-                        if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.item)) {
+                        if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.type)) {
                           wpGUI.skedule {
                             guiFolder.setIcon(newIcon)
                             updateControls()

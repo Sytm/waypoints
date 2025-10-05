@@ -13,6 +13,7 @@ import java.time.OffsetDateTime
 import java.util.*
 import kotlin.test.*
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
@@ -47,7 +48,7 @@ class WaypointTest : TestBase() {
       waypoint.setPermission("permission")
     }
     val grassBlock = Items.GRASS_BLOCK.getValue()
-    waypoint.setIcon(Icon(grassBlock, null, null))
+    waypoint.setIcon(Icon.Default(grassBlock, null))
     waypoint.setBeaconColor(BeaconColor.LIGHT_GRAY)
 
     waypoint = holder.getWaypoints()[0]
@@ -60,10 +61,11 @@ class WaypointTest : TestBase() {
             assertEquals("permission", waypoint.permission)
           }
         },
-        { assertEquals(Icon(grassBlock, null, null), waypoint.icon) },
+        { assertEquals(Icon.Default(grassBlock, null), waypoint.icon) },
         { assertEquals(BeaconColor.LIGHT_GRAY, waypoint.beaconColor) })
   }
 
+  @Disabled("DataComponentAPI not implemented")
   @TypesNoDeath
   fun customModelDataSaved(type: Type) = runBlocking {
     val holder = api.holderOfType(type)
@@ -72,12 +74,26 @@ class WaypointTest : TestBase() {
 
     val grassBlock = Items.GRASS_BLOCK.getValue()
     val customModelData = """{"floats": [ 0.2, 0.1, 200 ]}"""
-    val texture = "96775476bf1ca6c730cd9dfc8675a4f497ce7aa5d401098373c8eca177159c79"
-    waypoint.setIcon(Icon(grassBlock, customModelData, texture))
+    waypoint.setIcon(Icon.Default(grassBlock, customModelData))
 
     waypoint = holder.getWaypoints()[0]
 
-    assertEquals(Icon(grassBlock, customModelData, texture), waypoint.icon)
+    assertEquals(Icon.Default(grassBlock, customModelData), waypoint.icon)
+  }
+
+  @Disabled("DataComponentAPI not implemented")
+  @TypesNoDeath
+  fun playerHeadSaved(type: Type) = runBlocking {
+    val holder = api.holderOfType(type)
+
+    var waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
+
+    val texture = "96775476bf1ca6c730cd9dfc8675a4f497ce7aa5d401098373c8eca177159c79"
+    waypoint.setIcon(Icon.PlayerHead(texture))
+
+    waypoint = holder.getWaypoints()[0]
+
+    assertEquals(Icon.PlayerHead(texture), waypoint.icon)
   }
 
   @Nested

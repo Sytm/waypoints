@@ -94,7 +94,7 @@ class WaypointPage(wpGUI: WaypointsGUI, private val waypoint: Waypoint) :
                       Icon.icon(wpGUI.viewer.inventory.itemInMainHand)
                     }
 
-                if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.item)) {
+                if (checkMaterialForCustomIcon(wpGUI.plugin, newIcon?.type)) {
                   wpGUI.skedule {
                     waypoint.setIcon(newIcon)
                     updatePage()

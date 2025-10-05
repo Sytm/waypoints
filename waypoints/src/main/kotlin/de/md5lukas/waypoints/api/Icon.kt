@@ -6,6 +6,8 @@ import com.destroystokyo.paper.profile.ProfileProperty
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.google.gson.Strictness
+import com.google.gson.stream.JsonReader
 import de.md5lukas.waypoints.util.Items
 import de.md5lukas.waypoints.util.getValue
 import io.papermc.paper.datacomponent.DataComponentTypes
@@ -19,52 +21,40 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ItemType
 
 sealed class Icon {
-  private var cached: ItemStack? = null
+  protected abstract val item: ItemStack
 
-  fun asItemStack(): ItemStack {
-    cached?.let {
-      return it.clone()
-    }
-    val item = asItemStack0()
-    cached = item
-    return item.clone()
-  }
-
-  protected abstract fun asItemStack0(): ItemStack
+  fun asItemStack(): ItemStack = item.clone()
 
   abstract fun asString(): String
 
-  open fun getBytes() = asItemStack().serializeAsBytes()
+  open fun getBytes() = item.serializeAsBytes()
 
-  class PlayerHead(private val textureId: String) : Icon() {
-    override fun asItemStack0(): ItemStack {
-      val item = Items.PLAYER_HEAD.getValue().createItemStack()
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is Icon) return false
 
-      item.setData(DataComponentTypes.PROFILE, deserializeProfile(textureId))
-
-      return item
-    }
-
-    override fun asString(): String {
-      return "${Items.PLAYER_HEAD.key().asMinimalString()}$CUSTOM_PLAYER_HEAD_SEPARATOR${textureId}"
-    }
+    return item.isSimilar(other.item)
   }
 
-  class CustomModelData(
+  override fun hashCode(): Int {
+    return item.hashCode()
+  }
+
+  val type: ItemType
+    get() = item.type.asItemType()!!
+
+  class Default(
       private val itemType: ItemType,
       private val customModelData: String?,
   ) : Icon() {
 
-    override fun asItemStack0(): ItemStack {
-      val item = itemType.createItemStack()
-
-      if (customModelData != null) {
-        item.setData(
-            DataComponentTypes.CUSTOM_MODEL_DATA, deserializeCustomModelData(customModelData))
-      }
-
-      return item
-    }
+    override val item: ItemStack =
+        itemType.createItemStack().also {
+          if (customModelData != null) {
+            it.setData(
+                DataComponentTypes.CUSTOM_MODEL_DATA, deserializeCustomModelData(customModelData))
+          }
+        }
 
     override fun asString(): String {
       return if (customModelData == null) {
@@ -75,10 +65,21 @@ sealed class Icon {
     }
   }
 
-  class Serialized(private val data: ByteArray) : Icon() {
-    override fun asItemStack0(): ItemStack {
-      return ItemStack.deserializeBytes(data)
+  class PlayerHead(private val textureId: String) : Icon() {
+
+    override val item: ItemStack =
+        Items.PLAYER_HEAD.getValue().createItemStack().also {
+          it.setData(DataComponentTypes.PROFILE, deserializeProfile(textureId))
+        }
+
+    override fun asString(): String {
+      return "${Items.PLAYER_HEAD.key().asMinimalString()}$CUSTOM_PLAYER_HEAD_SEPARATOR${textureId}"
     }
+  }
+
+  class Serialized(private val data: ByteArray) : Icon() {
+
+    override val item: ItemStack = ItemStack.deserializeBytes(data)
 
     override fun asString(): String {
       return "$BINARY_SERIALIZATION_PREFIX$${Base64.getEncoder().encodeToString(data)}"
@@ -125,7 +126,7 @@ sealed class Icon {
         customModelData = string.substring(modelDataIndex + 1)
         mutString = string.take(modelDataIndex)
       }
-      return CustomModelData(Registry.ITEM.getOrThrow(Key.key(mutString)), customModelData)
+      return Default(Registry.ITEM.getOrThrow(Key.key(mutString)), customModelData)
     }
 
     fun icon(item: ItemStack): Icon {
@@ -141,8 +142,13 @@ sealed class Icon {
     }
 
     private fun deserializeCustomModelData(jsonString: String): CustomModelData.Builder {
-      val jsonObject = JsonParser.parseString(jsonString).asJsonObject
-      val builder = io.papermc.paper.datacomponent.item.CustomModelData.customModelData()
+      val jsonObject =
+          JsonParser.parseReader(
+                  JsonReader(jsonString.reader()).also { jsonReader ->
+                    jsonReader.strictness = Strictness.LENIENT
+                  })
+              .asJsonObject
+      val builder = CustomModelData.customModelData()
 
       (jsonObject["floats"] as? JsonArray)?.let { floats ->
         floats.forEach { builder.addFloat(it.asFloat) }

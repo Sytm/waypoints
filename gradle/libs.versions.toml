@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.2.0"
+kotlin = "2.2.20"
 coroutines = "1.10.2"
 jvmToolchain = "21"
 paper = "1.21.8-R0.1-SNAPSHOT"
@@ -63,7 +63,7 @@ sqliteJdbc = { group = "org.xerial", name = "sqlite-jdbc", version = "3.36.0.3" 
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-shadow = { id = "com.gradleup.shadow", version = "9.0.1" }
+shadow = { id = "com.gradleup.shadow", version = "9.2.2" }
 dokka = { id = "org.jetbrains.dokka", version = "1.+" }
 minotaur = { id = "com.modrinth.minotaur", version = "2.+" }
 runPaper = { id = "xyz.jpenilla.run-paper", version = "2.+" }
