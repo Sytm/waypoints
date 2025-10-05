@@ -74,6 +74,16 @@ general:
     items:
       - COMPASS
 
+  # When placing named banners, they will automatically create a private waypoint at the location of the banner
+  bannerWaypoints:
+    enabled: true
+
+    bannerBreaking:
+      # When breaking the banner, whether the waypoint should be removed as well
+      removeWaypoint: true
+      # When true, the waypoint is only removed if the player who originally placed the banner was the one breaking it
+      triggerOnlyForOwner: true
+
   customIconFilter:
     # Available options:
     # blacklist: Items in the list are forbidden

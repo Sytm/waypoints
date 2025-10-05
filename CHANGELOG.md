@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- When placing named banners, private waypoints will automatically be created
+
 ## 4.5.8
 
 ### Fixed

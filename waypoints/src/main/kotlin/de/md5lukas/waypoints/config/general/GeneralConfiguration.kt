@@ -25,6 +25,8 @@ class GeneralConfiguration {
 
   val folders = LimitConfiguration()
 
+  val bannerWaypoints = BannerWaypointsConfiguration()
+
   val customIconFilter = CustomIconFilterConfiguration()
 
   val openWithItem = OpenWithItemConfiguration()
