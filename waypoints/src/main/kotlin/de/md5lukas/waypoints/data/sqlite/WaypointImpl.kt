@@ -29,7 +29,7 @@ private constructor(
     name: String,
     description: String?,
     permission: String?,
-    material: Icon?,
+    icon: Icon?,
     beaconColor: BeaconColor?,
 ) : Waypoint {
 
@@ -53,7 +53,7 @@ private constructor(
       name = row.getString("name"),
       description = row.getString("description"),
       permission = row.getString("permission"),
-      material = Icon.nullableIcon(row.getString("material")),
+      icon = Icon.nullableIcon(row.getBytes("icon")),
       beaconColor = row.getString("beaconColor")?.let { BeaconColor.valueOf(it) })
 
   private var folderId: UUID? = folder
@@ -99,12 +99,12 @@ private constructor(
     set("permission", permission)
   }
 
-  override var icon: Icon? = material
+  override var icon: Icon? = icon
     private set
 
   override suspend fun setIcon(icon: Icon?) {
     this.icon = icon
-    set("material", icon?.asString())
+    set("icon", icon?.getBytes())
   }
 
   override var beaconColor: BeaconColor? = beaconColor

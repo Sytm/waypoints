@@ -34,6 +34,8 @@ sealed class Icon {
 
   abstract fun asString(): String
 
+  open fun getBytes() = asItemStack().serializeAsBytes()
+
   class PlayerHead(private val textureId: String) : Icon() {
     override fun asItemStack0(): ItemStack {
       val item = Items.PLAYER_HEAD.getValue().createItemStack()
@@ -73,14 +75,16 @@ sealed class Icon {
     }
   }
 
-  class Serialized(private val data: String) : Icon() {
+  class Serialized(private val data: ByteArray) : Icon() {
     override fun asItemStack0(): ItemStack {
-      return ItemStack.deserializeBytes(Base64.getDecoder().decode(data))
+      return ItemStack.deserializeBytes(data)
     }
 
     override fun asString(): String {
-      return "$BINARY_SERIALIZATION_PREFIX$data"
+      return "$BINARY_SERIALIZATION_PREFIX$${Base64.getEncoder().encodeToString(data)}"
     }
+
+    override fun getBytes() = data
   }
 
   companion object {
@@ -100,13 +104,13 @@ sealed class Icon {
             DataComponentTypes.DYED_COLOR,
         )
 
-    fun nullableIcon(string: String?): Icon? {
-      return string?.let { icon(string) }
+    fun nullableIcon(string: ByteArray?): Icon? {
+      return string?.let { Serialized(it) }
     }
 
     fun icon(string: String): Icon {
       if (string[0] == BINARY_SERIALIZATION_PREFIX) {
-        return Serialized(string.substring(1))
+        return Serialized(Base64.getDecoder().decode(string.substring(1)))
       }
 
       val textureIDIndex = string.indexOf(CUSTOM_PLAYER_HEAD_SEPARATOR)
@@ -125,7 +129,7 @@ sealed class Icon {
     }
 
     fun icon(item: ItemStack): Icon {
-      return Serialized(Base64.getEncoder().encodeToString(sanitizeItem(item).serializeAsBytes()))
+      return Serialized(sanitizeItem(item).serializeAsBytes())
     }
 
     private fun sanitizeItem(item: ItemStack): ItemStack {

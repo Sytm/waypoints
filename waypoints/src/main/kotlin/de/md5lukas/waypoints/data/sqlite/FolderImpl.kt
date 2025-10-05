@@ -27,7 +27,7 @@ private constructor(
     override val owner: UUID?,
     name: String,
     description: String?,
-    material: Icon?,
+    icon: Icon?,
 ) : Folder {
 
   constructor(
@@ -41,7 +41,7 @@ private constructor(
       owner = row.getUUID("owner"),
       name = row.getString("name"),
       description = row.getString("description"),
-      material = Icon.nullableIcon(row.getString("material")),
+      icon = Icon.nullableIcon(row.getBytes("icon")),
   )
 
   override var name: String = name
@@ -60,12 +60,12 @@ private constructor(
     set("description", description)
   }
 
-  override var icon: Icon? = material
+  override var icon: Icon? = icon
     private set
 
   override suspend fun setIcon(icon: Icon?) {
     this.icon = icon
-    set("material", icon?.asString())
+    set("icon", icon?.getBytes())
   }
 
   override suspend fun getAmount(): Int =

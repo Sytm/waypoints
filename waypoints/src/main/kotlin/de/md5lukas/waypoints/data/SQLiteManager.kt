@@ -93,7 +93,7 @@ class SQLiteManager(
                   
                   name TEXT NOT NULL,
                   description TEXT,
-                  material TEXT,
+                  icon BLOB,
                   
                   FOREIGN KEY (owner) REFERENCES player_data(id) ON DELETE CASCADE 
                 );
@@ -112,7 +112,7 @@ class SQLiteManager(
                   name TEXT NOT NULL,
                   description TEXT,
                   permission TEXT,
-                  material TEXT,
+                  icon BLOB,
                   beaconColor TEXT,
                   
                   world TEXT NOT NULL,
@@ -267,6 +267,7 @@ class SQLiteManager(
                 update("UPDATE waypoints SET beaconColor = ? WHERE beaconColor = ?;", new, old)
               }
         }
+        @Suppress("SqlResolve") // material column dropped
         it[9] = {
           @Suppress("DEPRECATION") // That's why we are gonna migrate away from it
           fun parseIcon(string: String): ItemStack {
@@ -281,14 +282,20 @@ class SQLiteManager(
             }
           }
 
+          update("ALTER TABLE folders ADD COLUMN icon BLOB;")
+          update("ALTER TABLE waypoints ADD COLUMN icon BLOB;")
+
           select("SELECT id, material FROM folders WHERE material IS NOT NULL;") {
-            val newFormat = Icon.icon(parseIcon(getString("material"))).asString()
-            update("UPDATE folders SET material = ? WHERE id = ?;", newFormat, getString("id"))
+            val newFormat = Icon.icon(parseIcon(getString("material"))).getBytes()
+            update("UPDATE folders SET icon = ? WHERE id = ?;", newFormat, getString("id"))
           }
           select("SELECT id, material FROM waypoints WHERE material IS NOT NULL;") {
-            val newFormat = Icon.icon(parseIcon(getString("material"))).asString()
-            update("UPDATE waypoints SET material = ? WHERE id = ?;", newFormat, getString("id"))
+            val newFormat = Icon.icon(parseIcon(getString("material"))).getBytes()
+            update("UPDATE waypoints SET icon = ? WHERE id = ?;", newFormat, getString("id"))
           }
+
+          update("ALTER TABLE folders DROP material;")
+          update("ALTER TABLE waypoints DROP material;")
         }
       }
 

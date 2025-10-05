@@ -45,8 +45,7 @@ class DeathFolderImpl(
     get() = null
 
   override suspend fun setIcon(icon: Icon?) =
-      throw UnsupportedOperationException(
-          "Changing the material of the death folder is not supported")
+      throw UnsupportedOperationException("Changing the icon of the death folder is not supported")
 
   override suspend fun getAmount(): Int =
       withContext(dm.asyncDispatcher) {
