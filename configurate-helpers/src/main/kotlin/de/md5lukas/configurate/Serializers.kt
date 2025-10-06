@@ -2,6 +2,7 @@ package de.md5lukas.configurate
 
 import de.md5lukas.configurate.serializers.BlockDataSerializer
 import de.md5lukas.configurate.serializers.BlockTypeSerializer
+import de.md5lukas.configurate.serializers.ComponentSerializer
 import de.md5lukas.configurate.serializers.DurationSerializer
 import de.md5lukas.configurate.serializers.ItemTypeSerializer
 import de.md5lukas.configurate.serializers.PeriodSerializer
@@ -28,6 +29,7 @@ fun commonSerializers(
         .register(Period::class.java, PeriodSerializer)
         .register(Sound::class.java, SoundSerializer)
         .register(StyleSerializer)
+        .register(ComponentSerializer)
         .registerAnnotatedObjects(
             ObjectMapper.factoryBuilder()
                 .defaultNamingScheme(namingScheme)

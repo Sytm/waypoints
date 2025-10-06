@@ -9,7 +9,7 @@ import org.spongepowered.configurate.serialize.ScalarSerializer
 
 internal object StyleSerializer : ScalarSerializer<Style>(Style::class.java) {
 
-  override fun deserialize(type: Type, obj: Any): Style? {
+  override fun deserialize(type: Type, obj: Any): Style {
     return MiniMessage.miniMessage().deserialize(obj.toString()).style()
   }
 
