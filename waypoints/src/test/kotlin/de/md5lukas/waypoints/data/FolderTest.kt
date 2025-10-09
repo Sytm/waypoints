@@ -4,10 +4,9 @@ import de.md5lukas.waypoints.api.Icon
 import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.api.event.FolderPostDeleteEvent
 import de.md5lukas.waypoints.api.event.FolderPreDeleteEvent
-import de.md5lukas.waypoints.util.Items
-import de.md5lukas.waypoints.util.getValue
 import kotlin.test.assertEquals
 import kotlinx.coroutines.runBlocking
+import org.bukkit.inventory.ItemType
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.assertAll
 
@@ -37,7 +36,7 @@ class FolderTest : TestBase() {
 
     folder.setName("Other name")
     folder.setDescription("Some description")
-    val grassBlock = Items.GRASS_BLOCK.getValue()
+    val grassBlock: ItemType = ItemType.GRASS_BLOCK
     folder.setIcon(Icon.Default(grassBlock, null))
 
     folder = holder.getFolders()[0]
@@ -55,7 +54,7 @@ class FolderTest : TestBase() {
 
     var folder = holder.createFolder("Test")
 
-    val grassBlock = Items.GRASS_BLOCK.getValue()
+    val grassBlock: ItemType = ItemType.GRASS_BLOCK
     val customModelData = """{"floats": [ 0.2, 0.1, 200 ]}"""
     folder.setIcon(Icon.Default(grassBlock, customModelData))
 

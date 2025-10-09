@@ -34,7 +34,7 @@ fun checkMaterialForCustomIcon(plugin: WaypointsPlugin, itemType: ItemType?): Bo
   if (itemType === null) {
     return true
   }
-  if (itemType.key() == Items.AIR) {
+  if (itemType.key() == ItemType.AIR.key()) {
     return false
   }
 
@@ -50,7 +50,7 @@ fun getAllowedItemsForCustomIconMessage(plugin: WaypointsPlugin): Component {
 
   val materialsComponent = textComponent {
     if (filter.type === FilterType.BLACKLIST) {
-      append(Component.translatable(Items.AIR.getValue()))
+      append(Component.translatable(ItemType.AIR))
       append(Component.text(", "))
     }
     filter.materials.forEachIndexed { index, material ->

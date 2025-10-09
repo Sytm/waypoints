@@ -1,20 +1,9 @@
 package de.md5lukas.waypoints.util
 
-import de.md5lukas.commons.paper.editMeta
-import io.papermc.paper.registry.TypedKey
-import io.papermc.paper.registry.keys.BlockTypeKeys
-import io.papermc.paper.registry.keys.ItemTypeKeys
-import java.net.URI
-import java.util.*
 import net.kyori.adventure.sound.Sound
 import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.Registry
-import org.bukkit.block.BlockType
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.ItemType
-import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.plugin.Plugin
 
 fun parseLocationString(player: Player, input: String): Location? {
@@ -49,27 +38,6 @@ fun minecraftVersionAtLeast(plugin: Plugin, minor: Int, patch: Int = 0): Boolean
   return parsedVersion[1] >= minor && parsedVersion[2] >= patch
 }
 
-fun createCustomPlayerHead(plugin: Plugin, textureId: String): ItemStack {
-  val profile = plugin.server.createProfile(UUID.randomUUID(), "CUSTOM_HEAD")
-
-  profile.setTextures(
-      profile.textures.also {
-        it.skin = URI.create("https://textures.minecraft.net/texture/$textureId").toURL()
-      })
-
-  val stack = ItemStack(Material.PLAYER_HEAD)
-  stack.editMeta<SkullMeta> { playerProfile = profile }
-  return stack
-}
-
 fun Player.playSoundSeeded(sound: Sound) {
   playSound(Sound.sound(sound).seed(System.currentTimeMillis()).build())
 }
-
-typealias Items = ItemTypeKeys
-
-typealias Blocks = BlockTypeKeys
-
-fun TypedKey<ItemType>.getValue(): ItemType = Registry.ITEM.getOrThrow(this)
-
-fun TypedKey<BlockType>.getValue(): BlockType = Registry.BLOCK.getOrThrow(this)

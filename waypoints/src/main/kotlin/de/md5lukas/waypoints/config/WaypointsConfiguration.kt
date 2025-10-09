@@ -6,13 +6,12 @@ import de.md5lukas.waypoints.api.Type
 import de.md5lukas.waypoints.pointers.BeaconColor
 import de.md5lukas.waypoints.pointers.config.PointerConfiguration
 import de.md5lukas.waypoints.util.Expression
-import de.md5lukas.waypoints.util.Items
 import de.md5lukas.waypoints.util.MathParser
-import de.md5lukas.waypoints.util.getValue
 import java.time.Duration
 import java.time.Period
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
+import org.bukkit.inventory.ItemType
 import org.spongepowered.configurate.objectmapping.ConfigSerializable
 import org.spongepowered.configurate.objectmapping.meta.Comment
 import org.spongepowered.configurate.objectmapping.meta.PostProcess
@@ -179,7 +178,7 @@ class WaypointsConfiguration {
 
     // TODO type
     @Comment("Any of the following item can be used to open the GUI")
-    var items = setOf(Items.COMPASS.getValue())
+    var items = setOf<ItemType>(ItemType.COMPASS)
       private set
   }
 
@@ -223,8 +222,8 @@ class WaypointsConfiguration {
     var type = FilterType.BLACKLIST
       private set
 
-    @Comment("AIR is always disallowed")
-    var materials = setOf(Items.BARRIER.getValue(), Items.BEDROCK.getValue())
+    @Comment("air is always disallowed")
+    var materials = setOf<ItemType>(ItemType.BARRIER, ItemType.BEDROCK)
       private set
   }
 

@@ -8,8 +8,6 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.Strictness
 import com.google.gson.stream.JsonReader
-import de.md5lukas.waypoints.util.Items
-import de.md5lukas.waypoints.util.getValue
 import io.papermc.paper.datacomponent.DataComponentTypes
 import io.papermc.paper.datacomponent.item.CustomModelData
 import io.papermc.paper.datacomponent.item.ResolvableProfile
@@ -68,12 +66,12 @@ sealed class Icon {
   class PlayerHead(private val textureId: String) : Icon() {
 
     override val item: ItemStack =
-        Items.PLAYER_HEAD.getValue().createItemStack().also {
+        ItemType.PLAYER_HEAD.createItemStack().also {
           it.setData(DataComponentTypes.PROFILE, deserializeProfile(textureId))
         }
 
     override fun asString(): String {
-      return "${Items.PLAYER_HEAD.key().asMinimalString()}$CUSTOM_PLAYER_HEAD_SEPARATOR${textureId}"
+      return "${ItemType.PLAYER_HEAD.key().asMinimalString()}$CUSTOM_PLAYER_HEAD_SEPARATOR${textureId}"
     }
   }
 

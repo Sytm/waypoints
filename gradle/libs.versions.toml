@@ -3,7 +3,7 @@ kotlin = "2.2.20"
 coroutines = "1.10.2"
 jvmToolchain = "21"
 paper = "1.21.8-R0.1-SNAPSHOT"
-paperTestServer = "1.21.8-R0.1-SNAPSHOT"
+paperTestServer = "1.21.9-R0.1-SNAPSHOT"
 
 dynmap = "3.6"
 

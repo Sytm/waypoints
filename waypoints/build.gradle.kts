@@ -120,7 +120,7 @@ tasks {
       include(dependency(libs.schedulers.get()))
       include(dependency(libs.skedule.get()))
       include(dependency(libs.anvilGui.get()))
-      include(dependency("org.bstats::"))
+      include(dependency("org.bstats:.*"))
     }
 
     arrayOf(

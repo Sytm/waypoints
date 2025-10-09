@@ -6,13 +6,12 @@ import de.md5lukas.waypoints.api.WaypointsPlayer
 import de.md5lukas.waypoints.api.event.WaypointPostDeleteEvent
 import de.md5lukas.waypoints.api.event.WaypointPreDeleteEvent
 import de.md5lukas.waypoints.pointers.BeaconColor
-import de.md5lukas.waypoints.util.Items
-import de.md5lukas.waypoints.util.getValue
 import java.sql.SQLException
 import java.time.OffsetDateTime
 import java.util.*
 import kotlin.test.*
 import kotlinx.coroutines.runBlocking
+import org.bukkit.inventory.ItemType
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.assertAll
@@ -47,7 +46,7 @@ class WaypointTest : TestBase() {
     if (type === Type.PERMISSION) {
       waypoint.setPermission("permission")
     }
-    val grassBlock = Items.GRASS_BLOCK.getValue()
+    val grassBlock: ItemType = ItemType.GRASS_BLOCK
     waypoint.setIcon(Icon.Default(grassBlock, null))
     waypoint.setBeaconColor(BeaconColor.LIGHT_GRAY)
 
@@ -72,7 +71,7 @@ class WaypointTest : TestBase() {
 
     var waypoint = holder.createWaypoint("Test", server.createLocation("world", 1, 2, 3))
 
-    val grassBlock = Items.GRASS_BLOCK.getValue()
+    val grassBlock: ItemType = ItemType.GRASS_BLOCK
     val customModelData = """{"floats": [ 0.2, 0.1, 200 ]}"""
     waypoint.setIcon(Icon.Default(grassBlock, customModelData))
 
