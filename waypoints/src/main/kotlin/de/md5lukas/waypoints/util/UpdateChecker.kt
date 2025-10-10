@@ -2,9 +2,12 @@ package de.md5lukas.waypoints.util
 
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
 import de.md5lukas.commons.paper.placeholder
 import de.md5lukas.commons.paper.registerEvents
 import de.md5lukas.commons.paper.textComponent
+import de.md5lukas.schedulers.AbstractScheduledTask
+import de.md5lukas.waypoints.Environment
 import de.md5lukas.waypoints.WaypointsPermissions
 import de.md5lukas.waypoints.WaypointsPlugin
 import java.net.URI
@@ -20,36 +23,52 @@ import org.bukkit.event.player.PlayerJoinEvent
 
 class UpdateChecker(
     private val plugin: WaypointsPlugin,
-    private val owner: String,
-    private val repository: String,
 ) : Runnable, Listener {
 
+  private val typeToken = object : TypeToken<List<LatestReleasesResponse>>() {}
+  private var consoleOutput = true
   private val notified = mutableSetOf<UUID>()
   private lateinit var message: Component
+  private lateinit var taskHandle: AbstractScheduledTask
+
+  fun setTaskHandle(taskHandle: AbstractScheduledTask) {
+    this.taskHandle = taskHandle
+  }
 
   override fun run() {
-    val latestData = latestRelease
+    val latestData =
+        try {
+          fetchLatestRelease()
+        } catch (e: Exception) {
+          plugin.componentLogger.warn(plugin.translations.UPDATE_COULD_NOT_CHECK.text, e)
+          return
+        }
 
-    if (latestData === null) {
-      plugin.componentLogger.warn(plugin.translations.UPDATE_COULD_NOT_CHECK.text)
-      return
-    }
-
-    if (isLatestNewer(plugin.pluginMeta.version, latestData.tagName.removePrefix("v"))) {
+    if (isLatestNewer(plugin.pluginMeta.version, latestData.version)) {
       val message =
           plugin.translations.UPDATE_NEW_VERSION_AVAILABLE.withReplacements(
-              "latest" placeholder latestData.tagName,
+              "latest" placeholder latestData.version,
               "link" placeholder
                   textComponent {
-                    content(latestData.htmlUrl)
-                    clickEvent(ClickEvent.openUrl(latestData.htmlUrl))
+                    content(latestData.downloadUrl)
+                    clickEvent(ClickEvent.openUrl(latestData.downloadUrl))
                   })
       plugin.componentLogger.info(message)
       this.message = plugin.translations.PREFIX.text.append(message)
+      taskHandle.cancel()
+
+      plugin.server.onlinePlayers.forEach { player ->
+        if (player.hasPermission(WaypointsPermissions.UPDATE_NOTIFICATION)) {
+          notified += player.uniqueId
+          player.sendMessage(this.message)
+        }
+      }
+
       plugin.registerEvents(this)
-    } else {
+    } else if (consoleOutput) {
       plugin.componentLogger.info(plugin.translations.UPDATE_USING_LATEST_VERSION.text)
     }
+    consoleOutput = false
   }
 
   @EventHandler
@@ -61,33 +80,27 @@ class UpdateChecker(
     }
   }
 
-  private val latestRelease: LatestReleasesResponse?
-    get() {
-      val client = HttpClient.newHttpClient()
-      val request =
-          HttpRequest.newBuilder()
-              .uri(URI.create("https://api.github.com/repos/$owner/$repository/releases/latest"))
-              .header("Accept", "application/vnd.github+json")
-              .header("X-GitHub-Api-Version", " 2022-11-28")
-              .header("User-Agent", "Plugin Update Checker (${plugin.pluginMeta.displayName})")
-              .GET()
-              .build()
+  private fun fetchLatestRelease(): LatestReleasesResponse {
+    val client = HttpClient.newHttpClient()
+    val request =
+        HttpRequest.newBuilder()
+            .uri(
+                URI.create(
+                    "https://api.modrinth.com/v2/project/${Environment.MODRINTH_PLUGIN_ID}/version"))
+            .header("Accept", "application/json")
+            .header("User-Agent", "Sytm/waypoints/${plugin.pluginMeta.version}")
+            .GET()
+            .build()
 
-      val response =
-          try {
-            client.send(request, BodyHandlers.ofInputStream())
-          } catch (_: Exception) {
-            return null
-          }
+    val response = client.send(request, BodyHandlers.ofInputStream())
 
-      if (response.statusCode() != 200) {
-        return null
-      }
-
-      return response.body().reader().use {
-        Gson().fromJson(it, LatestReleasesResponse::class.java)
-      }
+    if (response.statusCode() != 200) {
+      val body = response.body().use { stream -> stream.readNBytes(100).decodeToString() }
+      throw IllegalStateException("Invalid API response (${response.statusCode()} - $body)")
     }
+
+    return response.body().reader().use { Gson().fromJson(it, typeToken).also(::println).first() }
+  }
 
   private fun isLatestNewer(current: String, latest: String): Boolean {
     val regex = Regex("\\D+")
@@ -108,7 +121,10 @@ class UpdateChecker(
   }
 
   private data class LatestReleasesResponse(
-      @field:SerializedName("tag_name") val tagName: String,
-      @field:SerializedName("html_url") val htmlUrl: String,
-  )
+      @field:SerializedName("id") val id: String,
+      @field:SerializedName("version_number") val version: String,
+  ) {
+    val downloadUrl: String
+      get() = "https://modrinth.com/plugin/${Environment.MODRINTH_PLUGIN_ID}/version/$id"
+  }
 }

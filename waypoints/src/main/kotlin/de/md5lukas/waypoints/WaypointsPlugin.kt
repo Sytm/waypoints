@@ -45,8 +45,6 @@ import org.spongepowered.configurate.yaml.YamlConfigurationLoader
 
 class WaypointsPlugin : JavaPlugin() {
 
-  @Suppress("PrivatePropertyName") private val METRICS_PLUGIN_ID = 6864
-
   internal lateinit var databaseManager: DatabaseManager
   lateinit var waypointsConfig: WaypointsConfiguration
     private set
@@ -291,7 +289,7 @@ class WaypointsPlugin : JavaPlugin() {
 
   private fun startMetrics() {
     if (Environment.DEV) return
-    metrics = Metrics(this, METRICS_PLUGIN_ID)
+    metrics = Metrics(this, Environment.METRICS_PLUGIN_ID)
 
     with(api.statistics) {
       metrics.addCustomChart(SingleLineChart("total_waypoints") { totalWaypoints })
@@ -359,10 +357,11 @@ class WaypointsPlugin : JavaPlugin() {
   private fun startBackgroundTasks() {
     val scheduler = Schedulers.global(this)
     // Run once every day
-    scheduler.scheduleAtFixedRateAsync(
-        20 * 60 * 60 * 24, 20 * 60 * 60 * 24, CleanDatabaseTask(this))
+    val h24: Long = 20 * 60 * 60 * 24
+    scheduler.scheduleAtFixedRateAsync(h24, h24, CleanDatabaseTask(this))
     if (!Environment.DEV && waypointsConfig.general.updateChecker) {
-      scheduler.scheduleAsync(UpdateChecker(this, "Sytm", "waypoints"))
+      val checker = UpdateChecker(this)
+      checker.setTaskHandle(scheduler.scheduleAtFixedRateAsync(h24, 0, checker))
     }
   }
   // </editor-fold>

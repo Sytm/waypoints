@@ -2,15 +2,18 @@
 
 ## [Unreleased]
 
-### Changed
+### Breaking changes
 - **1.21.8 is now required**
-- ProtocolLib is no longer required for editing descriptions of waypoints or folders
 - Config format changed
 - Inventory config changed
-  - Minecraft keys
-  - Custom model data changed/fixed
+    - Minecraft keys
+    - Custom model data changed/fixed
 - API for plugins to consume no longer available
+
+### Changed
+- ProtocolLib is no longer required for editing descriptions of waypoints or folders
 - Banner patterns (also applied to banner waypoints), armor trims as well as dye colors are now stored for custom icons
+- Use Modrinth API for update checking
 
 ## 4.5.9
 
