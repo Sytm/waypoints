@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- RunningOnDifferentThreadException is thrown when creating a waypoint inside a folder
+
 ## 4.5.9
 
 ### Added
