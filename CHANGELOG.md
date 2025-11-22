@@ -15,6 +15,11 @@
 - Banner patterns (also applied to banner waypoints), armor trims as well as dye colors are now stored for custom icons
 - Use Modrinth API for update checking
 
+## 4.5.11
+
+### Fixed
+- IllegalStateException is thrown on Folia when entering a description using the sign gui [#119](https://github.com/Sytm/waypoints/issues/119)
+
 ## 4.5.10
 
 ### Fixed

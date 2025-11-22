@@ -75,11 +75,14 @@ public class SignGUI implements Listener {
                 signChangeEvent.setCancelled(true);
                 open = false;
 
-                final var realBlock = signLocation.getBlock();
-                player.sendBlockChange(signLocation, realBlock.getBlockData());
-                if (realBlock.getState() instanceof TileState tileState) {
-                  player.sendBlockUpdate(signLocation, tileState);
-                }
+                plugin.getServer().getRegionScheduler().execute(plugin, signLocation, () -> {
+                  // This API should only be called on the main server thread
+                  final var realBlock = signLocation.getBlock();
+                  player.sendBlockChange(signLocation, realBlock.getBlockData());
+                  if (realBlock.getState() instanceof TileState tileState) {
+                    player.sendBlockUpdate(signLocation, tileState);
+                  }
+                });
 
                 onClose.accept(signChangeEvent.lines().stream()
                     .map(PlainTextComponentSerializer.plainText()::serialize)
