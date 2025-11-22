@@ -74,11 +74,14 @@ public class SignGUI {
             protocolManager.removePacketListener(this);
             event.setCancelled(true);
             open = false;
-            final var realBlock = signLocation.getBlock();
-            player.sendBlockChange(signLocation, realBlock.getBlockData());
-            if (realBlock.getState() instanceof TileState tileState) {
-              player.sendBlockUpdate(signLocation, tileState);
-            }
+            plugin.getServer().getRegionScheduler().execute(plugin, signLocation, () -> {
+              // This API should only be called on the main server thread
+              final var realBlock = signLocation.getBlock();
+              player.sendBlockChange(signLocation, realBlock.getBlockData());
+              if (realBlock.getState() instanceof TileState tileState) {
+                player.sendBlockUpdate(signLocation, tileState);
+              }
+            });
 
             final var lines = event.getPacket().getStringArrays().read(0);
 

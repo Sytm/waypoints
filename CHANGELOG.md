@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- IllegalStateException is thrown on Folia when entering a description using the sign gui [#119](https://github.com/Sytm/waypoints/issues/119)
+
 ## 4.5.10
 
 ### Fixed
