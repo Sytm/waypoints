@@ -169,10 +169,7 @@ class WaypointsGUI(
               emptyList()
             }
             is SuccessWaypoint -> {
-              folder?.let {
-                result.waypoint.setFolder(it)
-                open(GUIFolderPage(this, folder))
-              }
+              folder?.let { result.waypoint.setFolder(it) }
 
               waypoint = result.waypoint
 
@@ -188,11 +185,10 @@ class WaypointsGUI(
             if (capturedWaypoint == null) {
               switchContext(SynchronizationContext.SYNC)
               goBack()
+              gui.open()
             } else {
               openWaypoint(capturedWaypoint)
             }
-            switchContext(SynchronizationContext.SYNC)
-            gui.open()
           }
         }
         .open(viewer)

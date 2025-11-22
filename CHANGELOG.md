@@ -15,6 +15,11 @@
 - Banner patterns (also applied to banner waypoints), armor trims as well as dye colors are now stored for custom icons
 - Use Modrinth API for update checking
 
+## 4.5.10
+
+### Fixed
+- RunningOnDifferentThreadException is thrown when creating a waypoint inside a folder
+
 ## 4.5.9
 
 ### Added
