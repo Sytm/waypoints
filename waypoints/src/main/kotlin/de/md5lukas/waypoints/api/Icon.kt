@@ -158,7 +158,18 @@ sealed class Icon {
         strings.forEach { builder.addString(it.asString) }
       }
       (jsonObject["colors"] as? JsonArray)?.let { colors ->
-        colors.forEach { builder.addColor(Color.fromRGB(it.asInt)) }
+        colors.forEach {
+          it.asJsonPrimitive.let { color ->
+            if (color.isString) {
+              val str = color.asString
+              if (str.startsWith('#')) {
+                builder.addColor(Color.fromRGB(str.substring(1).toInt(16)))
+                return@forEach
+              }
+            }
+            builder.addColor(Color.fromRGB(color.asInt))
+          }
+        }
       }
 
       return builder
