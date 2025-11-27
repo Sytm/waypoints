@@ -48,7 +48,10 @@ internal class HologramPointer(
   }
 
   override fun update(trackable: Trackable, translatedTarget: Location?) {
-    if (translatedTarget === null) return
+    if (translatedTarget === null) {
+      hide(trackable, translatedTarget)
+      return
+    }
 
     val hologramText = trackable.getHologramText(player, translatedTarget)
 
@@ -74,13 +77,14 @@ internal class HologramPointer(
               .toLocation(playerEyes.world!!)
         }
 
-    if (trackable in activeHolograms) {
-      val hologram = activeHolograms[trackable]!!
-
-      hologram.location = location
-      hologram.text = hologramText
-    } else {
-      activeHolograms[trackable] = Hologram(trackable, location, hologramText)
+    activeHolograms.compute(trackable) { _, hologram ->
+      if (hologram == null) {
+        Hologram(trackable, location, hologramText)
+      } else {
+        hologram.location = location
+        hologram.text = hologramText
+        hologram
+      }
     }
   }
 
@@ -89,7 +93,7 @@ internal class HologramPointer(
   }
 
   override fun hide(trackable: Trackable, translatedTarget: Location?) {
-    scheduler.schedule { activeHolograms.remove(trackable)?.remove() }
+    activeHolograms.remove(trackable)?.remove()
   }
 
   override fun immediateCleanup(trackable: Trackable, translatedTarget: Location?) {
