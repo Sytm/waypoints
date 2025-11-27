@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 4.5.12
+
+### Fixed
+- IllegalStateException is thrown on Folia when switching between worlds when they are not linked (like overworld and the nether are for example)
+- IllegalStateException could be thrown on Folia when switching between any worlds
+
 ## 4.5.11
 
 ### Fixed
