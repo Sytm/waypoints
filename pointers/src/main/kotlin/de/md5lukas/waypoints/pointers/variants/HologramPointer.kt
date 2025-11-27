@@ -128,25 +128,25 @@ internal class HologramPointer(
         val itemTeleport = itemCapture?.teleportAsync(location)
 
         // Workaround for PaperMC/Paper#12599
-        if (!player.canSee(textCapture) || (itemCapture != null && !player.canSee(itemCapture))) {
-          val combinedFuture =
-              if (itemTeleport == null) {
-                textTeleport
-              } else {
-                CompletableFuture.allOf(textTeleport, itemTeleport)
-              }
+        val combinedFuture =
+            if (itemTeleport == null) {
+              textTeleport
+            } else {
+              CompletableFuture.allOf(textTeleport, itemTeleport)
+            }
 
-          combinedFuture.thenRunAsync(
-              {
-                if (!player.canSee(textCapture)) {
-                  player.showEntity(pointerManager.plugin, textCapture)
-                }
-                if (itemCapture != null && !player.canSee(itemCapture)) {
-                  player.showEntity(pointerManager.plugin, itemCapture)
-                }
-              },
-              syncExecutor)
-        }
+        combinedFuture.thenRunAsync(
+            {
+              // On Folia canSee needs to be called in the region of the entity to check because
+              // canSee calls isVisibleByDefault on that entity
+              if (!player.canSee(textCapture)) {
+                player.showEntity(pointerManager.plugin, textCapture)
+              }
+              if (itemCapture != null && !player.canSee(itemCapture)) {
+                player.showEntity(pointerManager.plugin, itemCapture)
+              }
+            },
+            syncExecutor)
         return
       }
       val world = player.world
