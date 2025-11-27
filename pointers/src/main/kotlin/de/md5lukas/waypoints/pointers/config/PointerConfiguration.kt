@@ -16,7 +16,7 @@ class PointerConfiguration {
 
   @Comment(
       "Connected worlds in this list allow the translation of the coordinates 1:8, so you can for example navigate in the nether to a waypoint in the overworld")
-  var connectedWorlds: List<WorldConnection> = listOf(WorldConnection("world", "world_the_nether"))
+  var connectedWorlds: List<WorldConnection> = listOf(WorldConnection("world", "world_nether"))
     private set
 
   var actionBar: ActionBarConfiguration = ActionBarConfiguration()

@@ -60,7 +60,7 @@ internal class HologramPointer(
     val distanceSquared = playerEyes.distanceSquared(translatedTarget)
 
     val location =
-        if (distanceSquared <= config.distanceFromPlayer) {
+        if (distanceSquared <= config.distanceFromPlayerSquared) {
           hologramTarget
         } else {
           val pVec = playerEyes.toVector()

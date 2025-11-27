@@ -17,8 +17,10 @@ class HologramConfiguration : RepeatingPointerConfiguration {
   @Comment("The distance of the hologram from the player")
   @Positive
   var distanceFromPlayer: Int = 4
-    get() = field * field
     private set
+
+  val distanceFromPlayerSquared: Int
+    get() = distanceFromPlayer * distanceFromPlayer
 
   @Comment(
       """
