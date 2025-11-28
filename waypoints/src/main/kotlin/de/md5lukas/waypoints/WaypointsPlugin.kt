@@ -196,10 +196,10 @@ class WaypointsPlugin : JavaPlugin() {
   }
 
   fun initDurationFormatter() {
-    durationFormatter =
-        DurationFormatter(
-            { timeUnit, isPlural ->
-              with(translations) {
+    with(translations) {
+      durationFormatter =
+          DurationFormatter(
+              { timeUnit, isPlural ->
                 when (timeUnit) {
                   TimeUnit.SECONDS -> if (isPlural) TEXT_DURATION_SECONDS else TEXT_DURATION_SECOND
                   TimeUnit.MINUTES -> if (isPlural) TEXT_DURATION_MINUTES else TEXT_DURATION_MINUTE
@@ -208,9 +208,9 @@ class WaypointsPlugin : JavaPlugin() {
                   else ->
                       throw UnsupportedOperationException("The TimeUnit $timeUnit is not supported")
                 }.rawText
-              }
-            },
-            true)
+              },
+              TEXT_DURATION_ADD_SPACES.rawText.toBoolean())
+    }
   }
 
   private fun initIntegrations() {
