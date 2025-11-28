@@ -209,7 +209,7 @@ class WaypointsPlugin : JavaPlugin() {
                       throw UnsupportedOperationException("The TimeUnit $timeUnit is not supported")
                 }.rawText
               },
-              TEXT_DURATION_ADD_SPACES.rawText.toBoolean())
+              TEXT_DURATION_ADD_SPACES.value())
     }
   }
 
