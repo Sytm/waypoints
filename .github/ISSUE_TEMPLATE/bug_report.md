@@ -1,9 +1,9 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a report to help me improve waypoints
 title: ''
 labels: bug
-assignees: ''
+assignees: 'Sytm'
 
 ---
 

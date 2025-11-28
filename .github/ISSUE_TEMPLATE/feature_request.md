@@ -1,9 +1,9 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: Suggest an idea for waypoints
 title: ''
 labels: enhancement
-assignees: ''
+assignees: 'Sytm'
 
 ---
 
