@@ -110,5 +110,6 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
   @EventHandler
   fun onConfigReload(e: ConfigReloadEvent) {
     plugin.server.onlinePlayers.forEach(Player::updateCommands)
+    plugin.initDurationFormatter()
   }
 }

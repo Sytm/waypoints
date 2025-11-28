@@ -192,17 +192,25 @@ class WaypointsPlugin : JavaPlugin() {
 
   private fun initCommons() {
     uuidUtils = UUIDUtils(Dispatchers.Default.asExecutor())
-    durationFormatter = DurationFormatter { timeUnit, isPlural ->
-      with(translations) {
-        when (timeUnit) {
-          TimeUnit.SECONDS -> if (isPlural) TEXT_DURATION_SECONDS else TEXT_DURATION_SECOND
-          TimeUnit.MINUTES -> if (isPlural) TEXT_DURATION_MINUTES else TEXT_DURATION_MINUTE
-          TimeUnit.HOURS -> if (isPlural) TEXT_DURATION_HOURS else TEXT_DURATION_HOUR
-          TimeUnit.DAYS -> if (isPlural) TEXT_DURATION_DAYS else TEXT_DURATION_DAY
-          else -> throw UnsupportedOperationException("The TimeUnit $timeUnit is not supported")
-        }.rawText
-      }
-    }
+    initDurationFormatter()
+  }
+
+  fun initDurationFormatter() {
+    durationFormatter =
+        DurationFormatter(
+            { timeUnit, isPlural ->
+              with(translations) {
+                when (timeUnit) {
+                  TimeUnit.SECONDS -> if (isPlural) TEXT_DURATION_SECONDS else TEXT_DURATION_SECOND
+                  TimeUnit.MINUTES -> if (isPlural) TEXT_DURATION_MINUTES else TEXT_DURATION_MINUTE
+                  TimeUnit.HOURS -> if (isPlural) TEXT_DURATION_HOURS else TEXT_DURATION_HOUR
+                  TimeUnit.DAYS -> if (isPlural) TEXT_DURATION_DAYS else TEXT_DURATION_DAY
+                  else ->
+                      throw UnsupportedOperationException("The TimeUnit $timeUnit is not supported")
+                }.rawText
+              }
+            },
+            true)
   }
 
   private fun initIntegrations() {

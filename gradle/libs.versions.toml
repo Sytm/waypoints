@@ -19,7 +19,7 @@ paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" 
 
 # Required dependencies
 # (own)
-md5Commons = { group = "de.md5lukas", name = "md5-commons", version = "3.0.0-SNAPSHOT" }
+md5Commons = { group = "de.md5lukas", name = "md5-commons", version = "3.0.0" }
 kinvs = { group = "de.md5lukas", name = "kinvs", version = "1.1.0" }
 sqliteHelper = { group = "de.md5lukas", name = "sqlite-kotlin-helper", version = "1.2.2" }
 paperBrigadier = { group = "de.md5lukas.paper", name = "paper-brigadier", version = "1.1.0" }

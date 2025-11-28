@@ -109,6 +109,8 @@ command:
 
 text:
   duration:
+    addSpaces: true
+
     second: "second"
     seconds: "seconds"
 

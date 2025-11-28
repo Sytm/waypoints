@@ -10,6 +10,9 @@
     - Custom model data changed/fixed
 - API for plugins to consume no longer available
 
+### Added
+- Option to remove spaces in durations for CJK languages
+
 ### Changed
 - ProtocolLib is no longer required for editing descriptions of waypoints or folders
 - Banner patterns (also applied to banner waypoints), armor trims as well as dye colors are now stored for custom icons

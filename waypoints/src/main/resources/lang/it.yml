@@ -110,6 +110,8 @@ command:
 
 text:
   duration:
+    addSpaces: true
+
     second: "secondo"
     seconds: "secondi"
 

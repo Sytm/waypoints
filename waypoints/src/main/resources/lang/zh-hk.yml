@@ -110,6 +110,8 @@ command:
 
 text:
   duration:
+    addSpaces: false
+
     second: "秒"
     seconds: "秒"
 

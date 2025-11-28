@@ -1,6 +1,5 @@
 package de.md5lukas.waypoints.config
 
-import de.md5lukas.commons.paper.getStringNotNull
 import de.md5lukas.waypoints.api.Icon
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.inventory.ItemStack
@@ -15,7 +14,10 @@ class InventoryConfiguration(private val config: ConfigurationSection) {
       return cached.asItemStack()
     }
 
-    val icon = Icon.icon(config.getStringNotNull(path))
+    val icon =
+        Icon.icon(
+            config.getString(path)
+                ?: throw IllegalArgumentException("The configuration key '$path' is not present"))
 
     itemCache[path] = icon
 

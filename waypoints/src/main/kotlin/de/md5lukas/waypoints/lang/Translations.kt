@@ -75,6 +75,7 @@ class Translations(tl: TranslationLoader) {
   val POINTERS_HOLOGRAM_TEMPORARY = Translation(tl, "pointers.hologram.temporary")
   val POINTERS_HOLOGRAM_PLAYER_TRACKING = Translation(tl, "pointers.hologram.playerTracking")
 
+  val TEXT_DURATION_ADD_SPACES = Translation(tl, "text.duration.addSpaces")
   val TEXT_DURATION_SECOND = Translation(tl, "text.duration.second")
   val TEXT_DURATION_SECONDS = Translation(tl, "text.duration.seconds")
   val TEXT_DURATION_MINUTE = Translation(tl, "text.duration.minute")
