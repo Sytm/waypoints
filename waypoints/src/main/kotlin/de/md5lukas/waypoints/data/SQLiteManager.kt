@@ -28,7 +28,7 @@ class SQLiteManager(
     testing: Boolean = false,
 ) : DatabaseManager(plugin, databaseConfiguration, testing) {
 
-  private val schemaVersion: Int = 9
+  private val schemaVersion: Int = 10
   private val sqliteHelper =
       if (file === null) {
         SQLiteHelper()
@@ -261,6 +261,17 @@ class SQLiteManager(
           update("UPDATE player_data SET canReceiveTemporaryWaypoints = 1;")
         }
         it[8] = {
+          Material.values()
+              .filter { material -> !material.isLegacy && material.name.endsWith("WALL_BANNER") }
+              .forEach { material ->
+                update(
+                    "UPDATE waypoints SET material = ? WHERE material = ?;",
+                    material.createBlockData().placementMaterial.name,
+                    material.name,
+                )
+              }
+        }
+        it[9] = {
           BeaconColor.entries
               .map { color -> color.material.name to color.name }
               .forEach { (old, new) ->
@@ -268,7 +279,7 @@ class SQLiteManager(
               }
         }
         @Suppress("SqlResolve") // material column dropped
-        it[9] = {
+        it[10] = {
           @Suppress("DEPRECATION") // That's why we are gonna migrate away from it
           fun parseIcon(string: String): ItemStack {
             val index = string.indexOf('|')

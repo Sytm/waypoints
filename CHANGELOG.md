@@ -18,6 +18,11 @@
 - Banner patterns (also applied to banner waypoints), armor trims as well as dye colors are now stored for custom icons
 - Use Modrinth API for update checking
 
+## 4.5.13
+
+### Fixed
+- GUI will no longer open after placing a named banner on a wall
+
 ## 4.5.12
 
 ### Fixed
