@@ -65,7 +65,7 @@ class WaypointsListener(private val plugin: WaypointsPlugin) : Listener {
           val location = e.block.location.add(0.5, 0.0, 0.5)
           val result = createWaypointPrivate(plugin, e.player, name, location)
           if (result is SuccessWaypoint) {
-            result.waypoint.setIcon(Icon(e.block.type, null))
+            result.waypoint.setIcon(Icon(e.block.blockData.placementMaterial, null))
             switchContext(SynchronizationContext.SYNC)
             val freshState = e.block.state as? Banner ?: return@skedule
             freshState.persistentDataContainer.set(

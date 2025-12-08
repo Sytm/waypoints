@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- GUI will no longer open after placing a named banner on a wall
+
 ## 4.5.12
 
 ### Fixed

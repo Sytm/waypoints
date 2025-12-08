@@ -21,7 +21,7 @@ class SQLiteManager(
     testing: Boolean = false,
 ) : DatabaseManager(plugin, databaseConfiguration, testing) {
 
-  private val schemaVersion: Int = 7
+  private val schemaVersion: Int = 8
   private val sqliteHelper =
       if (file === null) {
         SQLiteHelper()
@@ -252,6 +252,17 @@ class SQLiteManager(
           update(
               "ALTER TABLE player_data ADD COLUMN canReceiveTemporaryWaypoints BOOLEAN NOT NULL DEFAULT 0;")
           update("UPDATE player_data SET canReceiveTemporaryWaypoints = 1;")
+        }
+        it[8] = {
+          Material.values()
+              .filter { material -> !material.isLegacy && material.name.endsWith("WALL_BANNER") }
+              .forEach { material ->
+                update(
+                    "UPDATE waypoints SET material = ? WHERE material = ?;",
+                    material.createBlockData().placementMaterial.name,
+                    material.name,
+                )
+              }
         }
       }
 
