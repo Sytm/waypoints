@@ -43,7 +43,7 @@ class TranslationFileTest {
         YamlConfiguration.loadConfiguration(
             javaClass.classLoader.getResourceAsStream("lang/$language.yml")!!.bufferedReader())
 
-    return config.getKeys(true).filter(config::isString).toList()
+    return config.getKeys(true).filter { config.isString(it) || config.isBoolean(it) }.toList()
   }
 
   @ParameterizedTest
