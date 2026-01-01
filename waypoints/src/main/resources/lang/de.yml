@@ -435,12 +435,6 @@ inventory:
           <gray>Partikel in der Nähe deiner Füße zeigen
           <gray>dir in welcher Richtung sich der Wegpunkt
           <gray>befindet
-      trail:
-        name: "Partikel-Pfad"
-        description: |
-          <gray>Es wird ein möglicher Weg zum Wegpunkt
-          <gray>berechnet welcher dann mit einem
-          <gray>Partikel-Pfad angezeigt wird
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:

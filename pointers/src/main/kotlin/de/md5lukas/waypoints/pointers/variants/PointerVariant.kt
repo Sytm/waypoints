@@ -17,8 +17,7 @@ enum class PointerVariant(
   BOSS_BAR("bossBar", { it.bossBar.enabled }, ::BossBarPointer),
   COMPASS("compass", { it.compass.enabled }, ::CompassPointer),
   HOLOGRAM("hologram", { it.hologram.enabled }, ::HologramPointer),
-  PARTICLE("particle", { it.particle.enabled }, ::ParticlePointer),
-  TRAIL("trail", { it.trail.enabled }, ::TrailPointer);
+  PARTICLE("particle", { it.particle.enabled }, ::ParticlePointer);
 
   internal fun canUse(enabledPointerVariants: Set<PointerVariant>) =
       enabledPointerVariants.isEmpty() || this in enabledPointerVariants

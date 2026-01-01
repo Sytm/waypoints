@@ -434,12 +434,6 @@ inventory:
         description: |
           <gray>Particelle vicine ad i tuoi piedi mostrano
           <gray>in quale direzione si trova il waypoint
-      trail:
-        name: "Scia di particelle"
-        description: |
-          <gray>Viene calcolato un possibile percorso
-          <gray>verso il Waypoint e poi mostrato
-          <gray>con una scia di particelle
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:

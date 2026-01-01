@@ -434,12 +434,6 @@ inventory:
         description: |
           <gray>Particles near your feet show you in
           <gray>which direction the waypoint is located
-      trail:
-        name: "Particle Trail"
-        description: |
-          <gray>A possible Path towards the Waypoint
-          <gray>is calculated and then displayed
-          <gray>with a particle trail
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:

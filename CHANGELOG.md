@@ -9,6 +9,7 @@
     - Minecraft keys
     - Custom model data changed/fixed
 - API for plugins to consume no longer available
+- Trail pointer (with the pathfinder) has been dropped
 
 ### Added
 - Option to remove spaces in durations for CJK languages

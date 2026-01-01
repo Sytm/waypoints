@@ -4,7 +4,6 @@ plugins {
   with(libs.plugins) {
     alias(kotlin)
     alias(dokka)
-    alias(shadow)
   }
   `maven-publish`
 }
@@ -16,7 +15,6 @@ dependencies {
   api(libs.configurate.core)
   api(project(":configurate-helpers"))
   implementation(libs.schedulers)
-  implementation(libs.pathfinder)
 }
 
 kotlin { jvmToolchain(21) }
@@ -49,16 +47,6 @@ val dokkaHtmlJar by
       from(tasks.dokkaHtml)
     }
 
-tasks {
-  shadowJar {
-    archiveClassifier = ""
-
-    dependencies { include(dependency(libs.pathfinder.get())) }
-
-    relocate("de.md5lukas.pathfinder", "de.md5lukas.waypoints.pointers.path")
-  }
-}
-
 publishing {
   repositories {
     maven {
@@ -80,7 +68,7 @@ publishing {
   }
   publications {
     create<MavenPublication>("maven") {
-      from(components["shadow"])
+      from(components["kotlin"])
       artifact(sourcesJar)
       artifact(dokkaHtmlJar)
     }

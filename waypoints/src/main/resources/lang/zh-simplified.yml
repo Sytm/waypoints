@@ -419,10 +419,6 @@ inventory:
         name: "粒子指南针"
         description: |
           <gray>在脚下生成粒子效果指向目标路径点
-      trail:
-        name: "粒子轨迹"
-        description: |
-          <gray>在你的面前生成导航至目标路径点的路径
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:

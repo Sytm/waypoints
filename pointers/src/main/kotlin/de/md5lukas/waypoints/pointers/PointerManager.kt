@@ -3,7 +3,6 @@ package de.md5lukas.waypoints.pointers
 import de.md5lukas.waypoints.pointers.config.BeaconConfiguration
 import de.md5lukas.waypoints.pointers.config.PointerConfiguration
 import de.md5lukas.waypoints.pointers.variants.PointerVariant
-import de.md5lukas.waypoints.pointers.variants.TrailPointer
 import java.util.UUID
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ConcurrentHashMap
@@ -54,7 +53,6 @@ class PointerManager(
    */
   fun applyNewConfiguration(newConfiguration: PointerConfiguration) {
     configuration = newConfiguration
-    TrailPointer.resetPathfinder()
     players.values.forEach { it.reapplyConfiguration() }
   }
 

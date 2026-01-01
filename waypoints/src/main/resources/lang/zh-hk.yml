@@ -436,12 +436,6 @@ inventory:
         description: |
           <gray>你腳下的粒子
           <gray>顯示座標所在的方向
-      trail:
-        name: "粒子軌跡"
-        description: |
-          <gray>顯示通往座標的可能道路
-          <gray>用粒子軌跡
-          <gray>計算並顯示
 
   # amount: Amount of waypoints in this global folder visible for the player
   listing:

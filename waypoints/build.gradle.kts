@@ -104,7 +104,6 @@ tasks {
       include(dependency(libs.coroutines.get()))
 
       include(project(":pointers"))
-      include(dependency(libs.pathfinder.get()))
       include(project(":signgui"))
       include(project(":configurate-helpers"))
 
@@ -130,7 +129,6 @@ tasks {
             "schedulers",
             "signgui",
             "paper.brigadier",
-            "pathfinder",
             "configurate",
             "jdbc")
         .forEach {

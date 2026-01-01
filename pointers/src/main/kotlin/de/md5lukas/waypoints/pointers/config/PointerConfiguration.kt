@@ -40,9 +40,6 @@ class PointerConfiguration {
   var bossBar: BossBarConfiguration = BossBarConfiguration()
     private set
 
-  var trail: TrailConfiguration = TrailConfiguration()
-    private set
-
   @ConfigSerializable
   class WorldConnection() {
 
