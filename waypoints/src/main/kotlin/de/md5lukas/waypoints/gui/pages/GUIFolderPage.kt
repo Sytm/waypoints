@@ -263,9 +263,7 @@ class GUIFolderPage(wpGUI: WaypointsGUI, private val guiFolder: GUIFolder) :
                 wpGUI.skedule { updateControls(true) }
               }
             } else if (guiFolder is Folder &&
-                (canModify || (pof && (wpGUI.viewer.uniqueId == guiFolder.owner))) &&
-                minecraftVersionAtLeast(wpGUI.plugin, 20, 1) &&
-                wpGUI.plugin.server.pluginManager.isPluginEnabled("ProtocolLib")) {
+                (canModify || (pof && (wpGUI.viewer.uniqueId == guiFolder.owner)))) {
               GUIItem(wpGUI.translations.FOLDER_EDIT_DESCRIPTION.item) {
                 wpGUI.viewer.closeInventory()
                 val builder =

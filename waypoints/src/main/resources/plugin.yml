@@ -12,7 +12,6 @@ folia-supported: true
 softdepend:
   - Vault
   - dynmap
-  - ProtocolLib
   - squaremap
   - BlueMap
   - Pl3xMap

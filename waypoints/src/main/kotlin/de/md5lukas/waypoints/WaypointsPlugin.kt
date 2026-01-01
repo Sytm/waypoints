@@ -333,10 +333,6 @@ class WaypointsPlugin : JavaPlugin() {
     metrics.addCustomChart(
         SimplePie("player_tracking_enabled") { waypointsConfig.playerTracking.enabled.toString() })
     metrics.addCustomChart(
-        SimplePie("protocollib_available") {
-          (server.pluginManager.getPlugin("ProtocolLib") !== null).toString()
-        })
-    metrics.addCustomChart(
         SimplePie("actionbar_pointer_enabled") {
           waypointsConfig.pointers.actionBar.enabled.toString()
         })
