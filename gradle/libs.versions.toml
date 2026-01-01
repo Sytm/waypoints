@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.2.20"
+kotlin = "2.3.0"
 coroutines = "1.10.2"
 jvmToolchain = "21"
 paper = "1.21.10-R0.1-SNAPSHOT"
