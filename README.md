@@ -1,3 +1,5 @@
+# This repository has been moved to [Codeberg](https://codeberg.org/md5lukas/waypoints)
+
 # Waypoints
 
 [![Support Discord](https://img.shields.io/static/v1?message=Support%20Discord&color=7289da&style=flat-square&logo=discord&logoColor=white&label)](https://discord.gg/4xY9TcHQja)
